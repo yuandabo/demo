@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <div style="display: flex;width: 100%;overflow-y:auto;">
+    <img id="img" src="" alt="">
+    <img id="img2" src="" alt="">
+  </div>
+  <script>
+    let imgNODE = document.getElementById('img')
+    let img2NODE = document.getElementById('img2')
+    const xhr = new XMLHttpRequest();
+    xhr.timeout = 3000
+    // blob接收数据
+    xhr.responseType = 'blob';
+    xhr.open("GET", 'http://img.gosql.cn/93000fbcb5bc4162f046537a398107c555e29a901595576633', true);
+    xhr.onreadystatechange = function () {
+      if (xhr.readyState == 4 && xhr.status == 200) {
+        console.log(xhr.response)
+        let file = new FileReader()
+        // FileReader() blob to base64(readAsDataURL())/arraybuffer(readAsArrayBuffer())
+        file.readAsDataURL(xhr.response);
+        file.onloadend = function (e) {
+          imgNODE.src = e.target.result;
+        };
+      } else {
+        console.log(xhr.statusText);
+      }
+    }
+    xhr.send()
+    // arraybuffer
+    const xhr2 = new XMLHttpRequest();
+    // arraybuffer格式
+    xhr2.responseType = 'arraybuffer';
+    xhr2.open("GET", 'http://img.gosql.cn/93000fbcb5bc4162f046537a398107c555e29a901595576633', true);
+    xhr2.onreadystatechange = function () {
+      if (xhr2.readyState == 4 && xhr2.status == 200) {
+        const arrayBuffer = xhr2.response;
+        console.log(arrayBuffer)
+        if (arrayBuffer) {
+          // Blob() arraybuffer to Blob
+          const blob = new Blob([arrayBuffer], { type: 'image/png' });
+          // createObjectURL  blob to cash URL
+          const src = URL.createObjectURL(blob)
+          console.log(src)
+          img2NODE.src = src
+        }
+      } else {
+        console.log(xhr2.statusText);
+      }
+    }
+    xhr2.send()
+  </script>
+</body>
+
+</html>

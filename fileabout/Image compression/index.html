@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>图片压缩</title>
+</head>
+
+<body>
+  <div>
+    <input id="input" type="file" input>
+    <div>
+      <img id="img" src="" alt="" width="500" height="500">
+      <div id="imgdec"></div>
+    </div>
+    <div>
+      <img id="img2" src="" alt="" width="500" height="500">
+      <div id="imgdec2"></div>
+    </div>
+    <canvas style="display: none;" id="canvas" width="500" height="500"></canvas>
+    <script>
+      const input = document.querySelector('#input');
+      const img = document.querySelector('#img');
+      const imgdec = document.querySelector('#imgdec');
+      const img2 = document.querySelector('#img2');
+      const imgdec2 = document.querySelector('#imgdec2');
+      let canvas = document.querySelector('#canvas');
+      let ctx = canvas.getContext("2d");
+      let domStrign
+      input.addEventListener('input', updateValue);
+      img.addEventListener('load', imgUpdate);
+      function updateValue(e) {
+        const files = e.target.files
+        const URLS = []
+        // createObjectURL() 可以解析 file to cash URL
+        // FileReader() 可以解析 file  to  base64
+        const fr = new FileReader()
+        fr.readAsDataURL(files[0])
+        fr.onloadend = function (e) {
+          img.src = e.target.result;
+        };
+        imgdec.innerHTML = files[0].name + '<br/>size:' + files[0].size
+        // img(base64) to canvas
+      }
+      function imgUpdate() {
+        ctx.drawImage(img, 0, 0, 500, 500);
+        const domString = canvas.toDataURL('image/jpeg', 0.8)
+        // console.log(domString)
+        img2.src = domString
+        canvas2Blob(canvas, (blob) => { console.log(blob) })
+      }
+      function canvas2Blob(canvas, callback, quality, type) {
+        canvas.toBlob(function (blob) {
+          callback(blob);
+          imgdec2.innerHTML = 'size:' + blob.size
+        }, type || 'image/jpeg', quality || 0.8);
+      }
+    </script>
+  </div>
+</body>
+
+</html>
