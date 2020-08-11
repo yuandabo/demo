@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>泡泡点赞</title>
+  <style>
+    .warpper {
+      position: relative;
+      width: 200px;
+      height: 500px;
+      background: #f4f4f4;
+    }
+
+    .content {
+      position: absolute;
+      bottom: 0;
+      left: 50px;
+    }
+
+    .runToTop {
+      animation: bubble_y 4s linear 1 forwards;
+    }
+
+    .toBig {
+      animation: bubbleToBig 0.5s linear 1 forwards;
+    }
+
+    .moveLeftRight {
+      animation: runLeftOrRight 4s linear 1 forwards;
+    }
+
+    @keyframes bubble_y {
+      0% {
+        margin-bottom: 0;
+      }
+
+      50% {
+        opacity: 1;
+      }
+
+      100% {
+        margin-bottom: 500px;
+        opacity: 0;
+      }
+    }
+
+    @keyframes bubbleToBig {
+      0% {
+        transform: scale(.3);
+      }
+
+      100% {
+        transform: scale(1);
+      }
+    }
+
+    @keyframes runLeftOrRight {
+      0% {}
+
+      25% {
+        margin-left: -30px;
+      }
+
+      50% {
+        margin-left: 20px
+      }
+
+      75% {
+        margin-left: -30px
+      }
+
+      100% {
+        margin-left: 20px
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="warpper" id='warpper'>
+    <div class="content runToTop runLeftOrRight">
+      <img class="toBig moveLeftRight" src="./1717401e40d8d29b.png" alt="">
+    </div>
+  </div>
+  <script>
+    let warpper = document.getElementById('warpper')
+    function createRunDiv() {
+      console.log(213)
+      let div = document.createElement('div')
+      // const runTime = Math.floor(Math.random() * 6) + 1
+      div.classList.add(`runToTop`, `runLeftOrRight`, 'content')
+      let img = document.createElement('img')
+      img.src = "./1717401e40d8d29b.png"
+      img.classList.add('toBig', 'moveLeftRight')
+      div.appendChild(img)
+      warpper.appendChild(div)
+    }
+    const runTime = (Math.floor(Math.random() * 6) + 1) * 100
+    console.log(runTime)
+    setInterval(() => {
+      createRunDiv()
+    }, runTime)
+  </script>
+</body>
+
+</html>
