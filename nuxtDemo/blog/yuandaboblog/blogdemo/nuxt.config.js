@@ -1,3 +1,11 @@
+/*
+ * @Author: your name
+ * @Date: 2020-09-25 14:51:16
+ * @LastEditTime: 2020-09-25 15:48:52
+ * @LastEditors: Please set LastEditors
+ * @Description: In User Settings Edit
+ * @FilePath: \blogdemo\nuxt.config.js
+ */
 import colors from 'vuetify/es5/util/colors'
 
 export default {
@@ -11,7 +19,8 @@ export default {
       { hid: 'description', name: 'description', content: '' }
     ],
     link: [
-      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
+      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+      { rel: 'stylesheet', href: 'highlight.js/styles/github.css' }
     ]
   },
 

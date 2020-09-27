@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2020-09-22 09:04:29
- * @LastEditTime: 2020-09-22 17:13:05
+ * @LastEditTime: 2020-09-25 16:11:00
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \yuandaboblog\blog\components\cart.vue
@@ -30,7 +30,8 @@
       </v-btn>
 
       <v-btn color="orange"
-             text>
+             text
+             @click="checkDetails">
         查看详情
       </v-btn>
     </v-card-actions>
@@ -46,6 +47,11 @@ export default {
       default: () => {
         { }
       }
+    }
+  },
+  methods: {
+    checkDetails () {
+      this.$emit('checkDetails', this.current.id)
     }
   }
 }
