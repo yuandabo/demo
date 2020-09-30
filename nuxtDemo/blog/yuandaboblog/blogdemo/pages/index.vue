@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2020-09-21 09:05:21
- * @LastEditTime: 2020-09-27 19:55:12
+ * @LastEditTime: 2020-09-28 10:20:44
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \yuandaboblog\blog\pages\index.vue
@@ -48,7 +48,8 @@
           <v-btn v-for="svg in svgList"
                  :key="svg.t"
                  color="orange"
-                 text>
+                 text
+                 @click="btnClick(svg)">
             <svg :t="svg.t"
                  class="icon"
                  viewBox="0 0 1024 1024"
@@ -82,6 +83,34 @@
         </v-list-item>
       </v-list>
     </v-bottom-sheet>
+    <v-dialog v-model="dialog"
+              persistent
+              max-width="290">
+      <v-card>
+        <v-card-title class="headline">
+          {{dialogData.text}}
+        </v-card-title>
+        <v-card-text>
+          <v-avatar size="250px"
+                    tile>
+            <img :src="dialogData.src">
+          </v-avatar>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="green darken-1"
+                 text
+                 @click="dialog = false">
+            关闭
+          </v-btn>
+          <!-- <v-btn color="green darken-1"
+                 text
+                 @click="dialog = false">
+            Agree
+          </v-btn> -->
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </div>
 </template>
 
@@ -127,21 +156,37 @@ export default {
         { img: 'messenger.png', title: 'ighu' },
         { img: 'google.png', title: 'Google+' },
       ],
+      dialog: false,
+      dialogData: {
+        src: '',
+        text: ''
+      }
     }
   },
   methods: {
     btnClick ({ index }) {
-      console.log(0)
       switch (index) {
         case '0':
-          this.sheet = true
-          console.log(0)
+          // this.sheet = true
+          const a = document.createElement('a')
+          a.href = 'https://github.com/yuandabo'
+          a.target = "_blank"
+          a.click()
           break;
         case '1':
+          this.dialogData.src = 'img/qq.png'
+          this.dialogData.text = '扫描下方二维码或者+q54049676'
+          this.dialog = true
           break;
         case '2':
+          this.dialogData.src = 'img/wechat.jpg'
+          this.dialogData.text = '扫描下方二维码'
+          this.dialog = true
           break;
         case '3':
+          this.dialogData.src = 'img/zfb.jpg'
+          this.dialogData.text = '扫描下方二维码'
+          this.dialog = true
           break;
       }
     }

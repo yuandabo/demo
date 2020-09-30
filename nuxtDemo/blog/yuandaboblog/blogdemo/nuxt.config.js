@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2020-09-25 14:51:16
- * @LastEditTime: 2020-09-25 15:48:52
+ * @LastEditTime: 2020-09-28 16:59:41
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \blogdemo\nuxt.config.js
@@ -19,18 +19,32 @@ export default {
       { hid: 'description', name: 'description', content: '' }
     ],
     link: [
-      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
-      { rel: 'stylesheet', href: 'highlight.js/styles/github.css' }
+      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
     ]
   },
 
   // Global CSS (https://go.nuxtjs.dev/config-css)
   css: [
+    // ...
+    'quill/dist/quill.core.css',
+    // for snow theme
+    'quill/dist/quill.snow.css',
+    // for bubble theme
+    'quill/dist/quill.bubble.css',
+    'highlight.js/styles/github.css',
+    // 全局css
+    '~/css/main.scss'
+    // ...
   ],
 
   // Plugins to run before rendering page (https://go.nuxtjs.dev/config-plugins)
   plugins: [
-    // '~/plugins/hljs.js'
+    { src: '~plugins/hljs', ssr: false },
+    { src: '~plugins/nuxt-quill-plugin', ssr: false },
+    {
+      src: '~/plugins/components',
+      ssr: true,
+    },
   ],
 
   // Auto import components (https://go.nuxtjs.dev/config-components)
