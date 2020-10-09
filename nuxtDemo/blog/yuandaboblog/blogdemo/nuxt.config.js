@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2020-09-25 14:51:16
- * @LastEditTime: 2020-09-28 16:59:41
+ * @LastEditTime: 2020-10-09 09:57:11
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \blogdemo\nuxt.config.js
@@ -9,6 +9,7 @@
 import colors from 'vuetify/es5/util/colors'
 
 export default {
+  buildDir: 'nuxt-dist',
   // Global page headers (https://go.nuxtjs.dev/config-head)
   head: {
     titleTemplate: '%s - app',

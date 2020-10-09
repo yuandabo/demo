@@ -1,0 +1,37 @@
+[
+  {
+    "name": "details",
+    "path": "/details",
+    "component": "G:\\\\demo\\\\nuxtDemo\\\\blog\\\\yuandaboblog\\\\blogdemo\\\\pages\\\\details\\\\index.vue",
+    "chunkName": "pages/details/index",
+    "_name": "_062ad01e"
+  },
+  {
+    "name": "menu",
+    "path": "/menu",
+    "component": "G:\\\\demo\\\\nuxtDemo\\\\blog\\\\yuandaboblog\\\\blogdemo\\\\pages\\\\menu.vue",
+    "chunkName": "pages/menu",
+    "_name": "_5771a4ad"
+  },
+  {
+    "name": "more",
+    "path": "/more",
+    "component": "G:\\\\demo\\\\nuxtDemo\\\\blog\\\\yuandaboblog\\\\blogdemo\\\\pages\\\\more.vue",
+    "chunkName": "pages/more",
+    "_name": "_6e61dfa3"
+  },
+  {
+    "name": "test",
+    "path": "/test",
+    "component": "G:\\\\demo\\\\nuxtDemo\\\\blog\\\\yuandaboblog\\\\blogdemo\\\\pages\\\\test.vue",
+    "chunkName": "pages/test",
+    "_name": "_37140260"
+  },
+  {
+    "name": "index",
+    "path": "/",
+    "component": "G:\\\\demo\\\\nuxtDemo\\\\blog\\\\yuandaboblog\\\\blogdemo\\\\pages\\\\index.vue",
+    "chunkName": "pages/index",
+    "_name": "_777bf618"
+  }
+]
