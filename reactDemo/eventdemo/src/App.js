@@ -12,9 +12,13 @@ class App extends Component {
   render() {
     return (
       <Fragment>
-        <input className="input" value={this.state.value} onChange={this.inputClick.bind(this)} />
+        <input className="input"
+         value={this.state.value}
+          onChange={this.inputClick.bind(this)}
+          ref={(input=>{this.input = input})}
+           />
         <button onClick={this.addItem.bind(this)}>添加</button>
-        <ul>
+        <ul ref={ul=>this.ul=ul}>
           {
             this.state.itemList.map((v, index) => {
               return (
@@ -29,7 +33,7 @@ class App extends Component {
   }
   inputClick(e) {
     this.setState({
-      value: e.target.value
+      value: this.input.value
     })
   }
   addItem() {
@@ -37,7 +41,7 @@ class App extends Component {
     this.setState({
       itemList: [...this.state.itemList, { value: this.state.value }],
       value: ''
-    })
+    },()=>{console.log(this.ul.querySelectorAll('li').length)})
   }
   delItem(itemIndex) {
     const list = this.state.itemList.filter((v,index) => {
