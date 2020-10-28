@@ -1,13 +1,18 @@
 import React, { Component, Fragment } from 'react'
 import './main.css'
 import XiaojiejieItem from './XiaojiejieItem'
+import axios from 'axios'
 class App extends Component {
   constructor(props) {
     super(props)
     this.state = {
       value: '',
-      itemList: [{ value: '吃快餐' }, { value: '吃点餐' }, { value: '吃中式餐' }]
+      itemList: [{ value: '吃快餐' }, { value: '吃点餐' }, { value: '吃中式餐' }],
+      fetchData:''
     }
+  }
+  componentDidMount(){
+    this.fetchData()
   }
   render() {
     return (
@@ -27,9 +32,11 @@ class App extends Component {
             })
           }
         </ul>
+        <div>
+          fetchdata:{this.state.fetchData}
+        </div>
       </Fragment>
     )
-
   }
   inputClick(e) {
     this.setState({
@@ -49,6 +56,14 @@ class App extends Component {
     })
     this.setState({
       itemList: list
+    })
+  }
+  fetchData(){
+    axios.get('http://localhost:1234/eventdemo').then(res=>{
+      console.log(res)
+      this.setState({
+        fetchData:res.data
+      })
     })
   }
 }
