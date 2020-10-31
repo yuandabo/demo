@@ -1,4 +1,4 @@
- import {createStore} from 'redux'
- import {sto} from './reducer'
- const store = createStore(sto)
- export default store
+import { createStore } from "redux";
+import  reducer  from "./reducer";
+const store = createStore(reducer);
+export default store;
