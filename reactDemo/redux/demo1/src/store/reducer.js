@@ -1,3 +1,5 @@
+
+import {DELETE_LIST,ADD_LIST,CHANGE_INPUT} from './actionTypes'
 const defaultStore = {
   inputValue: "",
   list: [
@@ -10,18 +12,25 @@ const defaultStore = {
 export default (state = defaultStore, action) => {
   console.log(state, action);
   const { type, value } = action;
-  if (type === "changeInput") {
+  if (type === CHANGE_INPUT) {
     const newState = JSON.parse(JSON.stringify(state));
     newState.inputValue = value;
     return newState;
   }
-  if (type === "addList") {
+  if (type === ADD_LIST) {
     const newState = JSON.parse(JSON.stringify(state));
     newState.list.push({
       id: newState.list.length + 1,
       value: newState.inputValue,
     });
     newState.inputValue = "";
+    console.log(newState);
+    return newState;
+  }
+  if(type===DELETE_LIST){
+    const newState = JSON.parse(JSON.stringify(state));
+    newState.list=  newState.list.filter((v,index)=>{return index!==action.index})
+    // newState.inputValue = "";
     console.log(newState);
     return newState;
   }
