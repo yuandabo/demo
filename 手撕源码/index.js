@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2020-11-10 17:11:23
- * @LastEditTime: 2020-11-11 14:40:18
+ * @LastEditTime: 2020-11-12 10:59:02
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \手撕源码\index.js
@@ -57,11 +57,11 @@ Function.prototype.myapply = function (context, args) {
  * @param {*}
  * @return {*}
  */
-const arr = [1, 2, 3, 4, 5]
-const context = {}
-const max = Math.max.bind(context, ...arr)()
-// const max = Math.max.myapply(context, arr)
-console.log(max)
+// const arr = [1, 2, 3, 4, 5]
+// const context = {}
+// const max = Math.max.bind(context, ...arr)()
+// // const max = Math.max.myapply(context, arr)
+// console.log(max)
 
 /**
  * @description: new 
@@ -73,6 +73,7 @@ function mynew (constructor, ...args) {
   const self = this
   const target = {}
   target.__proto__ = constructor.prototype
+  // 执行构造函数并得到返回值，若为对象则返回该值，否则返回生成的target
   let result = constructor.apply(target, args)
   if (result instanceof Object) {
     return result;
@@ -86,3 +87,82 @@ function mynew (constructor, ...args) {
 // const xiaolv = mynew(Person, '小绿')
 // const xiaohuang = new Person('小黄')
 // console.log(xiaolv.__proto__ === xiaohuang.__proto__)
+
+/**
+ * @description:  instanceof
+ * @param {*}
+ * @return {*}
+ */
+function myinstaceof (left, right) {
+  let prototype = right.prototype
+  left = left.__proto__
+  while (true) {
+    if (left === null || left === undefined) return false
+    if (left === prototype) return true
+    left = left.__proto__
+  }
+}
+
+// function Person (name) {
+//   this.name = name
+// }
+// const xiaolv = mynew(Person, '小绿')
+// console.log(myinstaceof(xiaolv, {}))
+
+
+/**
+ * @description: 深拷贝
+ * @param {*}
+ * @return {*}
+ */
+function deepClone (value) {
+  if (value === null || typeof value !== 'object') {
+    return value
+  }
+  if (value instanceof Date) {
+    return new Data().setTime(value.getTime())
+  }
+  if (value instanceof Array) {
+    return value.map(v => deepClone(v))
+  }
+  if (value instanceof Object) {
+    let copy = {}
+    const symbols = Object.getOwnPropertySymbols(value) // return Array
+    if (symbols.length) {
+      symbols.forEach(key => {
+        copy[key] = deepClone(value[key])
+      })
+    }
+    for (const key in value) {
+      if (value.hasOwnProperty(key)) {
+        copy[key] = deepClone(value[key]);
+      }
+    }
+    return copy
+  }
+}
+
+const target = {
+  field1: 1,
+  field2: undefined,
+  field3: {
+    child: {
+      a: 1
+    }
+  },
+  field4: [2, 4, 8],
+  empty: null,
+  fn: params => {
+    console.log(params);
+  },
+  set: new Set([1, 2]),
+  symbol: Symbol('symbol'),
+  arr: [{ b: 1 }, Symbol('arr')]
+};
+
+target[Symbol('attr')] = { a: 1 };
+
+const clone = deepClone(target);
+
+console.log('clone: ', clone);
+console.log('target: ', target);
