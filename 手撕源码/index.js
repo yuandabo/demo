@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2020-11-10 17:11:23
- * @LastEditTime: 2020-11-12 10:59:02
+ * @LastEditTime: 2020-11-16 21:22:09
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \手撕源码\index.js
@@ -164,5 +164,70 @@ target[Symbol('attr')] = { a: 1 };
 
 const clone = deepClone(target);
 
-console.log('clone: ', clone);
-console.log('target: ', target);
+// console.log('clone: ', clone);
+// console.log('target: ', target);
+
+/**
+ * @description: ES5实现继承
+ * 继承extend：父类的方法、属性被子类继承或者重新定义、追加属性和方法
+ * 多态
+ * 封装
+ */
+
+// 第一种方法： 两个构造函数，Child 继承 Parent 。 常用的组合式继承（构造函数继承 + 原型继承）
+function Parent (name) {
+  this.name = name
+  // this.age = age
+  this.color = ['blue', 'red']
+}
+Parent.prototype.showSelf = function () {
+  console.log(`my name is ${this.name} im ${this.age} years old`)
+}
+function Child (name, age) {
+  Parent.call(this, name)
+  this.age = age
+}
+let child1 = new Child('xiaohong', 20)
+// console.log(child1.__proto__ === Child.prototype); 
+//在 new 的过程中  靶对象的__proto__被指向构造函数的prototype
+
+Child.prototype = new Parent().__proto__
+// Child构造函数的原型链指向Parent构造函数的prototype 通过prototype实现继承   
+// Child.prototype === new Parent().__proto__ === Parent.prototype
+// console.log(Child.prototype === new Parent().__proto__);
+// console.log(Child.prototype === Parent.prototype);
+Child.prototype.sayAge = function () {
+  console.log(this.age);
+}
+let person = new Child('xiaoming', 21)
+// console.log(person.color);  //
+// console.log(person.__proto__ === );
+
+// 第二种继承方法  原型继承
+// function Parent2 (money) {
+//   this.money = money
+// }
+// Parent2.prototype.fook = function () {
+//   console.log(`i has ${this.money} 元`)
+// }
+// function Son (money) {
+//   Parent2.call(this, money)
+// }
+// Son.prototype === new Parent2().__proto__
+// let son1 = new Son(10000)
+// son1.fook()
+
+function Parent (value) {
+  this.val = value;
+}
+Parent.prototype.getValue = function () {
+  return this.val;
+};
+function Child (value) {
+  Parent.call(this, value); //继承父类的val属性
+}
+Child.prototype = new Parent().__proto__; // 继承父类prototype上的函数
+
+const child = new Child(1);
+
+console.log(child.getValue()); // 1
