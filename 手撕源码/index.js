@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2020-11-10 17:11:23
- * @LastEditTime: 2020-11-16 21:22:09
+ * @LastEditTime: 2020-11-17 09:55:16
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \手撕源码\index.js
@@ -175,16 +175,16 @@ const clone = deepClone(target);
  */
 
 // 第一种方法： 两个构造函数，Child 继承 Parent 。 常用的组合式继承（构造函数继承 + 原型继承）
-function Parent (name) {
+function Parent (name, age) {
   this.name = name
-  // this.age = age
+  this.age = age
   this.color = ['blue', 'red']
 }
 Parent.prototype.showSelf = function () {
   console.log(`my name is ${this.name} im ${this.age} years old`)
 }
 function Child (name, age) {
-  Parent.call(this, name)
+  Parent.call(this, name)  // 通过call调用
   this.age = age
 }
 let child1 = new Child('xiaohong', 20)
@@ -201,33 +201,36 @@ Child.prototype.sayAge = function () {
 }
 let person = new Child('xiaoming', 21)
 // console.log(person.color);  //
-// console.log(person.__proto__ === );
-
-// 第二种继承方法  原型继承
-// function Parent2 (money) {
-//   this.money = money
-// }
-// Parent2.prototype.fook = function () {
-//   console.log(`i has ${this.money} 元`)
-// }
-// function Son (money) {
-//   Parent2.call(this, money)
-// }
-// Son.prototype === new Parent2().__proto__
-// let son1 = new Son(10000)
+console.log(person);
+// --------------------------------------------------------------------------------
+function Parent2 (money) {
+  this.money = money
+}
+Parent2.prototype.fook = function () {
+  console.log(`i has ${this.money} 元`)
+}
+function Son (money) {
+  Parent2.call(this, money)
+}
+Son.prototype = new Parent2().__proto__ // 继承父类prototype上的函数
+let son1 = new Son(10000)
 // son1.fook()
 
-function Parent (value) {
-  this.val = value;
+// 2. 寄生
+function inheritPrototype (Parent, Child) {
+  Child.prototype = Parent.prototype
 }
-Parent.prototype.getValue = function () {
-  return this.val;
-};
-function Child (value) {
-  Parent.call(this, value); //继承父类的val属性
+function Person3 (name) {
+  this.name = name
+  this.color = ['red']
 }
-Child.prototype = new Parent().__proto__; // 继承父类prototype上的函数
-
-const child = new Child(1);
-
-console.log(child.getValue()); // 1
+Person3.prototype.showColor = function () {
+  console.log(this.color)
+}
+function Son3 (name) {
+  Person3.call(this, name)
+}
+inheritPrototype(Person3, Son3)
+let son3 = new Son3('bob')
+son3.color.push('green')
+son3.showColor()
