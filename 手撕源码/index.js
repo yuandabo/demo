@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2020-11-10 17:11:23
- * @LastEditTime: 2020-11-17 09:55:16
+ * @LastEditTime: 2020-11-18 14:36:37
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \手撕源码\index.js
@@ -234,3 +234,83 @@ inheritPrototype(Person3, Son3)
 let son3 = new Son3('bob')
 son3.color.push('green')
 son3.showColor()
+
+
+// XMLHttpRequest实现ajax请求
+let xhr = new XMLHttpRequest()
+
+xhr.onreadystatechange = function () {
+  if (xhr.readyState === 4) {
+    if (xhr.status === 200) {
+      console.log('xhr ok!');
+    }
+  }
+}
+xhr.open(
+  'GET',
+  URL,
+  true
+)
+xhr.send(null);
+
+/* 
+<form action="" id="form">
+<input type="text" name="username">
+</form>
+<button id="button">查看</button>
+<script>
+  let formnode = document.querySelector('#form')
+  let button = document.querySelector('#button')
+  button.addEventListener('click', () => {
+    let formdata = new FormData(formnode)
+    console.log(formdata.get('username'))
+  })
+</script> */
+
+/*  FormDataApi https://wangdoc.com/javascript/bom/form.html#checkvalidity */
+
+function formatData (obj) {
+  const temp = []
+  for (const key in obj) {
+    temp.push(`${key}=${encodeURIComponent(obj[key])}`)
+  }
+  return temp.join('&')
+}
+
+
+function _ajax (params = {}) {
+  cosnt { type, URL, data, success, error } = params
+  if (!url) {
+    throw 'url is a required param'
+  }
+  type = (type || 'get').toUpperCase()
+  data = data && formatData(data)
+  let xhr = new XMLHttpRequest()
+  if (type === 'GET') {
+    xhr.open(
+      'GET',
+      `${URL}?${data}`,
+      true
+    )
+    xhr.setRequestHeader('Content-Type', 'application/json'); s
+    xhr.send()
+  } else {
+    xhr.open(
+      'POST',
+      URL,
+      true
+    )
+    xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+    xhr.send(data)
+  }
+  xhr.onreadystatechange = function () {
+    if (xhr.readyState === 4) {
+      if (xhr.status === 200) {
+        success && success.call(undefined, xhr.responseText);
+        console.log('xhr ok!');
+      } else {
+        error && error.call(undefined, xhr.responseText);
+      }
+    }
+  }
+}
