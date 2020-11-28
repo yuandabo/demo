@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2020-11-10 17:11:23
- * @LastEditTime: 2020-11-18 14:36:37
+ * @LastEditTime: 2020-11-19 09:10:11
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \手撕源码\index.js
@@ -237,21 +237,21 @@ son3.showColor()
 
 
 // XMLHttpRequest实现ajax请求
-let xhr = new XMLHttpRequest()
+// let xhr = new XMLHttpRequest()
 
-xhr.onreadystatechange = function () {
-  if (xhr.readyState === 4) {
-    if (xhr.status === 200) {
-      console.log('xhr ok!');
-    }
-  }
-}
-xhr.open(
-  'GET',
-  URL,
-  true
-)
-xhr.send(null);
+// xhr.onreadystatechange = function () {
+//   if (xhr.readyState === 4) {
+//     if (xhr.status === 200) {
+//       console.log('xhr ok!');
+//     }
+//   }
+// }
+// xhr.open(
+//   'GET',
+//   URL,
+//   true
+// )
+// xhr.send(null);
 
 /* 
 <form action="" id="form">
@@ -277,14 +277,19 @@ function formatData (obj) {
   return temp.join('&')
 }
 
-
+/**
+ * @description: 模拟AJAX
+ * @param {*} params
+ * @return {*}
+ */
 function _ajax (params = {}) {
-  cosnt { type, URL, data, success, error } = params
+  const { type, URL, data, success, error } = params
   if (!url) {
     throw 'url is a required param'
   }
   type = (type || 'get').toUpperCase()
   data = data && formatData(data)
+  if (!XMLHttpRequest) return
   let xhr = new XMLHttpRequest()
   if (type === 'GET') {
     xhr.open(
@@ -314,3 +319,31 @@ function _ajax (params = {}) {
     }
   }
 }
+// 模拟ajax发送promise得get请求
+const request = url => {
+  return new Promise((resolve, reject) => {
+    if (!XMLHttpRequest) return
+    const xhr = new XMLHttpRequest()
+    xhr.open('GET', url, true)
+    xhr.onreadystatechange = () => {
+      if (xhr.readyState === 4 && xhr.status === 200) {
+        resolve(xhr.response)
+      }
+
+      xhr.send()
+    }
+  })
+}
+
+/**
+ * @description: 闭包
+ */
+const scope = 'global scope'
+function checkscope () {
+  const scope = 'local scope'
+  return function () {
+    return scope
+  }
+}
+const b = checkscope()
+console.log(b());
