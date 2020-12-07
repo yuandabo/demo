@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2020-12-02 10:37:09
- * @LastEditTime: 2020-12-03 14:34:02
+ * @LastEditTime: 2020-12-04 10:53:28
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \手撕源码\lib.js
@@ -67,3 +67,12 @@ function downLineTransToBigCamel(souceString) {
 }
 var result = downLineTransToBigCamel("project_manage");
 console.log(result);
+/**
+ * @description: 写一个去除制表符和换行符的方法
+ * @param {*} `大家好  阿斯蒂芬阿斯顿\n发生的发生`
+ * @return {*}
+ */
+function specialFilter(str) {
+    return str.replace(/\s+/g, '');
+}
+console.log(specialFilter('大家好  阿斯蒂芬阿斯顿\n发生的发生'));
