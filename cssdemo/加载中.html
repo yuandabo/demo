@@ -1,0 +1,52 @@
+<!--
+ * @Author: your name
+ * @Date: 2020-12-09 11:58:50
+ * @LastEditTime: 2020-12-09 15:36:58
+ * @LastEditors: Please set LastEditors
+ * @Description: In User Settings Edit
+ * @FilePath: \demo\cssdemo\加载中.html
+-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    .loadingtext {
+      font-size: 20px;
+    }
+
+    .loadingtext::after {
+      content: ".";
+      animation: dot 1.6s linear infinite both;
+    }
+
+    @keyframes dot {
+      0% {
+        content: "."
+      }
+
+      33% {
+        content: ".."
+      }
+
+      66% {
+        content: "..."
+      }
+
+      100% {
+        content: "."
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="loadingtext">
+    加载中
+  </div>
+</body>
+
+</html>

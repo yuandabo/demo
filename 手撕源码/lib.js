@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2020-12-02 10:37:09
- * @LastEditTime: 2020-12-04 10:53:28
+ * @LastEditTime: 2020-12-09 11:42:41
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \手撕源码\lib.js
@@ -76,3 +76,17 @@ function specialFilter(str) {
     return str.replace(/\s+/g, '');
 }
 console.log(specialFilter('大家好  阿斯蒂芬阿斯顿\n发生的发生'));
+/**
+ * @description: 写一个获取当前url查询字符串中的参数的方法
+ * @param {*}
+ * @return {*}
+ */
+function getLocationParams(url) {
+    var arr = new URL(url).search.substring(1, url.length).split('&');
+    var obj = {};
+    arr.forEach(function (v) {
+        var _a = v.split('='), key = _a[0], value = _a[1];
+        obj[key] = decodeURIComponent(value);
+    });
+    return obj;
+}
