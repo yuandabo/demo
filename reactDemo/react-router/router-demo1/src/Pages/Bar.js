@@ -6,16 +6,21 @@
  * @Description: In User Settings Edit
  * @FilePath: \demo\reactDemo\react-router\router-demo1\Pages\bar.js
  */
-import React from "react";
+import React, { Component } from "react";
 
 
-const Bar = () => {
-
-  return (
-    <div>
-      bar
-    </div>
-  );
+class Bar extends Component {
+  constructor(props) {
+    super(props)
+    this.state = {}
+  }
+  render() {
+    return (
+      <div>
+        bar
+      </div>
+    )
+  }
 }
 
 export default Bar;
