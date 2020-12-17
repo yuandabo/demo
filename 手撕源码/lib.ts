@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2020-12-02 10:37:09
- * @LastEditTime: 2020-12-09 11:42:41
+ * @LastEditTime: 2020-12-11 15:58:46
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \手撕源码\lib.js
@@ -98,3 +98,28 @@ function getLocationParams(url: string): object {
   })
   return obj
 }
+/**
+ * @description:  写一个数组去重的方法（支持多维数组）
+ * @param {*} [1, 2, [3, 4]]
+ * @return {*}
+ */
+// function flatArray(arr): Array<any> {
+//   return [...new Set(arr.flat(Infinity))]
+
+// }
+// console.log(flatArray([1, 2, [3, 4, 3]]));
+
+function flatArray(arr, set) {
+  if (arr instanceof Array) {
+    arr.forEach(v => {
+      if (v instanceof Array) {
+        flatArray(v, set)
+        return
+      }
+      set.add(v)
+    })
+  }
+  return [...set]
+}
+let set = new Set([])
+console.log(flatArray([1, 2, [3, 4, 3]], set));

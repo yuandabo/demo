@@ -1,0 +1,15 @@
+.ant-input{
+    width: 500px;
+}
+.ant-list{
+    width: 500px;
+}
+.flex{
+  display: flex;
+}
+.flex-size-1{
+  flex: 1;
+}
+.flex-size-0{
+  flex: 0;
+}
