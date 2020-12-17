@@ -5,7 +5,7 @@
 			<view class="uni-flex uni-row search-warpper">
 				<input class="flex-item search search-box" ref="input" type="number" value="" v-model="inputValue" placeholder="在这输入基金代码.例(320007)" />
 				<view class="icon flex-item">
-					<uni-icons class="icon flex-item" type="search" @click="searchClick" size="30" />
+					<uni-icons class="icon flex-item" type="plus" @click="searchClick" size="30" />
 				</view>
 				<view class="icon flex-item">
 					<uni-icons class="icon flex-item" type="refresh-filled" size="30" @click="refresh" />
@@ -44,19 +44,23 @@
 						<view class="uni-flex uni-row pad" style="width: 100%;">
 							<view class="pad-right" :style="{width:item2.width}" v-for="(item2,index2) in listMockData" :key="index2">
 								<view class="uni-flex uni-column">
-									<view class="flex-item pad-right uni-flex uni-row font-12px" :style="{justifyContent:item2.width==='25%'?'center':'left'}">
+									<view class="flex-item pad-right uni-flex uni-row font-12px" :style="{justifyContent:item2.width==='25%'?'center':'left',alignItem:'center'}">
 										<span v-if="item2.value==='gszzl'">{{item.gsz}}
 											<view :style="{color:item.gszzl >= 0?'red':'green'}">{{item[item2.value]}}%</view>
 										</span>
-										<span v-else-if="item2.value==='inOrOut'" :style="{color:item.color}">{{item[item2.value]}}</span>
+										<span v-else-if="item2.value==='inOrOut'" :style="{color:item.color}">{{item['inOrOut']}}</span>
+										<span v-else-if="item2.value==='chicang'" style="color:#409EFF;cursor: pointer;text-decoration: underline;" @click.stop="changeChiCang(item,item2)">{{item['chicang']}}</span>
 										<span v-else class="flex-item">
+											<!-- 第一行 -->
 											{{item[item2.value]}}
 											<span class="flex-item" v-if="signList.indexOf(item2.value)!== -1">
 												%
 											</span>
+											<!-- 名字 -->
 											<view class="flex-item" v-if="item2.value==='NAME'">
 												{{item.FCODE}}
 											</view>
+											<!-- 单位净值 -->
 											<view class="flex-item" :style="{color:item.RZDF>0?'red':'green'}" v-else-if="item2.value==='DWJZ'">
 												{{(Number.parseFloat(item.RZDF)).toFixed(2)}}
 												<span class="flex-item">
@@ -83,16 +87,16 @@
 		<!-- 页面底部收益栏 -->
 		<view class="flex-item-V getOrout">
 			<view v-if="showList" class="flex-item flex-item-V back-white uni-flex getOroutList">
-				<text class="flex-box1" :style="{color:totalCount>0?'red':'green'}">今日预计{{totalCount>0?'反撸':'被收割'}}：{{totalCount}}元</text>
+				<text class="flex-box1" :style="{color:totalCount>0?'red':'green'}">今日预计{{totalCount>0?'收益':'亏损'}}：{{totalCount}}元</text>
 				<text class="flex-box1 viewPhoto" @click="openPop">
-					<text class="viewPhoto-text">查看指数图</text>
+					<!-- <text class="viewPhoto-text">查看指数图</text> -->
 				</text>
 			</view>
 			<!-- <view class="back-white" style="display: flex;align-items: center;justify-content:center;border-top: 1px solid #F1F1F1;" @click="getSharesData">
 				刷新<uni-icons class="icon flex-item" type="refreshempty" size="30" />
 			</view> -->
 		</view>
-
+		<!-- 指数图 -->
 		<uni-popup ref="popup">
 			<view class="uni-padding-wrap">
 				<view class="page-section swiper">
@@ -106,9 +110,20 @@
 				</view>
 			</view>
 		</uni-popup>
+		<!-- 更改持仓 -->
+		<uni-popup ref="chicangpopup">
+			<view class="chicangpopup">
+				<text style="font-size: 18px;font-weight: bold;">填写新的持仓</text>
+				<view class="search-warpper">
+					<input class="search search-box" style="margin: 20px 10px;" v-model="newchicang" placeholder="持仓"></input>
+					</view>
+				<button @click="updateChicang" type="default" size="mini">确认更改</button>
+			</view>
+		</uni-popup>
 	</view>
 </template>
 <script>
+	import uniNumberBox from "@/components/uni-number-box/uni-number-box.vue"
 	import uniIcons from "@/components/uni-icons/uni-icons.vue"
 	import uniPopup from '@/components/uni-popup/uni-popup.vue'
 	import uniPopupMessage from '@/components/uni-popup/uni-popup-message.vue'
@@ -130,7 +145,8 @@
 			uniPopup,
 			uniPopupMessage,
 			uniPopupDialog,
-			uniBadge
+			uniBadge,
+			uniNumberBox
 		},
 		data() {
 			return {
@@ -141,12 +157,18 @@
 						width: '50%',
 						textAlign: 'left'
 					},
-					{
-						label: '净值',
-						value: 'DWJZ',
-						width: '25%',
-						textAlign: 'center'
-					},
+					// {
+					// 	label: '净值',
+					// 	value: 'DWJZ',
+					// 	width: '25%',
+					// 	textAlign: 'center'
+					// },
+					// {
+					// 	label: '净值',
+					// 	value: 'DWJZ',
+					// 	width: '25%',
+					// 	textAlign: 'center'
+					// },
 					{
 						label: '估值',
 						value: 'gszzl',
@@ -154,10 +176,16 @@
 						textAlign: 'center'
 					},
 					{
+						label: '持仓',
+						value: 'chicang',
+						width: '25%',
+						textAlign: 'center'
+					},
+					{
 						label: '预计收益',
 						value: 'inOrOut',
 						width: '25%',
-						textAlign: 'right'
+						textAlign: 'center'
 					},
 				],
 				signList: ['RZDF', 'gszzl'],
@@ -168,7 +196,7 @@
 					placeholder: '输入神秘代码,示例（320007）'
 				},
 				showList: true,
-				totalCount: 0,
+				totalCount: 0, // 今日总shou'yi 
 				inputValue: '',
 				imgs: [{
 						src: 'http://webquoteklinepic.eastmoney.com/GetPic.aspx?token=44c9d251add88e27b65ed86506f6e5da&nid=1.000001&type=&unitWidth=-6&ef=&formula=RSI&imageType=KXL'
@@ -181,6 +209,8 @@
 					}
 				],
 				indexList: [],
+				newchicang: '',
+				currentFCODE: ''
 			}
 		},
 		onLoad() {
@@ -188,29 +218,57 @@
 				this.getSharesData()
 				this.getIndex()
 			}
+			// setTimeout(()=>{this.$refs.chicangpopup.open()},0)
 			this.first = true
+			setInterval(() => {
+				this.getIndex()
+				this.getSharesData()
+			}, 10000)
 		},
 		onShow() {
 			this.getSharesData()
 			this.getIndex()
 		},
 		methods: {
+			bindChange(val){
+				this.newchicang = val
+			},
+			updateChicang() {
+				console.log(this.currentFCODE, this.newchicang)
+				this.updataHasMoney('', this.currentFCODE,'', this.newchicang)
+				this.$refs.chicangpopup.close()
+				this.refresh()
+			},
+			// 修改持仓
+			changeChiCang(val1, val2) {
+				console.log(val1, val2)
+				this.currentFCODE = val1.FCODE
+				this.$refs.chicangpopup.open()
+			},
 			refresh() {
+				this.currentFCODE = ''
 				this.getSharesData()
 				this.getIndex()
 			},
-			updataHasMoney(FSRQDay, code, RZDF) {
+			updataHasMoney(FSRQDay, code, RZDF,newchiyou) {
+				if (!FSRQDay) {
+					FSRQDay = new Date()
+				}
 				if (!uni.getStorageSync('about') || !uni.getStorageSync('about').hasOwnProperty(code)) {
 					return
 				}
+				// about -- 持仓情况
 				let about = uni.getStorageSync('about') || {}
 				let money = Number(about[code]['hasHowMuchMoney']) || 0
 				let date = about[code]['date'] // 保存时的时间
-				if (date < FSRQDay) {
+				if (FSRQDay&&RZDF&&date < FSRQDay) {
 					money = Number.parseFloat(money * (1 + Number(RZDF) / 100)).toFixed(2)
 					date = FSRQDay
 				}
 				about[code]['hasHowMuchMoney'] = money
+				if(newchiyou){
+					about[code]['hasHowMuchMoney'] = newchiyou
+				}
 				about[code]['date'] = FSRQDay
 				console.log(about)
 				uni.setStorageSync('about', about)
@@ -218,7 +276,7 @@
 			// 获取指数数据
 			getIndex() {
 				uni.showLoading({
-					title: '加载中'
+					title: '实时获取指数数据中...'
 				});
 				uni.request({
 						url: 'https://swt.gosql.cn/fund/index/market',
@@ -390,14 +448,16 @@
 							// 更新持仓
 							const date = new Date(data[i].FSRQ).getDate()
 							this.updataHasMoney(date, data[i].FCODE, data[i].RZDF)
-							// 计算盈亏
+							// 计算盈亏 如果本地储存存在该基金的code
 							if (about[data[i].FCODE] && about[data[i].FCODE] !== 0) {
-								data[i].inOrOut = (about[data[i].FCODE]['hasHowMuchMoney'] * data[i].gszzl / 100).toFixed(2) || '无持仓价'
+								data[i].inOrOut = (about[data[i].FCODE]['hasHowMuchMoney'] * data[i].gszzl / 100).toFixed(2) || '0'
+								// 计算盈亏
 								totalCount = (Number.parseFloat(Number(totalCount) +
 									Number((about[data[i].FCODE]['hasHowMuchMoney'] * data[i].gszzl / 100))).toFixed(2))
+								data[i].chicang = Number((about[data[i].FCODE]['hasHowMuchMoney'])) || 0
 							} else {
-								data[i].inOrOut = '点击进入输入持仓'
-								data[i].color = "#000000"
+								// data[i].inOrOut = '详情'
+								// data[i].color = "#409EFF"
 							}
 						}
 						this.totalCount = totalCount
@@ -406,6 +466,7 @@
 						uni.hideLoading()
 					})
 			},
+			// qq 小程序专用f分享
 			onShareAppMessage: function() {
 				qq.showShareMenu({
 					showShareItems: ['qq', 'qzone', 'wechatFriends', 'wechatMoment']
@@ -419,11 +480,21 @@
 	@import '../../common/uni.css';
 	$uni-searchbar-height: 36px;
 
-	.my{
-		height: 100vh; 
+	.chicangpopup{
+		margin: 0 auto;
+		text-align: center;
+		width: 80vw;
+		height: 40vw;
+		background-color: #FFFFFF;
+	}
+
+	.my {
+		height: 100vh;
 		overflow: hidden;
-		.search-warpper{
+
+		.search-warpper {
 			align-items: center;
+
 			.search-box {
 				display: block;
 				// height: 100%;
@@ -432,35 +503,62 @@
 				border-radius: 20px;
 				padding: 5px 10px;
 			}
-			.search{
+
+			.search {
 				flex: 1;
 			}
 		}
-		.list-header{
-			display: flex;overflow-x: auto;background: #FFFFFF;border-bottom: 1px solid #F1F1F1;
+
+		.list-header {
+			display: flex;
+			overflow-x: auto;
+			background: #FFFFFF;
+			border-bottom: 1px solid #F1F1F1;
+
 			.index-item {
 				flex: 1;
 				padding: 5px 10px;
 				border-right: 1px solid #F1F1F1;
-				.nums{
-					display: flex;align-items: center;
-					.nums-text{
-						padding: 0px 1px;color: #FFFFFF;font-size: 20upx;border-radius: 20%;margin-left: 2px;
+
+				.nums {
+					display: flex;
+					align-items: center;
+
+					.nums-text {
+						padding: 0px 1px;
+						color: #FFFFFF;
+						font-size: 20upx;
+						border-radius: 20%;
+						margin-left: 2px;
 					}
 				}
 			}
 		}
-		.list-body{
-			flex:1;overflow: auto;
+
+		.list-body {
+			flex: 1;
+			overflow: auto;
 		}
-		.getOrout{
-			flex:0;z-index:50;
-			.getOroutList{
-				height: 30px;line-height: 30px;padding-left: 20px;border-top: 1px solid #ececec;
-				.viewPhoto{
-					text-align:right;margin-right:20px;
-					.viewPhoto-text{
-						padding: 1px 2px;background: #007AFF;color: #FFFFFF;border-radius: 10%;
+
+		.getOrout {
+			flex: 0;
+			z-index: 50;
+
+			.getOroutList {
+				height: 30px;
+				line-height: 30px;
+				padding-left: 20px;
+				border-top: 1px solid #ececec;
+
+				.viewPhoto {
+					text-align: right;
+					margin-right: 20px;
+
+					.viewPhoto-text {
+						padding: 1px 2px;
+						background: #007AFF;
+						color: #FFFFFF;
+						border-radius: 10%;
 					}
 				}
 			}
@@ -471,7 +569,7 @@
 		width: 90vw;
 	}
 
-	
+
 
 	.nodata {
 		width: 100%;
@@ -589,5 +687,4 @@
 	.flex-box1 {
 		flex: 1;
 	}
-	
 </style>

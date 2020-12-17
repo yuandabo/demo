@@ -13,7 +13,7 @@
 			</view>
 		</view>
 		<view class="about-card">
-			<uni-card title="今日被收割(反撸)情况" :extra="`本金：${currentMoney}元`">
+			<uni-card title="今日收益情况" :extra="`本金：${currentMoney}元`">
 				<view class="about-title">
 					<view class="title-left">
 						<view :style="{color:currentData.RZDF>0?'red':'green'}">

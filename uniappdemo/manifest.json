@@ -90,7 +90,9 @@
     },
     "mp-qq" : {
         "setting" : {
-            "minified" : true
+            "minified" : false,
+            "postcss" : true,
+            "es6" : true
         },
         "appid" : "1110660820",
         "uniStatistics" : {

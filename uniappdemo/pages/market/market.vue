@@ -42,7 +42,7 @@
 		data() {
 			return {
 				listMockData: [{
-						label: '鸡名',
+						label: '基金名称',
 						value: 'SHORTNAME',
 						width: '50%',
 						textAlign: 'left'
