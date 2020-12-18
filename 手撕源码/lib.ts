@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2020-12-02 10:37:09
- * @LastEditTime: 2020-12-11 15:58:46
+ * @LastEditTime: 2020-12-16 09:34:38
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \手撕源码\lib.js
@@ -121,5 +121,19 @@ function flatArray(arr, set) {
   }
   return [...set]
 }
-let set = new Set([])
-console.log(flatArray([1, 2, [3, 4, 3]], set));
+// let set = new Set([])
+// console.log(flatArray([1, 2, [3, 4, 3]], set));
+/**
+ * @description:  写一个方法验证是否为中文
+ * @param {*}  '我是谁'
+ * @return {*} boolean
+ */
+
+function validIsChinese(str: string): boolean {
+  return /^[\u4e00-\u9fa5]+$/g.test(str)
+}  // 纯中文
+console.log(validIsChinese('我是谁'));
+function validIsChinese2(str: string): boolean {
+  return /^\W+$/g.test(str)
+}  // 可能包含标点符号
+console.log(validIsChinese2('我是谁，。'));

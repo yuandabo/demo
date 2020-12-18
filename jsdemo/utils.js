@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2020-10-14 11:41:43
- * @LastEditTime: 2020-10-14 13:50:22
+ * @LastEditTime: 2020-12-17 11:01:45
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \demo\jsdemo\utils.js
@@ -14,3 +14,21 @@
 function classOf (obj) {
   return Object.prototype.toString.call(obj).slice(8, -1)
 }
+/**
+ * @description: js洗牌算法
+ * @param {type}
+ * @return {type}
+ */
+Array.prototype.shuffle = function () {
+  var input = this
+  for (var i = input.length - 1; i >= 0; i--) {
+    var randomIndex = Math.floor(Math.random() * (i + 1))
+    var itemAtIndex = input[randomIndex]
+    input[randomIndex] = input[i]
+    input[i] = itemAtIndex
+  }
+  return input
+}
+var tempArray = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+tempArray.shuffle()
+console.log(tempArray);
