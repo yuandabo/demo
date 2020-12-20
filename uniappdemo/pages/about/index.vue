@@ -199,7 +199,7 @@ export default {
     // 获取mark
     getMarkIntoDb (code) {
       const obj = this.getDb('about')
-      if (obj[code].hasOwnProperty('mark')) return obj[code].mark
+      if (obj[code] && obj[code].hasOwnProperty('mark')) return obj[code].mark
       return ''
     },
     _initMark () {
@@ -447,6 +447,17 @@ page {
 
     .search-warpper {
       align-items: center;
+      background: #ffffff;
+      border-bottom: 1px solid #bebebe;
+      .search-box {
+        display: block;
+        // height: 100%;
+        background: white;
+        border: 1px solid #bebebe;
+        border-radius: 20px;
+        margin-left: 5px;
+        // padding: 5px 10px;
+      }
     }
   }
 
@@ -463,7 +474,7 @@ page {
 .icon {
   width: 30px;
   flex: 0;
-  padding-right: 10px;
+  padding: 0 5px;
   // background-color: #FFFFFF;
 }
 .about-details {
