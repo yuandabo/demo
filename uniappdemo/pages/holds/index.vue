@@ -14,7 +14,8 @@
     <view class="list">
       <view v-for="(item,index) in sharesData"
             :key="index">
-        <uni-card :title="item.NAME">
+        <uni-card :title="item.NAME"
+                  @click="routeTo(item)">
           <view class="cart">
             <view class="cart-money">
               <view class="money-title">
@@ -57,6 +58,12 @@ export default {
     this.getSharesData()
   },
   methods: {
+    routeTo (item) {
+      console.log(item)
+      uni.navigateTo({
+        url: `../about/index?codes=${item.FCODE}`
+      })
+    },
     // 计算总持仓
     computedTotal () {
       this.total = 0

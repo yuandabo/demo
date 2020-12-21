@@ -8,7 +8,7 @@
                type="number"
                value=""
                v-model="inputValue"
-               placeholder="在这输入基金代码.例(320007)" />
+               placeholder="" />
         <view class="icon flex-item">
           <uni-icons class="icon flex-item"
                      type="plus"
@@ -32,10 +32,11 @@
           <view class="">
             {{item.f14}}
           </view>
-          <view class="nums">
+          <view class="nums"
+                :style="{color:item.f3>=0?'red':'rgb(30, 191, 60)'}">
             {{item.f2}}
             <text class="nums-text"
-                  :style="{backgroundColor:item.f3>=0?'red':'rgb(30, 191, 60)'}">{{item.f3}}%</text>
+                  :style="{backgroundColor:item.f3>=0?'rgb(255,0,0,0.2)':'rgb(30, 191, 60,0.2)',color:item.f3>=0?'red':'rgb(30, 191, 60)'}">{{item.f3}}%</text>
           </view>
         </view>
       </view>
@@ -60,8 +61,7 @@
                 v-for="(item,index) in sharesData"
                 :key="index"
                 @click="routeTo(item)">
-
-            <view class="uni-flex uni-row pad"
+            <view class="uni-flex uni-row"
                   style="width: 100%;">
               <view class="pad-right"
                     :style="{width:item2.width}"
@@ -71,10 +71,10 @@
                   <view class="flex-item pad-right uni-flex uni-row font-12px"
                         :style="{justifyContent:item2.width==='25%'?'center':'left',alignItem:'center'}">
                     <span v-if="item2.value==='gszzl'">{{item.gsz}}
-                      <view :style="{color:item.gszzl >= 0?'red':'green'}">{{item[item2.value]}}%</view>
+                      <view :style="{color:item.gszzl >= 0?'red':'green'}">{{item.gszzl >= 0?'+':''}}{{item[item2.value]}}%</view>
                     </span>
                     <span v-else-if="item2.value==='inOrOut'"
-                          :style="{color:item.color}">{{item['inOrOut']}}</span>
+                          :style="{color:item.color}">{{item.gszzl >= 0?'+':''}}{{item['inOrOut']}}</span>
                     <span v-else-if="item2.value==='chicang'"
                           style="color:#409EFF;cursor: pointer;text-decoration: underline;"
                           @click.stop="changeChiCang(item,item2)">{{item['chicang']}}</span>
@@ -88,7 +88,8 @@
                       </span>
                       <!-- 名字 -->
                       <view class="flex-item"
-                            v-if="item2.value==='NAME'">
+                            v-if="item2.value==='NAME'"
+                            style="color:#666666">
                         {{item.FCODE}}
                       </view>
                       <!-- 单位净值 -->
@@ -123,7 +124,7 @@
       <view v-if="showList"
             class="flex-item flex-item-V back-white uni-flex getOroutList">
         <text class="flex-box1"
-              :style="{color:totalCount>0?'red':'green'}">今日预计{{totalCount>0?'收益':'亏损'}}：{{totalCount}}元</text>
+              :style="{color:totalCount>0?'red':'green'}">今日预计{{totalCount>0?'收益':'亏损'}}：{{totalCount >= 0?'+':''}}{{totalCount}}元</text>
         <text class="flex-box1 viewPhoto"
               @click="openPop">
           <!-- <text class="viewPhoto-text">查看指数图</text> -->
@@ -362,7 +363,6 @@ export default {
       const about = uni.getStorageSync('about')
       if (about.hasOwnProperty(item.FCODE)) {
         this.$delete(about, [item.FCODE])
-        console.log(about)
         uni.setStorageSync('about', about)
       }
       const codes = uni.getStorageSync('codes')
@@ -504,7 +504,7 @@ export default {
               // 计算盈亏
               totalCount = (Number.parseFloat(Number(totalCount) +
                 Number((about[data[i].FCODE]['hasHowMuchMoney'] * data[i].gszzl / 100))).toFixed(2))
-              data[i].chicang = about[data[i].FCODE]['hasHowMuchMoney'] ? Number((about[data[i].FCODE]['hasHowMuchMoney'])) : 0
+              data[i].chicang = Number((about[data[i].FCODE]['hasHowMuchMoney'])) || 0
             } else {
               // data[i].inOrOut = '详情'
               // data[i].color = "#409EFF"
@@ -544,14 +544,16 @@ $uni-searchbar-height: 36px;
 
   .search-warpper {
     align-items: center;
-
+    background: #ffffff;
+    border-bottom: 1px solid #bebebe;
     .search-box {
       display: block;
       // height: 100%;
       background: white;
       border: 1px solid #bebebe;
       border-radius: 20px;
-      padding: 5px 10px;
+      margin-left: 5px;
+      // padding: 5px 10px;
     }
 
     .search {
@@ -578,7 +580,7 @@ $uni-searchbar-height: 36px;
           padding: 0px 1px;
           color: #ffffff;
           font-size: 20upx;
-          border-radius: 20%;
+          // border-radius: 20%;
           margin-left: 2px;
         }
       }
@@ -588,6 +590,7 @@ $uni-searchbar-height: 36px;
   .list-body {
     flex: 1;
     overflow: auto;
+    // line-height: 10px;
   }
 
   .getOrout {
@@ -726,7 +729,7 @@ $uni-searchbar-height: 36px;
 .icon {
   width: 30px;
   flex: 0;
-  padding-right: 10px;
+  padding: 0 5px;
   // background-color: #FFFFFF;
 }
 

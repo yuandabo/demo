@@ -63,7 +63,16 @@
       <image v-if="active===1"
              class="about-img"
              :src="`http://j4.dfcfw.com/charts/pic6/${code}.png`"></image>
+      <!-- 操作备忘录 -->
+      <view class="about-details">
+        操作备忘录：
+        <textarea class="details-textarea"
+                  placeholder="备忘录，可以放一些大佬们的操作、预持有时间、预收益率在此（失焦保存）"
+                  v-model="textArea"
+                  @blur="changeTextArea" />
+      </view>
     </view>
+    <!-- 底部操作按钮 -->
     <view class="button-check">
       <button class="checkBut"
               @click="selectToMy">
@@ -74,6 +83,7 @@
               @click="open()">{{name}}重仓持股</button>
     </view>
 
+    <!-- 持仓详情弹窗 -->
     <view class="had"
           v-show="show">
       <view class="had-mes">
@@ -110,6 +120,8 @@ import uniSearchbar from "@/components/uni-search-bar/uni-search-bar";
 import uniCard from '@/components/uni-card/uni-card.vue'
 import msTabs from '@/components/ms-tabs/ms-tabs.vue'
 import uCharts from '@/js_sdk/u-charts/u-charts/u-charts.js'
+// 
+// import { setDb, etDb, setMarkIntoDb, getMarkIntoDb } from '@/utils/localStrorage'
 var _self;
 var canvaLineA = null;
 export default {
@@ -133,9 +145,9 @@ export default {
       currentMoney: 0,
       name: '',
       list: [{
-        title: '业绩走势'
+        title: '业绩走势图'
       }, {
-        title: '净值估算'
+        title: '净值估算图'
       }],
       active: 0,
       cWidth: '',
@@ -146,7 +158,8 @@ export default {
         series: []
       },
       showcharts: true,
-      isSelectWord: ''
+      isSelectWord: '',
+      textArea: ''//操作注释
     }
   },
   computed: {
@@ -161,12 +174,41 @@ export default {
     this.code = option.codes
     this.getSharesData()
     this.selectWord()
+    this._initMark()
     //
     _self = this;
     this.cWidth = uni.upx2px(750);
     this.cHeight = uni.upx2px(500);
   },
   methods: {
+    setDb (key, value) {
+      uni.setStorageSync(key, value)
+    },
+    //  取缓存
+    getDb (key) {
+      return uni.getStorageSync(key)
+    },
+    // 存储mark
+    setMarkIntoDb (code, mark) {
+      const obj = this.getDb('about')
+      // obj[code].mark = mark
+      this.$set(obj[code], 'mark', mark)
+      console.log('obj', obj, code)
+      this.setDb('about', obj)
+    },
+    // 获取mark
+    getMarkIntoDb (code) {
+      const obj = this.getDb('about')
+      if (obj[code] && obj[code].hasOwnProperty('mark')) return obj[code].mark
+      return ''
+    },
+    _initMark () {
+      this.textArea = this.getMarkIntoDb(this.code) || ''
+    },
+    // 修改备注
+    changeTextArea () {
+      this.setMarkIntoDb(this.code, this.textArea)
+    },
     selectWord () {
       const codes = uni.getStorageSync('codes') || ''
       let codesArray = codes.split('_')
@@ -178,20 +220,32 @@ export default {
     @des uni.getStorageSync('codes')  codes = 'code_code'  
     @des uni.getStorageSync('about')  about = {code:{} }
     */
+    // selectToMy () {
+    //   let codes = uni.getStorageSync('codes')
+    //   let about = uni.getStorageSync('about')
+    //   let codesArray = codes.split('_')
+    //   if (this.isSelectWord === '取消自选') {
+    //     //  删除持仓缓存
+    //     if (about.hasOwnProperty(this.code)) {
+    //       this.$delete(about, [this.code])
+    //       console.log('删除持仓缓存about', about)
+    //       uni.setStorageSync('about', about)
+    //     }
+    //     //  删除FCODE缓存
+    //     codesArray = codesArray.filter((value) => value !== this.code) // 保留不同
+    //     console.log(codesArray)
+    // 自选按钮
     selectToMy () {
       let codes = uni.getStorageSync('codes')
       let about = uni.getStorageSync('about')
       let codesArray = codes.split('_')
       if (this.isSelectWord === '取消自选') {
-        //  删除持仓缓存
+        codesArray = codesArray.filter((value) => value !== this.code) // 保留不同
         if (about.hasOwnProperty(this.code)) {
           this.$delete(about, [this.code])
           console.log('删除持仓缓存about', about)
           uni.setStorageSync('about', about)
         }
-        //  删除FCODE缓存
-        codesArray = codesArray.filter((value) => value !== this.code) // 保留不同
-        console.log(codesArray)
         // 不是空数组
         if (codesArray.length) {
           // 
@@ -412,12 +466,23 @@ page {
   height: 100vh;
   display: flex;
   flex-direction: column;
-
+  // overflow: auto;
   .about-search {
     flex: 0;
 
     .search-warpper {
       align-items: center;
+      background: #ffffff;
+      border-bottom: 1px solid #bebebe;
+      .search-box {
+        display: block;
+        // height: 100%;
+        background: white;
+        border: 1px solid #bebebe;
+        border-radius: 20px;
+        margin-left: 5px;
+        // padding: 5px 10px;
+      }
     }
   }
 
@@ -434,10 +499,19 @@ page {
 .icon {
   width: 30px;
   flex: 0;
-  padding-right: 10px;
+  padding: 0 5px;
   // background-color: #FFFFFF;
 }
-
+.about-details {
+  margin: 7px;
+  border-top: 5px solid #efeff4;
+  height: 200px;
+  background-color: #ffffff;
+  .details-textarea {
+    width: 100%;
+    height: 100%;
+  }
+}
 .about-title {
   display: flex;
   justify-content: center;
@@ -513,11 +587,12 @@ page {
 }
 
 .button-check {
+  flex: 0;
   display: flex;
-  position: fixed;
-  bottom: 0;
-  height: 40px;
-  line-height: 40px;
+  // position: fixed;
+  // bottom: 0;
+  // height: 40px;
+  // line-height: 40px;
   // background: #007AFF;
   color: #ffffff;
   font-size: 30upx;
@@ -628,7 +703,7 @@ page {
 .qiun-charts {
   width: 730upx;
   margin: 0 auto;
-  height: 300upx;
+  // height: 300upx;
   background-color: #ffffff;
   border-top: 5px solid rgb(239, 239, 244);
   position: relative;
