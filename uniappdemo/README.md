@@ -18,4 +18,4 @@ HBuilderX是通用的前端开发工具，但为`uni-app`做了特别强化，�
 由于截图在 github 不便浏览，参见官方文档 [HBuilderX 可视化界面创建](https://uniapp.dcloud.net.cn/quickstart?id=_1-%e9%80%9a%e8%bf%87-hbuilderx-%e5%8f%af%e8%a7%86%e5%8c%96%e7%95%8c%e9%9d%a2)
 
 ## 下载体验
-<a href="https://service.dcloud.net.cn/build/download/9178e660-4366-11eb-915d-097bfbb7c1a5"/>
+<a href="https://service.dcloud.net.cn/build/download/9178e660-4366-11eb-915d-097bfbb7c1a5">下载</a>
