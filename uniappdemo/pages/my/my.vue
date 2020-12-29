@@ -163,7 +163,20 @@
           <input class="search search-box"
                  style="margin: 20px 10px;"
                  v-model="newchicang"
-                 placeholder="持仓"></input>
+                 placeholder="持仓"
+                 type="number" />
+        </view>
+        <button style="margin: 10px 0 0 0"
+                type="primary"
+                size="mini"
+                @click="changemode=!changemode">{{changemode?"增持":"减持"}}</button>
+        <view>点击切换状态！</view>
+        <view class="holdSelects-warp">
+          <button class="holdSelects"
+                  size="mini"
+                  v-for="(item,index) in holdSelects"
+                  :key="index"
+                  @click="changeNewChiCang(item)">{{item}}</button>
         </view>
         <button @click="updateChicang"
                 type="default"
@@ -259,8 +272,12 @@ export default {
       }
       ],
       indexList: [],
-      newchicang: '',
-      currentFCODE: ''
+      newchicang: 0,
+      currentFCODE: '',
+      // 快速修改列表
+      holdSelects: [200, 500, 800, 1000, 3000],
+      // 快速修改模式
+      changemode: true
     }
   },
   onLoad () {
@@ -268,7 +285,7 @@ export default {
       this.getSharesData()
       this.getIndex()
     }
-    // setTimeout(()=>{this.$refs.chicangpopup.open()},0)
+    setTimeout(() => { this.$refs.chicangpopup.open() }, 0)
     this.first = true
     setInterval(() => {
       this.getIndex()
@@ -280,6 +297,42 @@ export default {
     this.getIndex()
   },
   methods: {
+    // 本地存储操作方法
+    setDb (key, value) {
+      uni.setStorageSync(key, value)
+    },
+    //  取缓存
+    getDb (key) {
+      return uni.getStorageSync(key)
+    },
+    // 存储mark
+    setMarkIntoDb (code, mark) {
+      const obj = this.getDb('about')
+      // obj[code].mark = mark
+      this.$set(obj[code], 'mark', mark)
+      console.log('obj', obj, code)
+      this.setDb('about', obj)
+    },
+    // 获取mark
+    getMarkIntoDb (code) {
+      const obj = this.getDb('about')
+      if (obj[code] && obj[code].hasOwnProperty('mark')) return obj[code].mark
+      return ''
+    },
+    // 获取持仓
+    getHoldsMoneyInDb (code) {
+      const obj = this.getDb('about')
+      if (obj[code] && obj[code].hasOwnProperty('hasHowMuchMoney')) return obj[code].hasHowMuchMoney
+      return ''
+    },
+    // 
+    changeNewChiCang (item) {
+      if (this.changemode) {
+        this.newchicang += item
+        return
+      }
+      this.newchicang -= item
+    },
     bindChange (val) {
       this.newchicang = val
     },
@@ -293,6 +346,7 @@ export default {
     changeChiCang (val1, val2) {
       console.log(val1, val2)
       this.currentFCODE = val1.FCODE
+      this.newchicang = Number(this.getHoldsMoneyInDb(val1.FCODE))
       this.$refs.chicangpopup.open()
     },
     refresh () {
@@ -534,8 +588,13 @@ $uni-searchbar-height: 36px;
   margin: 0 auto;
   text-align: center;
   width: 80vw;
-  height: 40vw;
+  height: 80vw;
   background-color: #ffffff;
+  border-radius: 10px;
+}
+.holdSelects-warp {
+  display: flex;
+  margin: 10px 0;
 }
 
 .my {
@@ -553,6 +612,7 @@ $uni-searchbar-height: 36px;
       border: 1px solid #bebebe;
       border-radius: 20px;
       margin-left: 5px;
+      padding: 5px;
       // padding: 5px 10px;
     }
 
