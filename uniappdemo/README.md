@@ -1,12 +1,21 @@
-# APP名称：一只韭菜
-## 技术栈：
-uniapp + localStorage
-## 效果
-![首页](https://images.weserv.nl/?url=https://img01.sogoucdn.com/app/a/100520146/7e1652e70a422341a87ee3017d027543)
-![首页2](https://images.weserv.nl/?url=https://img02.sogoucdn.com/app/a/100520146/c9da68c41a826843bb826095c5505180)
-![详情](https://images.weserv.nl/?url=https://img01.sogoucdn.com/app/a/100520146/ef211da7cce74939595d7f03213914ac)
-![详情2](https://images.weserv.nl/?url=https://img01.sogoucdn.com/app/a/100520146/54e9111d97b3aba1403f71b8d28bc52c)
-![市场](https://images.weserv.nl/?url=https://img01.sogoucdn.com/app/a/100520146/68ee7ae1a54c1bb7482dc6fc9ee41f09)
-![持有](https://images.weserv.nl/?url=https://img04.sogoucdn.com/app/a/100520146/73602ec32c7e01d80125b7718c836e80)
-
+# APP名称：天天吃基
 仅供学习与参考!
+
+`uni-app`框架示例，一套代码，同时发行到iOS、Android、H5、小程序等多个平台，请使用手机在下方扫码快速体验天天吃基
+
+## 快速上手
+HBuilderX, 配套 IDE，集成开发
+### 通过 HBuilderX 可视化界面创建（推荐）
+
+可视化的方式比较简单，HBuilderX内置相关环境，开箱即用，无需配置nodejs。
+
+开始之前，开发者需先下载安装如下工具：
+
+- HBuilderX：[官方IDE下载地址](https://www.dcloud.io/hbuilderx.html)
+
+HBuilderX是通用的前端开发工具，但为`uni-app`做了特别强化，请下载App开发版。
+
+由于截图在 github 不便浏览，参见官方文档 [HBuilderX 可视化界面创建](https://uniapp.dcloud.net.cn/quickstart?id=_1-%e9%80%9a%e8%bf%87-hbuilderx-%e5%8f%af%e8%a7%86%e5%8c%96%e7%95%8c%e9%9d%a2)
+
+## 下载体验
+<a href="https://service.dcloud.net.cn/build/download/9178e660-4366-11eb-915d-097bfbb7c1a5">下载</a>

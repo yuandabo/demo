@@ -215,12 +215,37 @@ export default {
       // const isSel = codesArray.find(item => item === this.code) ? '取消自选' : '加自选'
       this.isSelectWord = codesArray.find(item => item === this.code) ? '取消自选' : '加自选'
     },
+    /*
+    @params
+    @des uni.getStorageSync('codes')  codes = 'code_code'  
+    @des uni.getStorageSync('about')  about = {code:{} }
+    */
+    // selectToMy () {
+    //   let codes = uni.getStorageSync('codes')
+    //   let about = uni.getStorageSync('about')
+    //   let codesArray = codes.split('_')
+    //   if (this.isSelectWord === '取消自选') {
+    //     //  删除持仓缓存
+    //     if (about.hasOwnProperty(this.code)) {
+    //       this.$delete(about, [this.code])
+    //       console.log('删除持仓缓存about', about)
+    //       uni.setStorageSync('about', about)
+    //     }
+    //     //  删除FCODE缓存
+    //     codesArray = codesArray.filter((value) => value !== this.code) // 保留不同
+    //     console.log(codesArray)
     // 自选按钮
     selectToMy () {
       let codes = uni.getStorageSync('codes')
+      let about = uni.getStorageSync('about')
       let codesArray = codes.split('_')
       if (this.isSelectWord === '取消自选') {
         codesArray = codesArray.filter((value) => value !== this.code) // 保留不同
+        if (about.hasOwnProperty(this.code)) {
+          this.$delete(about, [this.code])
+          console.log('删除持仓缓存about', about)
+          uni.setStorageSync('about', about)
+        }
         // 不是空数组
         if (codesArray.length) {
           // 

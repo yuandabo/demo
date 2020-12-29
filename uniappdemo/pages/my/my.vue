@@ -74,7 +74,7 @@
                       <view :style="{color:item.gszzl >= 0?'red':'green'}">{{item.gszzl >= 0?'+':''}}{{item[item2.value]}}%</view>
                     </span>
                     <span v-else-if="item2.value==='inOrOut'"
-                          :style="{color:item.color}">{{item.gszzl >= 0?'+':''}}{{item['inOrOut']}}</span>
+                          :style="{color:item.color}">{{item.gszzl >= 0&&item['inOrOut']?'+':''}}{{item['inOrOut']||''}}</span>
                     <span v-else-if="item2.value==='chicang'"
                           style="color:#409EFF;cursor: pointer;text-decoration: underline;"
                           @click.stop="changeChiCang(item,item2)">{{item['chicang']}}</span>
