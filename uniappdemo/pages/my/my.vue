@@ -1,3 +1,11 @@
+<!--
+ * @Author: yuanbo
+ * @Date: 2020-11-10 11:11:36
+ * @LastEditTime: 2021-01-05 15:03:15
+ * @LastEditors: Please set LastEditors
+ * @Description: 自选列表
+ * @FilePath: \demo\uniappdemo\pages\my\my.vue
+-->
 <template>
   <view class="uni-flex uni-column my">
     <!-- 输入框 -->
