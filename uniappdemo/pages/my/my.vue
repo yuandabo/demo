@@ -1,3 +1,11 @@
+<!--
+ * @Author: yuanbo
+ * @Date: 2020-11-10 11:11:36
+ * @LastEditTime: 2021-01-13 17:29:43
+ * @LastEditors: Please set LastEditors
+ * @Description: 自选列表
+ * @FilePath: \demo\uniappdemo\pages\my\my.vue
+-->
 <template>
   <view class="uni-flex uni-column my">
     <!-- 输入框 -->
@@ -8,7 +16,8 @@
                type="number"
                value=""
                v-model="inputValue"
-               placeholder="" />
+               placeholder="基金代码"
+               autocomplete />
         <view class="icon flex-item">
           <uni-icons class="icon flex-item"
                      type="plus"
@@ -163,8 +172,7 @@
           <input class="search search-box"
                  style="margin: 20px 10px;"
                  v-model="newchicang"
-                 placeholder="持仓"
-                 type="number" />
+                 placeholder="持仓" />
         </view>
         <button style="margin: 10px 0 0 0"
                 type="primary"
