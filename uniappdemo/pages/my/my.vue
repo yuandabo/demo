@@ -178,9 +178,15 @@
                   :key="index"
                   @click="changeNewChiCang(item)">{{item}}</button>
         </view>
-        <button @click="updateChicang"
-                type="default"
-                size="mini">确认更改</button>
+        <view>
+          <button @click="updateChicang"
+                  type="primary"
+                  size="mini">确认更改</button>
+          <button @click="newchicang=0"
+                  type="warn"
+                  size="mini">清仓</button>
+        </view>
+
       </view>
     </uni-popup>
   </view>
@@ -285,7 +291,7 @@ export default {
       this.getSharesData()
       this.getIndex()
     }
-    setTimeout(() => { this.$refs.chicangpopup.open() }, 0)
+    // setTimeout(() => { this.$refs.chicangpopup.open() }, 0)
     this.first = true
     setInterval(() => {
       this.getIndex()
