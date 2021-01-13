@@ -1,7 +1,7 @@
 <!--
  * @Author: yuanbo
  * @Date: 2020-11-10 11:11:36
- * @LastEditTime: 2021-01-05 15:03:15
+ * @LastEditTime: 2021-01-13 17:29:43
  * @LastEditors: Please set LastEditors
  * @Description: 自选列表
  * @FilePath: \demo\uniappdemo\pages\my\my.vue
@@ -16,7 +16,8 @@
                type="number"
                value=""
                v-model="inputValue"
-               placeholder="" />
+               placeholder="基金代码"
+               autocomplete />
         <view class="icon flex-item">
           <uni-icons class="icon flex-item"
                      type="plus"
@@ -171,7 +172,7 @@
           <input class="search search-box"
                  style="margin: 20px 10px;"
                  v-model="newchicang"
-                 placeholder="持仓"></input>
+                 placeholder="持仓" />
         </view>
         <button @click="updateChicang"
                 type="default"

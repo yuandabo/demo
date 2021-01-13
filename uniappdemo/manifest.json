@@ -34,7 +34,8 @@
                     "<uses-feature android:name=\"android.hardware.camera\"/>",
                     "<uses-permission android:name=\"android.permission.ACCESS_FINE_LOCATION\"/>",
                     "<uses-permission android:name=\"android.permission.WRITE_SETTINGS\"/>"
-                ]
+                ],
+                "abiFilters" : [ "armeabi-v7a", "arm64-v8a", "x86" ]
             },
             "ios" : {},
             "sdkConfigs" : {
@@ -71,11 +72,23 @@
                         "spotlight@3x" : "unpackage/res/icons/120x120.png"
                     }
                 }
+            },
+            "splashscreen" : {
+                "androidStyle" : "default",
+                "android" : {
+                    "hdpi" : "static/tiantianchiji.png",
+                    "xhdpi" : "static/tiantianchiji.png",
+                    "xxhdpi" : "static/tiantianchiji.png"
+                }
             }
         },
-        "nvueLaunchMode" : "fast",
+        "nvueLaunchMode" : "",
         "uniStatistics" : {
             "enable" : false
+        },
+        "splashscreen" : {
+            "waiting" : false,
+            "alwaysShowBeforeRender" : false
         }
     },
     "quickapp" : {},
@@ -105,6 +118,11 @@
     "h5" : {
         "uniStatistics" : {
             "enable" : false
+        },
+        "optimization" : {
+            "treeShaking" : {
+                "enable" : false
+            }
         }
     },
     "mp-alipay" : {
