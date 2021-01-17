@@ -74,7 +74,7 @@
                 }
             },
             "splashscreen" : {
-                "androidStyle" : "default",
+                "androidStyle" : "common",
                 "android" : {
                     "hdpi" : "static/tiantianchiji.png",
                     "xhdpi" : "static/tiantianchiji.png",

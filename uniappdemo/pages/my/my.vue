@@ -186,6 +186,13 @@
                   :key="index"
                   @click="changeNewChiCang(item)">{{item}}</button>
         </view>
+        <view class="holdSelects-warp">
+          <button class="holdSelects"
+                  size="mini"
+                  v-for="(item,index) in percentHoldSelects"
+                  :key="index"
+                  @click="changeNewChiCangPercent(item.value)">{{item.label}}</button>
+        </view>
         <view>
           <button @click="updateChicang"
                   type="primary"
@@ -290,7 +297,12 @@ export default {
       currentFCODE: '',
       // 快速修改列表
       holdSelects: [200, 500, 800, 1000, 3000],
-      // 快速修改模式
+      percentHoldSelects: [{ label: '1%', value: 0.01 },
+      { label: '5%', value: 0.05 },
+      { label: '10%', value: 0.1 },
+      { label: '20%', value: 0.2 },
+      { label: '50%', value: 0.5 }],
+      // 快速修改模式  true:增持 false:减持
       changemode: true
     }
   },
@@ -339,8 +351,18 @@ export default {
       if (obj[code] && obj[code].hasOwnProperty('hasHowMuchMoney')) return obj[code].hasHowMuchMoney
       return ''
     },
-    // 
+    // 百分比减少|增加持仓
+    changeNewChiCangPercent (item) {
+      this.newchicang = Number(this.newchicang)
+      if (this.changemode) {
+        this.newchicang = Number.parseFloat(this.newchicang * item + this.newchicang).toFixed(2)
+        return
+      }
+      this.newchicang = Number.parseFloat(this.newchicang - this.newchicang * item).toFixed(2)
+    },
+    // 数额减少|增加持仓
     changeNewChiCang (item) {
+      this.newchicang = Number(this.newchicang)
       if (this.changemode) {
         this.newchicang += item
         return
