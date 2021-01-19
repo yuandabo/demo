@@ -28,8 +28,8 @@
   ],
   "globalStyle": {
     "navigationBarTextStyle": "white",
-    "navigationBarTitleText": "uni-app",
-    "navigationBarBackgroundColor": "#007AFF",
+    "navigationBarTitleText": "天天吃基",
+    "navigationBarBackgroundColor": "#409EFF",
     "backgroundColor": "#FFFFFF",
     "app-plus": {
       "background": "#efeff4"
@@ -37,7 +37,7 @@
   },
   "tabBar": {
     "color": "#000000",
-    "selectedColor": "#1b80fa",
+    "selectedColor": "#409EFF",
     "borderStyle": "black",
     "backgroundColor": "#ffffff",
     "list": [

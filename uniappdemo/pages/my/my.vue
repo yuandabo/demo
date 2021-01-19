@@ -1,7 +1,7 @@
 <!--
  * @Author: yuanbo
  * @Date: 2020-11-10 11:11:36
- * @LastEditTime: 2021-01-13 17:29:43
+ * @LastEditTime: 2021-01-19 11:55:24
  * @LastEditors: Please set LastEditors
  * @Description: 自选列表
  * @FilePath: \demo\uniappdemo\pages\my\my.vue
@@ -9,7 +9,8 @@
 <template>
   <view class="uni-flex uni-column my">
     <!-- 输入框 -->
-    <view class="flex-item flex-item-V">
+    <view v-if="showCodeInput"
+          class="flex-item flex-item-V">
       <view class="uni-flex uni-row search-warpper">
         <input class="flex-item search search-box"
                ref="input"
@@ -32,6 +33,13 @@
         </view>
       </view>
     </view>
+    <view v-else
+          class="uni-center arrowdownIcon-warp"
+          @click="arrowdownClick">
+      <uni-icons class="icon"
+                 type="arrowdown"
+                 size="20" />
+    </view>
     <!-- 上证指数 -->
     <view class="list-header">
       <view class="index-item"
@@ -42,10 +50,10 @@
             {{item.f14}}
           </view>
           <view class="nums"
-                :style="{color:item.f3>=0?'red':'rgb(30, 191, 60)'}">
+                :style="{color:item.f3>=0?'#F56C6C':'rgb(30, 191, 60)'}">
             {{item.f2}}
             <text class="nums-text"
-                  :style="{backgroundColor:item.f3>=0?'rgb(255,0,0,0.2)':'rgb(30, 191, 60,0.2)',color:item.f3>=0?'red':'rgb(30, 191, 60)'}">{{item.f3}}%</text>
+                  :style="{backgroundColor:item.f3>=0?'rgb(255,0,0,0.2)':'rgb(30, 191, 60,0.2)',color:item.f3>=0?'#F56C6C':'rgb(30, 191, 60)'}">{{item.f3}}%</text>
           </view>
         </view>
       </view>
@@ -62,7 +70,9 @@
       </view>
     </view>
     <!-- 基金列表body -->
-    <view class="flex-item flex-item-V uni-flex uni-column list-body">
+    <scroll-view class="flex-item flex-item-V uni-flex uni-column scroll-Y list-body"
+                 scroll-y="true"
+                 @scroll="listbodyScroll">
       <view class="flex-item flex-item-V">
         <template v-if="showList"
                   class="flex-item flex-item-V">
@@ -80,7 +90,7 @@
                   <view class="flex-item pad-right uni-flex uni-row font-12px"
                         :style="{justifyContent:item2.width==='25%'?'center':'left',alignItem:'center'}">
                     <span v-if="item2.value==='gszzl'">{{item.gsz}}
-                      <view :style="{color:item.gszzl >= 0?'red':'green'}">{{item.gszzl >= 0?'+':''}}{{item[item2.value]}}%</view>
+                      <view :style="{color:item.gszzl >= 0?'#F56C6C':'#67C23A'}">{{item.gszzl >= 0?'+':''}}{{item[item2.value]}}%</view>
                     </span>
                     <span v-else-if="item2.value==='inOrOut'"
                           :style="{color:item.color}">{{item.gszzl >= 0&&item['inOrOut']?'+':''}}{{item['inOrOut']||''}}</span>
@@ -103,7 +113,7 @@
                       </view>
                       <!-- 单位净值 -->
                       <view class="flex-item"
-                            :style="{color:item.RZDF>0?'red':'green'}"
+                            :style="{color:item.RZDF>0?'#F56C6C':'#67C23A'}"
                             v-else-if="item2.value==='DWJZ'">
                         {{(Number.parseFloat(item.RZDF)).toFixed(2)}}
                         <span class="flex-item">
@@ -125,7 +135,7 @@
           </view>
         </template>
       </view>
-    </view>
+    </scroll-view>
     <!-- <view class="flex-item flex-item-V">
 		</view> -->
     <!-- 页面底部收益栏 -->
@@ -133,7 +143,7 @@
       <view v-if="showList"
             class="flex-item flex-item-V back-white uni-flex getOroutList">
         <text class="flex-box1"
-              :style="{color:totalCount>0?'red':'green'}">今日预计{{totalCount>0?'收益':'亏损'}}：{{totalCount >= 0?'+':''}}{{totalCount}}元</text>
+              :style="{color:totalCount>0?'#F56C6C':'#67C23A'}">今日预计{{totalCount>0?'收益':'亏损'}}：{{totalCount >= 0?'+':''}}{{totalCount}}元</text>
         <text class="flex-box1 viewPhoto"
               @click="openPop">
           <!-- <text class="viewPhoto-text">查看指数图</text> -->
@@ -303,7 +313,8 @@ export default {
       { label: '20%', value: 0.2 },
       { label: '50%', value: 0.5 }],
       // 快速修改模式  true:增持 false:减持
-      changemode: true
+      changemode: true,
+      showCodeInput: false // 是否显示code输入框
     }
   },
   onLoad () {
@@ -350,6 +361,24 @@ export default {
       const obj = this.getDb('about')
       if (obj[code] && obj[code].hasOwnProperty('hasHowMuchMoney')) return obj[code].hasHowMuchMoney
       return ''
+    },
+    //  ------------------------------------------------------------------------------------------------------------------------
+    /**
+     * @description: 
+     * @param {*}
+     * @return {*}
+     */
+    listbodyScroll (e) {
+      // console.log('scroll', e)
+      this.showCodeInput = false
+    },
+    /**
+     * @description: 
+     * @param {*}
+     * @return {*}
+     */
+    arrowdownClick () {
+      this.showCodeInput = true
     },
     // 百分比减少|增加持仓
     changeNewChiCangPercent (item) {
@@ -406,7 +435,7 @@ export default {
         date = FSRQDay
       }
       about[code]['hasHowMuchMoney'] = money
-      if (newchiyou) {
+      if (newchiyou || Number(newchiyou) === 0) {
         about[code]['hasHowMuchMoney'] = newchiyou
       }
       about[code]['date'] = FSRQDay
@@ -581,9 +610,9 @@ export default {
           for (let i = 0, length = data.length; i < length; i++) {
             // 设置字体颜色
             if (data[i].gszzl >= 0) {
-              data[i].color = "red"
+              data[i].color = "#F56C6C"
             } else {
-              data[i].color = "green"
+              data[i].color = "#67C23A"
             }
             // 更新持仓
             const date = new Date(data[i].FSRQ).getDate()
@@ -624,7 +653,7 @@ $uni-searchbar-height: 36px;
   margin: 0 auto;
   text-align: center;
   width: 80vw;
-  height: 80vw;
+  height: 100vw;
   background-color: #ffffff;
   border-radius: 10px;
 }
@@ -636,7 +665,9 @@ $uni-searchbar-height: 36px;
 .my {
   height: 100vh;
   overflow: hidden;
-
+  .arrowdownIcon-warp {
+    line-height: 1;
+  }
   .search-warpper {
     align-items: center;
     background: #ffffff;
