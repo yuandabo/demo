@@ -108,9 +108,10 @@ export default {
           const about = uni.getStorageSync('about') || {}
           for (let i = 0, length = data.length; i < length; i++) {
             if (about.hasOwnProperty(data[i]['FCODE'])) {
+              if (about[data[i]['FCODE']].hasHowMuchMoney == 0) {
+                continue  // 0不计算
+              }
               data[i].hasHowMuchMoney = about[data[i]['FCODE']].hasHowMuchMoney
-            } else {
-              data[i].hasHowMuchMoney = 0
             }
           }
           this.sharesData = data
