@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2020-11-10 17:11:23
- * @LastEditTime: 2020-11-19 09:10:11
+ * @LastEditTime: 2021-01-20 10:12:20
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \手撕源码\index.js
@@ -34,7 +34,7 @@ Function.prototype.mycall = function (context, ...args) { // ES6版本
   context = context || window
   // const args = Array.from(arguments).slice(1)
   const fn = Symbol('_fn')
-  context[fn] = this
+  context[fn] = this  // this 指向调用函数
   let res = context[fn](...args)
   delete context[fn]
   return res

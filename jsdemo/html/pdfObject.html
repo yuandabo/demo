@@ -1,0 +1,81 @@
+<!--
+ * @Author: your name
+ * @Date: 2021-01-26 10:44:55
+ * @LastEditTime: 2021-01-26 14:30:19
+ * @LastEditors: Please set LastEditors
+ * @Description: PDF 预览
+ * @FilePath: \demo\jsdemo\html\pdfObject.html
+-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PDF 预览</title>
+  <style>
+    .pdfobject-container {
+      height: 30rem;
+      border: 1rem solid rgba(0, 0, 0, .1);
+    }
+  </style>
+</head>
+
+<body>
+  <script src="./lib/pdfobject.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <div>
+    <button id="button" onclick="viewPdf()">点我预览pdf</button>
+  </div>
+  <div id="pdfView" style="width: 100vw;height: 90vh;">
+  </div>
+  <script>
+    if (PDFObject.supportsPDFs) {
+      alert("Yay, this browser supports inline PDFs.");
+    } else {
+      alert("Boo, inline PDFs are not supported by this browser");
+    }
+    console.log(PDFObject.pdfobjectversion); //"2.2.0"
+    const button = document.getElementById('button')
+    const pdfView = document.getElementById('pdfView')
+    const options = {
+      fallbackLink: "<p>浏览器不支持PDF预览请点击下载: <a href='[url]'>Download PDF</a></p>"
+    }
+    function viewPdf() {
+      PDFObject.embed("./file/JavaScript权威指南(第6版)(中文版).pdf", "#pdfView", options)
+    }
+
+    axios.get('http://127.0.0.1:1024/uploads/JavaScript权威指南(第6版)(中文版).pdf', {
+      params: {
+        // ID: 12345
+      },
+      responseType: 'blob',
+      proxy: {
+        // host: '127.0.0.1',
+        // port: 9000,
+        auth: {
+          username: 'mikeymike',
+          password: 'rapunz3l'
+        }
+      },
+      headers: {
+        'content-type': 'application/pdf'
+      }
+    })
+      .then(function (response) {
+        console.log(response);
+        const url = URL.createObjectURL(response.data)
+        console.log(url)
+        PDFObject.embed(url, "#pdfView", options)
+      })
+      .catch(function (error) {
+        console.log(error);
+      })
+      .then(function () {
+        // always executed
+      });
+
+  </script>
+</body>
+
+</html>

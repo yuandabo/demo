@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2020-11-28 16:53:58
- * @LastEditTime: 2020-11-30 16:09:03
+ * @LastEditTime: 2021-01-26 14:16:05
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \serve\index.js
@@ -19,7 +19,7 @@ app.use(bodyParser.urlencoded({
 app.use(bodyParser.json())
 app.use(cors({
   allowedOrigins: [
-    'http://localhost:8080', 'http://localhost:8081', 'http://localhost:3000'
+    'http://localhost:8080', 'http://localhost:8081', 'http://localhost:3000', 'http://localhost:80/', 'http://localhost'
   ]
 }))
 require('./routes/admin')(app)
@@ -45,4 +45,4 @@ app.use('/uploads', express.static(__dirname + '/uploads'))
 
 app.listen(1024, '127.0.0.1')
 
-console.log('服务启动成功')
+console.log(`服务启动成功,127.0.0.1:1024`)
