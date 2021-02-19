@@ -11,8 +11,7 @@
             <template v-slot:error>
               <van-image width="100vw"
                          height="90"
-                         src="https://cube.elemecdn.com/2/14/7059f0fe8c3eb2c691a595ef7f734png.png?x-oss-process=image/format,webp/resize,w_686">
-              </van-image>
+                         src="https://cube.elemecdn.com/2/14/7059f0fe8c3eb2c691a595ef7f734png.png?x-oss-process=image/format,webp/resize,w_686" />
             </template>
           </van-image>
         </van-swipe-item>
@@ -23,39 +22,38 @@
             <template v-slot:error>
               <van-image width="100vw"
                          height="90"
-                         src="https://cube.elemecdn.com/2/14/7059f0fe8c3eb2c691a595ef7f734png.png?x-oss-process=image/format,webp/resize,w_686">
-              </van-image>
+                         src="https://cube.elemecdn.com/2/14/7059f0fe8c3eb2c691a595ef7f734png.png?x-oss-process=image/format,webp/resize,w_686" />
             </template>
           </van-image>
         </van-swipe-item>
       </van-swipe>
     </div>
-    <div class="shoperrecommend"
-         v-show="showCom">
-      <shoperrecommend :goods="goods"></shoperrecommend>
+    <div v-show="showCom"
+         class="shoperrecommend">
+      <shoperrecommend :goods="goods" />
     </div>
     <div class="goods-body">
-      <div class="manu-warpper"
-           ref="div">
+      <div ref="div"
+           class="manu-warpper">
         <ul>
           <li v-for="(a,index) in goods"
               :key="a.id"
               class="menu-item"
               :class="getMenuItemClass(index)"
               @click="selectMenu(index)">
-            <span class="manu-text">{{a.name}}</span>
+            <span class="manu-text">{{ a.name }}</span>
           </li>
         </ul>
       </div>
 
-      <div class="foods-warpper"
-           @scroll="foodsScroll"
-           ref="f">
+      <div ref="f"
+           class="foods-warpper"
+           @scroll="foodsScroll">
         <ul>
           <li v-for="(a,index) in goods"
               :key="index"
               class="food-list food-list-hook">
-            <h1 class="food-list-title">{{a.name}}</h1>
+            <h1 class="food-list-title">{{ a.name }}</h1>
             <ul>
               <li v-for="(item,index) in a.foods"
                   :key="index"
@@ -72,30 +70,30 @@
                       <van-image class="imgdom"
                                  width="90px"
                                  height="90px"
-                                 src="img/kobe.png"></van-image>
+                                 src="img/kobe.png" />
                     </template>
                   </van-image>
                 </div>
                 <span class="foods-content">
-                  <h1 class="foods-content-name">{{item.name}}</h1>
-                  <div class="foods-content-desc">{{item.description||'暂无介绍'}}</div>
+                  <h1 class="foods-content-name">{{ item.name }}</h1>
+                  <div class="foods-content-desc">{{ item.description||'暂无介绍' }}</div>
                   <div class="foods-content-extra">
-                    <span>月售{{item.sellCount||0}}</span>
+                    <span>月售{{ item.sellCount||0 }}</span>
                     <!-- <span>好评率{{item.rating}}%</span> -->
                   </div>
                   <div class="food-priAndcar">
                     <div class="foods-price">
                       <span class="foods-price-now">
                         <span class="now-symbol">￥</span>
-                        <span class="now-price">{{item.price}}</span>
+                        <span class="now-price">{{ item.price }}</span>
                       </span>
                       <span v-show="item.oldPrice"
-                            class="foods-price-old">￥{{item.oldPrice}}</span>
+                            class="foods-price-old">￥{{ item.oldPrice }}</span>
                     </div>
                     <div class="cartcontrol-warpper">
-                      <cartcontrol v-bind:food="item"
+                      <cartcontrol :food="item"
                                    @foodAdd="foodAdd"
-                                   @foodDec="foodDec"></cartcontrol>
+                                   @foodDec="foodDec" />
                     </div>
                   </div>
                 </span>
@@ -108,17 +106,23 @@
     <shopcar class="goods-shopcar"
              :selectfoods="selectfoods"
              :deliveryprice="seller.deliveryPrice"
-             :minprice="seller.minPrice"></shopcar>
+             :minprice="seller.minPrice" />
   </div>
 </template>
 
 <script>
-import betterScroll from 'better-scroll';
-import shopcar from '@/components/shopcar';
+import betterScroll from 'better-scroll'
+import shopcar from '@/components/shopcar'
 import cartcontrol from '@/components/cartcontrol'
 import shoperrecommend from '@/components/shoperRecommend'
 import mixins from './mixins'
 export default {
+  components: {
+    shopcar,
+    cartcontrol,
+    shoperrecommend
+  },
+  mixins: [mixins],
   props: {
     goods: {
       type: Array
@@ -130,33 +134,27 @@ export default {
   data () {
     return {
       // goods: [],
-      listHeight: [],// foods列表的高度
-      scrollY: 0,//存储foods当前坐标
+      listHeight: [], // foods列表的高度
+      scrollY: 0, // 存储foods当前坐标
       showCom: true,
       loading: false,
       ulkey: 0,
       currentIndex: 0
     }
   },
-  mixins: [mixins],
-  components: {
-    shopcar,
-    cartcontrol,
-    shoperrecommend
-  },
   computed: {
     selectfoods: {
       get: function () {
-        let foods = [];
+        const foods = []
         this.goods.forEach((good) => {
           good.foods.forEach((food) => {
             if (food.count) {
-              foods.push(food);
+              foods.push(food)
             }
-          });
-        });
-        return foods;
-      },
+          })
+        })
+        return foods
+      }
     }
   },
   mounted () {
@@ -186,42 +184,46 @@ export default {
     // 初始化scroll
     _innitScroll () {
       const goods = document.getElementsByClassName('goods')[0]
-      this.menuScroll = new betterScroll(this.$refs.div, { click: true, probeType: 3 });
-      this.foodScroll = new betterScroll(this.$refs.f, { click: true, probeType: 3 });
+      goods.scrollIntoView({ behavior: 'smooth' })
+      this.menuScroll = new betterScroll(this.$refs.div, { click: true, probeType: 3 })
+      this.foodScroll = new betterScroll(this.$refs.f, { click: true, probeType: 3 })
       this.foodScroll.on('scroll', (pos) => {
-        this.scrollY = Math.abs(Math.round(pos.y));
-        if (pos.y === 0) {
-          this.foodScroll.scrollBy(0, -1)
+        this.scrollY = Math.abs(Math.round(pos.y))
+        // console.log(pos)
+        if (pos.y > 100) {
+          setTimeout(() => {
+            goods.scrollTop = 0
+          }, 500)
         }
-        if (pos.y >= 50) {
-          goods.scrollTop = 0
-        }
+        // if (pos.y >= 50) {
+        //   goods.scrollTop = 0
+        // }
       })
-      this.foodScroll.scrollBy(0, -1);
+      this.foodScroll.scrollBy(0, -1)
     },
     // 计算右边高度
     _calculateHeight () {
       return new Promise((resolve, reject) => {
-        let foodList = this.$refs.f.getElementsByClassName('food-list-hook');
-        let height = 0;
-        let arr = [0]
+        const foodList = this.$refs.f.getElementsByClassName('food-list-hook')
+        let height = 0
+        const arr = [0]
         for (let i = 0; i < foodList.length; i++) {
-          let item = foodList[i];
-          height += item.clientHeight;
-          arr.push(height);
+          const item = foodList[i]
+          height += item.clientHeight
+          arr.push(height)
         }
         this.listHeight = arr
       })
     },
     selectMenu (index) {
       this.currentIndex = Number(index)
-      let foodList = this.$refs.f.getElementsByClassName('food-list-hook');
-      let el = foodList[index];
-      this.foodScroll.scrollToElement(el, 300);
+      const foodList = this.$refs.f.getElementsByClassName('food-list-hook')
+      const el = foodList[index]
+      this.foodScroll.scrollToElement(el, 300)
       if (index === 0) {
         this.foodScroll.scrollBy(0, -1)
       }
-    },
+    }
   }
 }
 </script>

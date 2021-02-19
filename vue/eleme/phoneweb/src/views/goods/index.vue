@@ -1,30 +1,31 @@
 <template>
-  <div class="goods"
-       ref="goods">
-    <vheader v-bind:seller="seller"></vheader>
+  <div ref="goods"
+       class="goods">
+    <vheader :seller="seller" />
     <vtag class="tag"
-          @tabs-click="tagclick"></vtag>
+          @tabs-click="tagclick" />
     <router-view :goods="goods"
-                 :seller="seller"></router-view>
+                 :seller="seller" />
   </div>
 </template>
 
 <script>
+import betterScroll from 'better-scroll'
 import axios from 'axios'
-import vheader from "@/layout/header"
-import vtag from "@/layout/tag";
+import vheader from '@/layout/header'
+import vtag from '@/layout/tag'
 import { getAll } from '@/api/send'
 import mixins from './mixins'
 export default {
   name: 'goods',
-  mixins: [mixins],
   components: {
     // shopcar,
     // cartcontrol,
     vheader,
-    vtag,
+    vtag
     // shoperrecommend
   },
+  mixins: [mixins],
   props: {
     seller: {
       type: Object
@@ -33,26 +34,15 @@ export default {
   data () {
     return {
       goods: [],
-      listHeight: [],// foods列表的高度
-      scrollY: 0,//存储foods当前坐标
+      listHeight: [], // foods列表的高度
+      scrollY: 0, // 存储foods当前坐标
       showCom: true,
       loading: false,
       ulkey: 0,
       currentIndex: 0
-    };
+    }
   },
   computed: {
-    // currentIndex () {
-    //   for (let i = 0; i < this.listHeight.length; i++) {
-    //     let height1 = this.listHeight[i]; // n
-    //     let height2 = this.listHeight[i + 1]; // n+1 
-    //     // 如果最后一个直接返回i  
-    //     if (!height2 || (this.scrollY > height1 && this.scrollY < height2)) {
-    //       return i;
-    //     }
-    //   }
-    //   return 0
-    // },
   },
   mounted () {
     this.getAll()
@@ -70,38 +60,17 @@ export default {
       }
       this.$router.push({ path })
     },
-    // getCurrentIndex () {
-    //   const list = this.listHeight
-    //   for (let i = 0; i < list.length; i++) {
-    //     let height1 = this.listHeight[i]; // n
-    //     let height2 = this.listHeight[i + 1]; // n+1 
-    //     // 如果最后一个直接返回i  
-    //     if (!height2 || (this.scrollY > height1 && this.scrollY < height2)) {
-    //       this.currentIndex = i
-    //       console.log(this.currentIndex, height1, height2, this.scrollY)
-    //       return
-    //     }
-    //   }
-    //   return 0
-    // },
-    // warpperscroll ($event) {
-    //   console.log($event)
-    //   const goodsHeight = document.getElementsByClassName('goods-body')[0].clientHeight
-    //   if (goodsHeight === 620) {
-    //     $event.stopPropagation()
-    //   }
-    // },
     /*
     初始化数据（number）
     tip:后台初始化时number为'null',以及其他的页面无法根据（quancode）取到number,所以全程使用初始化的List进行操作，1可以解决无法取到Number的问题，2可以减少http请求
     */
     initCount () {
-      let goods = this.goods
+      const goods = this.goods
       for (let i = 0, length = goods.length; i < length; i++) {
-        let item = goods[i]
+        const item = goods[i]
         // console.log(item)
         for (let j = 0, length2 = item['foods'].length; j < length2; j++) {
-          let foods = item['foods'][j]
+          const foods = item['foods'][j]
           // 无数据时后台给的'null'
           if (!foods.hasOwnProperty('count') || foods['count'] === 'null') {
             this.$set(foods, 'count', 0)
@@ -119,17 +88,17 @@ export default {
     async getAll () {
       if (this.$mode) {
         axios('./data.json')
-          .then(res => {
+          .then((res) => {
             this.goods = res.data.goods
           })
       } else {
         const data = await getAll()
         if (data.code === '200') {
-          let goods = data.data.goods
-          let arr = []
+          const goods = data.data.goods
+          const arr = []
           // 过滤数据
           for (let i = 0, length = goods.length; i < length; i++) {
-            let item = goods[i]
+            const item = goods[i]
             if (item.foods && item.foods.length !== 0) {
               arr.push(item)
             }
@@ -137,7 +106,6 @@ export default {
           this.goods = arr
           this.initCount() // 初始化count
         }
-
       }
       this.loading = false
     }

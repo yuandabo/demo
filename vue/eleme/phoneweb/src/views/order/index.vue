@@ -25,9 +25,9 @@
     <div class="order-cart">
       <div class="cart-title">527烧烤</div>
       <div class="cart-content">
-        <div class="content-item"
-             v-for="(item,index) in selectfoods"
-             :key="index">
+        <div v-for="(item,index) in selectfoods"
+             :key="index"
+             class="content-item">
           <div>
             1
           </div>
@@ -39,9 +39,9 @@
           </div>
         </div>
       </div>
-      <div class="cart-sendpay"
-           v-for="(item,index) in payList"
-           :key="index">
+      <div v-for="(item,index) in payList"
+           :key="index"
+           class="cart-sendpay">
         <div>配送费</div>
         <div class="right">￥5.6</div>
       </div>
@@ -88,65 +88,65 @@ export default {
       payList: [],
       message: '',
       sheetshow: false,
-      actions: [{ name: '选项一' }, { name: '选项二' }, { name: '选项三' }],
+      actions: [{ name: '选项一' }, { name: '选项二' }, { name: '选项三' }]
     }
-  },
-  created () {
-    // const data = this.$db.getDb('selectfoods') 
-    // console.log(JSON.parse(data))
-    // this.selectfoods = JSON.parse(data)
-    this.queryById()
   },
   computed: {
     totalPrice () {
-      let total = 0;
+      let total = 0
       this.selectfoods.forEach((food) => {
-        total += food.price * food.count;
-      });
-      return total;
+        total += food.price * food.count
+      })
+      return total
     },
     totalCount () {
-      let count = 0;
+      let count = 0
       this.selectfoods.forEach((food) => {
-        count += food.count;
+        count += food.count
       })
-      return count;
+      return count
     },
     payDesc () {
       if (this.totalPrice === 0) {
-        return `￥${this.minprice}元起`;
+        return `￥${this.minprice}元起`
       } else if (this.totalPrice < this.minprice) {
-        let diff = this.minprice - this.totalPrice;
-        return `还差￥${diff}元`;
+        const diff = this.minprice - this.totalPrice
+        return `还差￥${diff}元`
       } else {
-        return '去结算';
+        return '去结算'
       }
     },
     listShow () {
       if (!this.totalCount) {
         // eslint-disable-next-line vue/no-side-effects-in-computed-properties
-        this.fold = true;
-        return false;
+        this.fold = true
+        return false
       }
-      let show = !this.fold;
-      return show;
+      const show = !this.fold
+      return show
     }
+  },
+  created () {
+    // const data = this.$db.getDb('selectfoods')
+    // console.log(JSON.parse(data))
+    // this.selectfoods = JSON.parse(data)
+    this.queryById()
   },
   methods: {
     onSelect () { },
     onSubmit () {
       this.$router.push({ path: '/goods' })
     },
-    onClickLeft () { this.$router.push({ path: '/goods' }) },
+    onClickLeft () { this.$router.push({ path: '/goods/index' }) },
     queryById () {
       queryById({ id: this.id })
-        .then(res => {
+        .then((res) => {
           if (res.code === '200') {
             this.mes = res.data[0]
           }
         })
-    },
-  },
+    }
+  }
 }
 </script>
 
