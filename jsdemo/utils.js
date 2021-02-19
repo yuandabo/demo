@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2020-10-14 11:41:43
- * @LastEditTime: 2020-12-21 11:47:26
+ * @LastEditTime: 2021-01-27 19:13:25
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \demo\jsdemo\utils.js
@@ -54,3 +54,15 @@ const obj = {
 }
 
 console.log(obj.isMobile);
+/**
+ * @description: 时间相减得到天数
+ * @param {*}
+ * @return {*}
+ */
+function GetNumberOfDays (date1, date2) {//获得天数
+  //date1：开始日期，date2结束日期
+  var a1 = Date.parse(new Date(date1));
+  var a2 = Date.parse(new Date(date2));
+  var day = parseInt((a2 - a1) / (1000 * 60 * 60 * 24));//核心：时间戳相减，然后除以天数
+  return day
+}

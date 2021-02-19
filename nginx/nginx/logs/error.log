@@ -1,5 +1,0 @@
-2021/01/26 23:21:05 [emerg] 5808#14188: CreateDirectory() "E:\demo\nginx\nginx/temp/client_body_temp" failed (3: The system cannot find the path specified)
-2021/01/26 23:23:01 [emerg] 6232#14384: CreateDirectory() "E:\demo\nginx\nginx/temp/client_body_temp" failed (3: The system cannot find the path specified)
-2021/01/26 23:23:02 [emerg] 4592#16204: CreateDirectory() "E:\demo\nginx\nginx/temp/client_body_temp" failed (3: The system cannot find the path specified)
-2021/01/26 23:24:53 [emerg] 2308#1072: CreateDirectory() "E:\demo\nginx\nginx/temp/client_body_temp" failed (3: The system cannot find the path specified)
-2021/01/26 23:24:59 [emerg] 10188#3804: CreateDirectory() "E:\demo\nginx\nginx/temp/client_body_temp" failed (3: The system cannot find the path specified)
