@@ -20,14 +20,17 @@
         </div>
         <div class="content">
           <div class="title">
-            <span class="brand" />
+            <van-icon class="brand"
+                      :name="getIcon('brand2x')" />
             <span class="name">{{ seller.name }}</span>
           </div>
           <div class="description">{{ seller.description }}</div>
           <div class="description">平均配送时间：{{ seller.deliveryTime }}分钟</div>
           <div v-if="seller.supports"
                class="supports">
-            <span class="icon" />
+            <!-- <span class="icon" /> -->
+            <van-icon class="icon"
+                      :name="getIcon('decrease_1@2x')" />
             <span class="text">{{ seller.supports[0].description }}</span>
           </div>
           <!-- <div class="supports-count" @click="showDetail">
@@ -42,7 +45,9 @@
            height="200">
     </div>
     <div class="bulletin-wrapper">
-      <span class="bulletin-title" />
+      <!-- <span class="bulletin-title" /> -->
+      <van-icon class="bulletin-title"
+                :name="getIcon('bulletin')" />
       <span class="bulletin-text">{{ seller.bulletin }}</span>
       <span />
     </div>
@@ -99,6 +104,9 @@ export default {
     }
   },
   methods: {
+    getIcon (name) {
+      return `img/${name}.png`
+    },
     showDetail: function () {
       this.detailShow = true
     },
@@ -157,13 +165,15 @@ export default {
   margin: 2px 0px 8px 0px;
 }
 .brand {
-  display: inline-block;
-  vertical-align: top;
-  width: 30px;
-  height: 18px;
-  background: url("/img/brand@2x.png");
-  background-size: 30px 18px;
-  background-repeat: no-repeat;
+  /deep/ .van-icon__image {
+    display: inline-block;
+    vertical-align: top;
+    width: 30px;
+    height: 18px;
+    background-size: 30px 18px;
+    background-repeat: no-repeat;
+    border-radius: 10px;
+  }
 }
 .name {
   margin-left: 6px;
@@ -193,14 +203,15 @@ export default {
   }
 }
 .supports .icon {
-  display: inline-block;
-  vertical-align: top;
-  width: 12px;
-  height: 12px;
-  margin-right: 4px;
-  background: url("/img/decrease_1@2x.png");
-  background-size: 12px 12px;
-  background-repeat: no-repeat;
+  /deep/ .van-icon__image {
+    display: inline-block;
+    vertical-align: top;
+    width: 12px;
+    height: 12px;
+    margin-right: 4px;
+    background-size: 12px 12px;
+    background-repeat: no-repeat;
+  }
 }
 .supports .text {
   line-height: 12px;
@@ -236,14 +247,15 @@ export default {
   background: #fff;
 }
 .bulletin-title {
-  display: inline-block;
-  width: 22px;
-  height: 12px;
-  background-image: url("/img/bulletin@2x.png");
-  background-size: 22px 12px;
-  background-repeat: no-repeat;
-  vertical-align: top;
-  margin-top: 8px;
+  /deep/ .van-icon__image {
+    display: inline-block;
+    width: 22px;
+    height: 12px;
+    background-size: 22px 12px;
+    background-repeat: no-repeat;
+    vertical-align: center;
+    // margin-top: 8px;
+  }
 }
 .bulletin-text {
   font-size: 10px;

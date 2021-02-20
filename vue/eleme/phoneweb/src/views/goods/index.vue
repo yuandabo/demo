@@ -78,27 +78,27 @@ export default {
     },
     // 获取后台数据
     async getAll () {
-      if (this.$mode) {
-        axios('./data.json')
-          .then((res) => {
-            this.goods = res.data.goods
-          })
-      } else {
-        const data = await getAll()
-        if (data.code === '200') {
-          const goods = data.data.goods
-          const arr = []
-          // 过滤数据
-          for (let i = 0, length = goods.length; i < length; i++) {
-            const item = goods[i]
-            if (item.foods && item.foods.length !== 0) {
-              arr.push(item)
-            }
-          }
-          this.goods = arr
-          this.initCount() // 初始化count
-        }
-      }
+      // if (this.$mode) {
+      axios('./data.json')
+        .then((res) => {
+          this.goods = res.data.goods
+        })
+      // } else {
+      //   const data = await getAll()
+      //   if (data.code === '200') {
+      //     const goods = data.data.goods
+      //     const arr = []
+      //     // 过滤数据
+      //     for (let i = 0, length = goods.length; i < length; i++) {
+      //       const item = goods[i]
+      //       if (item.foods && item.foods.length !== 0) {
+      //         arr.push(item)
+      //       }
+      //     }
+      //     this.goods = arr
+      //     this.initCount() // 初始化count
+      //   }
+      // }
       this.loading = false
     }
   }
