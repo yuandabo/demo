@@ -70,7 +70,7 @@
                       <van-image class="imgdom"
                                  width="90px"
                                  height="90px"
-                                 src="img/kobe.png" />
+                                 src="/img/kobe.png" />
                     </template>
                   </van-image>
                 </div>
@@ -344,7 +344,7 @@ export default {
     height: 12px;
     width: 12px;
     vertical-align: top;
-    background-image: url("./special_3@2x.png");
+    background-image: url("/img/special_3@2x.png");
     background-size: 12px 12px;
     background-repeat: no-repeat;
     margin-right: 2px;

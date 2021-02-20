@@ -12,6 +12,7 @@ export const routes =
     },
     {
       path: '/goods',
+      redirect: '/goods/index',
       name: 'goods',
       component: goods,
       children: [{
@@ -23,7 +24,7 @@ export const routes =
       }, {
         path: 'seller',
         component: seller
-      },]
+      }]
     },
     // {
     //   path: '/ratings',
@@ -39,5 +40,5 @@ export const routes =
       path: '/address',
       name: 'address',
       component: address
-    },
+    }
   ]

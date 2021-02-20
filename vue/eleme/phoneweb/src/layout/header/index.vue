@@ -10,8 +10,7 @@
             <template v-slot:error>
               <van-image width="80"
                          height="80"
-                         src="img/jordan.png">
-              </van-image>
+                         src="img/jordan.png" />
             </template>
           </van-image>
           <!-- <img class="imgdom"
@@ -21,15 +20,15 @@
         </div>
         <div class="content">
           <div class="title">
-            <span class="brand"></span>
-            <span class="name">{{seller.name}}</span>
+            <span class="brand" />
+            <span class="name">{{ seller.name }}</span>
           </div>
-          <div class="description">{{seller.description}}</div>
-          <div class="description">平均配送时间：{{seller.deliveryTime}}分钟</div>
+          <div class="description">{{ seller.description }}</div>
+          <div class="description">平均配送时间：{{ seller.deliveryTime }}分钟</div>
           <div v-if="seller.supports"
                class="supports">
-            <span class="icon"></span>
-            <span class="text">{{seller.supports[0].description}}</span>
+            <span class="icon" />
+            <span class="text">{{ seller.supports[0].description }}</span>
           </div>
           <!-- <div class="supports-count" @click="showDetail">
             <span class="count" v-if="seller.supports">{{seller.supports.length}}个</span>
@@ -40,12 +39,12 @@
       <img src="https://cube.elemecdn.com/7/b9/68df600d2b16a206de723f9e81c88png.png?x-oss-process=image/format,webp/resize,w_750"
            class="backgroundImg"
            width="100vw"
-           height="200" />
+           height="200">
     </div>
     <div class="bulletin-wrapper">
-      <span class="bulletin-title"></span>
-      <span class="bulletin-text">{{seller.bulletin}}</span>
-      <span></span>
+      <span class="bulletin-title" />
+      <span class="bulletin-text">{{ seller.bulletin }}</span>
+      <span />
     </div>
     <!-- <div class="background">
         <img :src="seller.avatar" alt="">
@@ -97,14 +96,14 @@ export default {
     return {
       detailShow: false,
       loading: false
-    };
+    }
   },
   methods: {
     showDetail: function () {
-      this.detailShow = true;
+      this.detailShow = true
     },
     hiddenDetail: function () {
-      this.detailShow = false;
+      this.detailShow = false
     }
   }
   //   components: {
@@ -162,7 +161,7 @@ export default {
   vertical-align: top;
   width: 30px;
   height: 18px;
-  background: url("./brand@2x.png");
+  background: url("/img/brand@2x.png");
   background-size: 30px 18px;
   background-repeat: no-repeat;
 }
@@ -199,7 +198,7 @@ export default {
   width: 12px;
   height: 12px;
   margin-right: 4px;
-  background: url("./decrease_1@2x.png");
+  background: url("/img/decrease_1@2x.png");
   background-size: 12px 12px;
   background-repeat: no-repeat;
 }
@@ -240,7 +239,7 @@ export default {
   display: inline-block;
   width: 22px;
   height: 12px;
-  background-image: url("./bulletin@2x.png");
+  background-image: url("/img/bulletin@2x.png");
   background-size: 22px 12px;
   background-repeat: no-repeat;
   vertical-align: top;
@@ -329,7 +328,7 @@ export default {
 }
 .supports-content-icon {
   display: inline-block;
-  background-image: url("./decrease_1@2x.png");
+  background-image: url("/img/decrease_1@2x.png");
   background-size: 16px 16px;
   background-repeat: no-repeat;
   width: 16px;

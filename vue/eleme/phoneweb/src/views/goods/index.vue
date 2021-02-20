@@ -10,7 +10,6 @@
 </template>
 
 <script>
-import betterScroll from 'better-scroll'
 import axios from 'axios'
 import vheader from '@/layout/header'
 import vtag from '@/layout/tag'
@@ -19,16 +18,16 @@ import mixins from './mixins'
 export default {
   name: 'goods',
   components: {
-    // shopcar,
-    // cartcontrol,
     vheader,
     vtag
-    // shoperrecommend
   },
   mixins: [mixins],
   props: {
     seller: {
-      type: Object
+      type: Object,
+      default () {
+        return {}
+      }
     }
   },
   data () {
@@ -49,7 +48,6 @@ export default {
   },
   methods: {
     tagclick (name) {
-      console.log(name)
       let path
       if (name === 0) {
         path = '/goods/index'
@@ -78,12 +76,6 @@ export default {
         }
       }
     },
-    // changeMenuAndFoodPos () {
-    // this.$refs.div.style.top = '0px'
-    // this.$refs.f.style.top = '0px'
-    // console.log(this.$refs.f.style)
-    // this.showCom = false
-    // },
     // 获取后台数据
     async getAll () {
       if (this.$mode) {

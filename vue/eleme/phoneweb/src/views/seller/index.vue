@@ -1,6 +1,6 @@
 <template>
-  <div class="seller"
-       ref="div">
+  <div ref="div"
+       class="seller">
     <div class="seller-img">
       <van-image width="100vw"
                  height="90"
@@ -8,8 +8,7 @@
         <template v-slot:error>
           <van-image width="100vw"
                      height="90"
-                     src="https://cube.elemecdn.com/2/14/7059f0fe8c3eb2c691a595ef7f734png.png?x-oss-process=image/format,webp/resize,w_686">
-          </van-image>
+                     src="https://cube.elemecdn.com/2/14/7059f0fe8c3eb2c691a595ef7f734png.png?x-oss-process=image/format,webp/resize,w_686" />
         </template>
       </van-image>
       <div class="img-title">
@@ -34,22 +33,20 @@
       <div class="card-photo">
         <van-image width="80px"
                    height="80px"
-                   src="img/jordan.png">
+                   src="/img/jordan.png">
           <template v-slot:error>
             <van-image width="80px"
                        height="80px"
-                       src="img/jordan.png">
-            </van-image>
+                       src="/img/jordan.png" />
           </template>
         </van-image>
         <van-image width="80px"
                    height="80px"
-                   src="img/jordan.png">
+                   src="/img/jordan.png">
           <template v-slot:error>
             <van-image width="80px"
                        height="80px"
-                       src="img/jordan.png">
-            </van-image>
+                       src="/img/jordan.png" />
           </template>
         </van-image>
       </div>
@@ -67,33 +64,33 @@
 </template>
 
 <script>
-import betterScroll from 'better-scroll';
-import star from "@/components/star";
+import betterScroll from 'better-scroll'
+import star from '@/components/star'
 export default {
+  components: {
+    star
+  },
   props: {
     seller: {
       type: Object
     }
   },
-  components: {
-    star
-  },
   watch: {
     seller: function () {
-      this._innitScroll();
+      this._innitScroll()
     }
   },
   mounted () {
     this.$nextTick(() => {
-      this._innitScroll();
-    });
+      this._innitScroll()
+    })
   },
   methods: {
     _innitScroll () {
-      this.sellerScroll = new betterScroll(this.$refs.div, {});
+      this.sellerScroll = new betterScroll(this.$refs.div, {})
     }
   }
-};
+}
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
@@ -294,7 +291,7 @@ export default {
 }
 .supports-content-icon {
   display: inline-block;
-  background-image: url("./decrease_1@2x.png");
+  background-image: url("/img/decrease_1@2x.png");
   background-size: 16px 16px;
   background-repeat: no-repeat;
   width: 16px;

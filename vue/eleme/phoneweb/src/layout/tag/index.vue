@@ -13,9 +13,9 @@
   <van-tabs v-model="active"
             color="rgb(0, 160, 220)"
             @click="tabsClick">
-    <van-tab title="点餐"></van-tab>
-    <van-tab title="评价"></van-tab>
-    <van-tab title="商家"></van-tab>
+    <van-tab title="点餐" />
+    <van-tab title="评价" />
+    <van-tab title="商家" />
   </van-tabs>
 </template>
 
@@ -31,7 +31,7 @@ export default {
       this.$emit('tabs-click', name)
     }
   }
-};
+}
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
