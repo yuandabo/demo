@@ -35,7 +35,7 @@ export default {
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
+<style lang="scss" scoped>
 .tag {
   display: flex;
   width: 100%;
@@ -96,5 +96,11 @@ a {
   content: "";
   display: block;
   height: 0;
+}
+// /deep/ .van-tabs__line {
+//   width: 4px;
+// }
+/deep/ .van-tab {
+  padding: 0 8px;
 }
 </style>

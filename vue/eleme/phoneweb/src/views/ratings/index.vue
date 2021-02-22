@@ -144,11 +144,6 @@ export default {
 
   },
   methods: {
-    // onlyViewHasContent () {
-    //   console.log(123)
-    //   this.checked = !this.checked
-    //   console.log(this.checked)
-    // },
     /**
      * @description:  0 全部 1 
      * @param {*}
