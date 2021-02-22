@@ -52,8 +52,10 @@ export default {
     onClickLeft () {
       this.$router.go(-1)
     },
-    onSave () {
+    onSave (content) {
       Toast('save');
+      console.log(content)
+      this.$router.replace({ path: '/order', query: { content: content.addressDetail } })
     },
     onDelete () {
       Toast('delete');

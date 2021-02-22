@@ -1,65 +1,68 @@
 <template>
-  <div class="order">
+  <div class="flexdir-column order">
     <div class="order-background" />
     <van-nav-bar title="确认订单"
                  left-arrow
                  @click-left="onClickLeft" />
-    <div class="order-address">
-      <div class="address-titile">订单配送至</div>
-      <div class="address-content"
-           @click="$router.push({path:'/address'})">选择收货地址
-        <van-icon name="arrow" />
-      </div>
-    </div>
-    <div class="order-send">
-      <div class="send-time">
-        <div>送达时间</div>
-        <div class="right"
-             @click="sheetshow = true">尽快送达(11:00)</div>
-      </div>
-      <div class="send-pay">
-        <div>支付方式</div>
-        <div class="right">在线支付</div>
-      </div>
-    </div>
-    <div class="order-cart">
-      <div class="cart-title">527烧烤</div>
-      <div class="cart-content">
-        <div v-for="(item,index) in selectfoods"
-             :key="index"
-             class="content-item">
-          <div>
-            1
-          </div>
-          <div>
-            2
-          </div>
-          <div>
-            3
-          </div>
+    <div class="flex-1">
+      <div class="order-address">
+        <div class="address-titile">订单配送至</div>
+        <div class="address-content"
+             @click="$router.push({path:'/address'})">{{address}}
+          <van-icon name="arrow" />
         </div>
       </div>
-      <div v-for="(item,index) in payList"
-           :key="index"
-           class="cart-sendpay">
-        <div>配送费</div>
-        <div class="right">￥5.6</div>
+      <div class="order-send">
+        <div class="send-time">
+          <div>送达时间</div>
+          <div class="right"
+               @click="sheetshow = true">尽快送达(11:00)</div>
+        </div>
+        <div class="send-pay">
+          <div>支付方式</div>
+          <div class="right">在线支付</div>
+        </div>
       </div>
-      <div class="cart-price">
-        <div class="price-left">优惠说明</div>
-        <div class="price-right right">小计￥73</div>
+      <div class="order-cart">
+        <div class="cart-title">527烧烤</div>
+        <div class="cart-content">
+          <div v-for="(item,index) in selectfoods"
+               :key="index"
+               class="content-item">
+            <div class="flex-1">
+              {{item.description}}
+            </div>
+            <div class="flex-1">
+              {{item.price}}/每份
+            </div>
+            <div class="flex-1">
+              {{item.count}}份
+            </div>
+          </div>
+        </div>
+        <div v-for="(item,index) in payList"
+             :key="index"
+             class="cart-sendpay">
+          <div>配送费</div>
+          <div class="right">￥5.6</div>
+        </div>
+        <div class="cart-price">
+          <div class="price-left">优惠说明</div>
+          <div class="price-right right">小计￥{{totalPrice}}</div>
+        </div>
+      </div>
+      <div class="remark">
+        <van-field v-model="message"
+                   rows="2"
+                   autosize
+                   label="留言"
+                   type="textarea"
+                   maxlength="50"
+                   placeholder="请输入留言"
+                   show-word-limit />
       </div>
     </div>
-    <div class="remark">
-      <van-field v-model="message"
-                 rows="2"
-                 autosize
-                 label="留言"
-                 type="textarea"
-                 maxlength="50"
-                 placeholder="请输入留言"
-                 show-word-limit />
-    </div>
+
     <van-submit-bar :price="3050"
                     button-text="提交订单"
                     button-type="info"
@@ -82,23 +85,25 @@ export default {
     return {
       fold: true,
       maskShow: false,
-      selectfoods: [{ name: 1 }, { name: 1 }, { name: 1 }],
+      selectfoods: [],
       id: this.$route.query.id,
       mes: {},
       payList: [],
       message: '',
       sheetshow: false,
-      actions: [{ name: '选项一' }, { name: '选项二' }, { name: '选项三' }]
+      actions: [{ name: '选项一' }, { name: '选项二' }, { name: '选项三' }],
+      address: '请选择收获地址',
+      totalPrice: 0
     }
   },
   computed: {
-    totalPrice () {
-      let total = 0
-      this.selectfoods.forEach((food) => {
-        total += food.price * food.count
-      })
-      return total
-    },
+    // totalPrice () {
+    //   let total = 0
+    //   this.selectfoods.forEach((food) => {
+    //     total += food.price * food.count
+    //   })
+    //   return total
+    // },
     totalCount () {
       let count = 0
       this.selectfoods.forEach((food) => {
@@ -126,10 +131,17 @@ export default {
       return show
     }
   },
-  created () {
-    // const data = this.$db.getDb('selectfoods')
-    // console.log(JSON.parse(data))
-    // this.selectfoods = JSON.parse(data)
+  activated () {
+    console.log(this.$db.getDb('order'))
+    if (this.$route.query.content) {
+      // const { addressDetail } = this.$route.query.content
+      this.address = this.$route.query.content
+    }
+    if (this.$db.getDb('order')) {
+      const { selectfoods, totalPrice } = this.$db.removeGetDb('order')
+      this.selectfoods = selectfoods
+      this.totalPrice = totalPrice
+    }
     this.queryById()
   },
   methods: {
@@ -155,8 +167,9 @@ export default {
   height: 100vh;
   overflow-x: hidden;
   overflow-y: auto;
-  display: flex;
-  flex-direction: column;
+  /deep/.van-submit-bar {
+    position: relative;
+  }
   /deep/.van-nav-bar {
     // z-index: 1;
     background-image: linear-gradient(90deg, #0af, #0085ff);

@@ -1,6 +1,7 @@
 <template>
   <div ref="goods"
-       class="goods">
+       class="goods"
+       :style="{ height:height}">
     <vheader :seller="seller" />
     <vtag class="tag"
           @tabs-click="tagclick" />
@@ -38,7 +39,8 @@ export default {
       showCom: true,
       loading: false,
       ulkey: 0,
-      currentIndex: 0
+      currentIndex: 0,
+      height: "93vh"
     }
   },
   computed: {
@@ -50,10 +52,13 @@ export default {
     tagclick (name) {
       let path
       if (name === 0) {
+        this.height = '93vh'
         path = '/goods/index'
       } else if (name === 1) {
+        this.height = '100vh'
         path = '/goods/ratings'
       } else if (name === 2) {
+        this.height = '100vh'
         path = '/goods/seller'
       }
       this.$router.push({ path })
@@ -107,7 +112,6 @@ export default {
 
 <style lang="scss" scoped>
 .goods {
-  height: 93vh;
   width: 100%;
   overflow-y: auto;
   overflow-x: hidden;

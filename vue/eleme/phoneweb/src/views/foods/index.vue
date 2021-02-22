@@ -1,5 +1,5 @@
 <template>
-  <div class="foods">
+  <div class="flexdir-column foods">
     <div class="goods-img">
       <van-swipe class="my-swipe"
                  :autoplay="3000"
@@ -32,29 +32,31 @@
          class="shoperrecommend">
       <shoperrecommend :goods="goods" />
     </div>
+
     <div class="goods-body">
-      <div ref="div"
-           class="manu-warpper">
-        <ul>
+      <scroll class="wrapper menu-warpper"
+              :pulldown="true">
+        <ul class="content">
           <li v-for="(a,index) in goods"
               :key="a.id"
               class="menu-item"
               :class="getMenuItemClass(index)"
               @click="selectMenu(index)">
-            <span class="manu-text">{{ a.name }}</span>
+            <span class="menu-text">{{ a.name }}</span>
           </li>
         </ul>
-      </div>
+      </scroll>
 
-      <div ref="f"
-           class="foods-warpper"
-           @scroll="foodsScroll">
+      <scroll ref="foodsscroll"
+              class="wrapper foods-warpper"
+              :pulldown="true"
+              @pulldown="pulldown">
         <ul>
           <li v-for="(a,index) in goods"
               :key="index"
               class="food-list food-list-hook">
             <h1 class="food-list-title">{{ a.name }}</h1>
-            <ul>
+            <ul class="content">
               <li v-for="(item,index) in a.foods"
                   :key="index"
                   class="food-item gradient-line line">
@@ -101,7 +103,8 @@
             </ul>
           </li>
         </ul>
-      </div>
+      </scroll>
+
     </div>
     <shopcar class="goods-shopcar"
              :selectfoods="selectfoods"
@@ -111,7 +114,6 @@
 </template>
 
 <script>
-import betterScroll from 'better-scroll'
 import shopcar from '@/components/shopcar'
 import cartcontrol from '@/components/cartcontrol'
 import shoperrecommend from '@/components/shoperRecommend'
@@ -134,8 +136,8 @@ export default {
   data () {
     return {
       // goods: [],
-      listHeight: [], // foods列表的高度
-      scrollY: 0, // 存储foods当前坐标
+      // listHeight: [], // foods列表的高度
+      // scrollY: 0, // 存储foods当前坐标
       showCom: true,
       loading: false,
       ulkey: 0,
@@ -158,19 +160,10 @@ export default {
     }
   },
   mounted () {
-    this.$nextTick(() => {
-      this._innitScroll()
-      this._calculateHeight()
-    })
   },
   methods: {
-    foodsScroll ($event) {
-      // console.log($event)
-    },
     getMenuItemClass (index) {
-      // console.log(index, this.currentIndex)
       if (index === this.currentIndex) {
-        // this.ulkey++
         return 'current'
       }
       return ''
@@ -181,48 +174,17 @@ export default {
     foodAdd ($event) {
       this.stepperChange($event)
     },
-    // 初始化scroll
-    _innitScroll () {
+    pulldown () {
       const goods = document.getElementsByClassName('goods')[0]
-      goods.scrollIntoView({ behavior: 'smooth' })
-      this.menuScroll = new betterScroll(this.$refs.div, { click: true, probeType: 3 })
-      this.foodScroll = new betterScroll(this.$refs.f, { click: true, probeType: 3 })
-      this.foodScroll.on('scroll', (pos) => {
-        this.scrollY = Math.abs(Math.round(pos.y))
-        // console.log(pos)
-        if (pos.y > 100) {
-          setTimeout(() => {
-            goods.scrollTop = 0
-          }, 500)
-        }
-        // if (pos.y >= 50) {
-        //   goods.scrollTop = 0
-        // }
-      })
-      this.foodScroll.scrollBy(0, -1)
-    },
-    // 计算右边高度
-    _calculateHeight () {
-      return new Promise((resolve, reject) => {
-        const foodList = this.$refs.f.getElementsByClassName('food-list-hook')
-        let height = 0
-        const arr = [0]
-        for (let i = 0; i < foodList.length; i++) {
-          const item = foodList[i]
-          height += item.clientHeight
-          arr.push(height)
-        }
-        this.listHeight = arr
-      })
+      setTimeout(() => {
+        goods.scrollTop = 0
+      }, 500)
     },
     selectMenu (index) {
       this.currentIndex = Number(index)
-      const foodList = this.$refs.f.getElementsByClassName('food-list-hook')
+      const foodList = document.getElementsByClassName('food-list-hook')
       const el = foodList[index]
-      this.foodScroll.scrollToElement(el, 300)
-      if (index === 0) {
-        this.foodScroll.scrollBy(0, -1)
-      }
+      this.$refs.foodsscroll.scroll.scrollToElement(el, 300)
     }
   }
 }
@@ -248,8 +210,9 @@ export default {
     // flex: 0;
     display: flex;
     overflow: hidden;
-    height: 93vh;
-    .manu-warpper {
+    // height: 93vh;
+    .menu-warpper {
+      // height: 93vh;
       flex: 1;
       // width: 120px;
       // position: relative;
@@ -257,6 +220,7 @@ export default {
       background-color: #f3f5f7;
     }
     .foods-warpper {
+      height: 93vh;
       flex: 4;
       font-size: 12px;
       // line-height: 12px;
@@ -336,7 +300,7 @@ export default {
   }
   .goods-shopcar {
     position: fixed;
-    // height: 7vh;
+    height: 7vh;
     z-index: 57;
     bottom: 0;
   }

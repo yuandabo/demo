@@ -128,6 +128,7 @@ export default {
   methods: {
     routerTo () {
       if (this.totalPrice >= this.minprice) {
+        this.$db.setDb('order', { selectfoods: this.selectfoods, totalPrice: this.totalPrice })
         this.$router.push({ path: '/order' })
       }
     },
@@ -257,6 +258,7 @@ export default {
   width: 100%;
   height: 48px;
   z-index: 50;
+  background-color: #f3f5f7;
 }
 .content {
   display: flex;

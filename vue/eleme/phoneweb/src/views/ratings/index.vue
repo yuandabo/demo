@@ -30,45 +30,51 @@
           </div>
         </div>
       </div>
-      <div class="content-bottom">
-        <div class="bottom-border"></div>
-        <div class="bottom-ratings">
-          <div class="bottom-ratings-all line gradient-line">
-            <span class="ratings-one"
-                  @click="type='0'">全部{{allcontents}}</span>
-            <span class="ratings-two"
-                  @click="type='1'">满意{{wellcontents.wellnum}}</span>
-            <span class="ratings-three"
-                  @click="type='2'">一般{{commoncontents.commonnum}}</span>
+      <div class="bottom-border"></div>
+      <scroll class="wrapper"
+              style="height:70vh;overflow: hidden;"
+              :data="computedRatings">
+        <div class="content">
+          <div class="content-bottom">
+            <!-- <div class="bottom-border"></div> -->
+            <div class="bottom-ratings">
+              <div class="bottom-ratings-all line gradient-line">
+                <span class="ratings-one"
+                      @click="type='0'">全部{{allcontents}}</span>
+                <span class="ratings-two"
+                      @click="type='1'">满意{{wellcontents.wellnum}}</span>
+                <span class="ratings-three"
+                      @click="type='2'">一般{{commoncontents.commonnum}}</span>
+              </div>
+              <div class="select-ratings">
+                <van-checkbox v-model="checked">只看有内容的评价</van-checkbox>
+              </div>
+            </div>
           </div>
-          <div class="select-ratings">
-            <van-switch v-model="checked"
-                        size="12px" />只看有内容的评价
+          <div class="rating-text">
+            <ul>
+              <li class="rating-text-li gradient-line line"
+                  v-for="(item,index) in computedRatings"
+                  :key="index">
+                <div class="rating-text-li-left">
+                  <img class="rating-text-li-left-avatar"
+                       :src="item.avatar"
+                       width="28"
+                       height="28" />
+                </div>
+                <div class="rating-text-li-right">
+                  <div class="rating-text-li-right-name">{{item.username}}</div>
+                  <star :size="24"
+                        :score="item.score"
+                        class="rating-text-li-right-star"></star>
+                  <div class="rating-text-li-right-text">{{item.text}}</div>
+                  <div class="rating-text-li-right-time">{{item.rateTime}}</div>
+                </div>
+              </li>
+            </ul>
           </div>
         </div>
-      </div>
-      <div class="rating-text">
-        <ul>
-          <li class="rating-text-li gradient-line line"
-              v-for="(item,index) in computedRatings"
-              :key="index">
-            <div class="rating-text-li-left">
-              <img class="rating-text-li-left-avatar"
-                   :src="item.avatar"
-                   width="28"
-                   height="28" />
-            </div>
-            <div class="rating-text-li-right">
-              <div class="rating-text-li-right-name">{{item.username}}</div>
-              <star :size="24"
-                    :score="item.score"
-                    class="rating-text-li-right-star"></star>
-              <div class="rating-text-li-right-text">{{item.text}}</div>
-              <div class="rating-text-li-right-time">{{item.rateTime}}</div>
-            </div>
-          </li>
-        </ul>
-      </div>
+      </scroll>
     </div>
   </div>
 </template>
@@ -95,7 +101,10 @@ export default {
         { avatar: 'img/kobe.png', username: 'yuandabo', score: 0, text: '非常不好', rateTime: '20200829' },
         { avatar: 'img/kobe.png', username: 'yuandabo', score: 5, text: '非常好', rateTime: '20200829' },
         { avatar: 'img/kobe.png', username: 'yuandabo', score: 3, text: '一般般', rateTime: '20200829' },
-        { avatar: 'img/kobe.png', username: 'yuandabo', score: 3, text: '', rateTime: '20200829' }
+        { avatar: 'img/kobe.png', username: 'yuandabo', score: 3, text: '', rateTime: '20200829' },
+        { avatar: 'img/kobe.png', username: 'yuandabo', score: 0, text: '非常不好', rateTime: '20200829' },
+        { avatar: 'img/kobe.png', username: 'yuandabo', score: 5, text: '非常好', rateTime: '20200829' },
+        { avatar: 'img/kobe.png', username: 'yuandabo', score: 3, text: '一般般', rateTime: '20200829' }
       ],
       onlyhascontents: false,
       type: '0',
@@ -135,6 +144,11 @@ export default {
 
   },
   methods: {
+    // onlyViewHasContent () {
+    //   console.log(123)
+    //   this.checked = !this.checked
+    //   console.log(this.checked)
+    // },
     /**
      * @description:  0 全部 1 
      * @param {*}
@@ -301,7 +315,7 @@ export default {
 .select-ratings {
   padding: 10px 18px;
   width: 100%;
-  height: 40px;
+  // height: 40px;
   border-bottom: 1px solid rgba(7, 17, 27, 0.1);
 }
 // .select-ratings-span {
