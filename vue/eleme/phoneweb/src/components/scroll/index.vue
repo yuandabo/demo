@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-02-22 15:07:02
- * @LastEditTime: 2021-02-22 15:27:22
+ * @LastEditTime: 2021-02-25 11:47:47
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \demo\vue\eleme\phoneweb\src\layout\scroll\index.vue
@@ -91,7 +91,7 @@ export default {
     // 保证在DOM渲染完毕后初始化better-scroll
     setTimeout(() => {
       this._initScroll()
-    }, 20)
+    }, 200)
   },
   methods: {
     _initScroll () {

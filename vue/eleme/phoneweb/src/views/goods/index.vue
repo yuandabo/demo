@@ -40,7 +40,8 @@ export default {
       loading: false,
       ulkey: 0,
       currentIndex: 0,
-      height: "93vh"
+      height: "93vh",
+      value: ""
     }
   },
   computed: {

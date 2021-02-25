@@ -32,7 +32,7 @@
          class="shoperrecommend">
       <shoperrecommend :goods="goods" />
     </div>
-
+    <van-divider />
     <div class="goods-body">
       <scroll class="wrapper menu-warpper"
               :pulldown="true">
@@ -56,7 +56,7 @@
               :key="index"
               class="food-list food-list-hook">
             <h1 class="food-list-title">{{ a.name }}</h1>
-            <ul class="content">
+            <ul>
               <li v-for="(item,index) in a.foods"
                   :key="index"
                   class="food-item gradient-line line">
@@ -117,7 +117,7 @@
 import shopcar from '@/components/shopcar'
 import cartcontrol from '@/components/cartcontrol'
 import shoperrecommend from '@/components/shoperRecommend'
-import mixins from './mixins'
+import mixins from '@/mixins/cartcontrol'
 export default {
   components: {
     shopcar,

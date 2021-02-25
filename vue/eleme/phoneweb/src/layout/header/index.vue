@@ -1,5 +1,15 @@
 <template>
   <div class="header">
+    <!-- <van-search v-model="value"
+                placeholder="请输入搜索关键词" /> -->
+    <van-nav-bar :border="false">
+      <template #right>
+        <van-icon name="search"
+                  size="18"
+                  color="#ffffff"
+                  @click="$router.push('/search')" />
+      </template>
+    </van-nav-bar>
     <div class="content-warpper">
       <div class="avatar">
         <div class="img">
@@ -128,6 +138,18 @@ export default {
   // overflow: hidden;
   /deep/ .van-image__img {
     border-radius: 10px;
+  }
+  /deep/ .van-nav-bar {
+    width: 100vw;
+    background-color: unset;
+    position: absolute;
+    z-index: 10;
+  }
+  /deep/ .van-search__content {
+    border-radius: 20px;
+  }
+  /deep/ .van-search .van-cell {
+    padding: 0px 8px 0 0;
   }
 }
 .content-warpper {

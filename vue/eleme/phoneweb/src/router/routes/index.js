@@ -4,6 +4,7 @@ import seller from '@/views/seller'
 import order from '@/views/order'
 import foods from '@/views/foods'
 import address from '@/views/addressChoose'
+import search from '@/views/search'
 export const routes =
   [
     {
@@ -40,5 +41,10 @@ export const routes =
       path: '/address',
       name: 'address',
       component: address
+    },
+    {
+      path: '/search',
+      name: 'search',
+      component: search
     }
   ]
