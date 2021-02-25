@@ -3,10 +3,11 @@
     <div class="shoperRecommend-word-warpper">
       <span class="shoperRecommend-word">商家推荐</span>
     </div>
-
-    <div class="shoperRecommend-img-warrper"
-         ref="siscroll"
-         @click="changeImgPos()">
+    <scroll ref="siscroll"
+            class="wrapper shoperRecommend-img-warrper"
+            :pulldown="true"
+            :scrollX="true"
+            @click="changeImgPos()">
       <ul class="shoperRecommend-img-ul">
         <li class="shoperRecommend-img-item">
           <div class="shoperRecommend-img">
@@ -81,13 +82,13 @@
           </div>
         </li>
       </ul>
-    </div>
+    </scroll>
   </div>
 </template>
 
 <script>
 
-import betterScroll from 'better-scroll'
+// import betterScroll from 'better-scroll'
 import cartcontrol from '@/components/cartcontrol'
 export default {
   props: {
@@ -96,21 +97,21 @@ export default {
     }
   },
   mounted () {
-    this.initImgScroll()
+    // this.initImgScroll()
   },
   methods: {
 
-    initImgScroll () {
+    // initImgScroll () {
 
-      let imgScroll = new betterScroll(this.$refs.siscroll, {
-        startX: 0,
-        click: true,
-        scrollX: true,
-        scrollY: false,
-        eventPassthrough: 'vertical',
-        scroll: true
-      })
-    },
+    //   let imgScroll = new betterScroll(this.$refs.siscroll, {
+    //     startX: 0,
+    //     click: true,
+    //     scrollX: true,
+    //     scrollY: false,
+    //     eventPassthrough: 'vertical',
+    //     scroll: true
+    //   })
+    // },
     changeImgPos () {
       console.log('123213')
       this.$emit('dosomenthing')
@@ -128,10 +129,10 @@ export default {
   height: 30px;
   line-height: 30px;
   width: 100%;
-  box-sizing: border-box;
+  /* box-sizing: border-box; */
   font-size: 14px;
   margin-left: 10px;
-  font-weight: 600;
+  /* font-weight: 600; */
 }
 .shoperRecommend-word {
   display: inline-block;

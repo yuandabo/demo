@@ -2,7 +2,20 @@ export {
   Button,
   Toast,
   Loading,
-  Radio,
+  Popup,
+  Skeleton,
+  Icon,
+  Image as VanImage,
+  Tab, Tabs,
+  NavBar,
+  SubmitBar,
+  Field,
+  AddressEdit,
+  ActionSheet,
+  Swipe, SwipeItem,
+  Switch,
   RadioGroup,
-  Switch
-} from 'vant';
+  Radio,
+  Checkbox,
+  CheckboxGroup
+} from 'vant'

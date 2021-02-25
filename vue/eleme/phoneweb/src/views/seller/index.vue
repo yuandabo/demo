@@ -1,65 +1,70 @@
 <template>
-  <div ref="div"
-       class="seller">
-    <div class="seller-img">
-      <van-image width="100vw"
-                 height="90"
-                 :src="'https://cube.elemecdn.com/2/14/7059f0fe8c3eb2c691a595ef7f734png.png?x-oss-process=image/format,webp/resize,w_686'">
-        <template v-slot:error>
+  <div>
+    <scroll ref="div"
+            class="wrapper seller"
+            :pulldown="true">
+      <div class="content">
+        <div class="seller-img">
           <van-image width="100vw"
                      height="90"
-                     src="https://cube.elemecdn.com/2/14/7059f0fe8c3eb2c691a595ef7f734png.png?x-oss-process=image/format,webp/resize,w_686" />
-        </template>
-      </van-image>
-      <div class="img-title">
-        品牌故事|欢迎光临
-      </div>
-      <div class="img-text">
-        我们是源自长沙
-      </div>
-    </div>
-    <div class="seller-card">
-      <div class="card-title">
-        <div class="title-left">
-          <div class="title-name">茶颜悦色（仰天湖）</div>
-          <div class="title-address">湖南省长沙市天心区</div>
+                     :src="'https://cube.elemecdn.com/2/14/7059f0fe8c3eb2c691a595ef7f734png.png?x-oss-process=image/format,webp/resize,w_686'">
+            <template v-slot:error>
+              <van-image width="100vw"
+                         height="90"
+                         src="https://cube.elemecdn.com/2/14/7059f0fe8c3eb2c691a595ef7f734png.png?x-oss-process=image/format,webp/resize,w_686" />
+            </template>
+          </van-image>
+          <div class="img-title">
+            品牌故事|欢迎光临
+          </div>
+          <div class="img-text">
+            我们是源自长沙
+          </div>
         </div>
-        <div class="title-right">
-          <van-icon name="phone-o"
-                    color="#1989fa"
-                    size="40" />
-        </div>
-      </div>
-      <div class="card-photo">
-        <van-image width="80px"
-                   height="80px"
-                   src="/img/jordan.png">
-          <template v-slot:error>
+        <div class="seller-card">
+          <div class="card-title">
+            <div class="title-left">
+              <div class="title-name">茶颜悦色（仰天湖）</div>
+              <div class="title-address">湖南省长沙市天心区</div>
+            </div>
+            <div class="title-right">
+              <van-icon name="phone-o"
+                        color="#1989fa"
+                        size="40" />
+            </div>
+          </div>
+          <div class="card-photo">
             <van-image width="80px"
                        height="80px"
-                       src="/img/jordan.png" />
-          </template>
-        </van-image>
-        <van-image width="80px"
-                   height="80px"
-                   src="/img/jordan.png">
-          <template v-slot:error>
+                       src="/img/jordan.png">
+              <template v-slot:error>
+                <van-image width="80px"
+                           height="80px"
+                           src="/img/jordan.png" />
+              </template>
+            </van-image>
             <van-image width="80px"
                        height="80px"
-                       src="/img/jordan.png" />
-          </template>
-        </van-image>
+                       src="/img/jordan.png">
+              <template v-slot:error>
+                <van-image width="80px"
+                           height="80px"
+                           src="/img/jordan.png" />
+              </template>
+            </van-image>
+          </div>
+          <div class="card-info">
+            <div class="info-name">商家类型</div>
+            <div class="info-address">商家品类：奶茶果汁<br>营业时间：10：00-22：30</div>
+          </div>
+          <van-button plain
+                      type="info"
+                      size="mini"
+                      style="padding:10px"
+                      color="#999">查看营业资质</van-button>
+        </div>
       </div>
-      <div class="card-info">
-        <div class="info-name">商家类型</div>
-        <div class="info-address">商家品类：奶茶果汁<br>营业时间：10：00-22：30</div>
-      </div>
-      <van-button plain
-                  type="info"
-                  size="mini"
-                  style="padding:10px"
-                  color="#999">查看营业资质</van-button>
-    </div>
+    </scroll>
   </div>
 </template>
 
@@ -76,19 +81,10 @@ export default {
     }
   },
   watch: {
-    seller: function () {
-      this._innitScroll()
-    }
   },
   mounted () {
-    this.$nextTick(() => {
-      this._innitScroll()
-    })
   },
   methods: {
-    _innitScroll () {
-      this.sellerScroll = new betterScroll(this.$refs.div, {})
-    }
   }
 }
 </script>
