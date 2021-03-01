@@ -215,7 +215,7 @@ export default {
 .content-top {
   display: flex;
   padding: 18px 0;
-  font-weight: 700;
+  font-weight: 500;
 }
 .content-left {
   flex: 0 0 137px;
@@ -358,7 +358,7 @@ export default {
   line-height: 18px;
   font-size: 12px;
   color: rgb(7, 17, 27);
-  font-weight: 700;
+  font-weight: 500;
 }
 .rating-text-li-right-time {
   position: absolute;

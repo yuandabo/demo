@@ -201,7 +201,7 @@ export default {
   margin-left: 6px;
   font-size: 16px;
   line-height: 18px;
-  font-weight: bold;
+  font-weight: 500;
   color: #333333;
 }
 .description {
@@ -358,7 +358,7 @@ export default {
 .content-text {
   padding: 0 12px;
   font-size: 14px;
-  font-weight: bold;
+  font-weight: 500;
 }
 .supports-content-icon {
   display: inline-block;

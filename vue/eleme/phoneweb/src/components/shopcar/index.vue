@@ -285,7 +285,7 @@ export default {
   width: 100%;
   border-radius: 30px;
   color: #ffffff;
-  font-weight: 700;
+  font-weight: 500;
   background-color: #acacac;
 }
 .shopcar-list-content-div {
@@ -316,7 +316,7 @@ export default {
   text-align: center;
   border-radius: 16px;
   font-size: 9px;
-  font-weight: 700;
+  font-weight: 500;
   color: #fff;
   background-color: rgb(240, 20, 20);
   box-shadow: 0 4px 8px 9 rgba(0, 0, 0, 0.4);
@@ -330,7 +330,7 @@ export default {
   box-sizing: border-box;
   border-right: 1px solid rgba(255, 255, 255, 0.1);
   font-size: 16px;
-  font-weight: 700;
+  font-weight: 500;
   color: rgba(0, 0, 0, 0.4);
 }
 .post-money {
@@ -464,7 +464,7 @@ export default {
   // right: 90px;
   // bottom: 12px;
   font-size: 14px;
-  font-weight: 700;
+  font-weight: 500;
   color: rgb(240, 20, 20);
 }
 .shopcar-control {

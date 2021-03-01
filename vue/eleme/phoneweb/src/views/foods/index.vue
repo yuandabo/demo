@@ -1,12 +1,12 @@
 <template>
   <div class="flexdir-column foods">
+
     <div class="goods-img">
       <van-swipe class="my-swipe"
-                 :autoplay="3000"
+                 :autoplay="10000"
                  indicator-color="white">
         <van-swipe-item>
-          <van-image width="99vw"
-                     height="90"
+          <van-image height="90"
                      :src="'https://cube.elemecdn.com/2/14/7059f0fe8c3eb2c691a595ef7f734png.png?x-oss-process=image/format,webp/resize,w_686'">
             <template v-slot:error>
               <van-image width="100vw"
@@ -16,8 +16,7 @@
           </van-image>
         </van-swipe-item>
         <van-swipe-item>
-          <van-image width="99vw"
-                     height="90"
+          <van-image height="90"
                      :src="'https://cube.elemecdn.com/2/14/7059f0fe8c3eb2c691a595ef7f734png.png?x-oss-process=image/format,webp/resize,w_686'">
             <template v-slot:error>
               <van-image width="100vw"
@@ -116,7 +115,7 @@
 <script>
 import shopcar from '@/components/shopcar'
 import cartcontrol from '@/components/cartcontrol'
-import shoperrecommend from '@/components/shoperRecommend'
+import shoperrecommend from '@/views/shoperRecommend'
 import mixins from '@/mixins/cartcontrol'
 export default {
   components: {
@@ -194,17 +193,16 @@ export default {
 .foods {
   background: #fff;
   .goods-img {
+    margin: 10px 0 5px 0;
+    padding: 0px 5px;
     /deep/.van-image {
       display: flex;
       justify-content: center;
     }
     /deep/.van-image__img {
-      width: 90%;
-      border-radius: 20px;
+      // width: 90%;
+      border-radius: 5px;
     }
-    // display: flex;
-    // justify-content: center;
-    margin: 8px 0;
   }
   .goods-body {
     // flex: 0;
@@ -268,7 +266,7 @@ export default {
               margin-bottom: 18px;
               .foods-price {
                 flex: 1;
-                // font-weight: 700;
+                // font-weight: 500;
                 // line-height: 24px;
                 .foods-price-now {
                   margin-right: 8px;
@@ -380,7 +378,7 @@ export default {
 
   .current {
     background-color: #ffffff;
-    font-weight: 700;
+    font-weight: 500;
     z-index: 10;
   }
   .my-swipe .van-swipe-item {

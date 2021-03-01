@@ -200,7 +200,7 @@ export default {
           align-items: center;
           .foods-price {
             flex: 1;
-            // font-weight: 700;
+            // font-weight: 500;
             // line-height: 24px;
             .foods-price-now {
               margin-right: 8px;
