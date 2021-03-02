@@ -5,6 +5,7 @@ import order from '@/views/order'
 import foods from '@/views/foods'
 import address from '@/views/addressChoose'
 import search from '@/views/search'
+import recommendDetails from '@/views/recommendDetails'
 export const routes =
   [
     {
@@ -46,5 +47,10 @@ export const routes =
       path: '/search',
       name: 'search',
       component: search
+    },
+    {
+      path: '/recommendDetails',
+      name: 'recommendDetails',
+      component: recommendDetails
     }
   ]

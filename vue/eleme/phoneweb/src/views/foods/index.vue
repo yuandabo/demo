@@ -51,6 +51,11 @@
               :pulldown="true"
               @pulldown="pulldown">
         <ul>
+          <div class="flexdir-align foods-warpper-topWords"
+               style="justify-content: center;">
+            上拉回到顶部
+            <van-icon name="back-top" />
+          </div>
           <li v-for="(a,index) in goods"
               :key="index"
               class="food-list food-list-hook">
@@ -225,6 +230,13 @@ export default {
       // position: relative;
       // top: 0px;
       // left: 0;
+      .foods-warpper-topWords {
+        position: absolute;
+        width: 100%;
+        // padding: 20px;
+        box-sizing: border-box;
+        transform: translateY(-100%) translateZ(0);
+      }
       .food-list {
         .food-list-title {
           padding-left: 14px;

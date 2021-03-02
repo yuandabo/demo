@@ -130,6 +130,7 @@ export default {
       // if (this.$mode) {
       axios('./data.json')
         .then((res) => {
+          console.log('res', res)
           this.goods = res.data.goods
           this.seller = res.data.seller
         })

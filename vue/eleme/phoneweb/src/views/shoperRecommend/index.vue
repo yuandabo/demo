@@ -1,7 +1,8 @@
 <template>
   <div>
     <van-divider />
-    <div class="shoperRecommend-word-warpper">
+    <div class="shoperRecommend-word-warpper"
+         @click="$router.push('/recommendDetails')">
       <span class="shoperRecommend-word">商家推荐</span>
       <span class="flexdir-align shoperRecommend-icon">
         <van-icon name="arrow" />
