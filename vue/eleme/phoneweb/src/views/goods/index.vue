@@ -1,11 +1,13 @@
 <template>
   <div ref="goods"
        class="goods"
-       :style="{ height:height}">
+       :style="{ height:height}"
+       @scroll="scroll">
     <vheader :seller="seller" />
     <vtag class="tag"
           @tabs-click="tagclick" />
-    <router-view :goods="goods"
+    <router-view ref="router"
+                 :goods="goods"
                  :seller="seller" />
   </div>
 </template>
@@ -15,6 +17,7 @@ import axios from 'axios'
 import vheader from '@/layout/header'
 import vtag from '@/layout/tag'
 import { getAll } from '@/api/send'
+import { debounce } from '@/utils'
 import mixins from './mixins'
 export default {
   name: 'goods',
@@ -50,6 +53,9 @@ export default {
     this.getAll()
   },
   methods: {
+    scroll () {
+      this.$refs.router.computedTop()
+    },
     tagclick (name) {
       let path
       if (name === 0) {

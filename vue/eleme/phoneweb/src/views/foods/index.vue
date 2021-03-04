@@ -1,6 +1,5 @@
 <template>
   <div class="flexdir-column foods">
-
     <div class="goods-img">
       <van-swipe class="my-swipe"
                  :autoplay="10000"
@@ -49,11 +48,16 @@
       <scroll ref="foodsscroll"
               class="wrapper foods-warpper"
               :pulldown="true"
-              @pulldown="pulldown">
-        <ul>
+              :listenScroll="true"
+              :topInit="true"
+              :top="top"
+              :probeType="3"
+              @pulldown="pulldown"
+              @scroll="foodsScroll">
+        <ul class="relative">
           <div class="flexdir-align foods-warpper-topWords"
                style="justify-content: center;">
-            上拉回到顶部
+            继续上拉回到顶部
             <van-icon name="back-top" />
           </div>
           <li v-for="(a,index) in goods"
@@ -65,9 +69,6 @@
                   :key="index"
                   class="food-item gradient-line line">
                 <div class="foods-image">
-                  <!-- <img width="90px"
-                       height="90px"
-                       :src="item.image" /> -->
                   <van-image class="imgdom"
                              width="90px"
                              height="90px"
@@ -82,7 +83,7 @@
                 </div>
                 <span class="foods-content">
                   <h1 class="foods-content-name">{{ item.name }}</h1>
-                  <div class="foods-content-desc">{{ item.description||'暂无介绍' }}</div>
+                  <div class="singleTextOverflow foods-content-desc">原料：{{ item.description }}</div>
                   <div class="foods-content-extra">
                     <span>月售{{ item.sellCount||0 }}</span>
                     <!-- <span>好评率{{item.rating}}%</span> -->
@@ -145,7 +146,8 @@ export default {
       showCom: true,
       loading: false,
       ulkey: 0,
-      currentIndex: 0
+      currentIndex: 0,
+      top: false
     }
   },
   computed: {
@@ -161,11 +163,72 @@ export default {
         })
         return foods
       }
+    },
+    /**
+     * @description: 计算当前视频栏分类高度 用于联动左侧分类栏
+     */
+    FOODSLENGTHLIST () {
+      const arr = [0]
+      this.goods.forEach((v, index) => {
+        let val = 0
+        if (index === 0) {
+          val = v.foods.length * 140 + 26
+        } else {
+          val = v.foods.length * 140 + arr[index] + 26
+        }
+        arr.push(val)
+      })
+      return arr
+    }
+  },
+  watch: {
+    top: (val) => {
+      console.log(val)
     }
   },
   mounted () {
   },
   methods: {
+    computedTop () {
+      const goodBody = document.getElementsByClassName('goods-body')[0]
+      if (goodBody) {
+        const top = goodBody.getBoundingClientRect().top
+        if (top === 0) {
+          this.top = true
+          this.$nextTick(() => {
+            this.$refs.foodsscroll._initScroll()
+          })
+        }
+      }
+    },
+    /**
+     * @description: 食品栏滚动事件
+     * @param {*}  pos 
+     * @return {*}
+     */
+    foodsScroll (pos) {
+      const y = Math.abs(pos.y)
+      const array = this.FOODSLENGTHLIST
+      let postionsIndex = 0
+      if (array.indexOf(y) !== -1) {
+        this.currentIndex = array.indexOf(y)
+        return
+      }
+      for (let index = 0; index < array.length; index++) {
+        const element = array[index];
+        if (y === 0) {
+          postionsIndex = 0
+          break
+        }
+        if (index > 0) {
+          if (y > element && y < array[index + 1]) {
+            postionsIndex = index
+            break
+          }
+        }
+      }
+      this.currentIndex = postionsIndex
+    },
     getMenuItemClass (index) {
       if (index === this.currentIndex) {
         return 'current'
@@ -188,6 +251,13 @@ export default {
       this.currentIndex = Number(index)
       const foodList = document.getElementsByClassName('food-list-hook')
       const el = foodList[index]
+      if (!this.$refs.foodsscroll.scroll) {
+        this.$nextTick(() => {
+          this.$refs.foodsscroll._initScroll()
+          this.$refs.foodsscroll.scroll.scrollToElement(el, 300)
+        })
+        return
+      }
       this.$refs.foodsscroll.scroll.scrollToElement(el, 300)
     }
   }
@@ -266,9 +336,9 @@ export default {
               color: rgb(0, 0, 0);
             }
             .foods-content-desc {
+              width: 120px;
               margin-bottom: 15px;
               font-size: 12px;
-              // line-height: 10px;
               color: rgb(59, 60, 61);
             }
             .food-priAndcar {

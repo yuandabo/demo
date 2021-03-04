@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-02-22 15:07:02
- * @LastEditTime: 2021-02-25 11:47:47
+ * @LastEditTime: 2021-03-05 00:41:40
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \demo\vue\eleme\phoneweb\src\layout\scroll\index.vue
@@ -80,11 +80,24 @@ export default {
     refreshDelay: {
       type: Number,
       default: 20
+    },
+    topInit: {
+      type: Boolean,
+      default: true
+    },
+    top: {
+      type: Boolean,
+      default: false
     }
   },
   data () {
     return {
       scroll: null
+    }
+  },
+  watch: {
+    top: (val) => {
+      console.log(val)
     }
   },
   mounted () {
@@ -96,6 +109,9 @@ export default {
   methods: {
     _initScroll () {
       if (!this.$refs.wrapper) {
+        return
+      }
+      if (this.topInit && !this.top) {
         return
       }
       // better-scroll的初始化

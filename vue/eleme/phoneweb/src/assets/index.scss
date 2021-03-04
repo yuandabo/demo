@@ -6,6 +6,13 @@ h1 {
   font-weight: 500;
 }
 
-.realative{
+.relative{
   position: relative;
+}
+
+// 单行内容超出显示...
+.singleTextOverflow{
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
