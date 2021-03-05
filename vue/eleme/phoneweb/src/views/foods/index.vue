@@ -48,10 +48,10 @@
       <scroll ref="foodsscroll"
               class="wrapper foods-warpper"
               :pulldown="true"
-              :listenScroll="true"
-              :topInit="true"
+              :listen-scroll="true"
+              :top-init="true"
               :top="top"
-              :probeType="3"
+              :probe-type="3"
               @pulldown="pulldown"
               @scroll="foodsScroll">
         <ul class="relative">
@@ -67,7 +67,8 @@
             <ul>
               <li v-for="(item,index) in a.foods"
                   :key="index"
-                  class="food-item gradient-line line">
+                  class="food-item gradient-line line"
+                  @click="goToFoodDetails(item)">
                 <div class="foods-image">
                   <van-image class="imgdom"
                              width="90px"
@@ -123,7 +124,9 @@ import shopcar from '@/components/shopcar'
 import cartcontrol from '@/components/cartcontrol'
 import shoperrecommend from '@/views/shoperRecommend'
 import mixins from '@/mixins/cartcontrol'
+import { mapGetters } from 'vuex'
 export default {
+  name: 'foods',
   components: {
     shopcar,
     cartcontrol,
@@ -131,9 +134,9 @@ export default {
   },
   mixins: [mixins],
   props: {
-    goods: {
-      type: Array
-    },
+    // goods: {
+    //   type: Array
+    // },
     seller: {
       type: Object
     }
@@ -151,6 +154,12 @@ export default {
     }
   },
   computed: {
+    ...mapGetters([
+      'shopCarData'
+    ]),
+    goods () {
+      return this.shopCarData
+    },
     selectfoods: {
       get: function () {
         const foods = []
@@ -181,14 +190,17 @@ export default {
       return arr
     }
   },
-  watch: {
-    top: (val) => {
-      console.log(val)
-    }
-  },
+  // watch: {
+  //   top: (val) => {
+  //     console.log(val)
+  //   }
+  // },
   mounted () {
   },
   methods: {
+    goToFoodDetails (item) {
+      this.$router.push({ name: 'foodsDetails', params: { details: item } })
+    },
     computedTop () {
       const goodBody = document.getElementsByClassName('goods-body')[0]
       if (goodBody) {
@@ -203,7 +215,7 @@ export default {
     },
     /**
      * @description: 食品栏滚动事件
-     * @param {*}  pos 
+     * @param {*}  pos
      * @return {*}
      */
     foodsScroll (pos) {
@@ -215,7 +227,7 @@ export default {
         return
       }
       for (let index = 0; index < array.length; index++) {
-        const element = array[index];
+        const element = array[index]
         if (y === 0) {
           postionsIndex = 0
           break
@@ -248,6 +260,7 @@ export default {
       }, 500)
     },
     selectMenu (index) {
+      this.top = true
       this.currentIndex = Number(index)
       const foodList = document.getElementsByClassName('food-list-hook')
       const el = foodList[index]

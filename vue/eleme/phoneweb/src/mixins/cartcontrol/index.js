@@ -1,4 +1,11 @@
+import { mapGetters } from 'vuex'
+import store from '@/store'
 export default {
+  computed: {
+    ...mapGetters([
+      'shopCarData'
+    ])
+  },
   methods: {
     /**
      * 获取小数点后数字数量，整数返回0
@@ -18,7 +25,7 @@ export default {
      * @param {*} numberSize 步长器，现只支持加减算法，传入1为加1，-1为减一
      */
     stepperChange ({ id }, numberSize = 1) {
-      const goods = this.goods
+      const goods = this.shopCarData
       let quantities
       // id
       for (let i = 0, length = goods.length; i < length; i++) {
@@ -45,7 +52,7 @@ export default {
           }
         }
       }
+      store.commit('app/shopcar/shopCarDataSet', goods)
     }
-
   }
 }

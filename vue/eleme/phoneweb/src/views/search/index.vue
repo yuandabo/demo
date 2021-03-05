@@ -71,6 +71,7 @@ import axios from 'axios'
 import mixins from '@/mixins/cartcontrol'
 import cartcontrol from '@/components/cartcontrol'
 import shopcar from '@/components/shopcar'
+import { mapGetters } from 'vuex'
 export default {
   components: {
     cartcontrol,
@@ -79,12 +80,17 @@ export default {
   mixins: [mixins],
   data () {
     return {
-      goods: [],
       value: '',
       seller: {}
     }
   },
   computed: {
+    ...mapGetters([
+      'shopCarData'
+    ]),
+    goods () {
+      return this.shopCarData
+    },
     foods: {
       get () {
         let arr = []
@@ -98,7 +104,6 @@ export default {
       set (val) {
         this.goods.forEach((v) => { v.foods = v.foods.filter((item) => item.name.indexOf(val) !== -1) })
       }
-
     },
     selectfoods: {
       get: function () {
@@ -113,7 +118,7 @@ export default {
     }
   },
   created () {
-    this.getAll()
+    // this.getAll()
   },
   methods: {
     search () {
@@ -130,7 +135,7 @@ export default {
       // if (this.$mode) {
       axios('./data.json')
         .then((res) => {
-          this.goods = res.data.goods
+          // this.goods = res.data.goods
           this.seller = res.data.seller
         })
       // } else {

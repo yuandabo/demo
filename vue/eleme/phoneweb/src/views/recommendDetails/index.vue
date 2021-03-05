@@ -71,6 +71,8 @@ import axios from 'axios'
 import mixins from '@/mixins/cartcontrol'
 import cartcontrol from '@/components/cartcontrol'
 import shopcar from '@/components/shopcar'
+import { mapGetters } from 'vuex'
+import store from '@/store'
 export default {
   components: {
     cartcontrol,
@@ -79,12 +81,17 @@ export default {
   mixins: [mixins],
   data () {
     return {
-      goods: [],
       value: '',
       seller: {}
     }
   },
   computed: {
+    ...mapGetters([
+      'shopCarData'
+    ]),
+    goods () {
+      return this.shopCarData
+    },
     foods: {
       get () {
         let arr = []
@@ -98,7 +105,6 @@ export default {
       set (val) {
         this.goods.forEach((v) => { v.foods = v.foods.filter((item) => item.name.indexOf(val) !== -1) })
       }
-
     },
     selectfoods: {
       get: function () {
@@ -113,25 +119,24 @@ export default {
     }
   },
   created () {
-    this.getAll()
+    // this.getAll()
   },
   methods: {
     search () {
       this.foods = this.value
     },
     foodDec ($event) {
-      this.stepperChange($event, -1)
+      store.commit('app/shopcar/changeOneData', { id: $event.id, numberSize: -1 })
     },
     foodAdd ($event) {
-      this.stepperChange($event)
+      store.commit('app/shopcar/changeOneData', { id: $event.id })
     },
     // 获取后台数据
     async getAll () {
       // if (this.$mode) {
       axios('./data.json')
         .then((res) => {
-          console.log('res', res)
-          this.goods = res.data.goods
+          // this.goods = res.data.goods
           this.seller = res.data.seller
         })
       // } else {

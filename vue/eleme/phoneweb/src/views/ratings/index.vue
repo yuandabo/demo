@@ -1,12 +1,12 @@
 <template>
-  <div class="ratings"
-       ref="div">
+  <div ref="div"
+       class="ratings">
     <div class="ratings-content">
       <div class="content-top">
         <div class="content-left">
-          <h1 class="score">{{seller.score}}</h1>
+          <h1 class="score">{{ seller.score }}</h1>
           <div class="title">综合评分</div>
-          <div class="rank">高于周围商家{{seller.rankRate}}</div>
+          <div class="rank">高于周围商家{{ seller.rankRate }}</div>
         </div>
 
         <div class="content-right">
@@ -14,23 +14,23 @@
             <span class="score-wrapper-title">服务态度</span>
             <star :size="36"
                   :score="seller.serviceScore"
-                  class="star"></star>
-            <span class="score-wrapper-score">{{seller.serviceScore}}</span>
+                  class="star" />
+            <span class="score-wrapper-score">{{ seller.serviceScore }}</span>
           </div>
           <div class="score-wrapper">
             <span class="score-wrapper-title">商品评分</span>
             <star :size="36"
                   :score="seller.foodScore"
-                  class="star"></star>
-            <span class="score-wrapper-score">{{seller.foodScore}}</span>
+                  class="star" />
+            <span class="score-wrapper-score">{{ seller.foodScore }}</span>
           </div>
           <div class="delivery-wrapper">
             <span class="delivery-wrapper-title">送达时间</span>
-            <span class="delivery">{{seller.deliveryTime}}分钟</span>
+            <span class="delivery">{{ seller.deliveryTime }}分钟</span>
           </div>
         </div>
       </div>
-      <div class="bottom-border"></div>
+      <div class="bottom-border" />
       <scroll class="wrapper"
               style="height:70vh;overflow: hidden;"
               :data="computedRatings">
@@ -40,11 +40,11 @@
             <div class="bottom-ratings">
               <div class="bottom-ratings-all line gradient-line">
                 <span class="ratings-one"
-                      @click="type='0'">全部{{allcontents}}</span>
+                      @click="type='0'">全部{{ allcontents }}</span>
                 <span class="ratings-two"
-                      @click="type='1'">满意{{wellcontents.wellnum}}</span>
+                      @click="type='1'">满意{{ wellcontents.wellnum }}</span>
                 <span class="ratings-three"
-                      @click="type='2'">一般{{commoncontents.commonnum}}</span>
+                      @click="type='2'">一般{{ commoncontents.commonnum }}</span>
               </div>
               <div class="select-ratings">
                 <van-checkbox v-model="checked">只看有内容的评价</van-checkbox>
@@ -53,22 +53,22 @@
           </div>
           <div class="rating-text">
             <ul>
-              <li class="rating-text-li gradient-line line"
-                  v-for="(item,index) in computedRatings"
-                  :key="index">
+              <li v-for="(item,index) in computedRatings"
+                  :key="index"
+                  class="rating-text-li gradient-line line">
                 <div class="rating-text-li-left">
                   <img class="rating-text-li-left-avatar"
                        :src="item.avatar"
                        width="28"
-                       height="28" />
+                       height="28">
                 </div>
                 <div class="rating-text-li-right">
-                  <div class="rating-text-li-right-name">{{item.username}}</div>
+                  <div class="rating-text-li-right-name">{{ item.username }}</div>
                   <star :size="24"
                         :score="item.score"
-                        class="rating-text-li-right-star"></star>
-                  <div class="rating-text-li-right-text">{{item.text}}</div>
-                  <div class="rating-text-li-right-time">{{item.rateTime}}</div>
+                        class="rating-text-li-right-star" />
+                  <div class="rating-text-li-right-text">{{ item.text }}</div>
+                  <div class="rating-text-li-right-time">{{ item.rateTime }}</div>
                 </div>
               </li>
             </ul>
@@ -80,8 +80,8 @@
 </template>
 
 <script>
-import star from "@/components/star";
-import betterScroll from "better-scroll";
+import star from '@/components/star'
+// import betterScroll from 'better-scroll'
 export default {
   name: 'ratings',
   components: {
@@ -90,7 +90,7 @@ export default {
   props: {
     seller: {
       type: Object
-    },
+    }
     // ratings: {
     //   type: Array
     // }
@@ -110,11 +110,6 @@ export default {
       type: '0',
       checked: false
     }
-  },
-  mounted () {
-    this.$nextTick(() => {
-      this._innitScroll();
-    });
   },
   computed: {
     /**
@@ -139,33 +134,35 @@ export default {
       return arr
     },
     allcontents () {
-      return this.ratings.length;
-    },
+      return this.ratings.length
+    }
 
+  },
+  mounted () {
   },
   methods: {
     /**
-     * @description:  0 全部 1 
+     * @description:  0 全部 1
      * @param {*}
      * @return {*}
      */
     changeRatings () { },
-    _innitScroll () {
-      this.ratingsScroll = new betterScroll(this.$refs.div, { click: true, probeType: 3 });
-    },
+    // _innitScroll () {
+    //   this.ratingsScroll = new betterScroll(this.$refs.div, { click: true, probeType: 3 })
+    // },
     // 满意
     wellcontents () {
       let [wellnum, wellArr] = [0, []]
       this.ratings.forEach((item) => {
         if (item.score >= 3) {
           wellArr.push(item)
-          wellnum++;
+          wellnum++
         }
       })
       return {
         wellArr,
         wellnum
-      };
+      }
     },
     // 一般
     commoncontents () {
@@ -195,11 +192,11 @@ export default {
           constantsArr.push(item)
           constants++
         }
-      });
+      })
       return { constants, constantsArr }
     }
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>
