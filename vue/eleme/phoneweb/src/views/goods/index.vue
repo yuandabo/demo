@@ -18,7 +18,7 @@ import vheader from '@/layout/header'
 import vtag from '@/layout/tag'
 import { getAll } from '@/api/send'
 import { debounce } from '@/utils'
-import mixins from '@/mixins/cartcontrol'
+// import mixins from '@/mixins/cartcontrol'
 import store from '@/store'
 export default {
   name: 'goods',
@@ -26,7 +26,7 @@ export default {
     vheader,
     vtag
   },
-  mixins: [mixins],
+  // mixins: [mixins],
   props: {
     seller: {
       type: Object,

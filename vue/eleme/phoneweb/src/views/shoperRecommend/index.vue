@@ -47,14 +47,15 @@
 </template>
 
 <script>
-import axios from 'axios'
+// import axios from 'axios'
+import store from '@/store'
 import cartcontrol from '@/components/cartcontrol'
-import mixins from '@/mixins/cartcontrol'
+// import mixins from '@/mixins/cartcontrol'
 export default {
   components: {
     cartcontrol
   },
-  mixins: [mixins],
+  // mixins: [mixins],
   props: {
     goods: {
       type: Array
@@ -88,10 +89,10 @@ export default {
       this.$router.push({ name: 'foodsDetails', params: { details: item } })
     },
     foodDec ($event) {
-      this.stepperChange($event, -1)
+      store.commit('app/shopcar/changeOneData', { id: $event.id, numberSize: -1 })
     },
     foodAdd ($event) {
-      this.stepperChange($event)
+      store.commit('app/shopcar/changeOneData', { id: $event.id })
     },
     changeImgPos () {
       console.log('123213')

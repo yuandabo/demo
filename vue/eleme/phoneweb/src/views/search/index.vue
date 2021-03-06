@@ -68,7 +68,8 @@
 
 <script>
 import axios from 'axios'
-import mixins from '@/mixins/cartcontrol'
+import store from '@/store'
+// import mixins from '@/mixins/cartcontrol'
 import cartcontrol from '@/components/cartcontrol'
 import shopcar from '@/components/shopcar'
 import { mapGetters } from 'vuex'
@@ -77,7 +78,7 @@ export default {
     cartcontrol,
     shopcar
   },
-  mixins: [mixins],
+  // mixins: [mixins],
   data () {
     return {
       value: '',
@@ -125,10 +126,10 @@ export default {
       this.foods = this.value
     },
     foodDec ($event) {
-      this.stepperChange($event, -1)
+      store.commit('app/shopcar/changeOneData', { id: $event.id, numberSize: -1 })
     },
     foodAdd ($event) {
-      this.stepperChange($event)
+      store.commit('app/shopcar/changeOneData', { id: $event.id })
     },
     // 获取后台数据
     async getAll () {

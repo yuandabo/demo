@@ -184,6 +184,9 @@ export default {
   background: #ffff;
 }
 .title {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   margin: 2px 0px 8px 0px;
 }
 .brand {

@@ -125,6 +125,7 @@ import cartcontrol from '@/components/cartcontrol'
 import shoperrecommend from '@/views/shoperRecommend'
 import mixins from '@/mixins/cartcontrol'
 import { mapGetters } from 'vuex'
+import store from '@/store'
 export default {
   name: 'foods',
   components: {
@@ -248,10 +249,10 @@ export default {
       return ''
     },
     foodDec ($event) {
-      this.stepperChange($event, -1)
+      store.commit('app/shopcar/changeOneData', { id: $event.id, numberSize: -1 })
     },
     foodAdd ($event) {
-      this.stepperChange($event)
+      store.commit('app/shopcar/changeOneData', { id: $event.id })
     },
     pulldown () {
       const goods = document.getElementsByClassName('goods')[0]
