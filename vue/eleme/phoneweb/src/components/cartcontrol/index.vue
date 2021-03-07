@@ -44,13 +44,13 @@ export default {
     getIcon (name) {
       return `img/${name}.png`
     },
-    addCart () {
+    addCart (event) {
       if (this.isZero) {
         this.$refs.count.className = 'cart-count'
         this.$refs.dec.className = 'cart-decrease'
         // this.isZero = false
       }
-      this.$emit('foodAdd', this.food)
+      this.$emit('foodAdd', { food: this.food, target: event.target })
     },
     decreaseCart () {
       if (this.food.count - 1 === 0) {

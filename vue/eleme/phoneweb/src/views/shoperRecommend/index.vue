@@ -92,7 +92,8 @@ export default {
       store.commit('app/shopcar/changeOneData', { id: $event.id, numberSize: -1 })
     },
     foodAdd ($event) {
-      store.commit('app/shopcar/changeOneData', { id: $event.id })
+      console.log('foodAdd', $event)
+      this.$emit('foodAdd', $event)
     },
     changeImgPos () {
       console.log('123213')

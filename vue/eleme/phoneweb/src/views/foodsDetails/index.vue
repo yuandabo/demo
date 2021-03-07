@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-03-05 11:33:34
- * @LastEditTime: 2021-03-05 17:46:27
+ * @LastEditTime: 2021-03-08 03:07:05
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \demo2\vue\eleme\phoneweb\src\views\foodsDetails\index.vue
@@ -142,7 +142,7 @@ export default {
       store.commit('app/shopcar/changeOneData', { id: $event.id, numberSize: -1 })
     },
     foodAdd ($event) {
-      store.commit('app/shopcar/changeOneData', { id: $event.id })
+      store.commit('app/shopcar/changeOneData', { id: $event.food.id })
     },
     /**
      * 获取小数点后数字数量，整数返回0

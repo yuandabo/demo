@@ -52,6 +52,17 @@
     <div class="list-mask"
          @click="maskClick"
          v-show="maskShow"></div>
+    <div v-for="(ball,index) in balls"
+         :key="index">
+      <transition @before-enter="beforeDrop"
+                  @enter="dropping"
+                  @after-enter="afterDrop">
+        <div v-show="ball.show"
+             class="ball">
+          <div class="inner inner-hook"></div>
+        </div>
+      </transition>
+    </div>
   </div>
 </template>
 
@@ -63,7 +74,9 @@ export default {
   data () {
     return {
       fold: true,
-      maskShow: false
+      maskShow: false,
+      balls: [{ show: false }, { show: false }, { show: false }],
+      dropBalls: []
     }
   },
   props: {
@@ -123,9 +136,51 @@ export default {
     }
   },
   mounted () {
-    this.open()
+    // setTimeout(() => {
+    //   this.ball.show = true
+    // }, 1000)
   },
   methods: {
+    drop (el) {
+      for (let i = 0; i < this.balls.length; i++) {
+        const ball = this.balls[i]
+        if (!ball.show) {
+          ball.show = true
+          ball.el = el
+          this.dropBalls.push(ball)
+          return
+        }
+      }
+    },
+    beforeDrop (el) {
+      const ball = this.dropBalls[this.dropBalls.length - 1]
+      const rect = ball.el.getBoundingClientRect()
+      const x = rect.left - 26
+      const y = -(window.innerHeight - rect.top - 22)
+      el.style.display = ''
+      el.style.transform = el.style.webkitTransform = `translate3d(${x}px,${y}px,0)`
+      // const inner = el.getElementsByClassName('inner-hook')[0]
+      // inner.style.transform = inner.style.webkitTransform = `translate3d(0,0,0)`
+      console.log(el)
+    },
+    dropping (el, done) {
+      console.log(el)
+      setTimeout(() => {
+        el.style.transform = el.style.webkitTransform = `translate3d(0,0,0)`
+      }, 200)
+      // el.style.transform = el.style.webkitTransform = `translate3d(0,0,0)`
+      // const inner = el.getElementsByClassName('inner-hook')[0]
+      // inner.style.transform = inner.style.webkitTransform = `translate3d(0,0,0)`
+      el.addEventListener('transitionend', done)
+    },
+    afterDrop (el) {
+      console.log(el)
+      const ball = this.dropBalls.shift()
+      if (ball) {
+        ball.show = false
+        el.style.display = 'none'
+      }
+    },
     routerTo () {
       if (this.totalPrice >= this.minprice) {
         this.$db.setDb('order', { selectfoods: this.selectfoods, totalPrice: this.totalPrice })
@@ -162,10 +217,10 @@ export default {
       if (this.payDesc !== '去结算') {
         return
       }
-      if (!this.$db.getDb('phoneNum')) {
-        this.open()
-        return
-      }
+      // if (!this.$db.getDb('phoneNum')) {
+      //   this.open()
+      //   return
+      // }
       const selects = JSON.stringify(this.cleanSelects(this.selectfoods))
       // 本地储存订单信息
       saveOrder({
@@ -203,28 +258,6 @@ export default {
       })
       // console.log(returnArr)
       return returnArr
-    },
-    // 开启电话输入框
-    open () {
-      // this.$prompt('请输入手机号', '提示', {
-      //   confirmButtonText: '确定',
-      //   cancelButtonText: '先看看',
-      //   inputPattern: /^1[3456789]\d{9}$/,
-      //   inputErrorMessage: '手机号格式不正确',
-      //   // center: true
-      // }).then(({ value }) => {
-      //   this.$message({
-      //     type: 'success',
-      //     message: '你的手机号是: ' + value
-      //   });
-      //   this.$db.setDb('phoneNum', value)
-      //   // console.log(this.$db.getDb('phoneNum'))
-      // }).catch(() => {
-      //   this.$message({
-      //     type: 'info',
-      //     message: '取消输入'
-      //   });
-      // });
     },
     // 开启历史选择框
     openHistoryOrder () {
@@ -479,5 +512,19 @@ export default {
   width: 100%;
   height: 50vh;
   bottom: 355px;
+}
+.ball {
+  position: fixed;
+  left: 32px;
+  bottom: 22px;
+  z-index: 2000000;
+  transition: all 0.4s cubic-bezier(0.49, -0.1, 0.75, 0.41);
+}
+.inner {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background-color: rgb(0, 160, 220);
+  transition: all 0.4s linear;
 }
 </style>

@@ -28,7 +28,8 @@
     </div>
     <div v-show="showCom"
          class="shoperrecommend">
-      <shoperrecommend :goods="goods" />
+      <shoperrecommend :goods="goods"
+                       @foodAdd="foodAdd" />
     </div>
     <van-divider />
     <div class="goods-body">
@@ -99,7 +100,8 @@
                             class="foods-price-old">￥{{ item.oldPrice }}</span>
                     </div>
                     <div class="cartcontrol-warpper">
-                      <cartcontrol :food="item"
+                      <cartcontrol ref="cartcontrol"
+                                   :food="item"
                                    @foodAdd="foodAdd"
                                    @foodDec="foodDec" />
                     </div>
@@ -112,7 +114,8 @@
       </scroll>
 
     </div>
-    <shopcar class="goods-shopcar"
+    <shopcar ref="shopcar"
+             class="goods-shopcar"
              :selectfoods="selectfoods"
              :deliveryprice="seller.deliveryPrice"
              :minprice="seller.minPrice" />
@@ -252,7 +255,8 @@ export default {
       store.commit('app/shopcar/changeOneData', { id: $event.id, numberSize: -1 })
     },
     foodAdd ($event) {
-      store.commit('app/shopcar/changeOneData', { id: $event.id })
+      store.commit('app/shopcar/changeOneData', { id: $event.food.id })
+      this.$refs.shopcar.drop($event.target)
     },
     pulldown () {
       const goods = document.getElementsByClassName('goods')[0]

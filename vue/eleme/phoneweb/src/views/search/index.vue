@@ -59,7 +59,8 @@
       </ul>
     </scroll>
 
-    <shopcar class="goods-shopcar"
+    <shopcar ref="shopcar"
+             class="goods-shopcar"
              :selectfoods="selectfoods"
              :deliveryprice="seller.deliveryPrice"
              :minprice="seller.minPrice" />
@@ -129,7 +130,8 @@ export default {
       store.commit('app/shopcar/changeOneData', { id: $event.id, numberSize: -1 })
     },
     foodAdd ($event) {
-      store.commit('app/shopcar/changeOneData', { id: $event.id })
+      store.commit('app/shopcar/changeOneData', { id: $event.food.id })
+      this.$refs.shopcar.drop($event.target)
     },
     // 获取后台数据
     async getAll () {
