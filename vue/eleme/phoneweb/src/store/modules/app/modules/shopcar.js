@@ -1,24 +1,29 @@
+/*
+ * @Author: your name
+ * @Date: 2021-03-05 16:04:35
+ * @LastEditTime: 2021-03-05 17:37:47
+ * @LastEditors: Please set LastEditors
+ * @Description: In User Settings Edit
+ * @FilePath: \demo2\vue\eleme\phoneweb\src\store\modules\app\modules\shopcar.js
+ */
+// 设置文件
 export default {
-  methods: {
-    /**
-     * 获取小数点后数字数量，整数返回0
-     * @param {*} val 需要处理的数字
-     */
-    getAfterDotNums (val) {
-      const hasDot = String(val).indexOf('.') !== -1
-      if (hasDot) {
-        return String(val).substring(String(val).indexOf('.') + 1).length
-      } else {
-        return 0
-      }
+  namespaced: true,
+  state: {
+    // 存放缓存的路由
+    shopCarData: []
+  },
+  actions: {
+  },
+  mutations: {
+    shopCarDataSet (state, data) {
+      console.log('shopCarDataSet')
+      state.shopCarData = data
     },
-    /**
-     * 步长控制器
-     * @param {*} id 需要修改方案条目
-     * @param {*} numberSize 步长器，现只支持加减算法，传入1为加1，-1为减一
-     */
-    stepperChange ({ id }, numberSize = 1) {
-      const goods = this.goods
+    changeOneData (state, data) {
+      const { id, numberSize = 1 } = data
+      const goods = JSON.parse(JSON.stringify(state.shopCarData))
+      console.log('goods', goods)
       let quantities
       // id
       for (let i = 0, length = goods.length; i < length; i++) {
@@ -45,7 +50,7 @@ export default {
           }
         }
       }
+      state.shopCarData = goods
     }
-
   }
 }

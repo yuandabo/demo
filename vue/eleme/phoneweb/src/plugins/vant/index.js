@@ -17,5 +17,8 @@ export {
   RadioGroup,
   Radio,
   Checkbox,
-  CheckboxGroup
+  CheckboxGroup,
+  Divider,
+  Search,
+  ShareSheet
 } from 'vant'

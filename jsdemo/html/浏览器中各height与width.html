@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    .warpper {
+      padding: 10px;
+      height: 100px;
+      overflow: auto;
+      border: 1px solid blue;
+    }
+
+    .header,
+    .bodyer {
+      height: 50px;
+      width: 110vw;
+      padding: 5px;
+      margin: 5px;
+      border: 1px solid saddlebrown;
+      font-size: 20px;
+      /* overflow: auto; */
+    }
+  </style>
+</head>
+
+<body>
+  <div class="warpper" onscroll="showHeight()">
+    <div class="header">header</div>
+    <div class="bodyer">bodyer</div>
+  </div>
+  <script>
+    const warpper = document.querySelector('.warpper')
+    const header = document.querySelector('.header')
+    const bodyer = document.querySelector('.bodyer')
+    function showHeight() {
+      // console.log('scrollHeight-warpper', warpper.scrollHeight)
+      // console.log('scrollHeight-header', header.scrollHeight)
+      // console.log('clientHeight-header', header.clientHeight)
+      // console.log('clientHeight-bodyer', bodyer.scrollHeight)
+      // console.log('offsetHeight-bodyer', bodyer.offsetHeight)
+      console.log(header.getBoundingClientRect())
+    }
+  </script>
+</body>
+
+</html>

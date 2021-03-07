@@ -2,7 +2,7 @@
   <div id="app">
     <van-loading v-show="loading"
                  size="24px">加载中...</van-loading>
-    <keep-alive>
+    <keep-alive :include="keepAlive">
       <router-view :seller="seller"
                    :ratings="ratings" />
     </keep-alive>
@@ -11,6 +11,7 @@
 
 <script>
 import { getAll } from '@/api/send'
+import { mapGetters } from 'vuex'
 export default {
   // 声明引入的组件
   data () {
@@ -35,6 +36,11 @@ export default {
       ratings: [],
       loading: false
     }
+  },
+  computed: {
+    ...mapGetters([
+      'keepAlive'
+    ])
   },
   created () {
     // this.getAll()

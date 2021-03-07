@@ -86,7 +86,7 @@ export default {
 }
 .router-link-exact-active {
   color: rgb(240, 20, 20);
-  font-weight: 700;
+  font-weight: 500;
 }
 a {
   color: rgb(7, 17, 27);

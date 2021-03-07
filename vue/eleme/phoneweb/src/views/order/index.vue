@@ -201,7 +201,7 @@ export default {
       display: flex;
       align-items: center;
       font-size: 22px;
-      font-weight: bold;
+      font-weight: 500;
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
@@ -235,7 +235,7 @@ export default {
     .cart-title {
       padding: 15px 20px;
       font-size: 16px;
-      font-weight: bold;
+      font-weight: 500;
     }
     .cart-content {
       // padding: 15px;

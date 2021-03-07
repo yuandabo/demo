@@ -1,2 +1,50 @@
 @import './flex.scss' ;
-@import './better-scroll.scss'
+@import './better-scroll.scss';
+@import './vant.scss';
+@import './color.scss';
+@import './font-size.scss';
+h1 {
+  font-weight: 500;
+  margin: 2px 0 15px 0;
+  height: 14px;
+  font-size: 15px;
+  line-height: 14px;
+  color: rgb(0, 0, 0);
+}
+
+div{
+  font-size: 10px;
+  color: rgb(74, 75, 77);
+}
+
+.pad{
+  padding: 5px;
+}
+
+.pad-line{
+  padding: 0 5px;
+}
+
+.pad-right{
+  padding-right:  5px;
+}
+
+.relative{
+  position: relative;
+}
+
+// 单行内容超出显示...
+.singleTextOverflow{
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.global-card{
+  box-sizing: border-box;
+  padding: 10px 7px;
+  background: #ffffff;
+  margin: 10px auto;
+  width: 90%;
+  border-radius: 10px;
+}

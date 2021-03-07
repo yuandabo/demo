@@ -3,6 +3,16 @@
   flex-direction: column;
 }
 
+.flexdir{
+  display: flex;
+}
+
+.flexdir-align{
+  display: flex;
+  align-items: center;
+}
+
+
 .flex-1{
   flex:1;
 }

@@ -2,11 +2,10 @@
   <div class="flexdir-column foods">
     <div class="goods-img">
       <van-swipe class="my-swipe"
-                 :autoplay="3000"
+                 :autoplay="10000"
                  indicator-color="white">
         <van-swipe-item>
-          <van-image width="99vw"
-                     height="90"
+          <van-image height="90"
                      :src="'https://cube.elemecdn.com/2/14/7059f0fe8c3eb2c691a595ef7f734png.png?x-oss-process=image/format,webp/resize,w_686'">
             <template v-slot:error>
               <van-image width="100vw"
@@ -16,8 +15,7 @@
           </van-image>
         </van-swipe-item>
         <van-swipe-item>
-          <van-image width="99vw"
-                     height="90"
+          <van-image height="90"
                      :src="'https://cube.elemecdn.com/2/14/7059f0fe8c3eb2c691a595ef7f734png.png?x-oss-process=image/format,webp/resize,w_686'">
             <template v-slot:error>
               <van-image width="100vw"
@@ -30,9 +28,10 @@
     </div>
     <div v-show="showCom"
          class="shoperrecommend">
-      <shoperrecommend :goods="goods" />
+      <shoperrecommend :goods="goods"
+                       @foodAdd="foodAdd" />
     </div>
-
+    <van-divider />
     <div class="goods-body">
       <scroll class="wrapper menu-warpper"
               :pulldown="true">
@@ -50,20 +49,28 @@
       <scroll ref="foodsscroll"
               class="wrapper foods-warpper"
               :pulldown="true"
-              @pulldown="pulldown">
-        <ul>
+              :listen-scroll="true"
+              :top-init="true"
+              :top="top"
+              :probe-type="3"
+              @pulldown="pulldown"
+              @scroll="foodsScroll">
+        <ul class="relative">
+          <div class="flexdir-align foods-warpper-topWords"
+               style="justify-content: center;">
+            继续上拉回到顶部
+            <van-icon name="back-top" />
+          </div>
           <li v-for="(a,index) in goods"
               :key="index"
               class="food-list food-list-hook">
             <h1 class="food-list-title">{{ a.name }}</h1>
-            <ul class="content">
+            <ul>
               <li v-for="(item,index) in a.foods"
                   :key="index"
-                  class="food-item gradient-line line">
+                  class="food-item gradient-line line"
+                  @click="goToFoodDetails(item)">
                 <div class="foods-image">
-                  <!-- <img width="90px"
-                       height="90px"
-                       :src="item.image" /> -->
                   <van-image class="imgdom"
                              width="90px"
                              height="90px"
@@ -78,7 +85,7 @@
                 </div>
                 <span class="foods-content">
                   <h1 class="foods-content-name">{{ item.name }}</h1>
-                  <div class="foods-content-desc">{{ item.description||'暂无介绍' }}</div>
+                  <div class="singleTextOverflow foods-content-desc">原料：{{ item.description }}</div>
                   <div class="foods-content-extra">
                     <span>月售{{ item.sellCount||0 }}</span>
                     <!-- <span>好评率{{item.rating}}%</span> -->
@@ -93,7 +100,8 @@
                             class="foods-price-old">￥{{ item.oldPrice }}</span>
                     </div>
                     <div class="cartcontrol-warpper">
-                      <cartcontrol :food="item"
+                      <cartcontrol ref="cartcontrol"
+                                   :food="item"
                                    @foodAdd="foodAdd"
                                    @foodDec="foodDec" />
                     </div>
@@ -106,7 +114,8 @@
       </scroll>
 
     </div>
-    <shopcar class="goods-shopcar"
+    <shopcar ref="shopcar"
+             class="goods-shopcar"
              :selectfoods="selectfoods"
              :deliveryprice="seller.deliveryPrice"
              :minprice="seller.minPrice" />
@@ -116,9 +125,12 @@
 <script>
 import shopcar from '@/components/shopcar'
 import cartcontrol from '@/components/cartcontrol'
-import shoperrecommend from '@/components/shoperRecommend'
-import mixins from './mixins'
+import shoperrecommend from '@/views/shoperRecommend'
+import mixins from '@/mixins/cartcontrol'
+import { mapGetters } from 'vuex'
+import store from '@/store'
 export default {
+  name: 'foods',
   components: {
     shopcar,
     cartcontrol,
@@ -126,9 +138,9 @@ export default {
   },
   mixins: [mixins],
   props: {
-    goods: {
-      type: Array
-    },
+    // goods: {
+    //   type: Array
+    // },
     seller: {
       type: Object
     }
@@ -141,10 +153,17 @@ export default {
       showCom: true,
       loading: false,
       ulkey: 0,
-      currentIndex: 0
+      currentIndex: 0,
+      top: false
     }
   },
   computed: {
+    ...mapGetters([
+      'shopCarData'
+    ]),
+    goods () {
+      return this.shopCarData
+    },
     selectfoods: {
       get: function () {
         const foods = []
@@ -157,11 +176,75 @@ export default {
         })
         return foods
       }
+    },
+    /**
+     * @description: 计算当前视频栏分类高度 用于联动左侧分类栏
+     */
+    FOODSLENGTHLIST () {
+      const arr = [0]
+      this.goods.forEach((v, index) => {
+        let val = 0
+        if (index === 0) {
+          val = v.foods.length * 140 + 26
+        } else {
+          val = v.foods.length * 140 + arr[index] + 26
+        }
+        arr.push(val)
+      })
+      return arr
     }
   },
+  // watch: {
+  //   top: (val) => {
+  //     console.log(val)
+  //   }
+  // },
   mounted () {
   },
   methods: {
+    goToFoodDetails (item) {
+      this.$router.push({ name: 'foodsDetails', params: { details: item } })
+    },
+    computedTop () {
+      const goodBody = document.getElementsByClassName('goods-body')[0]
+      if (goodBody) {
+        const top = goodBody.getBoundingClientRect().top
+        if (top === 0) {
+          this.top = true
+          this.$nextTick(() => {
+            this.$refs.foodsscroll._initScroll()
+          })
+        }
+      }
+    },
+    /**
+     * @description: 食品栏滚动事件
+     * @param {*}  pos
+     * @return {*}
+     */
+    foodsScroll (pos) {
+      const y = Math.abs(pos.y)
+      const array = this.FOODSLENGTHLIST
+      let postionsIndex = 0
+      if (array.indexOf(y) !== -1) {
+        this.currentIndex = array.indexOf(y)
+        return
+      }
+      for (let index = 0; index < array.length; index++) {
+        const element = array[index]
+        if (y === 0) {
+          postionsIndex = 0
+          break
+        }
+        if (index > 0) {
+          if (y > element && y < array[index + 1]) {
+            postionsIndex = index
+            break
+          }
+        }
+      }
+      this.currentIndex = postionsIndex
+    },
     getMenuItemClass (index) {
       if (index === this.currentIndex) {
         return 'current'
@@ -169,10 +252,11 @@ export default {
       return ''
     },
     foodDec ($event) {
-      this.stepperChange($event, -1)
+      store.commit('app/shopcar/changeOneData', { id: $event.id, numberSize: -1 })
     },
     foodAdd ($event) {
-      this.stepperChange($event)
+      store.commit('app/shopcar/changeOneData', { id: $event.food.id })
+      this.$refs.shopcar.drop($event.target)
     },
     pulldown () {
       const goods = document.getElementsByClassName('goods')[0]
@@ -181,9 +265,17 @@ export default {
       }, 500)
     },
     selectMenu (index) {
+      this.top = true
       this.currentIndex = Number(index)
       const foodList = document.getElementsByClassName('food-list-hook')
       const el = foodList[index]
+      if (!this.$refs.foodsscroll.scroll) {
+        this.$nextTick(() => {
+          this.$refs.foodsscroll._initScroll()
+          this.$refs.foodsscroll.scroll.scrollToElement(el, 300)
+        })
+        return
+      }
       this.$refs.foodsscroll.scroll.scrollToElement(el, 300)
     }
   }
@@ -194,17 +286,16 @@ export default {
 .foods {
   background: #fff;
   .goods-img {
+    margin: 10px 0 5px 0;
+    padding: 0px 5px;
     /deep/.van-image {
       display: flex;
       justify-content: center;
     }
     /deep/.van-image__img {
-      width: 90%;
-      border-radius: 20px;
+      // width: 90%;
+      border-radius: 5px;
     }
-    // display: flex;
-    // justify-content: center;
-    margin: 8px 0;
   }
   .goods-body {
     // flex: 0;
@@ -227,6 +318,13 @@ export default {
       // position: relative;
       // top: 0px;
       // left: 0;
+      .foods-warpper-topWords {
+        position: absolute;
+        width: 100%;
+        // padding: 20px;
+        box-sizing: border-box;
+        transform: translateY(-100%) translateZ(0);
+      }
       .food-list {
         .food-list-title {
           padding-left: 14px;
@@ -256,9 +354,9 @@ export default {
               color: rgb(0, 0, 0);
             }
             .foods-content-desc {
+              width: 120px;
               margin-bottom: 15px;
               font-size: 12px;
-              // line-height: 10px;
               color: rgb(59, 60, 61);
             }
             .food-priAndcar {
@@ -268,7 +366,7 @@ export default {
               margin-bottom: 18px;
               .foods-price {
                 flex: 1;
-                // font-weight: 700;
+                // font-weight: 500;
                 // line-height: 24px;
                 .foods-price-now {
                   margin-right: 8px;
@@ -380,7 +478,7 @@ export default {
 
   .current {
     background-color: #ffffff;
-    font-weight: 700;
+    font-weight: 500;
     z-index: 10;
   }
   .my-swipe .van-swipe-item {

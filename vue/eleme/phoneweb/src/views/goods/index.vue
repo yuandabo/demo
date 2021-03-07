@@ -1,12 +1,14 @@
 <template>
   <div ref="goods"
        class="goods"
-       :style="{ height:height}">
+       :style="{ height:height}"
+       @scroll="scroll">
     <vheader :seller="seller" />
     <vtag class="tag"
           @tabs-click="tagclick" />
-    <router-view :goods="goods"
+    <router-view ref="router"
                  :seller="seller" />
+
   </div>
 </template>
 
@@ -15,14 +17,16 @@ import axios from 'axios'
 import vheader from '@/layout/header'
 import vtag from '@/layout/tag'
 import { getAll } from '@/api/send'
-import mixins from './mixins'
+import { debounce } from '@/utils'
+// import mixins from '@/mixins/cartcontrol'
+import store from '@/store'
 export default {
   name: 'goods',
   components: {
     vheader,
     vtag
   },
-  mixins: [mixins],
+  // mixins: [mixins],
   props: {
     seller: {
       type: Object,
@@ -40,28 +44,30 @@ export default {
       loading: false,
       ulkey: 0,
       currentIndex: 0,
-      height: "93vh"
+      height: '93vh',
+      value: '',
+      path: '/goods/index'
     }
-  },
-  computed: {
   },
   mounted () {
     this.getAll()
   },
   methods: {
+    scroll () {
+      if (this.path === '/goods/index') this.$refs.router.computedTop()
+    },
     tagclick (name) {
-      let path
       if (name === 0) {
         this.height = '93vh'
-        path = '/goods/index'
+        this.path = '/goods/index'
       } else if (name === 1) {
         this.height = '100vh'
-        path = '/goods/ratings'
+        this.path = '/goods/ratings'
       } else if (name === 2) {
         this.height = '100vh'
-        path = '/goods/seller'
+        this.path = '/goods/seller'
       }
-      this.$router.push({ path })
+      this.$router.push({ path: this.path })
     },
     /*
     初始化数据（number）
@@ -87,6 +93,7 @@ export default {
       axios('./data.json')
         .then((res) => {
           this.goods = res.data.goods
+          store.commit('app/shopcar/shopCarDataSet', res.data.goods)
         })
       // } else {
       //   const data = await getAll()

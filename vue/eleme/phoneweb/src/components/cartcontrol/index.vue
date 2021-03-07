@@ -1,17 +1,17 @@
 <template>
   <div class="cartcontrol">
-    <div class="cart-decrease"
-         v-show="!isZero"
+    <div v-show="!isZero"
          ref="dec"
-         @click="decreaseCart">
+         class="cart-decrease"
+         @click.stop="decreaseCart">
       <van-icon :name="getIcon('dec')"
                 size="25" />
     </div>
-    <div class="cart-count"
-         v-show="!isZero"
-         ref="count">{{food.count}}</div>
+    <div v-show="!isZero"
+         ref="count"
+         class="cart-count">{{ food.count }}</div>
     <div class="cart-add"
-         @click="addCart">
+         @click.stop="addCart">
       <van-icon :name="getIcon('add')"
                 size="25" />
     </div>
@@ -28,7 +28,12 @@ export default {
   },
   data () {
     return {
-      isZero: true
+      // isZero: true
+    }
+  },
+  computed: {
+    isZero () {
+      return this.food.count === 0
     }
   },
   methods: {
@@ -39,20 +44,20 @@ export default {
     getIcon (name) {
       return `img/${name}.png`
     },
-    addCart () {
+    addCart (event) {
       if (this.isZero) {
         this.$refs.count.className = 'cart-count'
         this.$refs.dec.className = 'cart-decrease'
-        this.isZero = false
+        // this.isZero = false
       }
-      this.$emit('foodAdd', this.food)
+      this.$emit('foodAdd', { food: this.food, target: event.target })
     },
     decreaseCart () {
       if (this.food.count - 1 === 0) {
         this.$refs.count.className = 'widthDec'
         this.$refs.dec.className = 'decHide'
         setTimeout(() => {
-          this.isZero = true
+          // this.isZero = true
           this.$refs.dec.className = 'display-none'
           this.$refs.count.className = 'display-none'
         }, 500)
@@ -60,7 +65,7 @@ export default {
       this.$emit('foodDec', this.food)
     }
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>
