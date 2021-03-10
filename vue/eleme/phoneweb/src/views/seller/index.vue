@@ -107,14 +107,14 @@ export default {
       justify-content: center;
     }
     /deep/.van-image__img {
-      width: 90%;
+      width: 95vw;
       border-radius: 10px 10px 0 0;
     }
     .img-title {
       box-sizing: border-box;
       background: #ffffff;
       margin: 0 auto;
-      width: 90%;
+      width: 95vw;
       padding: 10px 7px;
       color: #000;
       font-weight: 500;
@@ -123,7 +123,7 @@ export default {
     .img-text {
       background: #ffffff;
       margin: 0 auto;
-      width: 90%;
+      width: 95vw;
       padding: 0 7px 10px 7px;
       box-sizing: border-box;
       font-size: 12px;
@@ -132,10 +132,10 @@ export default {
   }
   .seller-card {
     box-sizing: border-box;
-    padding: 10px 7px;
+    padding: 10px 5px;
     background: #ffffff;
     margin: 10px auto;
-    width: 90%;
+    width: 95vw;
     border-radius: 10px;
     .card-title {
       display: flex;

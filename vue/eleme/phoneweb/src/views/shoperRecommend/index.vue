@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <van-divider />
+  <div class="shoperRecommend">
+    <!-- <van-divider /> -->
     <div class="shoperRecommend-word-warpper"
          @click="$router.push('/recommendDetails')">
       <span class="shoperRecommend-word">商家推荐</span>
@@ -28,7 +28,7 @@
         </van-image>
         <div class="shoperRecommend-desc">
           <h1 class="shoperRecommend-desc-title">{{ item.name }}</h1>
-          <span class="shoperRecommend-desc-monthseller">月售{{ item.sellCount }}</span>
+          <!-- <span class="shoperRecommend-desc-monthseller">月售{{ item.sellCount }}</span> -->
           <div>
             <span class="shoperRecommend-desc-newprice">
               <span class="shoperRecommend-desc-doller1">￥</span>{{ item.price }}
@@ -142,8 +142,8 @@ export default {
 
 .shoperRecommend-desc-title {
   width: 100%;
-  height: 10px;
-  line-height: 10px;
+  /* height: 10px;
+  line-height: 10px; */
   padding: 5px;
   font-size: 12px;
   font-weight: 500;
@@ -159,8 +159,8 @@ export default {
 }
 .shoperRecommend-desc-newprice {
   width: 100%;
-  height: 15px;
-  line-height: 15px;
+  /* height: 15px;
+  line-height: 15px; */
   margin: 0 5px;
   font-size: 14px;
   font-weight: 500;
@@ -181,17 +181,20 @@ export default {
 }
 </style>
 <style lang="scss" scoped>
+.shoperRecommend {
+  margin: 10px 0;
+}
 .shoperRecommend-word-warpper {
   display: flex;
   justify-content: space-between;
   align-items: center;
   width: 100%;
   font-size: 14px;
-  padding: 5px;
+  padding: 5px 5px 10px 5px;
   color: #323233;
   font-weight: 500;
   .shoperRecommend-icon {
-    padding-right: 5px;
+    padding-right: 10px;
   }
 }
 .shoperRecommend-img-item {

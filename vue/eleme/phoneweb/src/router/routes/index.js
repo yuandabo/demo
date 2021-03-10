@@ -7,6 +7,7 @@ import address from '@/views/addressChoose'
 import search from '@/views/search'
 import recommendDetails from '@/views/recommendDetails'
 import foodsDetails from '@/views/foodsDetails'
+import orderFinish from '@/views/orderFinish'
 
 export const routes =
   [
@@ -59,5 +60,10 @@ export const routes =
       path: '/foodsDetails',
       name: 'foodsDetails',
       component: foodsDetails
+    },
+    {
+      path: '/orderFinish',
+      name: 'orderFinish',
+      component: orderFinish
     }
   ]

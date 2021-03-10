@@ -58,8 +58,9 @@
                   @enter="dropping"
                   @after-enter="afterDrop">
         <div v-show="ball.show"
-             class="ball">
-          <div class="inner inner-hook"></div>
+             class="flexdir-alignjust  ball">
+          1
+          <!-- <div class="inner inner-hook"></div> -->
         </div>
       </transition>
     </div>
@@ -156,25 +157,18 @@ export default {
       const ball = this.dropBalls[this.dropBalls.length - 1]
       const rect = ball.el.getBoundingClientRect()
       const x = rect.left - 26
-      const y = -(window.innerHeight - rect.top - 22)
+      const y = -(window.innerHeight - rect.top - 42)
       el.style.display = ''
       el.style.transform = el.style.webkitTransform = `translate3d(${x}px,${y}px,0)`
-      // const inner = el.getElementsByClassName('inner-hook')[0]
-      // inner.style.transform = inner.style.webkitTransform = `translate3d(0,0,0)`
-      console.log(el)
     },
     dropping (el, done) {
-      console.log(el)
-      setTimeout(() => {
-        el.style.transform = el.style.webkitTransform = `translate3d(0,0,0)`
-      }, 200)
-      // el.style.transform = el.style.webkitTransform = `translate3d(0,0,0)`
-      // const inner = el.getElementsByClassName('inner-hook')[0]
-      // inner.style.transform = inner.style.webkitTransform = `translate3d(0,0,0)`
+      el.offsetWidth  // 取offsetWidth会使浏览器重绘
+      // setTimeout(() => {
+      el.style.transform = el.style.webkitTransform = `translate3d(0,0,0)`
+      // }, 200)
       el.addEventListener('transitionend', done)
     },
     afterDrop (el) {
-      console.log(el)
       const ball = this.dropBalls.shift()
       if (ball) {
         ball.show = false
@@ -183,7 +177,7 @@ export default {
     },
     routerTo () {
       if (this.totalPrice >= this.minprice) {
-        this.$db.setDb('order', { selectfoods: this.selectfoods, totalPrice: this.totalPrice })
+        // this.$db.setDb('order', { selectfoods: this.selectfoods, totalPrice: this.totalPrice })
         this.$router.push({ path: '/order' })
       }
     },
@@ -517,14 +511,12 @@ export default {
   position: fixed;
   left: 32px;
   bottom: 22px;
-  z-index: 2000000;
-  transition: all 0.4s cubic-bezier(0.49, -0.1, 0.75, 0.41);
-}
-.inner {
+  z-index: 200;
   width: 16px;
   height: 16px;
   border-radius: 50%;
   background-color: rgb(0, 160, 220);
-  transition: all 0.4s linear;
+  transition: all 0.4s cubic-bezier(0.49, 0, 0.75, 0.41);
+  color: #ffffff;
 }
 </style>

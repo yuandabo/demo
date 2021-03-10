@@ -5,17 +5,17 @@
 @import './font-size.scss';
 h1 {
   font-weight: 500;
-  margin: 2px 0 15px 0;
-  height: 14px;
+  margin: 2px 0 10x 0;
+  // height: 14px;
   font-size: 15px;
   line-height: 14px;
   color: rgb(0, 0, 0);
 }
 
-div{
-  font-size: 10px;
-  color: rgb(74, 75, 77);
-}
+// div{
+//   font-size: 10px;
+//   color: rgb(74, 75, 77);
+// }
 
 .pad{
   padding: 5px;
@@ -29,6 +29,25 @@ div{
   padding-right:  5px;
 }
 
+.pad-left{
+  padding-left:  5px;
+}
+
+.margin10{
+  margin: 10px;
+}
+
+.margin-bot{
+  margin-bottom: 10px;
+}
+.m10-p10 {
+  margin: 10px;
+  padding: 0px 10px;
+}
+.m15-p10 {
+  margin: 15px 10px;
+  padding: 0px 10px;
+}
 .relative{
   position: relative;
 }
@@ -42,9 +61,20 @@ div{
 
 .global-card{
   box-sizing: border-box;
-  padding: 10px 7px;
+  padding: 10px 5px;
   background: #ffffff;
   margin: 10px auto;
-  width: 90%;
+  width: 95vw;
   border-radius: 10px;
+}
+
+.text-right{
+  text-align: right;
+}
+.right {
+  text-align: right;
+}
+
+.weight{
+  font-weight: 500;
 }

@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-03-05 11:33:34
- * @LastEditTime: 2021-03-08 03:07:05
+ * @LastEditTime: 2021-03-11 01:24:48
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \demo2\vue\eleme\phoneweb\src\views\foodsDetails\index.vue
@@ -10,17 +10,19 @@
   <div class="food-detail">
     <van-nav-bar left-arrow
                  :border="false"
+                 :fixed="true"
                  @click-left="onClickLeft">
       <template #right>
         <van-icon name="share"
-                  @click="onClickRight" />
+                  @click="onClickRight"
+                  :color="'#ffffff'" />
       </template>
     </van-nav-bar>
     <van-image :src="details.image" />
     <div class="global-card detail-title">
-      <h1 class="title">{{ details.name }}</h1>
-      <div class="N6 sellNums">月售:{{ details.sellCount }}</div>
-      <div class="flexdir priceAndControl">
+      <h1 class="title m15-p10">{{ details.name }}</h1>
+      <div class="N6 m10-p10 sellNums">月售:{{ details.sellCount }}</div>
+      <div class="flexdir m10-p10 priceAndControl">
         <div class="global-nowprice global-fontSize-16px price">
           ￥{{ details.price }}
         </div>
@@ -32,18 +34,18 @@
       </div>
     </div>
     <div class="global-card detail-content">
-      <h1>商品详情</h1>
-      <div>
+      <h1 class="m15-p10">商品详情</h1>
+      <div class="g-fS-10 m10-p10">
         <span class="pad-right N6">原料</span><span>其他</span>
       </div>
-      <div>
+      <div class="g-fS-10 m10-p10">
         <span class="pad-right N6">价格说明</span><span>
           <van-icon name="question" />
         </span>
       </div>
     </div>
     <div class="global-card detail-evaluate">
-      <h1>商品评价</h1>
+      <h1 class="m15-p10">商品评价</h1>
       <div class="rating-text">
         <ul>
           <li v-for="(item,index) in ratings"
@@ -195,21 +197,25 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import "@/assets/color";
 .food-detail {
   position: relative;
   height: 100vh;
   overflow: auto;
   /deep/ .van-nav-bar {
     width: 100vw;
-    position: absolute;
+    position: fixed;
     background: none;
   }
   .detail-title {
     .title {
-      margin-left: 5px;
+      // margin-left: 5px;
     }
     .priceAndControl {
       justify-content: space-between;
+    }
+    .sellNums {
+      font-size: $nolmal-textSize;
     }
   }
 }

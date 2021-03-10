@@ -20,5 +20,6 @@ export {
   CheckboxGroup,
   Divider,
   Search,
-  ShareSheet
+  ShareSheet,
+  NoticeBar
 } from 'vant'

@@ -31,7 +31,7 @@
       <shoperrecommend :goods="goods"
                        @foodAdd="foodAdd" />
     </div>
-    <van-divider />
+    <!-- <van-divider /> -->
     <div class="goods-body">
       <scroll class="wrapper menu-warpper"
               :pulldown="true">
@@ -71,13 +71,11 @@
                   class="food-item gradient-line line"
                   @click="goToFoodDetails(item)">
                 <div class="foods-image">
-                  <van-image class="imgdom"
-                             width="90px"
+                  <van-image width="90px"
                              height="90px"
                              :src="item.image">
                     <template v-slot:error>
-                      <van-image class="imgdom"
-                                 width="90px"
+                      <van-image width="90px"
                                  height="90px"
                                  src="/img/kobe.png" />
                     </template>
@@ -286,7 +284,7 @@ export default {
 .foods {
   background: #fff;
   .goods-img {
-    margin: 10px 0 5px 0;
+    margin: 15px 5px;
     padding: 0px 5px;
     /deep/.van-image {
       display: flex;
@@ -294,13 +292,17 @@ export default {
     }
     /deep/.van-image__img {
       // width: 90%;
-      border-radius: 5px;
+      border-radius: 3px;
     }
   }
   .goods-body {
     // flex: 0;
     display: flex;
     overflow: hidden;
+    /deep/.van-image__img {
+      // width: 90%;
+      border-radius: 3px;
+    }
     // height: 93vh;
     .menu-warpper {
       // height: 93vh;

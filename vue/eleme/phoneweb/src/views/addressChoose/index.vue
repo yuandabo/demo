@@ -77,10 +77,14 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import "@/assets/color";
 .address {
   /deep/.van-button--danger {
     background: #1989fa;
     border: 1px solid #1989fa;
+  }
+  /deep/ .van-nav-bar .van-icon {
+    color: $nolmao-iconGrey;
   }
 }
 </style>

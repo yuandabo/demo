@@ -1,12 +1,16 @@
 <template>
-  <div class="flexdir-column order">
+  <div class="flexdir-column relative order">
     <div class="order-background" />
     <van-nav-bar title="确认订单"
                  left-arrow
+                 :fixed="true"
                  @click-left="onClickLeft" />
-    <div class="flex-1">
+    <van-notice-bar style="margin:5px 10px;border-radius:5px"
+                    left-icon="volume-o"
+                    text="为减少接触，降低风险，请修改下方备注。" />
+    <div class="flex-1 g-fS-12">
       <div class="order-address">
-        <div class="address-titile">订单配送至</div>
+        <!-- <div class="address-titile">订单配送至</div> -->
         <div class="address-content"
              @click="$router.push({path:'/address'})">{{address}}
           <van-icon name="arrow" />
@@ -23,32 +27,38 @@
           <div class="right">在线支付</div>
         </div>
       </div>
-      <div class="order-cart">
+      <div class="order-cart g-fS-14">
         <div class="cart-title">527烧烤</div>
         <div class="cart-content">
           <div v-for="(item,index) in selectfoods"
                :key="index"
                class="content-item">
-            <div class="flex-1">
-              {{item.description}}
+            <div>
+              <van-image width="50"
+                         height="50"
+                         :src="item.image" />
             </div>
-            <div class="flex-1">
-              {{item.price}}/每份
+            <div class="flex-1 pad-left">
+              <div class="weight">{{item.name}}</div>
+              <div class="N6"><span class="g-fS-10">￥</span>{{item.price}}</div>
+              <div class="N6"><span class="g-fS-10">x</span>{{item.count}}</div>
             </div>
-            <div class="flex-1">
-              {{item.count}}份
+            <div>
+              <span class="g-fS-10">￥</span>{{(item.price*item.count).toFixed(1)}}
             </div>
           </div>
         </div>
-        <div v-for="(item,index) in payList"
-             :key="index"
-             class="cart-sendpay">
-          <div>配送费</div>
-          <div class="right">￥5.6</div>
+        <div class="flexdir cart-sendpay">
+          <div class="flex-1">配送费</div>
+          <div class="flex-1 right"><span class="g-fS-10">￥</span>5.6</div>
+        </div>
+        <div class="flexdir cart-sendpay">
+          <div class="flex-1">包装费</div>
+          <div class="flex-1 right"><span class="g-fS-10">￥</span>2.6</div>
         </div>
         <div class="cart-price">
           <div class="price-left">优惠说明</div>
-          <div class="price-right right">小计￥{{totalPrice}}</div>
+          <div class="price-right right">小计<span class="g-fS-10">￥</span>{{totalPrice}}</div>
         </div>
       </div>
       <div class="remark">
@@ -63,7 +73,7 @@
       </div>
     </div>
 
-    <van-submit-bar :price="3050"
+    <van-submit-bar :price="totalPrice*100"
                     button-text="提交订单"
                     button-type="info"
                     @submit="onSubmit" />
@@ -76,6 +86,8 @@
 <script>
 // import carcontrol from '../cartcontrol/cartcontrol'
 import { queryById } from '@/api/send'
+import { mapGetters } from 'vuex'
+import store from '@/store'
 export default {
   name: '',
   //   components: {
@@ -85,7 +97,7 @@ export default {
     return {
       fold: true,
       maskShow: false,
-      selectfoods: [],
+      // selectfoods: [],
       id: this.$route.query.id,
       mes: {},
       payList: [],
@@ -93,23 +105,42 @@ export default {
       sheetshow: false,
       actions: [{ name: '选项一' }, { name: '选项二' }, { name: '选项三' }],
       address: '请选择收获地址',
-      totalPrice: 0
+      // totalPrice: 0
     }
   },
   computed: {
-    // totalPrice () {
-    //   let total = 0
-    //   this.selectfoods.forEach((food) => {
-    //     total += food.price * food.count
-    //   })
-    //   return total
-    // },
+    ...mapGetters([
+      'shopCarData'
+    ]),
+    selectfoods: {
+      get: function () {
+        const foods = []
+        this.goods.forEach((good) => {
+          good.foods.forEach((food) => {
+            if (food.count) {
+              foods.push(food)
+            }
+          })
+        })
+        return foods
+      }
+    },
+    goods () {
+      return this.shopCarData
+    },
+    totalPrice () {
+      let total = 5.6 + 2.6;
+      this.selectfoods.forEach((food) => {
+        total += food.price * food.count;
+      });
+      return total;
+    },
     totalCount () {
       let count = 0
       this.selectfoods.forEach((food) => {
         count += food.count
       })
-      return count
+      return count.toFixed(1)
     },
     payDesc () {
       if (this.totalPrice === 0) {
@@ -132,22 +163,22 @@ export default {
     }
   },
   activated () {
-    console.log(this.$db.getDb('order'))
+    // console.log(this.$db.getDb('order'))
     if (this.$route.query.content) {
       // const { addressDetail } = this.$route.query.content
       this.address = this.$route.query.content
     }
-    if (this.$db.getDb('order')) {
-      const { selectfoods, totalPrice } = this.$db.removeGetDb('order')
-      this.selectfoods = selectfoods
-      this.totalPrice = totalPrice
-    }
-    this.queryById()
+    // if (this.$db.getDb('order')) {
+    //   const { selectfoods, totalPrice } = this.$db.removeGetDb('order')
+    //   this.selectfoods = selectfoods
+    //   this.totalPrice = totalPrice
+    // }
+    // this.queryById()
   },
   methods: {
     onSelect () { },
     onSubmit () {
-      this.$router.push({ path: '/goods' })
+      this.$router.push({ path: '/orderFinish' })
     },
     onClickLeft () { this.$router.push({ path: '/goods/index' }) },
     queryById () {
@@ -163,12 +194,14 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import "@/assets/color";
 .order {
-  height: 100vh;
+  height: 90vh;
+  padding-bottom: 100px;
   overflow-x: hidden;
   overflow-y: auto;
   /deep/.van-submit-bar {
-    position: relative;
+    // position: relative;
   }
   /deep/.van-nav-bar {
     // z-index: 1;
@@ -179,6 +212,7 @@ export default {
   }
   /deep/.van-nav-bar__title {
     color: #ffffff;
+    font-size: 14px;
   }
   .order-background {
     z-index: -1;
@@ -190,8 +224,9 @@ export default {
     background-image: linear-gradient(90deg, #0af, #0085ff);
   }
   .order-address {
-    padding: 15px;
+    padding: 5px 15px;
     color: #ffffff;
+    // background: #ffffff;
     .address-titile {
       font-size: 16px;
       line-height: 1.21;
@@ -214,9 +249,10 @@ export default {
     box-shadow: 0 0.013333rem 0.026667rem 0 rgba(0, 0, 0, 0.05);
     box-shadow: 0 0.133333vw 0.266667vw 0 rgba(0, 0, 0, 0.05);
     margin: 10px;
+    border-radius: 5px;
     .send-time,
     .send-pay {
-      padding: 15px 20px;
+      padding: 10px 20px;
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -232,21 +268,28 @@ export default {
     background: #fff;
     box-shadow: 0 0.013333rem 0.026667rem 0 rgba(0, 0, 0, 0.05);
     box-shadow: 0 0.133333vw 0.266667vw 0 rgba(0, 0, 0, 0.05);
+    border-radius: 5px;
     .cart-title {
       padding: 15px 20px;
-      font-size: 16px;
+      // font-size: 16px;
       font-weight: 500;
+      color: $nolmal-textColor;
     }
     .cart-content {
       // padding: 15px;
-      font-size: 16px;
+      // font-size: 16px;
       .content-item {
         padding: 15px 20px;
         display: flex;
         justify-content: space-between;
       }
+      /deep/ img {
+        border-radius: 3px;
+      }
     }
     .cart-sendpay {
+      margin: 10px;
+      padding: 0px 10px;
     }
     .cart-price {
       padding: 7px 10px;
@@ -267,10 +310,10 @@ export default {
     margin: 10px;
     // flex: 1;
     background: #fff;
+    border-radius: 5px;
+    /deep/.van-field {
+      border-radius: 5px;
+    }
   }
-}
-
-.right {
-  text-align: right;
 }
 </style>
