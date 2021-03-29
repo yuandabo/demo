@@ -1,0 +1,23 @@
+.flexdir-column{
+  display: flex;
+  flex-direction: column;
+}
+
+.flexdir{
+  display: flex;
+}
+
+.flexdir-align{
+  display: flex;
+  align-items: center;
+}
+
+.flexdir-alignjust{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.flex-1{
+  flex:1;
+}

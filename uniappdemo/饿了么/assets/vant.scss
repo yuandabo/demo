@@ -1,0 +1,25 @@
+.van-divider{
+  margin:5px 0;
+}
+// .van-nav-bar .van-icon{
+// color: #ffffff;
+// }
+.van-nav-bar{
+  overflow: hidden;
+}
+.van-nav-bar__left, .van-nav-bar__right{
+  height: 100%;
+}
+.vant-search-index{
+  display: flex;
+  align-items: center;
+}
+.van-nav-bar__title{
+  height: 100%;
+}
+.vant-nav-bar-index{
+  position: fixed;
+  height: 7vh;
+  width: 100vw;
+  z-index: 1;
+}
