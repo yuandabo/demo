@@ -1,0 +1,164 @@
+{
+  "pages": [{
+      "path": "pages/goods/index",
+      // "aliasPath": "/goods/index",
+      "name": "goods",
+      "style": {
+        "navigationStyle": "custom",
+        "app-plus": {
+          "titleView": false
+        }
+      }
+    },
+    {
+      "path": "pages/goods/foods/index",
+      // "aliasPath": "/goods/foods",
+      "name": "foods",
+      "style": {
+        "navigationStyle": "custom",
+        "app-plus": {
+          "titleView": false
+        }
+      }
+    },
+    {
+      "path": "pages/goods/ratings/index",
+      // "aliasPath": "/goods/ratings",
+      "name": "ratings",
+      "style": {
+        "navigationStyle": "custom",
+        "app-plus": {
+          "titleView": false
+        }
+      }
+    },
+    {
+      "path": "pages/goods/seller/index",
+      // "aliasPath": "/goods/seller",
+      "name": "seller",
+      "style": {
+        "navigationStyle": "custom",
+        "app-plus": {
+          "titleView": false
+        }
+      }
+    },
+    {
+      "path": "pages/recommendDetails/index",
+      // "aliasPath": "/goods/seller",
+      "name": "recommendDetails",
+      "style": {
+        "navigationStyle": "custom",
+        "app-plus": {
+          "titleView": false
+        }
+      }
+    },
+    {
+      "path": "pages/foodsDetails/index",
+      // "aliasPath": "/goods/seller",
+      "name": "foodsDetails",
+      "style": {
+        "navigationStyle": "custom",
+        "app-plus": {
+          "titleView": false
+        }
+      }
+    },
+    {
+      "path": "pages/search/index",
+      // "aliasPath": "/goods/seller",
+      "name": "search",
+      "style": {
+        "navigationStyle": "custom",
+        "app-plus": {
+          "titleView": false
+        }
+      }
+    }
+  ],
+  "globalStyle": {
+    // "navigationBarTextStyle": "white",
+    // "navigationBarTitleText": "饿了么",
+    // "navigationBarBackgroundColor": "#409EFF",
+    // "backgroundColor": "#FFFFFF",
+    // "app-plus": {
+    //   "background": "#efeff4"
+    // },
+    "usingComponents": { //这里为方便，全局引入了所有组件，也可以在某个page下单独引用某个组件
+      // "demo-block": "/wxcomponents/vant/demo-block/index",
+      "van-action-sheet": "/wxcomponents/vant/action-sheet/index",
+      "van-area": "/wxcomponents/vant/area/index",
+      // "van-badge": "/wxcomponents/vant/badge/index",
+      // "van-badge-group": "/wxcomponents/vant/badge-group/index",
+      "van-button": "/wxcomponents/vant/button/index",
+      "van-card": "/wxcomponents/vant/card/index",
+      "van-cell": "/wxcomponents/vant/cell/index",
+      "van-cell-group": "/wxcomponents/vant/cell-group/index",
+      "van-checkbox": "/wxcomponents/vant/checkbox/index",
+      "van-checkbox-group": "/wxcomponents/vant/checkbox-group/index",
+      "van-col": "/wxcomponents/vant/col/index",
+      "van-dialog": "/wxcomponents/vant/dialog/index",
+      "van-field": "/wxcomponents/vant/field/index",
+      "van-goods-action": "/wxcomponents/vant/goods-action/index",
+      "van-goods-action-icon": "/wxcomponents/vant/goods-action-icon/index",
+      "van-goods-action-button": "/wxcomponents/vant/goods-action-button/index",
+      "van-icon": "/wxcomponents/vant/icon/index",
+      "van-loading": "/wxcomponents/vant/loading/index",
+      "van-nav-bar": "/wxcomponents/vant/nav-bar/index",
+      "van-notice-bar": "/wxcomponents/vant/notice-bar/index",
+      "van-notify": "/wxcomponents/vant/notify/index",
+      "van-panel": "/wxcomponents/vant/panel/index",
+      "van-popup": "/wxcomponents/vant/popup/index",
+      "van-progress": "/wxcomponents/vant/progress/index",
+      "van-radio": "/wxcomponents/vant/radio/index",
+      "van-radio-group": "/wxcomponents/vant/radio-group/index",
+      "van-row": "/wxcomponents/vant/row/index",
+      "van-search": "/wxcomponents/vant/search/index",
+      "van-slider": "/wxcomponents/vant/slider/index",
+      "van-stepper": "/wxcomponents/vant/stepper/index",
+      "van-steps": "/wxcomponents/vant/steps/index",
+      "van-submit-bar": "/wxcomponents/vant/submit-bar/index",
+      "van-swipe-cell": "/wxcomponents/vant/swipe-cell/index",
+      "van-switch": "/wxcomponents/vant/switch/index",
+      // "van-switch-cell": "/wxcomponents/vant/switch-cell/index",
+      "van-tab": "/wxcomponents/vant/tab/index",
+      "van-tabs": "/wxcomponents/vant/tabs/index",
+      "van-tabbar": "/wxcomponents/vant/tabbar/index",
+      "van-tabbar-item": "/wxcomponents/vant/tabbar-item/index",
+      "van-tag": "/wxcomponents/vant/tag/index",
+      "van-toast": "/wxcomponents/vant/toast/index",
+      "van-transition": "/wxcomponents/vant/transition/index",
+      "van-tree-select": "/wxcomponents/vant/tree-select/index",
+      "van-datetime-picker": "/wxcomponents/vant/datetime-picker/index",
+      "van-rate": "/wxcomponents/vant/rate/index",
+      "van-collapse": "/wxcomponents/vant/collapse/index",
+      "van-collapse-item": "/wxcomponents/vant/collapse-item/index",
+      "van-picker": "/wxcomponents/vant/picker/index",
+      "van-image": "/wxcomponents/vant/image/index"
+    }
+  },
+  // "easycom": {
+  //     "autoscan": true, //是否自动扫描组件
+  //     "custom": {//自定义扫描规则
+  //       "^uni-(.*)": "@/components/uni-$1.vue"
+  //     }
+  //   },
+  // "tabBar": {
+  //   "color": "#000000",
+  //   "selectedColor": "#409EFF",
+  //   "borderStyle": "black",
+  //   "backgroundColor": "#ffffff",
+  //   "list": [
+
+  //   ]
+  // },
+  "condition": { //模式配置，仅开发期间生效
+    "current": 0 //当前激活的模式(list 的索引项)
+    // "list": [{
+    //   "name": "", //模式名称
+    //   "path": "", //启动页面，必选
+    //   "query": "" //启动参数，在页面的onLoad函数里面得到
+    // }]
+  }
+}
