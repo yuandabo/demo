@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-03-24 13:48:02
- * @LastEditTime: 2021-03-24 23:47:35
+ * @LastEditTime: 2021-04-07 00:13:10
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \demo\jsdemo\算法\index.js
@@ -48,7 +48,7 @@ function pupleSort (arr) {
   console.log(nums);
   return arr
 }
-console.log(pupleSort([5, 4, 3, 2, 1]))
+// console.log(pupleSort([5, 4, 3, 2, 1]))
 
 function pupleSort2 (arr) {
   let nums = 0
@@ -60,7 +60,72 @@ function pupleSort2 (arr) {
       }
     }
   }
-  console.log(nums);
+  // console.log(nums);
   return arr
 }
 // console.log(pupleSort2([5, 4, 3, 2, 1]))
+
+
+
+
+/**
+ * @description: 堆查找
+ * @param {*}
+ * @return {*}
+ */
+
+const swap = (array, a, b) => [array[a], array[b]] = [array[b], array[a]];
+
+const Compare = {
+  LESS_THAN: -1,
+  BIGGER_THAN: 1
+};
+
+function defaultCompare (a, b) {
+  if (a === b) { // {1} 
+    return 0;
+  }
+  return a < b ? Compare.LESS_THAN : Compare.BIGGER_THAN; // {2} 
+}
+
+function heapSort (arr) {
+  let n = arr.length
+  buildHeap(arr)
+  for (i = n - 1; i >= 0; i--) {
+    swap(arr, i, 0)
+    heapify(arr, i, 0)
+  }
+  return arr
+}
+
+function heapify (arr, n, i) {
+  if (i >= n) return
+  const left = 2 * i + 1 // {1} 
+  const right = 2 * i + 2 // {2}
+  // const parent = i
+  let max = i
+  if (left < n && arr[left] > arr[max]) {
+    max = left
+  }
+  if (right < n && arr[right] > arr[max]) {
+    max = right
+  }
+  if (max != i) {
+    swap(arr, max, i)
+    heapify(arr, n, max)
+  }
+}
+
+function buildHeap (arr) {
+  let n = arr.length
+  let lastNode = n - 1
+  const parent = (lastNode - 1) / 2
+  let i
+  for (i = parent; i >= 0; i--) {
+    heapify(arr, n, i)
+  }
+}
+
+
+const arr = heapSort([4, 10, 3, 5, 1, 2])
+console.log(arr);
