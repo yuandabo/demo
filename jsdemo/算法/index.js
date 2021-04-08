@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-03-24 13:48:02
- * @LastEditTime: 2021-04-07 00:13:10
+ * @LastEditTime: 2021-04-08 18:31:36
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \demo\jsdemo\算法\index.js
@@ -45,7 +45,7 @@ function pupleSort (arr) {
       }
     }
   }
-  console.log(nums);
+  // console.log(nums);
   return arr
 }
 // console.log(pupleSort([5, 4, 3, 2, 1]))
@@ -69,7 +69,7 @@ function pupleSort2 (arr) {
 
 
 /**
- * @description: 堆查找
+ * @description: 堆排序
  * @param {*}
  * @return {*}
  */
@@ -128,4 +128,134 @@ function buildHeap (arr) {
 
 
 const arr = heapSort([4, 10, 3, 5, 1, 2])
-console.log(arr);
+// console.log(arr);
+
+
+/**
+ * @description: 选择排序
+ * @param {*} 时间复杂度 o(n²)
+ * @return {*}
+ */
+
+function selectionSort (arr) {
+  for (let i = 0; i < arr.length - 1; i++) {
+    let minIndex = i
+    for (let j = i; j < arr.length; j++) {
+      if (arr[minIndex] > arr[j]) {
+        minIndex = j
+      }
+    }
+    if (minIndex !== i) swap(arr, minIndex, i)
+  }
+  return arr
+}
+
+const sele = selectionSort([5, 4, 3, 2, 1])
+// console.log(sele);
+
+/**
+ * @description: 插入排序 
+ * @param {*}
+ * @return {*}
+ */
+function insertionSort (array, compareFn = defaultCompare) {
+  for (let i = 1; i < array.length; i++) {
+    let j = i
+    let temp = array[i]
+    while (j > 0 && compareFn(array[i], array[j - 1]) === Compare.BIGGER_THAN) {
+      swap(array, j, j - 1)
+      j--
+    }
+  }
+  return arr
+}
+
+const inse = selectionSort([5, 4, 3, 2, 1])
+// console.log(inse);
+
+
+/**
+ * @description:  归并排序
+ * @param {*}  时间复杂度 nlogn
+ * @return {*}
+ */
+function mergeSort (arr, compareFn = defaultCompare) {
+  if (arr.length > 1) {
+    const { length } = arr
+    const middle = Math.floor(length / 2)
+    const left = mergeSort(arr.slice(0, middle))
+    const rifht = mergeSort(arr.slice(middle, length))
+    arr = merge(left, rifht)
+  }
+  return arr
+}
+function merge (left, right, compareFn = defaultCompare) {
+  let i = 0
+  let j = 0
+  let newArr = []
+  while (i < left.length && j < right.length) {
+    newArr.push(
+      compareFn(left[i], right[j]) === Compare.LESS_THAN ? left[i++] : right[j++]
+    )
+  }
+  return i < left.length ? newArr.concat(left) : newArr.concat(right)
+}
+
+const merg = mergeSort([5, 4, 3, 2, 1])
+// console.log(merg);
+
+/**
+ * @description: 快速排序
+ * @param {*} 时间复杂度 o(nlogn)
+ * @return {*}
+ */
+function quickSort (arr, compareFn = defaultCompare) {
+  console.log(1);
+  return quick(arr, 0, arr.length - 1)
+}
+
+function quick (arr, left, right, compareFn = defaultCompare) {
+  console.log(2);
+  let index
+  if (arr.length > 1) {
+    console.log(3);
+    index = partition(arr, left, right)
+    console.log(4);
+    if (left < index - 1) {
+      quick(arr, left, index - 1)
+    }
+    if (index < right) { // {6} 
+      quick(arr, index, right); // {7} 
+    }
+  }
+  return arr
+}
+
+function partition (arr, left, right, compareFn = defaultCompare) {
+  console.log(3.1);
+  const pivot = arr[Math.floor((left + right) / 2)]
+  let i = left
+  let j = right
+  while (i <= j) {
+    console.log(3.2);
+    while (compareFn(arr[i], pivot) === Compare.LESS_THAN) {
+      console.log(3.3);
+      i++
+    }
+    while (compareFn(arr[j], pivot) === Compare.BIGGER_THAN) {
+      console.log(3.4);
+      j--
+    }
+    console.log(3.5);
+    if (i <= j) {
+      console.log(3.4);
+      swap(arr, i, j)
+      i++
+      j--
+    }
+  }
+  return i
+}
+
+const qui = quickSort([5, 4, 3, 2, 1])
+console.log('qui', qui);
