@@ -12,6 +12,8 @@
     <img id="img" src="" alt="">
     <img id="img2" src="" alt="">
   </div>
+
+  <a href="https://www.w3school.com.cn/i/w3school_logo_white.gif" download="123">下载</a>
   <script>
     let imgNODE = document.getElementById('img')
     let img2NODE = document.getElementById('img2')
@@ -29,6 +31,23 @@
         file.onloadend = function (e) {
           imgNODE.src = e.target.result;
         };
+
+        // 
+        const blobURL = window.URL.createObjectURL(xhr.response)
+        const tempLink = document.createElement('a')
+        tempLink.style.display = 'none'
+        tempLink.href = blobURL
+        tempLink.setAttribute('download', '123')
+        // 兼容：某些浏览器不支持HTML5的download属性
+        if (typeof tempLink.download === 'undefined') {
+          tempLink.setAttribute('target', '_blank')
+        }
+        // 挂载a标签
+        document.body.appendChild(tempLink)
+        tempLink.click()
+        document.body.removeChild(tempLink)
+        // 释放blob URL地址
+        window.URL.revokeObjectURL(blobURL)
       } else {
         console.log(xhr.statusText);
       }
