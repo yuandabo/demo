@@ -6,6 +6,9 @@ import {
   Route,
   Link
 } from "react-router-dom";
+import 'antd/dist/antd.css';
+import Home from '@pages/home/index'
+// import zhCN from 'antd/lib/locale/zh_CN';
 
 export default function App() {
   return (
@@ -41,10 +44,6 @@ export default function App() {
       </div>
     </Router>
   );
-}
-
-function Home() {
-  return <h2>Home</h2>;
 }
 
 function About() {
