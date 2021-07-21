@@ -1,10 +1,13 @@
 import React, { Component } from 'react'
-import { PageHeader } from 'antd'
+import Nav from '@components/Nav/Nav'
 
-export default class App extends Component {
+export default class Home extends Component {
   // 初始化页面常量 绑定事件方法
   constructor(props, context) {
     super(props)
+    this.state = {
+      
+    }
   }
 
   // 组件已经加载到dom中
@@ -21,11 +24,8 @@ export default class App extends Component {
 
   render () {
     return (
-      <PageHeader
-        className=""
-        onBack={() => null}
-        title="Title"
-        subTitle="This is a subtitle"
+      <Nav
+          title='首页'
       />
     )
   }
