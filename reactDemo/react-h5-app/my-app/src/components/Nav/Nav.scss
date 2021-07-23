@@ -1,3 +1,31 @@
+$nav-height: 49px;
+$white: #ffffff;
 .ant-page-header{
-  color: #fff;  
+  padding: 0;
+  height: $nav-height;
+  line-height: $nav-height;
+  display: flex;
+  justify-content: center;
+  color: $white;  
+  .ant-page-header-heading{
+    height: $nav-height;
+    line-height: $nav-height;
+  }
+  .ant-page-header-back{
+    height: $nav-height;
+    line-height: $nav-height;
+    position: absolute;
+    top: 0;
+    left: 10px;
+    color: $white;
+    .ant-page-header-back-button{
+      color: $white;
+    }
+  }
+  .ant-page-header-heading-title {
+    color: $white; 
+  }
+}
+.ant-page-header-ghost{
+  background-color: rgb(27,56,91);
 }
