@@ -194,7 +194,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "@/assets/color";
+@import "@/assets/color.scss";
 .order {
   height: 90vh;
   padding-bottom: 100px;
