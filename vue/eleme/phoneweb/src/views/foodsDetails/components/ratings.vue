@@ -2,8 +2,8 @@
 <template>
   <div class="rating-text-li gradient-line line">
     <div class="rating-text-li-left">
-      <img class="rating-text-li-left-avatar"
-           :src="source.avatar"
+      <img v-lazy="source.avatar"
+           class="rating-text-li-left-avatar"
            width="28"
            height="28">
     </div>
