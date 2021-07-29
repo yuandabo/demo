@@ -1,0 +1,190 @@
+{
+  "sync.gist": "d30db3b416f13e5f401124e8f72f62ab",
+  "svn.default.encoding": "",
+  "git.ignoreMissingGitWarning": true,
+  "git.path": "E:/huanjing/git/Git/bin/git.exe",
+  "explorer.confirmDragAndDrop": false,
+  "editor.detectIndentation": false,
+  "editor.tabSize": 2,
+  "editor.quickSuggestions": {
+    "strings": true
+  },
+  "editor.fontSize": 17,
+  "editor.fontFamily": "mononoki,Consolas, 'Fantasque Sans Mono','Courier New', monospace",
+  "editor.suggestSelection": "first",
+  "editor.formatOnPaste": true,
+  "element-helper.version": "2.4",
+  // Default formatter for <script> region 双引号改单引号
+  "vetur.format.defaultFormatter.ts": "vscode-typescript",
+  "vetur.format.defaultFormatter.js": "vscode-typescript",
+  "eslint.options": {
+    "quotes": [
+      "error",
+      "single"
+    ]
+  },
+  "eslint.validate": [
+    "javascript",
+    "javascriptreact",
+    "html",
+    "vue",
+    {
+      "language": "html",
+      "autoFix": true
+    },
+    {
+      "language": "vue",
+      "autoFix": true
+    }
+  ],
+  "prettier.singleQuote": true,
+  "prettier.semi": false,
+  // "prettier.eslintIntegration": true,
+  "javascript.format.insertSpaceBeforeFunctionParenthesis": true,
+  "javascript.preferences.quoteStyle": "single",
+  "javascript.updateImportsOnFileMove.enabled": "always",
+  "javascript.implicitProjectConfig.experimentalDecorators": true,
+  "vsintellicode.modify.editor.suggestSelection": "automaticallyOverrodeDefaultValue",
+  "typescript.updateImportsOnFileMove.enabled": "always",
+  "files.exclude": {
+    "**/.classpath": true,
+    "**/.project": true,
+    "**/.settings": true,
+    "**/.factorypath": true
+  },
+  "[html]": {
+    "editor.defaultFormatter": "vscode.html-language-features"
+  },
+  "[javascript]": {
+    "editor.defaultFormatter": "vscode.typescript-language-features"
+  },
+  "git.alwaysShowStagedChangesResourceGroup": true,
+  "git.autofetch": true,
+  "gitlens.advanced.messages": {
+    "suppressCommitNotFoundWarning": true
+  },
+  "vetur.format.defaultFormatter.html": "js-beautify-html",
+  "vetur.format.defaultFormatterOptions": {
+    "js-beautify-html": {
+      "wrap_attributes": "force-aligned"
+      // #vue组件中html代码格式化样式
+    }
+  },
+  "[scss]": {
+    "editor.defaultFormatter": "HookyQR.beautify"
+  },
+  "svn.enableProposedApi": "product",
+  "workbench.sideBar.location": "left",
+  "merge-conflict.autoNavigateNextConflict.enabled": true,
+  "scm.alwaysShowProviders": true,
+  "scm.alwaysShowActions": true,
+  "terminal.integrated.rendererType": "dom",
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
+  },
+  "[vue]": {
+    "editor.defaultFormatter": "octref.vetur"
+  },
+  "git.enableSmartCommit": true,
+  // "workbench.iconTheme": "vscode-icons",
+  "search.followSymlinks": false,
+  "javascript.validate.enable": false,
+  "files.associations": {},
+  "editor.tokenColorCustomizations": {
+    "textMateRules": [
+      {
+        "name": "Comment",
+        "scope": [
+          "comment"
+        ],
+        "settings": {
+          "fontStyle": "italic",
+          "foreground": "#00c3fff1"
+        }
+      },
+      {
+        "name": "One Dark italic",
+        "scope": [
+          "comment",
+          "entity.other.attribute-name",
+          "keyword",
+          "markup.underline.link",
+          "storage.modifier",
+          "storage.type",
+          "string.url",
+          "variable.language.super",
+          "variable.language.this"
+        ],
+        "settings": {
+          "fontStyle": "italic"
+        }
+      },
+      {
+        "name": "One Dark italic reset",
+        "scope": [
+          "keyword.operator",
+          "keyword.other.type",
+          "storage.modifier.import",
+          "storage.modifier.package",
+          "storage.type.built-in",
+          "storage.type.function.arrow",
+          "storage.type.generic",
+          "storage.type.java",
+          "storage.type.primitive"
+        ],
+        "settings": {
+          "fontStyle": ""
+        }
+      }
+    ]
+  },
+  // 选中高亮的颜色
+  "workbench.colorCustomizations": {
+    // "editor.selectionBackground": "#8de3ee"
+  },
+  "leek-fund.funds": [
+    "320007",
+    "161726",
+    "161028",
+    "260108",
+    "004070",
+    "160424",
+    "005693",
+    "000248",
+    "002611",
+    "004496",
+    "008087",
+    "004857",
+    "005454",
+    "004433",
+    "001595",
+    "005064",
+    "001838",
+    "161725",
+    "005940"
+  ],
+  "editor.formatOnSave": true,
+  "editor.rulers": [],
+  "tabnine.experimentalAutoImports": true,
+  "diffEditor.ignoreTrimWhitespace": true,
+  "leek-fund.fundSort": -1,
+  "workbench.colorTheme": "Cobalt2",
+  "leek-fund.statusBarStock": [
+    "sh000001"
+  ],
+  "workbench.iconTheme": "material-icon-theme",
+  "settingsSync.ignoredExtensions": [
+  
+  ],
+  "editor.fontLigatures": null,
+  // "workbench.iconTheme": "ayu",
+  // "workbench.colorTheme": "Community Material Theme Darker High Contrast"
+  "fileheader.customMade": {},
+  "fileheader.configObj": {
+    "autoAdd": false, // 默认开启
+  },
+  "window.zoomLevel": 0,
+  "[json]": {
+    "editor.defaultFormatter": "Wscats.eno"
+  }
+}

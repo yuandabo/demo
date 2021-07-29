@@ -1,0 +1,27 @@
+Atom One Dark Theme
+Auto Close Tag
+Auto Rename Tag
+Chinese (Simplified) Language Pack for Visual Studio Code
+Cobalt2 Theme Official
+Code Runner
+Color Highlight
+Color Picker
+Community Material Theme
+ES7 React/Redux/GraphQL/React-Native snippets
+GitLens — Git supercharged
+HTML/CSS/JavaScript Snippets
+JavaScript (ES6) code snippets
+json
+koroFileHeader
+Markdown PDF
+Material Icon Theme
+Material Theme
+Material Theme Icons
+One Dark Pro
+One Monokai Theme
+Path Intellisense
+Sass/Less/Stylus/Pug/Jade/Typescript/Javascript Compile Hero Pro
+TSLint (deprecated)
+Vetur
+vue
+ESLint
