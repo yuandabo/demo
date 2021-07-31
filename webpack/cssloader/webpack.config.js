@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-04-18 14:29:02
- * @LastEditTime: 2021-04-22 18:48:59
+ * @LastEditTime: 2021-07-31 13:02:45
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \demo\webpack\cssloader\webpack.config.js
@@ -161,7 +161,7 @@ module.exports = {
     // usedExports: true,
     minimize: true,
     minimizer: [
-      // For webpack@5 you can use the `...` syntax to extend existing minimizers (i.e. `terser-webpack-plugin`), uncomment the next line
+      //    For webpack@5 you can use the `...` syntax to extend existing minimizers (i.e. `terser-webpack-plugin`), uncomment the next line
       // `...`,
       new CssMinimizerPlugin(),
     ],

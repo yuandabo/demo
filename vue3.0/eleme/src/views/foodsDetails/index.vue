@@ -197,7 +197,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "@/assets/color";
+@import "@/assets/color.scss";
 .food-detail {
   position: relative;
   height: 100vh;
