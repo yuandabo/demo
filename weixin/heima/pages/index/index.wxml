@@ -1,0 +1,55 @@
+<!--index.wxml-->
+<view class="home">
+  <Search></Search>
+  <!-- 轮播图 -->
+  <view class="swiper-warper">
+    <swiper autoplay="true" circular>
+      <swiper-item 
+        wx:for="{{swiperList}}"
+        wx:key="goods_id"
+        wx:for-item="img"
+        >
+        <navigator url="{{img.navigator_url}}" open-type="navigate">
+          <image src="{{img.image_src}}" mode="widthFix" />
+        </navigator>
+      </swiper-item>
+    </swiper>
+  </view>
+  <!-- 导航栏 -->
+  <view class="index_cart">
+    <navigator 
+      wx:for="{{cartList}}"
+      wx:key="name"
+      wx:for-item="cart" 
+      url="{{cartList.navigator_url}}"
+      open-type="navigate" >
+      <image src="{{cart.image_src}}" mode="widthFix" />
+    </navigator>
+  </view>
+  <!--  -->
+  <view class="index_floor">
+    <view
+      class="floor_group" 
+      wx:for="{{floorList}}"
+      wx:key="*this" 
+      wx:for-index="idx" 
+      wx:for-item="floor">
+      <view class="floor_title">
+        <image src="{{floor.floor_title.image_src}}" mode="widthFix">
+        </image>
+      </view>
+      <view class="floor_list">
+        <navigator 
+          url="{{floor.navigator_url}}" 
+          open-type="navigate"
+          wx:for="{{floor.product_list}}"
+          wx:key="name" 
+          wx:for-index="index" 
+          wx:for-item="product">
+          <image src="{{product.image_src}}" mode="{{index === 0?'widthFix':'scaleToFill'}}">
+          </image>
+        </navigator>
+      </view>
+    </view>
+  </view>
+</view>
