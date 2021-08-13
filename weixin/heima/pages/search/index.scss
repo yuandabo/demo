@@ -1,0 +1,34 @@
+page{
+  background-color: #cccccc;
+}
+.search {
+  padding: 20rpx;
+  .input_warp{
+    display: flex;
+    input{
+      padding-left: 15rpx;
+      flex: 5;
+      background-color: #f0efef;
+    }
+    button{
+      margin-left: 10rpx;
+      padding: 0rpx;
+      flex: 1;
+      font-weight: normal;
+      font-size: 28rpx;
+      background-color: #f0efef;
+    }
+  }
+}
+.search_content{
+  margin: 20rpx;
+  background-color: #fff;
+  .list{
+    padding: 10rpx;
+    border: 1rpx solid #ccc;
+    word-break:break-all;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+  }
+}

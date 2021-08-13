@@ -1,0 +1,18 @@
+<view class="cart">
+  <view class="cart-item">
+    <view class="iconfont icon-fuwupingjia-kefu-select-copy"></view>
+    <view class="text">客服</view>
+    <button open-type="contact"></button>
+  </view>
+  <view class="cart-item">
+    <view class="iconfont icon-fenxiang"></view>
+    <view class="text">分享</view>
+    <button open-type="share"></button>
+  </view>
+  <navigator url="/pages/cart/index?" open-type="switchTab" class="cart-item">
+    <view class="iconfont icon-gouwuche"></view>
+    <view class="text">购物车</view>
+  </navigator>
+  <view class="cart-item addcart" bindtap="addcartHandle">加入购物车</view>
+  <view class="cart-item buy">购买</view>
+</view>

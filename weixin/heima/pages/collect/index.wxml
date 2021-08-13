@@ -1,0 +1,19 @@
+<view class="collect">
+  <Tabs tabsList="{{tabsList}}" bindtabchange="handleTabchange">
+    <scroll-view class="list_container" scroll-y="true">
+      <view class="list" wx:for="{{collect}}" wx:key="goods_id" wx:for-index="idx" wx:for-item="item">
+        <view class="content">
+          <view class="content_img">
+            <image src="{{item.goods_small_logo}}" mode="widthFix"></image>
+          </view>
+          <view class="content_body">
+            <view class="word">{{item.goods_name}}</view>
+            <view class="priceWarper">
+              <view class="price">￥{{item.goods_price}}</view>
+            </view>
+          </view>
+        </view>
+      </view>
+    </scroll-view>
+  </Tabs>
+</view>

@@ -1,2 +1,63 @@
-<!--pages/user/index.wxml-->
-<text>pages/user/index.wxml</text>
+<view class="login_warper">
+  <view wx:if="{{userInfo.nickName}}" class="image">
+    <view class="userinfo">
+      <image class="headicon" src="{{userInfo.avatarUrl}}" mode="widthFix"></image>
+      <text class="nickname">{{userInfo.nickName}}</text>
+    </view>
+    <image class="backgroundimg" src="{{userInfo.avatarUrl}}" mode="aspectFill"></image>
+  </view>
+  <navigator wx:else url="/pages/login/index" open-type="navigate" class="login" type="default">
+    登录
+  </navigator>
+</view>
+<view class="card">
+  <view class="history_wrap">
+    <navigator url="pages/collect/index" open-type="navigate">
+      <view class="his_num">0</view>
+      <view class="his_name">收藏的店铺</view>
+    </navigator>
+    <navigator url="/pages/collect/index">
+      <view class="his_num">{{collectNums}}</view>
+      <view class="his_name">收藏的商品</view>
+    </navigator>
+    <navigator>
+      <view class="his_num">0</view>
+      <view class="his_name">关注的商品</view>
+    </navigator>
+    <navigator>
+      <view class="his_num">0</view>
+      <view class="his_name">我的足迹</view>
+    </navigator>
+  </view>
+  <view class="orders_wrap">
+    <view class="title">我的订单</view>
+    <view class="order_btns">
+      <navigator>
+        <view class="iconfont icon-icon--copy"></view>
+        <view class="his_name">全部订单</view>
+      </navigator>
+      <navigator>
+        <view class="iconfont icon-fukuan"></view>
+        <view class="his_name">待付款</view>
+      </navigator>
+      <navigator>
+        <view class="iconfont icon-daishouhuo"></view>
+        <view class="his_name">待收货</view>
+      </navigator>
+      <navigator>
+        <view class="iconfont icon-duizhang-tuikuan"></view>
+        <view class="his_name">退款/退货</view>
+      </navigator>
+    </view>
+  </view>
+  <view class="address_warp">收货地址管理</view>
+  <view class="buttom_warp">
+    <view class="buttom_box">
+      <text class="">联系客服</text>
+      <text class="">400-618-4000</text>
+    </view>
+    <navigator url="/pages/feedback/index" class="buttom_box">意见反馈</navigator>
+    <view class="buttom_box">关于我们</view>
+  </view>
+  <view class="address_warp">将应用推荐给他人</view>
+</view>

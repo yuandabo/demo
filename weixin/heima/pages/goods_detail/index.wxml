@@ -1,0 +1,27 @@
+<view class="detail">
+    <!-- 轮播图 -->
+  <view class="swiper-warper">
+    <swiper autoplay circular indicator-dots>
+      <swiper-item wx:for="{{swiperList}}" wx:key="goods_id" wx:for-item="img"  bindtap="handlePrevewImage" data-current="{{img.pics_mid}}">
+          <image src="{{img.pics_mid}}" mode="widthFix" />
+      </swiper-item>
+    </swiper>
+  </view>
+  <view class="detail_body">
+    <view class="price">￥{{goodsInfo.goods_price}}</view>
+    <view class="title_warper">
+      <view class="title">{{goodsInfo.goods_name}}</view>
+      <view class="icon" bindtap="handleCollect">
+        <view class="iconfont {{ isCollect?'icon-shoucang1':'icon-shoucang' }}"></view>
+        <view>收藏</view>
+      </view>
+    </view>
+    <view class="detail">
+      <view class="detail_title">
+        图文详情
+      </view>
+      <rich-text nodes="{{goodsInfo.goods_introduce}}"></rich-text>
+    </view>
+  </view>
+  <Cart goods-info="{{goodsInfo}}"></Cart>
+</view>

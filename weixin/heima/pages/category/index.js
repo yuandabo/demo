@@ -1,66 +1,66 @@
-// pages/category/index.js
+// index.js
+// 获取应用实例
+import { request } from '../../request/index.js'
+import regeneratorRuntime from '../../lib/runtime/runtime'
+const app = getApp()
+
 Page({
-
-  /**
-   * 页面的初始数据
-   */
+  categoriesList: [],  // 全局变量
   data: {
-
+    leftContainList: [],
+    rightContainList: [],
+    activeCate: 0,
+    scrollTop: 0
   },
-
-  /**
-   * 生命周期函数--监听页面加载
-   */
-  onLoad: function (options) {
-
+  onLoad() {
+    if (wx.getUserProfile) {
+      this.setData({
+        canIUseGetUserProfile: true,
+      })
+    }
   },
-
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady: function () {
-
+  onReady() {
+    const cates = wx.getStorageSync('cates')
+    if (!cates) {
+      this.getCategoriesList()
+    } else {
+      if (Date.now() - cates.time > 1000 * 10) {
+        this.getCategoriesList()
+      } else {
+        const message = cates.data
+        this.categoriesList = message
+        const leftContainList = message.map((v) => v.cat_name)
+        this.setData({
+          leftContainList,
+          rightContainList: message[0].children || []
+        })
+      }
+    }
   },
-
-  /**
-   * 生命周期函数--监听页面显示
-   */
-  onShow: function () {
-
+  async getCategoriesList() {
+    const result = await request({
+      url: 'categories'
+    })
+    const { message } = result.data
+    wx.setStorageSync('cates', {
+      time: Date.now(),
+      data: message
+    })
+    this.categoriesList = message
+    const leftContainList = message.map((v) => v.cat_name)
+    this.setData({
+      leftContainList,
+      rightContainList: message[0].children || []
+    })
   },
-
-  /**
-   * 生命周期函数--监听页面隐藏
-   */
-  onHide: function () {
-
+  // 点击事件
+  handleCateTap(e) {
+    console.log(e)
+    const { index } = e.currentTarget.dataset
+    this.setData({
+      activeCate: index,
+      rightContainList: this.categoriesList[index].children || [],
+      scrollTop: 0
+    })
   },
-
-  /**
-   * 生命周期函数--监听页面卸载
-   */
-  onUnload: function () {
-
-  },
-
-  /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
-  onPullDownRefresh: function () {
-
-  },
-
-  /**
-   * 页面上拉触底事件的处理函数
-   */
-  onReachBottom: function () {
-
-  },
-
-  /**
-   * 用户点击右上角分享
-   */
-  onShareAppMessage: function () {
-
-  }
 })

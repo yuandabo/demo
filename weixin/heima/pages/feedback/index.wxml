@@ -1,0 +1,19 @@
+<view class="feedback">
+  <Tabs tabsList="{{tabsList}}" bindtabchange="handleTabchange">
+    <view class="title_warp">
+      <view class="title">问题的种类</view>
+      <view class="btns">
+        <button>功能建议</button>
+        <button>购买遇到问题</button>
+        <button>性能问题</button>
+        <button>其他</button>
+      </view>
+      <view class="text">
+        <textarea placeholder="请描述一下您的问题" />
+      </view>
+      <view class="submit">
+        <button type="primary" bindtap="handleSubmit">提交</button>
+      </view>
+    </view>
+  </Tabs>
+</view>

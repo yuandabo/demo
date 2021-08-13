@@ -1,0 +1,37 @@
+page{
+  background-color: #eeeeee;
+}
+.feedback {
+  
+  .title_warp{
+    padding: 20rpx;
+    .title{
+
+    }
+    .btns{
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      button{
+        box-sizing: border-box;
+        padding: 15rpx 10rpx;
+        margin: 20rpx 10rpx;
+        width: 30%;
+        font-size: 28rpx;
+        font-weight: normal;
+      }
+    }
+  }
+  .text{
+    textarea{
+      background-color: #fff;
+      padding: 10rpx;
+    }
+  }
+  .submit{
+    margin-top: 20rpx;
+    button {
+      background-color: var(--themeColor);
+    }
+  }
+}

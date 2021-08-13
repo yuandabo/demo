@@ -1,0 +1,21 @@
+.order{
+  .list_container{
+    .list{
+      padding: 10rpx;
+      border-bottom: 1rpx solid #ccc;
+      .list_item{
+        padding: 10rpx;
+        display: flex;
+        justify-content: space-between;
+      }
+      .price{
+        text{
+        &:last-child{
+          color: var(--themeColor);
+          font-size: 32rpx;
+        }
+        }
+      }
+    }
+  }
+}
