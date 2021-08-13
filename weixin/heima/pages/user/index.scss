@@ -1,0 +1,101 @@
+page {
+  background-color: #edece8;
+}
+.login_warper {
+  position: relative;
+  height: 50vh;
+  background-color: var(--themeColor);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  .login {
+    padding: 35rpx;
+    border: 1rpx solid greenyellow;
+    border-radius: 10rpx;
+    color: greenyellow;
+    font-size: 38rpx;
+  }
+  .image {
+    .userinfo {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: center;
+      .nickname {
+        margin-top: 30rpx;
+        color: #fff;
+      }
+    }
+    .headicon {
+      width: 150rpx;
+      height: 150rpx;
+      border-radius: 50%;
+    }
+    .backgroundimg {
+      position: absolute;
+      top: 0;
+      left: 0;
+      filter: blur(10rpx);
+      height: 50vh;
+    }
+  }
+}
+.card {
+  margin: 0 30rpx;
+  transform: translateY(-40rpx);
+  .history_wrap {
+    display: flex;
+    background-color: #fff;
+    navigator {
+      padding: 5rpx;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      .his_num {
+        padding: 5rpx;
+        color: var(--themeColor);
+      }
+    }
+  }
+  .orders_wrap{
+    margin-top: 30rpx;
+    background-color: #fff;
+    .title{
+      padding: 20rpx;
+      border-bottom: 1rpx solid #ccc;
+    }
+    .order_btns{
+      display: flex;
+      navigator{
+        padding: 10rpx;
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+      }
+    }
+  }
+  .address_warp{
+    margin-top: 30rpx;
+    padding: 20rpx;
+    background-color: #fff;
+  }
+  .buttom_warp{
+    margin-top: 30rpx;
+    background-color: #fff;
+    .buttom_box{
+      padding: 20rpx;
+      border-bottom: 1rpx solid #ccc;
+      display: flex;
+      justify-content: space-between;
+    }
+  }
+}

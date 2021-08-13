@@ -1,0 +1,78 @@
+.collect .list_container .list {
+  padding: 10rpx;
+  border-bottom: 1rpx solid #ccc;
+  display: flex;
+}
+
+.collect .list_container .list .content {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.collect .list_container .list .content .content_img {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.collect .list_container .list .content .content_img image {
+  width: 80%;
+}
+
+.collect .list_container .list .content .content_body {
+  flex: 2;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.collect .list_container .list .content .content_body .word {
+  font-size: 28rpx;
+  opacity: 0.9;
+}
+
+.collect .list_container .list .content .content_body .priceWarper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.collect .list_container .list .content .content_body .priceWarper .price {
+  color: var(--themeColor);
+  font-size: 32rpx;
+}
+
+.collect .list_container .list .content .content_body .priceWarper .choose {
+  display: flex;
+  align-items: center;
+}
+
+.collect .list_container .list .content .content_body .priceWarper .choose .dec {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 55rpx;
+  height: 55rpx;
+  border: 1rpx solid #ccc;
+}
+
+.collect .list_container .list .content .content_body .priceWarper .choose .nums {
+  padding: 20rpx;
+}
+
+.collect .list_container .list .content .content_body .priceWarper .choose .add {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 55rpx;
+  height: 55rpx;
+  border: 1rpx solid #ccc;
+}
+
+.collect .list_container .list .price text:last-child {
+  color: var(--themeColor);
+  font-size: 32rpx;
+}

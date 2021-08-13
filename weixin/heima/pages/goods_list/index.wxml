@@ -1,0 +1,19 @@
+<view class="good_list">
+  <Search></Search>
+  <Tabs tabsList="{{tabsList}}" bindtabchange="handleTabchange">
+    <scroll-view class="list_container" scroll-y="true">
+      <navigator url="../goods_detail/index?goods_id={{item.goods_id}}" open-type="navigate" class="list_item" wx:for="{{goodsList}}" wx:key="goods_id" wx:for-index="idx" wx:for-item="item">
+        <view class="item_left">
+          <image src="{{item.goods_small_logo?item.goods_small_logo:'http://image2.suning.cn/uimg/b2c/newcatentries/0000000000-000000000826147951_1_400x400.jpg'}}" mode="widthFix"></image>
+        </view>
+        <view class="item_right">
+          <view class="title">{{item.goods_name}}</view>
+          <view class="price">
+            <text>￥</text>
+            <text>{{item.goods_price}}</text>
+          </view>
+        </view>
+      </navigator>
+    </scroll-view>
+  </Tabs>
+</view>

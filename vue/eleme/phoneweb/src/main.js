@@ -11,6 +11,10 @@ import { mode } from '@/utils/env'
 import 'vant/lib/button/style'
 import '@/assets/index.scss'
 
+import VueLazyload from 'vue-lazyload'
+
+Vue.use(VueLazyload)
+
 Vue.use(plugin)
 Vue.config.productionTip = false
 Vue.prototype.$db = db

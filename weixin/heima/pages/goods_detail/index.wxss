@@ -1,0 +1,63 @@
+.detail {
+  padding-bottom: 90rpx;
+}
+
+.detail .swiper-warper swiper {
+  height: 65vw;
+  text-align: center;
+}
+
+.detail .swiper-warper swiper image {
+  width: 60%;
+}
+
+.detail .detail_body .price {
+  padding: 10rpx;
+  color: var(--themeColor);
+  font-size: 32rpx;
+  border-bottom: 5rpx solid #ccc;
+  font-weight: bold;
+}
+
+.detail .detail_body .title_warper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-bottom: 5rpx solid #ccc;
+}
+
+.detail .detail_body .title_warper .title {
+  flex: 5;
+  padding: 10rpx;
+  font-size: 32rpx;
+}
+
+.detail .detail_body .title_warper .icon {
+  flex: 1;
+  padding: 10rpx 20rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-left: 1rpx solid #000;
+}
+
+.detail .detail_body .title_warper .icon .iconfont {
+  font-size: 58rpx;
+}
+
+.detail .detail_body .title_warper .icon .icon-shoucang1 {
+  color: red;
+}
+
+.detail .detail_body .detail .detail_title {
+  padding: 20rpx;
+  color: var(--themeColor);
+  font-size: 32rpx;
+  font-weight: bold;
+}
+
+.detail Cart {
+  position: fixed;
+  bottom: 0;
+}

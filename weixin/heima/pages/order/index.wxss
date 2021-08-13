@@ -1,0 +1,15 @@
+.order .list_container .list {
+  padding: 10rpx;
+  border-bottom: 1rpx solid #ccc;
+}
+
+.order .list_container .list .list_item {
+  padding: 10rpx;
+  display: flex;
+  justify-content: space-between;
+}
+
+.order .list_container .list .price text:last-child {
+  color: var(--themeColor);
+  font-size: 32rpx;
+}

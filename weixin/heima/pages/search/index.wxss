@@ -1,0 +1,40 @@
+page {
+  background-color: #cccccc;
+}
+
+.search {
+  padding: 20rpx;
+}
+
+.search .input_warp {
+  display: flex;
+}
+
+.search .input_warp input {
+  padding-left: 15rpx;
+  flex: 5;
+  background-color: #f0efef;
+}
+
+.search .input_warp button {
+  margin-left: 10rpx;
+  padding: 0rpx;
+  flex: 1;
+  font-weight: normal;
+  font-size: 28rpx;
+  background-color: #f0efef;
+}
+
+.search_content {
+  margin: 20rpx;
+  background-color: #fff;
+}
+
+.search_content .list {
+  padding: 10rpx;
+  border: 1rpx solid #ccc;
+  word-break: break-all;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}

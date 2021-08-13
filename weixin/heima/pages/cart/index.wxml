@@ -1,0 +1,59 @@
+<view class="cart">
+  <view class="address">
+    <button wx:if="{{!addressInfo.userName}}" type="primary" plain bindtap="handleGetAdrress">
+      获取收获地址
+    </button>
+    <view wx:else class="info">
+      <view class="name">{{addressInfo.userName}}</view>
+      <view class="phoneNumber">{{addressInfo.telNumber}}</view>
+      <view class="adrress_des">{{addressInfo.all}}</view>
+    </view>
+  </view>
+  <view class="body">
+    <view class="title">购物车</view>
+    <view class="goods_list">
+      <block wx:if="{{cart.length > 0}}">
+        <view class="list_item" wx:for="{{cart}}" wx:key="goods_id">
+          <view class="select">
+            <checkbox-group  data-id="{{item.goods_id}}" bindchange="handeItemChange" class="checkbox">
+              <checkbox checked="{{item.checked}}" />
+            </checkbox-group>
+          </view>
+          <view class="content">
+            <view class="content_img">
+              <image src="{{item.goods_small_logo}}" mode="widthFix"></image>
+            </view>
+            <view class="content_body">
+              <view class="word">{{item.goods_name}}</view>
+              <view class="priceWarper">
+                <view class="price">￥{{item.goods_price}}</view>
+                <view class="choose">
+                  <view class="dec" bindtap="hanleDec" data-id="{{item.goods_id}}">-</view>
+                  <view class="nums">{{item.num}}</view>
+                <view class="add" bindtap="hanleAdd"  data-id="{{item.goods_id}}">+</view>
+                </view>
+              </view>
+            </view>
+          </view>
+        </view>
+      </block>
+      <block wx:else>
+        <image mode="widthFix" src="http://hbimg.b0.upaiyun.com/e1b1467beea0a9c7d6a56b32bac6d7e5dcd914f7c3e6-YTwUd6_fw658"></image>
+      </block>
+    </view>
+  </view>
+</view>
+<view class="cart_foot">
+  <view class="checkbox">
+    <checkbox-group bindchange="handleItemAllCheck">
+      <checkbox checked="{{allChecked}}">全选</checkbox>
+    </checkbox-group>
+    <view class="total_price">
+      <view class="price">
+        合计:￥<text>{{totalPrice}}</text>
+      </view>
+      <view class="freight">包含运费</view>
+    </view>
+  </view>
+  <navigator url="/pages/pay/index" open-type="navigate" class="compute">结算({{totalNum}})</navigator>
+</view>

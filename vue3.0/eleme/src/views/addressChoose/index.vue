@@ -77,7 +77,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "@/assets/color";
+@import "@/assets/color.scss";
 .address {
   /deep/.van-button--danger {
     background: #1989fa;

@@ -12,13 +12,13 @@ module.export = {
   devServer: {
     proxy: 'http://127.0.0.1:3001'
   },
-  // css: {
-  //   loaderOptions: {
-  //     sass: {
-  //       prependData: `@import "@/assets/color.scss";`
-  //     }
-  //   }
-  // }
+  css: {
+    loaderOptions: {
+      sass: {
+        prependData: `@import "@/assets/color.scss";`
+      }
+    }
+  }
   // configureWebpack: (config) => {
   //   if (isProd) {
   //     // 配置webpack 压缩

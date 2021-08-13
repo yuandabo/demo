@@ -1,0 +1,34 @@
+/* Variables */
+$select_selected_bg: #4b6c8a;
+
+// 背景色
+$module-bg: rgba(0, 0, 0, .2);
+$table-th-bg: #000000;
+$popper-bg: #385E80;
+
+// 首页标题前颜色
+$title-before-bg: #017AFF;
+
+// 按钮颜色
+$default-btn-bg: #296A8C;
+$default-btn-selected-bg: #4ABCF6;
+
+// 分割线颜色
+$default-line-color: rgba(255, 255, 255, 0.1);
+
+// 字体颜色
+$default-font-color: #FFFFFF;
+$gap-font-color: #FAFCFC;
+$text-font-color: #C7CBD2;
+$sub-title-color: #DADCE0;
+$sm-title-font-color: rgba(255, 255, 255, 0.8);
+
+// 文字大小
+$md-font-size: 14px;
+$sm-font-size: 13px;
+
+// The :export directive is the magic sauce for webpack
+// https://mattferderer.com/use-sass-variables-in-typescript-and-javascript
+:export {
+  mainFont: $default-font-color;
+}

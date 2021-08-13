@@ -1,0 +1,32 @@
+.good_list{
+  .list_item{
+    display: flex;
+    border-bottom: 1px solid #ccc;
+    .item_left{
+      flex: 2;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      image {
+        width: 70%;
+      }
+    }
+    .item_right{
+      flex: 3;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-around;
+      .title{
+        display: -webkit-box;
+        overflow: hidden;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp:2;
+        word-break: break-all;
+      }
+      .price{
+        color: var(--themeColor);
+        font-size: 32rpx;
+      }
+    }
+  }
+}

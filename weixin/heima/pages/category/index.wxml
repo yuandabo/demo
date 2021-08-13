@@ -1,0 +1,49 @@
+<view class="category">
+  <Search></Search>
+  <view class="cate_container">
+    <scroll-view scroll-y class="cateleft">
+      <view 
+        class="cateItem {{idx === activeCate?'active':''}}"
+        wx:for="{{leftContainList}}"
+        wx:key="*this"
+        wx:for-index="idx"
+        wx:for-item="item"
+        bindtap="handleCateTap"
+        data-index="{{idx}}">
+        {{item}}
+      </view>
+    </scroll-view>
+    <scroll-view scroll-y class="cateright" scroll-top="{{scrollTop}}">
+      <view 
+        class=""
+        wx:for="{{rightContainList}}"
+        wx:key="cat_name" 
+        wx:for-index="idx"
+        wx:for-item="item">
+        <view class="cateright_title">
+          <text class="delimiter">/</text>
+          <text class="title">{{item.cat_name}}</text>
+          <text class="delimiter">/</text>
+        </view>
+        <view class="cateright_body">
+          <view 
+            class="catebodyItem"
+            wx:for="{{item.children}}"
+            wx:key="cat_name" 
+            wx:for-index="idx2"
+            wx:for-item="item2">
+            <navigator url="../goods_list/index?cid={{item2.cat_id}}" open-type="navigate">
+              <image 
+                class=""
+                src="{{item2.cat_icon}}" 
+                mode="widthFix" 
+                lazy-load>
+              </image>
+              <view>{{item2.cat_name}}</view>
+            </navigator>
+          </view> 
+        </view>
+      </view>
+    </scroll-view>
+  </view>
+</view>

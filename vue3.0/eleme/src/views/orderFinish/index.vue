@@ -144,7 +144,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "@/assets/color";
+@import "@/assets/color.scss";
 .orderFinish {
   height: 100vh;
   overflow: auto;

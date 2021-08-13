@@ -1,0 +1,12 @@
+<view class="search">
+  <view class="input_warp">
+    <input bindinput="handleInput" type="text"/>
+    <button size="mini">取消</button>
+  </view>
+</view>
+
+<view wx:if="{{list.length > 0}}" class="search_content">
+  <navigator open-type="navigate" url="/pages/goods_detail/index?goods_id={{item.goods_id}}" class="list"  wx:for="{{list}}" wx:key="goods_id" wx:for-index="idx" wx:for-item="item">
+    {{item.goods_name}}
+  </navigator>
+</view>
