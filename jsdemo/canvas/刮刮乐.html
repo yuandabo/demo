@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <canvas id="canvas" width="400" height="100"></canvas>
+    <div class="text">恭喜您获得100w</div>
+
+    <div>
+      <canvas id="smile" width="400" height="200"></canvas>
+    </div>
+    <div>
+      <canvas id="cic" width="400" height="200"></canvas>
+    </div>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+      }
+      .text {
+        position: absolute;
+        left: 130px;
+        top: 35px;
+        z-index: -1;
+      }
+    </style>
+
+    <script>
+      const canvas = document.getElementById("canvas");
+      const ctx = canvas.getContext("2d");
+
+      // 填充的颜色
+      ctx.fillStyle = "darkgray";
+      // 填充矩形 fillRect(起始X,起始Y,终点X,终点Y)
+      ctx.fillRect(0, 0, 400, 100);
+      ctx.fillStyle = "#fff";
+      // 绘制填充文字
+      ctx.fillText("刮刮卡", 180, 50);
+
+      let isDraw = false;
+      canvas.onmousedown = function () {
+        isDraw = true;
+      };
+      canvas.onmousemove = function (e) {
+        if (!isDraw) return;
+        // 计算鼠标在canvas里的位置
+        const x = e.pageX - canvas.offsetLeft;
+        const y = e.pageY - canvas.offsetTop;
+        // 设置globalCompositeOperation
+        ctx.globalCompositeOperation = "destination-out";
+        // 画圆
+        ctx.arc(x, y, 10, 0, 2 * Math.PI);
+        // 填充圆形
+        ctx.fill();
+      };
+      canvas.onmouseup = function () {
+        isDraw = false;
+      };
+
+      function draw() {
+        var canvas = document.getElementById("smile");
+        if (canvas.getContext) {
+          var ctx = canvas.getContext("2d");
+
+          ctx.beginPath();
+          ctx.arc(75, 75, 50, 0, Math.PI * 2, true); // 绘制
+          ctx.moveTo(110, 75);
+          ctx.arc(75, 75, 35, 0, Math.PI, false); // 口(顺时针)
+          ctx.moveTo(65, 65);
+          ctx.arc(60, 65, 5, 0, Math.PI * 2, true); // 左眼
+          ctx.moveTo(95, 65);
+          ctx.arc(90, 65, 5, 0, Math.PI * 2, true); // 右眼
+          ctx.stroke();
+        }
+      }
+
+      draw();
+
+      function draw2() {
+        var canvas = document.getElementById("cic");
+        if (canvas.getContext) {
+          var ctx = canvas.getContext("2d");
+
+          // 填充三角形
+          ctx.beginPath();
+          ctx.moveTo(25, 25);
+          ctx.lineTo(105, 25);
+          ctx.lineTo(25, 105);
+          ctx.fill();
+
+          // 描边三角形
+          ctx.beginPath();
+          ctx.moveTo(125, 125);
+          ctx.lineTo(125, 45);
+          ctx.lineTo(45, 125);
+          ctx.closePath();
+          ctx.stroke();
+        }
+      }
+
+      draw2();
+    </script>
+  </body>
+</html>
