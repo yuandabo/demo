@@ -7,9 +7,17 @@ function _resolve(dir) {
   return path.resolve(__dirname, dir);
 }
 
+import Components from 'unplugin-vue-components/vite'
+import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
+
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [vue()],
+  plugins: [
+    vue(),
+    Components({
+      resolvers: [ElementPlusResolver()],
+    }),
+  ],
   resolve: {
     alias: {
       '@': _resolve('src'),

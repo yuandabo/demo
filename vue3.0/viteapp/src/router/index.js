@@ -29,6 +29,21 @@ const routes = [
                 component: Home
             }
         ]
+    },
+    {
+        path: '/elem',
+        component: Layout,
+        children: [
+            {
+                path: '',
+                redirect: 'elem'
+            },
+            {
+                path: 'elem',
+                name: 'elem',
+                component: () => import('@/views/elementPlus/index.vue')
+            }
+        ]
     }
 ]
 
