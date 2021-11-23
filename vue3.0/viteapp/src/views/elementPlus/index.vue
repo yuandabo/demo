@@ -1,13 +1,15 @@
 <template>
   <div>
-      <h1>
-          elementUIPlus
-      </h1>
+      <Table></Table>
   </div>
 </template>
 
-<script setup>
-
+<script>
+import Table from '@/components/table/index.vue'
+export default {
+  name: 'elementPlus',
+  components: [Table]
+}
 </script>
 
 <style>

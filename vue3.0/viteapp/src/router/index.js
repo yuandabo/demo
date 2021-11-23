@@ -39,7 +39,7 @@ const routes = [
                 redirect: 'elem'
             },
             {
-                path: 'elem',
+                path: 'index',
                 name: 'elem',
                 component: () => import('@/views/elementPlus/index.vue')
             }
