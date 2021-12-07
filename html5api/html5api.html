@@ -1,0 +1,58 @@
+<!--
+ * @Author: your name
+ * @Date: 2021-11-08 21:42:03
+ * @LastEditTime: 2021-11-15 21:48:21
+ * @LastEditors: Please set LastEditors
+ * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE!
+ * @FilePath: \demo\html5api\html5api.html
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    video {
+      width: 500px;
+      height: 500px;
+    }
+
+    button {
+      width: 50px;
+      margin-top: 50px;
+    }
+  </style>
+</head>
+<body>
+  <!-- 音频元素 video audio  -->
+
+  <video controls class="" initial-time="0" autoplay="false" loop="false" muted="false" direction="0" 
+    bindplay="" bindpause="" bindended="" bindtimeupdate="" bindwaiting="" binderror="">
+    <source src="https://cloud.video.taobao.com/play/u/385132127/p/1/e/6/t/1/320438662263.mp4" srcset="" type="video/mp4">
+  </video>
+
+
+  <audio src=""></audio>
+
+  <!-- 定位元素  -->
+
+  <button id="positionButton">
+    获取定位
+  </button>
+
+  <script>
+      document.querySelector('#positionButton').addEventListener('click', function () {
+        if ("geolocation" in navigator) {
+          /* 地理位置服务可用 */
+          navigator.geolocation.getCurrentPosition(function (position) {
+            // do_something(position.coords.latitude, position.coords.longitude);
+            console.log('position', position)
+          });
+        }
+      })
+  </script>
+</body>
+</html>
