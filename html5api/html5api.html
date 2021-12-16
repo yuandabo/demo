@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-11-08 21:42:03
- * @LastEditTime: 2021-11-15 21:48:21
+ * @LastEditTime: 2021-12-08 19:06:33
  * @LastEditors: Please set LastEditors
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE!
  * @FilePath: \demo\html5api\html5api.html
@@ -24,6 +24,19 @@
       width: 50px;
       margin-top: 50px;
     }
+
+    .drag-box {
+      width: 200px;
+      height: 200px;
+    }
+
+    .drag-box1 {
+      background-color: violet;
+    }
+    
+    .drag-box2 {
+      background-color: turquoise;
+    }
   </style>
 </head>
 <body>
@@ -44,15 +57,137 @@
   </button>
 
   <script>
+      var successCallBack = function (pos) {
+        console.log(pos);
+      }
+
+      var errorCallBack = function (err) {
+        console.log(err);
+      }
+
+      var getOptions = {
+          //是否使用高精度设备，如GPS。默认是true
+          enableHighAccuracy:true,
+          //超时时间，单位毫秒，默认为0
+          timeout:5000,
+          //使用设置时间内的缓存数据，单位毫秒
+          //默认为0，即始终请求新数据
+          //如设为Infinity，则始终使用缓存数据
+          maximumAge:0
+     };
+
       document.querySelector('#positionButton').addEventListener('click', function () {
         if ("geolocation" in navigator) {
           /* 地理位置服务可用 */
-          navigator.geolocation.getCurrentPosition(function (position) {
-            // do_something(position.coords.latitude, position.coords.longitude);
-            console.log('position', position)
-          });
+          navigator.geolocation.getCurrentPosition(successCallBack, errorCallBack, getOptions)
         }
       })
+  </script>
+  
+
+  <!-- h5新 input 类型 -->
+  <input type="calendar">
+  <input type="date">
+  <input type="time">
+  <input type="email">
+  <input type="url">
+  <input type="search">
+
+
+  <div>
+    <div class="drag-box1 drag-box" draggable="true"></div>
+    <div class="drag-box2 drag-box" draggable="true"></div>
+  </div>
+
+
+  <script>
+    // web worker
+    if (window.Worker) {
+      // 专用线程
+      const worker = new Worker('worker.js', { name: 'worderid_1' })
+      /***
+       * @事件通信
+      */
+      worker.postMessage([10, 24])
+      worker.onmessage = function(e) {
+          console.log(e.data)
+      }
+      // 捕获错误
+      worker.onmessageerror  = function (err) {
+
+      }
+
+      /****
+        @共享线程 共享线程可以被多个浏览上下文（Browsing context）调用，但所有这些浏览上下文必须同源（相同的协议，主机和端口号）
+        @区别 共享线程在传递消息之前，端口必须处于打开状态
+        @如何打开 start() 方法是与 addEventListener 配套使用的。如果我们选择 onmessage 进行事件监听，那么将隐含调用 start() 方法。
+      */
+      const sharedWorker = new SharedWorker('shareWorker.js', { name: 'shareWorkerid_1' })
+      /***
+       * @事件通信
+      */
+      sharedWorker.postMessage([10, 24])
+      sharedWorker.port.onmessage = function(e) {
+          // 业务逻辑
+          console.log(e.data)
+      }
+      sharedWorker.port.onmessageerror  = function (err) {
+
+      }
+    }
+  </script>
+
+
+  <script>
+    // web socket
+    const socket = new WebSocket('ws://139.198.114.221:9527/ping');
+
+    // Connection opened
+    socket.addEventListener('open', function (event) {
+        socket.send('Hello Server!');
+    });
+
+    // Listen for messages
+    socket.addEventListener('message', function (event) {
+        console.log('Message from server ', event.data);
+    });
+
+    // Listen for messages
+    socket.addEventListener('error', function (err) {
+        console.log('err from server ', err);
+    });
+
+    // Listen for messages
+    socket.addEventListener('close', function (event) {
+        console.log('close from server ', event);
+    });
+  </script>
+
+
+  <script>
+    // drag 事件  
+    const drag1 = document.querySelector('.drag-box1')
+    const drag2 = document.querySelector('.drag-box2')
+
+    drag1.addEventListener('dragstart', function(event){
+      console.log(event);
+      this.style.backgroundColor = 'red';
+    })
+
+    drag1.addEventListener('dragend', function(event){
+      console.log(event);
+      this.style.backgroundColor = '';
+    })
+
+    drag2.addEventListener('dragstart', function(event){
+      console.log(event);
+      this.style.backgroundColor = 'red';
+    })
+
+    drag2.addEventListener('dragend', function(event){
+      console.log(event);
+      this.style.backgroundColor = '';
+    })
   </script>
 </body>
 </html>
