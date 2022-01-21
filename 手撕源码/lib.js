@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2020-12-02 10:37:09
- * @LastEditTime: 2020-12-16 09:34:38
+ * @LastEditTime: 2022-01-11 15:12:54
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \手撕源码\lib.js
@@ -133,3 +133,209 @@ function validIsChinese2(str) {
     return /^\W+$/g.test(str);
 } // 可能包含标点符号
 console.log(validIsChinese2('我是谁，。'));
+
+/** 
+ * @description generator 函数进行循环fetch
+*/
+async function asyncFecth(url, sum, paramsList, num = 0) {
+    try {
+        console.log(num);
+        const result = await fetch(url)
+        num+=1
+        return num === sum ? result : asyncFecth(url, sum, paramsList, num);
+    } catch (error) {
+        return error
+    }
+}
+asyncFecth('http://127.0.0.1:1024/admin/get/all', 5, [,1,2,3,4,5,6,7], 0).then((res) => {
+    console.log(res)
+});
+
+function* generatorFecth (arr) {
+    arr.forEach(()=>{
+        yield fetch('http://127.0.0.1:1024/admin/get/all')
+    })
+}
+
+var gefn = generatorFecth([0,1,2,3,4,5,6,7])
+
+
+
+    console.log('1');
+
+    setTimeout(function() {
+        console.log('2');
+        process.nextTick(function() {
+            console.log('3');
+        })
+        new Promise(function(resolve) {
+            console.log('4');
+            resolve();
+        }).then(function() {
+            console.log('5')
+        })
+    })
+    process.nextTick(function() {
+        console.log('6');
+    })
+    new Promise(function(resolve) {
+        console.log('7');
+        resolve();
+    }).then(function() {
+        console.log('8')
+    })
+
+    setTimeout(function() {
+        console.log('9');
+        process.nextTick(function() {
+            console.log('10');
+        })
+        new Promise(function(resolve) {
+            console.log('11');
+            resolve();
+        }).then(function() {
+            console.log('12')
+        })
+    })
+
+
+
+    const treedata = [
+        {
+          id: 1,
+          label: '1',
+          children: [
+            {
+              id: 2,
+              label: '2',
+              children: [
+                { id: 4, label: '4'},
+                { id: 5, label: '5' }
+              ]
+            },
+            {
+              id: 3,
+              label: '3',
+              children: [
+                { id: 6, label: '6' },
+                { id: 7, label: '7' }
+              ]
+            }
+          ]
+        },
+        {
+          id: 11,
+          label: '11',
+          children: [
+            {
+              id: 21,
+              label: '21',
+              children: [
+                { id: 41, label: '41' },
+                { id: 51, label: '51' }
+              ]
+            },
+            {
+              id: 31,
+              label: '31',
+              children: [
+                { id: 61, label: '61' },
+                { id: 71, label: '71' }
+              ]
+            }
+          ]
+        }
+      ]
+     //把上面数据处理为
+     
+     [
+        {
+        ids:[1,2,4],
+        labels:['1','2','4']
+        },
+        {
+        ids:[1,2,5],
+        labels:['1','2','5']
+        },
+        {
+        ids:[1,3,6],
+        labels:['1','3','6']
+        },
+        {
+        ids:[1,3,7],
+        labels:['1','3','7']
+        }
+     ]
+
+
+    const treedata = [
+    {
+        id: 1,
+        label: '1',
+        children: [
+        {
+            id: 2,
+            label: '2',
+            children: [
+            { id: 4, label: '4'},
+            { id: 5, label: '5' }
+            ]
+        },
+        {
+            id: 3,
+            label: '3',
+            children: [
+            { id: 6, label: '6' },
+            { id: 7, label: '7' }
+            ]
+        }
+        ]
+    },
+    {
+        id: 11,
+        label: '11',
+        children: [
+        {
+            id: 21,
+            label: '21',
+            children: [
+            { id: 41, label: '41' },
+            { id: 51, label: '51' }
+            ]
+        },
+        {
+            id: 31,
+            label: '31',
+            children: [
+            { id: 61, label: '61' },
+            { id: 71, label: '71' }
+            ]
+        }
+        ]
+    }
+    ]
+    
+    function treeDataTransferToSelectData (treedata, newArr,index) {
+        newArrItem = newArr[index]
+        treedata.forEach(a => {
+            newArrItem.ids.push(a.id)
+            newArrItem.labels.push(a.label)
+            if (!a.children) {
+                return
+            }
+            return treeDataTransferToSelectData (a.children, newArr, index)
+        })
+    }
+
+    let newArr = []
+    let i = 0
+    treedata.forEach((a) => {
+        newArr.push({
+            ids: [a.id],
+            labels: [a.label]
+        })
+        if (a.children) treeDataTransferToSelectData(a.children, newArr,i);
+        i++;
+    })
+
+    console.log(newArr);

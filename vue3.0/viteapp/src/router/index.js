@@ -44,6 +44,26 @@ const routes = [
                 component: () => import('@/views/elementPlus/index.vue')
             }
         ]
+    },
+    {
+        path: '/pinia',
+        component: Layout,
+        children: [
+            {
+                path: '',
+                redirect: 'pinia'
+            },
+            {
+                path: 'index',
+                name: 'pinia',
+                component: () => import('@/views/pinia/index.vue')
+            },
+            {
+                path: 'pinia_option',
+                name: 'pinia_option',
+                component: () => import('@/views/pinia/pinia_option.vue')
+            }
+        ]
     }
 ]
 

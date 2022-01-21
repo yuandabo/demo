@@ -5,6 +5,8 @@ import './style/index.scss'
 import Ant from 'ant-design-vue'
 import { router } from './router/index'
 import { store } from './store/index'
+import { createPinia } from 'pinia';
+
 
 const app = createApp(App)
 
@@ -25,4 +27,5 @@ app.config.globalProperties.$author = 'yuandabo'
 app.use(Ant)
 .use(router)
 .use(store)
+.use(createPinia())
 .mount('#app')
