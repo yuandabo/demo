@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <img id="img1" width="200" height="200" src="" alt="">
+    <img id="img2" width="200" height="200" src="" alt="">
+    <script>
+        //将base64转换为blob
+        var dataURLtoBlob = function(dataurl) { 
+            var arr = dataurl.split(','),
+                mime = arr[0].match(/:(.*?);/)[1],
+                bstr = atob(arr[1]),
+                n = bstr.length,
+                u8arr = new Uint8Array(n);
+            while (n--) {
+                u8arr[n] = bstr.charCodeAt(n);
+            }
+            return new Blob([u8arr], { type: mime });
+        }
+        //将blob转换为file
+        var blobToFile = function(theBlob, fileName){
+            theBlob.lastModifiedDate = new Date();
+            theBlob.name = fileName;
+            return theBlob;
+        }
+
+        function canvas2Blob(canvas, callback, quality, type) {
+            canvas.toBlob(function (blob) {
+            callback(blob);
+            }, type || 'image/png', quality || 0.8);
+        }
+
+
+        var dataurl = ''
+        const xhr = new XMLHttpRequest();
+        xhr.timeout = 3000
+        // blob接收数据
+        xhr.responseType = 'blob';
+        xhr.open("GET", 'http://img.gosql.cn/93000fbcb5bc4162f046537a398107c555e29a901595576633', true);
+        xhr.onreadystatechange = function () {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+            console.log(xhr.response)
+            let file = new FileReader()
+            file.readAsDataURL(xhr.response);
+            file.onloadend = function (e) {
+            dataurl = e.target.result;
+            document.querySelector('#img1').src = dataurl
+            compressImg()
+            };
+        } else {
+            console.log(xhr.statusText);
+        }
+        }
+        xhr.send()
+
+        var img =  new Image()
+        var width = 200
+        var height = 200
+        var canvas = document.createElement("canvas")
+        canvas.width = width
+        canvas.height = height  
+        let context = canvas.getContext("2d");
+
+        function compressImg () {
+            // var blob = dataURLtoBlob(dataurl)
+            // var file = blobToFile(blob, '1.png')
+            img.src = dataurl
+        }
+
+        var domString
+
+        img.onload = function (size) {
+            if (!size) size = 1024
+            context.clearRect(0, 0, width, height)
+            context.drawImage(img, 0, 0, width, height)
+            var domString = canvas.toDataURL('image/png', 0.8)
+            document.querySelector('#img2').src = domString
+            canvas2Blob(canvas, (blob) => { 
+                console.log(blob);
+                if (blob.size > size) {
+                    domString = canvas.toDataURL('image/png', 0.8)
+                }
+            })
+        }  
+        
+        function compressImageToTargetSize(img, size) {
+            var domString = canvas.toDataURL('image/png', 0.8)
+        }
+    </script>
+</body>
+</html>
