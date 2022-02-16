@@ -69,12 +69,13 @@
 
 <script>
 import axios from 'axios'
-import store from '@/store'
+//  import store from '@/store'
 // import mixins from '@/mixins/cartcontrol'
 import cartcontrol from '@/components/cartcontrol'
 import shopcar from '@/components/shopcar'
 import { mapGetters } from 'vuex'
 export default {
+  name: 'search',
   components: {
     cartcontrol,
     shopcar

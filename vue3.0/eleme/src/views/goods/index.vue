@@ -19,7 +19,7 @@ import vtag from '@/layout/tag'
 import { getAll } from '@/api/send'
 import { debounce } from '@/utils'
 // import mixins from '@/mixins/cartcontrol'
-import store from '@/store'
+//  import store from '@/store'
 export default {
   name: 'goods',
   components: {

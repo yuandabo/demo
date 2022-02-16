@@ -72,6 +72,7 @@
 import betterScroll from 'better-scroll'
 import star from '@/components/star'
 export default {
+  name: 'seller',
   components: {
     star
   },
