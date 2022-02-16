@@ -1,9 +1,8 @@
 import { routes } from './routes'
 import VueRouter from 'vue-router'
-import Vue from 'vue'
-Vue.use(VueRouter);
 
-const router = new VueRouter({
+const router = VueRouter.createRouter({
+  history: VueRouter.createWebHashHistory(),
   routes
 })
 

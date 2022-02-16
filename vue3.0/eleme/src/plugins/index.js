@@ -1,4 +1,4 @@
-import 'vant/lib/button/style';
+import 'vant/lib/button/style'
 import * as vantUi from '@/plugins/vant'
 import 'vant/lib/index.css'
 import Vue from 'vue'

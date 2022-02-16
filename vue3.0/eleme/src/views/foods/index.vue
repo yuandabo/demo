@@ -1,33 +1,9 @@
 <template>
   <div class="flexdir-column foods">
     <div class="goods-img">
-      <van-swipe class="my-swipe"
-                 :autoplay="10000"
-                 indicator-color="white">
-        <van-swipe-item>
-          <van-image height="90"
-                     :src="'https://cube.elemecdn.com/2/14/7059f0fe8c3eb2c691a595ef7f734png.png?x-oss-process=image/format,webp/resize,w_686'">
-            <template v-slot:error>
-              <van-image width="100vw"
-                         height="90"
-                         src="https://cube.elemecdn.com/2/14/7059f0fe8c3eb2c691a595ef7f734png.png?x-oss-process=image/format,webp/resize,w_686" />
-            </template>
-          </van-image>
-        </van-swipe-item>
-        <van-swipe-item>
-          <van-image height="90"
-                     :src="'https://cube.elemecdn.com/2/14/7059f0fe8c3eb2c691a595ef7f734png.png?x-oss-process=image/format,webp/resize,w_686'">
-            <template v-slot:error>
-              <van-image width="100vw"
-                         height="90"
-                         src="https://cube.elemecdn.com/2/14/7059f0fe8c3eb2c691a595ef7f734png.png?x-oss-process=image/format,webp/resize,w_686" />
-            </template>
-          </van-image>
-        </van-swipe-item>
-      </van-swipe>
+      <Swipe />
     </div>
-    <div v-show="showCom"
-         class="shoperrecommend">
+    <div class="shoperrecommend">
       <shoperrecommend :goods="goods"
                        @foodAdd="foodAdd" />
     </div>
@@ -66,8 +42,8 @@
               class="food-list food-list-hook">
             <h1 class="food-list-title">{{ a.name }}</h1>
             <ul>
-              <li v-for="(item,index) in a.foods"
-                  :key="index"
+              <li v-for="(item,index2) in a.foods"
+                  :key="index2"
                   class="food-item gradient-line line"
                   @click="goToFoodDetails(item)">
                 <div class="foods-image">
@@ -121,34 +97,30 @@
 </template>
 
 <script>
+import Swipe from './swipe/indev.vue'
 import shopcar from '@/components/shopcar'
 import cartcontrol from '@/components/cartcontrol'
 import shoperrecommend from '@/views/shoperRecommend'
 import mixins from '@/mixins/cartcontrol'
 import { mapGetters } from 'vuex'
-import store from '@/store'
+//  import store from '@/store'
 export default {
   name: 'foods',
   components: {
     shopcar,
     cartcontrol,
-    shoperrecommend
+    shoperrecommend,
+    Swipe
   },
   mixins: [mixins],
   props: {
-    // goods: {
-    //   type: Array
-    // },
     seller: {
-      type: Object
+      type: Object,
+      default: () => ({})
     }
   },
   data () {
     return {
-      // goods: [],
-      // listHeight: [], // foods列表的高度
-      // scrollY: 0, // 存储foods当前坐标
-      showCom: true,
       loading: false,
       ulkey: 0,
       currentIndex: 0,

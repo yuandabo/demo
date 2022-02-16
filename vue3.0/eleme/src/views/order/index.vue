@@ -87,9 +87,9 @@
 // import carcontrol from '../cartcontrol/cartcontrol'
 import { queryById } from '@/api/send'
 import { mapGetters } from 'vuex'
-import store from '@/store'
+// //  import store from '@/store'
 export default {
-  name: '',
+  name: 'order',
   //   components: {
   //     carcontrol
   //   },

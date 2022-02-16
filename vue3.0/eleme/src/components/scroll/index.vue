@@ -1,14 +1,14 @@
 <!--
  * @Author: your name
  * @Date: 2021-02-22 15:07:02
- * @LastEditTime: 2021-03-05 00:41:40
+ * @LastEditTime: 2021-07-30 00:23:24
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \demo\vue\eleme\phoneweb\src\layout\scroll\index.vue
 -->
 <template>
   <div ref="wrapper">
-    <slot></slot>
+    <slot />
   </div>
 </template>
 <script type="text/ecmascript-6">
@@ -83,7 +83,7 @@ export default {
     },
     topInit: {
       type: Boolean,
-      default: true
+      default: false
     },
     top: {
       type: Boolean,
@@ -100,6 +100,14 @@ export default {
       console.log(val)
     }
   },
+  watch: {
+    // 监听数据的变化，延时refreshDelay时间后调用refresh方法重新计算，保证滚动效果正常
+    data () {
+      setTimeout(() => {
+        this.refresh()
+      }, this.refreshDelay)
+    }
+  },
   mounted () {
     // 保证在DOM渲染完毕后初始化better-scroll
     setTimeout(() => {
@@ -108,12 +116,14 @@ export default {
   },
   methods: {
     _initScroll () {
+      console.log('_initScroll')
       if (!this.$refs.wrapper) {
         return
       }
       if (this.topInit && !this.top) {
         return
       }
+      console.log('_initScroll')
       // better-scroll的初始化
       this.scroll = new BScroll(this.$refs.wrapper, {
         probeType: this.probeType,
@@ -174,14 +184,6 @@ export default {
     scrollToElement () {
       // 代理better-scroll的scrollToElement方法
       this.scroll && this.scroll.scrollToElement.apply(this.scroll, arguments)
-    }
-  },
-  watch: {
-    // 监听数据的变化，延时refreshDelay时间后调用refresh方法重新计算，保证滚动效果正常
-    data () {
-      setTimeout(() => {
-        this.refresh()
-      }, this.refreshDelay)
     }
   }
 }

@@ -73,8 +73,9 @@ import axios from 'axios'
 import cartcontrol from '@/components/cartcontrol'
 import shopcar from '@/components/shopcar'
 import { mapGetters } from 'vuex'
-import store from '@/store'
+//  import store from '@/store'
 export default {
+  name: 'recommendDetails',
   components: {
     cartcontrol,
     shopcar

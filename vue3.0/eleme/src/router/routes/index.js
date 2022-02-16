@@ -1,13 +1,13 @@
-import goods from '@/views/goods'
-import ratings from '@/views/ratings'
-import seller from '@/views/seller'
-import order from '@/views/order'
-import foods from '@/views/foods'
-import address from '@/views/addressChoose'
-import search from '@/views/search'
-import recommendDetails from '@/views/recommendDetails'
-import foodsDetails from '@/views/foodsDetails'
-import orderFinish from '@/views/orderFinish'
+// import goods from '@/views/goods'
+// import ratings from '@/views/ratings'
+// import seller from '@/views/seller'
+// import order from '@/views/order'
+// import foods from '@/views/foods'
+// import address from '@/views/addressChoose'
+// import search from '@/views/search'
+// import recommendDetails from '@/views/recommendDetails'
+// import foodsDetails from '@/views/foodsDetails'
+// import orderFinish from '@/views/orderFinish'
 
 export const routes =
   [
@@ -19,16 +19,16 @@ export const routes =
       path: '/goods',
       redirect: '/goods/index',
       name: 'goods',
-      component: goods,
+      component: () => import('@/views/goods/index.vue'),
       children: [{
         path: 'index',
-        component: foods
+        component: () => import('@/views/foods/index.vue'),
       }, {
         path: 'ratings',
-        component: ratings
+        component: () => import('@/views/ratings/index.vue'),
       }, {
         path: 'seller',
-        component: seller
+        component: () => import('@/views/seller/index.vue'),
       }]
     },
     // {
@@ -39,31 +39,31 @@ export const routes =
     {
       path: '/order',
       name: 'order',
-      component: order
+      component: () => import('@/views/order/index.vue'),
     },
     {
       path: '/address',
       name: 'address',
-      component: address
+      component: () => import('@/views/addressChoose/index.vue'),
     },
     {
       path: '/search',
       name: 'search',
-      component: search
+      component: () => import('@/views/search/index.vue'),
     },
     {
       path: '/recommendDetails',
       name: 'recommendDetails',
-      component: recommendDetails
+      component: () => import('@/views/recommendDetails/index.vue'),
     },
     {
       path: '/foodsDetails',
       name: 'foodsDetails',
-      component: foodsDetails
+      component: () => import('@/views/foodsDetails/index.vue'),
     },
     {
       path: '/orderFinish',
       name: 'orderFinish',
-      component: orderFinish
+      component: () => import('@/views/orderFinish/index.vue'),
     }
   ]

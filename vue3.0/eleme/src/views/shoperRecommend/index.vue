@@ -48,10 +48,11 @@
 
 <script>
 // import axios from 'axios'
-import store from '@/store'
+//  import store from '@/store'
 import cartcontrol from '@/components/cartcontrol'
 // import mixins from '@/mixins/cartcontrol'
 export default {
+  name: 'shoperRecommend',
   components: {
     cartcontrol
   },

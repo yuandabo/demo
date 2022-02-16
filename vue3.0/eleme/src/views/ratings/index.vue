@@ -31,9 +31,7 @@
         </div>
       </div>
       <div class="bottom-border" />
-      <scroll class="wrapper"
-              style="height:70vh;overflow: hidden;"
-              :data="computedRatings">
+      <div>
         <div class="content">
           <div class="content-bottom">
             <!-- <div class="bottom-border"></div> -->
@@ -51,8 +49,8 @@
               </div>
             </div>
           </div>
-          <div class="rating-text">
-            <ul>
+          <scroll class="rating-text">
+            <ul class="relative">
               <li v-for="(item,index) in computedRatings"
                   :key="index"
                   class="rating-text-li gradient-line line">
@@ -72,9 +70,9 @@
                 </div>
               </li>
             </ul>
-          </div>
+          </scroll>
         </div>
-      </scroll>
+      </div>
     </div>
   </div>
 </template>
@@ -98,6 +96,27 @@ export default {
   data () {
     return {
       ratings: [
+        { avatar: 'img/kobe.png', username: 'yuandabo', score: 0, text: '非常不好', rateTime: '20200829' },
+        { avatar: 'img/kobe.png', username: 'yuandabo', score: 5, text: '非常好', rateTime: '20200829' },
+        { avatar: 'img/kobe.png', username: 'yuandabo', score: 3, text: '一般般', rateTime: '20200829' },
+        { avatar: 'img/kobe.png', username: 'yuandabo', score: 3, text: '', rateTime: '20200829' },
+        { avatar: 'img/kobe.png', username: 'yuandabo', score: 0, text: '非常不好', rateTime: '20200829' },
+        { avatar: 'img/kobe.png', username: 'yuandabo', score: 5, text: '非常好', rateTime: '20200829' },
+        { avatar: 'img/kobe.png', username: 'yuandabo', score: 3, text: '一般般', rateTime: '20200829' },
+        { avatar: 'img/kobe.png', username: 'yuandabo', score: 0, text: '非常不好', rateTime: '20200829' },
+        { avatar: 'img/kobe.png', username: 'yuandabo', score: 5, text: '非常好', rateTime: '20200829' },
+        { avatar: 'img/kobe.png', username: 'yuandabo', score: 3, text: '一般般', rateTime: '20200829' },
+        { avatar: 'img/kobe.png', username: 'yuandabo', score: 3, text: '', rateTime: '20200829' },
+        { avatar: 'img/kobe.png', username: 'yuandabo', score: 0, text: '非常不好', rateTime: '20200829' },
+        { avatar: 'img/kobe.png', username: 'yuandabo', score: 5, text: '非常好', rateTime: '20200829' },
+        { avatar: 'img/kobe.png', username: 'yuandabo', score: 3, text: '一般般', rateTime: '20200829' },
+        { avatar: 'img/kobe.png', username: 'yuandabo', score: 0, text: '非常不好', rateTime: '20200829' },
+        { avatar: 'img/kobe.png', username: 'yuandabo', score: 5, text: '非常好', rateTime: '20200829' },
+        { avatar: 'img/kobe.png', username: 'yuandabo', score: 3, text: '一般般', rateTime: '20200829' },
+        { avatar: 'img/kobe.png', username: 'yuandabo', score: 3, text: '', rateTime: '20200829' },
+        { avatar: 'img/kobe.png', username: 'yuandabo', score: 0, text: '非常不好', rateTime: '20200829' },
+        { avatar: 'img/kobe.png', username: 'yuandabo', score: 5, text: '非常好', rateTime: '20200829' },
+        { avatar: 'img/kobe.png', username: 'yuandabo', score: 3, text: '一般般', rateTime: '20200829' },
         { avatar: 'img/kobe.png', username: 'yuandabo', score: 0, text: '非常不好', rateTime: '20200829' },
         { avatar: 'img/kobe.png', username: 'yuandabo', score: 5, text: '非常好', rateTime: '20200829' },
         { avatar: 'img/kobe.png', username: 'yuandabo', score: 3, text: '一般般', rateTime: '20200829' },
@@ -322,6 +341,8 @@ export default {
 // }
 .rating-text {
   width: 100%;
+  height: 400px;
+  overflow: hidden;
 }
 .rating-text-li {
   display: flex;
