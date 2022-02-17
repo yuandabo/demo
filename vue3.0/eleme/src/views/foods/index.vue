@@ -9,7 +9,7 @@
     </div>
     <!-- <van-divider /> -->
     <div class="goods-body">
-      <scroll class="wrapper menu-warpper"
+      <yb-scroll class="wrapper menu-warpper"
               :pulldown="true">
         <ul class="content">
           <li v-for="(a,index) in goods"
@@ -20,9 +20,9 @@
             <span class="menu-text">{{ a.name }}</span>
           </li>
         </ul>
-      </scroll>
+      </yb-scroll>
 
-      <scroll ref="foodsscroll"
+      <yb-scroll ref="foodsscroll"
               class="wrapper foods-warpper"
               :pulldown="true"
               :listen-scroll="true"
@@ -85,7 +85,7 @@
             </ul>
           </li>
         </ul>
-      </scroll>
+      </yb-scroll>
 
     </div>
     <shopcar ref="shopcar"
@@ -98,19 +98,32 @@
 
 <script>
 import Swipe from './swipe/indev.vue'
-import shopcar from '@/components/shopcar'
-import cartcontrol from '@/components/cartcontrol'
-import shoperrecommend from '@/views/shoperRecommend'
-import mixins from '@/mixins/cartcontrol'
-import { mapGetters } from 'vuex'
-//  import store from '@/store'
-export default {
+import shopcar from '@/components/shopcar/index.vue'
+import cartcontrol from '@/components/cartcontrol/index.vue'
+import shoperrecommend from '@/views/shoperRecommend/index.vue'
+import mixins from '@/mixins/cartcontrol/index.js'
+import { useStore } from '@/pinia/index.js'
+import { storeToRefs } from 'pinia'
+import { Image, Icon } from 'vant'
+import {defineComponent} from 'vue'
+import Scroll from '@/components/scroll/index.vue'
+export default defineComponent({
   name: 'foods',
+  setup() {
+    const store = useStore()
+    const { shopCarData } = storeToRefs(store)
+    return {
+      shopCarData
+    }
+  },
   components: {
     shopcar,
     cartcontrol,
     shoperrecommend,
-    Swipe
+    Swipe,
+    [Image.name]: Image,
+    [Icon.name]: Icon,
+    'yb-scroll': Scroll
   },
   mixins: [mixins],
   props: {
@@ -128,9 +141,6 @@ export default {
     }
   },
   computed: {
-    ...mapGetters([
-      'shopCarData'
-    ]),
     goods () {
       return this.shopCarData
     },
@@ -163,13 +173,6 @@ export default {
       })
       return arr
     }
-  },
-  // watch: {
-  //   top: (val) => {
-  //     console.log(val)
-  //   }
-  // },
-  mounted () {
   },
   methods: {
     goToFoodDetails (item) {
@@ -249,7 +252,7 @@ export default {
       this.$refs.foodsscroll.scroll.scrollToElement(el, 300)
     }
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>
@@ -258,11 +261,11 @@ export default {
   .goods-img {
     margin: 15px 5px;
     padding: 0px 5px;
-    /deep/.van-image {
+    ::v-deep.van-image {
       display: flex;
       justify-content: center;
     }
-    /deep/.van-image__img {
+    ::v-deep.van-image__img {
       // width: 90%;
       border-radius: 3px;
     }
@@ -271,7 +274,7 @@ export default {
     // flex: 0;
     display: flex;
     overflow: hidden;
-    /deep/.van-image__img {
+    ::v-deep.van-image__img {
       // width: 90%;
       border-radius: 3px;
     }

@@ -19,8 +19,13 @@
 </template>
 
 <script>
-export default {
+import {defineComponent} from 'vue'
+import { Icon } from 'vant'
+export default defineComponent({
   name: 'cartcontrol',
+  components: {
+    [Icon.name]: Icon
+  },
   props: {
     food: {
       type: Object
@@ -65,7 +70,7 @@ export default {
       this.$emit('foodDec', this.food)
     }
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>
@@ -75,7 +80,7 @@ export default {
   justify-content: flex-end;
   align-items: center;
   // align-items: center;
-  /deep/.van-icon {
+  :deep(.van-icon) {
     display: flex;
     align-items: center;
     justify-items: center;

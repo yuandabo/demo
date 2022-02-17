@@ -26,9 +26,16 @@
 </template>
 
 <script>
-export default {
-  name: 'swipe'
-}
+import { Swipe, SwipeItem, Image } from 'vant'
+import {defineComponent} from 'vue'
+export default defineComponent({
+  name: 'swipe',
+  components: {
+    [Swipe.name]: Swipe,
+    [SwipeItem.name]: SwipeItem,
+    [Image.name]: Image
+  }
+})
 </script>
 
 <style>

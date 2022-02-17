@@ -86,13 +86,26 @@
 <script>
 // import carcontrol from '../cartcontrol/cartcontrol'
 import { queryById } from '@/api/send'
-import { mapGetters } from 'vuex'
+import { useStore } from '@/pinia/index.js'
 // //  import store from '@/store'
-export default {
+import { NavBar, NoticeBar, SubmitBar, ActionSheet, Field, Image, Icon } from 'vant'
+import {defineComponent} from 'vue'
+export default defineComponent({
   name: 'order',
-  //   components: {
-  //     carcontrol
-  //   },
+  setup() {
+    const store = useStore()
+    return {
+      shopCarData: store.shopCarData
+    }
+  },
+  components: {
+    [NavBar.name]: NavBar,
+    [NoticeBar.name]: NoticeBar,
+    [SubmitBar.name]: SubmitBar,
+    [ActionSheet.name]: ActionSheet,
+    [Image.name]: Image,
+    [Icon.name]: Icon
+  },
   data () {
     return {
       fold: true,
@@ -109,9 +122,9 @@ export default {
     }
   },
   computed: {
-    ...mapGetters([
-      'shopCarData'
-    ]),
+    // ...mapState([
+    //   'shopCarData'
+    // ]),
     selectfoods: {
       get: function () {
         const foods = []
@@ -190,7 +203,7 @@ export default {
         })
     }
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>
@@ -200,17 +213,17 @@ export default {
   padding-bottom: 100px;
   overflow-x: hidden;
   overflow-y: auto;
-  /deep/.van-submit-bar {
+  ::v-deep.van-submit-bar {
     // position: relative;
   }
-  /deep/.van-nav-bar {
+  ::v-deep.van-nav-bar {
     // z-index: 1;
     background-image: linear-gradient(90deg, #0af, #0085ff);
     .van-icon {
       color: #ffffff;
     }
   }
-  /deep/.van-nav-bar__title {
+  ::v-deep.van-nav-bar__title {
     color: #ffffff;
     font-size: 14px;
   }
@@ -283,7 +296,7 @@ export default {
         display: flex;
         justify-content: space-between;
       }
-      /deep/ img {
+      ::v-deep img {
         border-radius: 3px;
       }
     }
@@ -311,7 +324,7 @@ export default {
     // flex: 1;
     background: #fff;
     border-radius: 5px;
-    /deep/.van-field {
+    ::v-deep.van-field {
       border-radius: 5px;
     }
   }

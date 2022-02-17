@@ -68,9 +68,11 @@
 </template>
 
 <script>
-import carcontrol from '@/components/cartcontrol'
+import carcontrol from '@/components/cartcontrol/index.vue'
 import { saveOrder } from '@/api/send'
-export default {
+import { Icon } from 'vant'
+import {defineComponent} from 'vue'
+export default defineComponent({
   name: 'shopcar',
   data () {
     return {
@@ -99,7 +101,8 @@ export default {
     }
   },
   components: {
-    carcontrol
+    carcontrol,
+    [Icon.name]: Icon
   },
   computed: {
     totalPrice () {
@@ -273,7 +276,7 @@ export default {
       });
     }
   }
-};
+});
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
@@ -379,12 +382,12 @@ export default {
   // background: #2b343c;
   font-size: 30px;
   text-align: center;
-  /deep/.van-icon {
+  :deep(.van-icon){
     display: flex;
     align-items: center;
     justify-content: center;
   }
-  /deep/.van-info {
+  :deep(.van-info) {
     z-index: 61;
   }
 }

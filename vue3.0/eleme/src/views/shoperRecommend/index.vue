@@ -8,7 +8,7 @@
         <van-icon name="arrow" />
       </span>
     </div>
-    <!-- <scroll ref="siscroll"
+    <!-- <yb-scroll ref="siscroll"
             class="wrapper shoperRecommend-img-warrper"
             :pulldown="true"
             :scroll-x="true"
@@ -42,19 +42,24 @@
         </div>
       </li>
     </ul>
-    <!-- </scroll> -->
+    <!-- </yb-scroll> -->
   </div>
 </template>
 
 <script>
 // import axios from 'axios'
 //  import store from '@/store'
-import cartcontrol from '@/components/cartcontrol'
+import cartcontrol from '@/components/cartcontrol/index.vue'
 // import mixins from '@/mixins/cartcontrol'
-export default {
+import { Image, Icon, Loading } from 'vant'
+import {defineComponent} from 'vue'
+export default defineComponent({
   name: 'shoperRecommend',
   components: {
-    cartcontrol
+    cartcontrol,
+    [Icon.name]: Icon,
+    [Image.name]: Image,
+    [Loading.name]: Loading
   },
   // mixins: [mixins],
   props: {
@@ -101,7 +106,7 @@ export default {
       this.$emit('dosomenthing')
     }
   }
-}
+})
 </script>
 
 <style scoped>
@@ -203,7 +208,7 @@ export default {
   /* width: 100px; */
   /* height: 170px; */
   padding: 0px 0px 5px 5px;
-  /deep/ .van-image img {
+  ::v-deep .van-image img {
     border-radius: 5px;
     height: 100px;
   }

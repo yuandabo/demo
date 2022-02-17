@@ -12,7 +12,7 @@
       </template>
     </van-nav-bar>
 
-    <scroll ref="foodsscroll"
+    <yb-scroll ref="foodsscroll"
             class="wrapper foods-warpper flex-1"
             :pulldown="true">
       <ul>
@@ -57,7 +57,7 @@
           </span>
         </li>
       </ul>
-    </scroll>
+    </yb-scroll>
 
     <shopcar ref="shopcar"
              class="goods-shopcar"
@@ -68,17 +68,28 @@
 </template>
 
 <script>
-import axios from 'axios'
+// import axios from 'axios'
 // import mixins from '@/mixins/cartcontrol'
-import cartcontrol from '@/components/cartcontrol'
-import shopcar from '@/components/shopcar'
-import { mapGetters } from 'vuex'
+import cartcontrol from '@/components/cartcontrol/index.vue'
+import shopcar from '@/components/shopcar/index.vue'
+import { useStore } from '@/pinia/index.js'
 //  import store from '@/store'
-export default {
+import { NavBar, Search, Image } from 'vant'
+import {defineComponent} from 'vue'
+export default defineComponent({
   name: 'recommendDetails',
+  setup() {
+    const store = useStore()
+    return {
+      shopCarData: store.shopCarData
+    }
+  },
   components: {
     cartcontrol,
-    shopcar
+    shopcar,
+    [NavBar.name]: NavBar,
+    [Search.name]: Search,
+    [Image.name]: Image
   },
   // mixins: [mixins],
   data () {
@@ -88,9 +99,9 @@ export default {
     }
   },
   computed: {
-    ...mapGetters([
-      'shopCarData'
-    ]),
+    // ...mapState([
+    //   'shopCarData'
+    // ]),
     goods () {
       return this.shopCarData
     },
@@ -135,46 +146,46 @@ export default {
       this.$refs.shopcar.drop($event.target)
     },
     // 获取后台数据
-    async getAll () {
-      // if (this.$mode) {
-      axios('./data.json')
-        .then((res) => {
-          // this.goods = res.data.goods
-          this.seller = res.data.seller
-        })
-      // } else {
-      //   const data = await getAll()
-      //   if (data.code === '200') {
-      //     const goods = data.data.goods
-      //     const arr = []
-      //     // 过滤数据
-      //     for (let i = 0, length = goods.length; i < length; i++) {
-      //       const item = goods[i]
-      //       if (item.foods && item.foods.length !== 0) {
-      //         arr.push(item)
-      //       }
-      //     }
-      //     this.goods = arr
-      //     this.initCount() // 初始化count
-      //   }
-      // }
-      this.loading = false
-    }
+    // async getAll () {
+    //   // if (this.$mode) {
+    //   axios('./data.json')
+    //     .then((res) => {
+    //       // this.goods = res.data.goods
+    //       this.seller = res.data.seller
+    //     })
+    //   // } else {
+    //   //   const data = await getAll()
+    //   //   if (data.code === '200') {
+    //   //     const goods = data.data.goods
+    //   //     const arr = []
+    //   //     // 过滤数据
+    //   //     for (let i = 0, length = goods.length; i < length; i++) {
+    //   //       const item = goods[i]
+    //   //       if (item.foods && item.foods.length !== 0) {
+    //   //         arr.push(item)
+    //   //       }
+    //   //     }
+    //   //     this.goods = arr
+    //   //     this.initCount() // 初始化count
+    //   //   }
+    //   // }
+    //   this.loading = false
+    // }
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>
 .search-foods {
   height: 93vh;
   background: #ffffff;
-  /deep/.van-image__img {
+  ::v-deep.van-image__img {
     border-radius: 5px;
   }
-  /deep/ .van-search__content {
+  ::v-deep .van-search__content {
     border-radius: 20px;
   }
-  /deep/ .van-search .van-cell {
+  ::v-deep .van-search .van-cell {
     // padding: 0px 8px 0 0;
   }
   .foods-warpper {

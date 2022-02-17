@@ -20,7 +20,13 @@
 </template>
 
 <script>
-export default {
+import { Tab, Tabs } from 'vant'
+import {defineComponent} from 'vue'
+export default defineComponent({
+  components: {
+    [Tab.name]: Tab,
+    [Tabs.name]: Tabs
+  },
   data () {
     return {
       active: 0
@@ -31,7 +37,7 @@ export default {
       this.$emit('tabs-click', name)
     }
   }
-}
+})
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
@@ -97,10 +103,10 @@ a {
   display: block;
   height: 0;
 }
-// /deep/ .van-tabs__line {
+// ::v-deep .van-tabs__line {
 //   width: 4px;
 // }
-/deep/ .van-tab {
+::v-deep .van-tab {
   padding: 0 8px;
 }
 </style>

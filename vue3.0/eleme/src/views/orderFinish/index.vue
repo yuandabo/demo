@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-03-10 15:30:47
- * @LastEditTime: 2021-03-11 01:22:22
+ * @LastEditTime: 2022-02-17 15:42:37
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \demo2\vue\eleme\phoneweb\src\views\orderFinish\index.vue
@@ -97,14 +97,27 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { useStore } from '@/pinia/index.js'
 //  import store from '@/store'
-export default {
+import { NavBar, Image, Icon } from 'vant'
+import {defineComponent} from 'vue'
+export default defineComponent({
   name: 'order-finish',
+  component: {
+    [NavBar.name]:NavBar,
+    [Image.name]:Image,
+    [Icon.name]:Icon
+  },
+  setup() {
+    const store = useStore()
+    return {
+      shopCarData: store.shopCarData
+    }
+  },
   computed: {
-    ...mapGetters([
-      'shopCarData'
-    ]),
+    // ...mapState([
+    //   'shopCarData'
+    // ]),
     selectfoods: {
       get: function () {
         const foods = []
@@ -141,7 +154,7 @@ export default {
       this.$router.go(-1)
     }
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>
@@ -149,14 +162,14 @@ export default {
 .orderFinish {
   height: 100vh;
   overflow: auto;
-  /deep/.van-nav-bar {
+  ::v-deep.van-nav-bar {
     // z-index: 1;
     background-image: linear-gradient(90deg, #0af, #0085ff);
     .van-icon {
       color: #ffffff;
     }
   }
-  /deep/.van-nav-bar__title {
+  ::v-deep.van-nav-bar__title {
     color: #ffffff;
     font-size: 14px;
   }
@@ -184,7 +197,7 @@ export default {
         display: flex;
         justify-content: space-between;
       }
-      /deep/ img {
+      ::v-deep img {
         border-radius: 3px;
       }
     }

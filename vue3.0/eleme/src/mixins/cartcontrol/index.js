@@ -1,11 +1,17 @@
-import { mapGetters } from 'vuex'
+import { useStore } from '@/pinia/index.js'
 //  import store from '@/store'
 export default {
-  computed: {
-    ...mapGetters([
-      'shopCarData'
-    ])
+  setup(props) {
+    const store = useStore();
+    return {
+      shopCarData: store.shopCarData
+    }
   },
+  // computed: {
+  //   ...mapState([
+  //     'shopCarData'
+  //   ])
+  // },
   methods: {
     /**
      * 获取小数点后数字数量，整数返回0

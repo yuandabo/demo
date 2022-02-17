@@ -100,13 +100,24 @@
 </template>
 
 <script>
-import star from '@/components/star'
-export default {
-  props: {
-    seller: {
-      type: Object
+import { Icon, Image, NavBar} from 'vant'
+import { useStore } from '@/pinia/index.js'
+import { storeToRefs } from 'pinia'
+import {defineComponent} from 'vue'
+export default defineComponent({
+  components: {
+    [Icon.name]: Icon,
+    [Image.name]: Image,
+    [NavBar.name]: NavBar
+  },
+  setup() {
+    const store = useStore()
+    const { seller } = storeToRefs(store)
+    return {
+      seller
     }
   },
+  props: {},
   data () {
     return {
       detailShow: false,
@@ -124,10 +135,7 @@ export default {
       this.detailShow = false
     }
   }
-  //   components: {
-  //     star
-  //   }
-}
+})
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
@@ -136,19 +144,19 @@ export default {
   color: #fff;
   position: relative;
   // overflow: hidden;
-  /deep/ .van-image__img {
+  ::v-deep .van-image__img {
     border-radius: 10px;
   }
-  /deep/ .van-nav-bar {
+  ::v-deep .van-nav-bar {
     width: 100vw;
     background-color: unset;
     position: absolute;
     z-index: 10;
   }
-  /deep/ .van-search__content {
+  ::v-deep .van-search__content {
     border-radius: 20px;
   }
-  /deep/ .van-search .van-cell {
+  ::v-deep .van-search .van-cell {
     padding: 0px 8px 0 0;
   }
 }
@@ -190,7 +198,7 @@ export default {
   margin: 2px 0px 8px 0px;
 }
 .brand {
-  /deep/ .van-icon__image {
+  ::v-deep .van-icon__image {
     display: inline-block;
     vertical-align: top;
     width: 30px;
@@ -228,7 +236,7 @@ export default {
   }
 }
 .supports .icon {
-  /deep/ .van-icon__image {
+  ::v-deep .van-icon__image {
     display: inline-block;
     vertical-align: top;
     width: 12px;
@@ -272,7 +280,7 @@ export default {
   background: #fff;
 }
 .bulletin-title {
-  /deep/ .van-icon__image {
+  ::v-deep .van-icon__image {
     display: inline-block;
     width: 22px;
     height: 12px;

@@ -19,8 +19,9 @@
 </template>
 
 <script>
-import star from '@/components/star'
-export default {
+import star from '@/components/star/index.vue'
+import {defineComponent} from 'vue'
+export default defineComponent({
   name: 'ratings-component',
   components: {
     star
@@ -42,7 +43,7 @@ export default {
   },
   methods: {
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>
@@ -55,7 +56,7 @@ export default {
   image {
     width: 100vw;
   }
-  /deep/ .van-nav-bar {
+  ::v-deep .van-nav-bar {
     width: 100vw;
     position: fixed;
     background: none;
