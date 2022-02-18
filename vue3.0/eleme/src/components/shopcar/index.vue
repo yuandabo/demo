@@ -220,29 +220,29 @@ export default defineComponent({
       // }
       const selects = JSON.stringify(this.cleanSelects(this.selectfoods))
       // 本地储存订单信息
-      saveOrder({
-        price: this.totalPrice,
-        selects: selects,
-        phoneNum: this.$db.getDb('phoneNum')
-      })
-        .then(res => {
-          // console.log(res)
-          if (res.code === '200') {
-            this.$message({
-              type: 'success',
-              message: '下单成功请等待上菜'
-            });
-            const data = JSON.stringify(this.selectfoods)
-            this.$db.setDb('selectfoods', data)
-            this.$router.push({
-              path: '/order',
-              query: {
-                id: res.data
-              }
-            })
-          }
-        })
-      this.$db.cleanDb()
+      // saveOrder({
+      //   price: this.totalPrice,
+      //   selects: selects,
+      //   phoneNum: this.$db.getDb('phoneNum')
+      // })
+      //   .then(res => {
+      //     // console.log(res)
+      //     if (res.code === '200') {
+      //       this.$message({
+      //         type: 'success',
+      //         message: '下单成功请等待上菜'
+      //       });
+      //       const data = JSON.stringify(this.selectfoods)
+      //       this.$db.setDb('selectfoods', data)
+      //       this.$router.push({
+      //         path: '/order',
+      //         query: {
+      //           id: res.data
+      //         }
+      //       })
+      //     }
+      //   })
+      // this.$db.cleanDb()
     },
     // 过滤selects
     cleanSelects (arr) {

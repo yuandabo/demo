@@ -3,6 +3,7 @@ import App from './App.vue'
 import './style/index.scss'
 import router from './router/index'
 import { createPinia } from 'pinia';
+import {db} from '@/utils/db'
 // import scroll from '@/components/scroll/index.vue';
 
 const app = createApp(App)
@@ -20,6 +21,7 @@ const app = createApp(App)
 
 // 设置全局变量
 app.config.globalProperties.$author = 'yuandabo'
+app.config.globalProperties.$db = db
 
 app
 .use(router)

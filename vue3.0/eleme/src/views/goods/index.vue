@@ -1,7 +1,7 @@
 <template>
   <div ref="goods"
        class="goods"
-       :style="{ height:height}"
+       :style="{height:height}"
        @scroll="scroll">
     <vheader />
     <vtag class="tag"

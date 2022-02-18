@@ -104,7 +104,8 @@ export default defineComponent({
     [SubmitBar.name]: SubmitBar,
     [ActionSheet.name]: ActionSheet,
     [Image.name]: Image,
-    [Icon.name]: Icon
+    [Icon.name]: Icon,
+    [Field.name]: Field
   },
   data () {
     return {
@@ -195,12 +196,12 @@ export default defineComponent({
     },
     onClickLeft () { this.$router.push({ path: '/goods/index' }) },
     queryById () {
-      queryById({ id: this.id })
-        .then((res) => {
-          if (res.code === '200') {
-            this.mes = res.data[0]
-          }
-        })
+      // queryById({ id: this.id })
+      //   .then((res) => {
+      //     if (res.code === '200') {
+      //       this.mes = res.data[0]
+      //     }
+      //   })
     }
   }
 })
@@ -213,17 +214,17 @@ export default defineComponent({
   padding-bottom: 100px;
   overflow-x: hidden;
   overflow-y: auto;
-  ::v-deep.van-submit-bar {
+  :deep(.van-submit-bar) {
     // position: relative;
   }
-  ::v-deep.van-nav-bar {
+  :deep(.van-nav-bar) {
     // z-index: 1;
     background-image: linear-gradient(90deg, #0af, #0085ff);
     .van-icon {
       color: #ffffff;
     }
   }
-  ::v-deep.van-nav-bar__title {
+  :deep(.van-nav-bar__title) {
     color: #ffffff;
     font-size: 14px;
   }
@@ -296,7 +297,7 @@ export default defineComponent({
         display: flex;
         justify-content: space-between;
       }
-      ::v-deep img {
+      :deep(img) {
         border-radius: 3px;
       }
     }
@@ -324,7 +325,7 @@ export default defineComponent({
     // flex: 1;
     background: #fff;
     border-radius: 5px;
-    ::v-deep.van-field {
+    :deep(.van-field) {
       border-radius: 5px;
     }
   }

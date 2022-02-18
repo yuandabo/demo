@@ -1,10 +1,13 @@
 import { useStore } from '@/pinia/index.js'
+import { storeToRefs } from 'pinia'
 //  import store from '@/store'
 export default {
   setup(props) {
     const store = useStore();
+    const { shopCarData } = storeToRefs(store)
     return {
-      shopCarData: store.shopCarData
+      store,
+      shopCarData
     }
   },
   // computed: {
@@ -58,7 +61,7 @@ export default {
           }
         }
       }
-      store.commit('app/shopcar/shopCarDataSet', goods)
+      store.shopCarDataSet(goods)
     }
   }
 }
