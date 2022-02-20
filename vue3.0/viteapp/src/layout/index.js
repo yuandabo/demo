@@ -20,5 +20,21 @@ export const submenu = [
         ],
         key: 'sub2',
         label: 'elementUIPlus'
+    },
+    {
+        menuItems: [
+            { 
+                key: '3',
+                label: 'pinia_setup',
+                routePath: '/pinia/index'
+            },
+            { 
+                key: '4',
+                label: 'pinia_option',
+                routePath: '/pinia/pinia_option'
+            }
+        ],
+        key: 'sub3',
+        label: 'pinia'
     }
 ]

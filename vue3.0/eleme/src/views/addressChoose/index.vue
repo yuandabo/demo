@@ -18,8 +18,14 @@
 </template>
 
 <script>
-import { Toast } from 'vant';
-export default {
+import { Toast, NavBar, AddressEdit } from 'vant';
+import {defineComponent} from 'vue'
+export default defineComponent({
+  name: 'addressChoose',
+  components: {
+    [NavBar.name]: NavBar,
+    [AddressEdit.name]: AddressEdit
+  },
   data () {
     return {
       areaList: {
@@ -73,17 +79,17 @@ export default {
       }
     },
   },
-};
+});
 </script>
 
 <style lang="scss" scoped>
 @import "@/assets/color.scss";
 .address {
-  /deep/.van-button--danger {
+  :deep(.van-button--danger) {
     background: #1989fa;
     border: 1px solid #1989fa;
   }
-  /deep/ .van-nav-bar .van-icon {
+  :deep( .van-nav-bar .van-icon) {
     color: $nolmao-iconGrey;
   }
 }

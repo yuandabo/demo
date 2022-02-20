@@ -1,24 +1,29 @@
-import Vue from 'vue'
+import { createApp } from 'vue'
 import App from './App.vue'
-import router from '@/router'
-import store from '@/store'
-import '@/components'
-import {
-  db
-} from '@/utils/db'
-import plugin from '@/plugins'
-import { mode } from '@/utils/env'
-import 'vant/lib/button/style'
-import '@/assets/index.scss'
+import './style/index.scss'
+import router from './router/index'
+import { createPinia } from 'pinia';
+import {db} from '@/utils/db'
+// import scroll from '@/components/scroll/index.vue';
 
-Vue.use(plugin)
-Vue.config.productionTip = false
-Vue.prototype.$db = db
-Vue.prototype.$mode = mode
-// Vue.prototype.$baseUrl =
+const app = createApp(App)
 
-new Vue({
-  render: (h) => h(App),
-  router,
-  store
-}).$mount('#app')
+// app.config.errorHandler = (err, vm, info) => {
+//     // 处理错误
+//     // `info` 是 Vue 特定的错误信息，比如错误所在的生命周期钩子
+//     console.log(err);
+// }
+
+// app.config.warnHandler = function(msg, vm, trace) {
+//     // `trace` 是组件的继承关系追踪
+//     console.log(msg);
+// }
+
+// 设置全局变量
+app.config.globalProperties.$author = 'yuandabo'
+app.config.globalProperties.$db = db
+
+app
+.use(router)
+.use(createPinia())
+.mount('#app')

@@ -31,9 +31,7 @@
         </div>
       </div>
       <div class="bottom-border" />
-      <scroll class="wrapper"
-              style="height:70vh;overflow: hidden;"
-              :data="computedRatings">
+      <div>
         <div class="content">
           <div class="content-bottom">
             <!-- <div class="bottom-border"></div> -->
@@ -51,8 +49,8 @@
               </div>
             </div>
           </div>
-          <div class="rating-text">
-            <ul>
+          <yb-scroll class="rating-text">
+            <ul class="relative">
               <li v-for="(item,index) in computedRatings"
                   :key="index"
                   class="rating-text-li gradient-line line">
@@ -72,36 +70,41 @@
                 </div>
               </li>
             </ul>
-          </div>
+          </yb-scroll>
         </div>
-      </scroll>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-import star from '@/components/star'
+import star from '@/components/star/index.vue'
+import Scroll from '@/components/scroll/index.vue'
+
 // import betterScroll from 'better-scroll'
-export default {
+import { Checkbox } from 'vant'
+import {defineComponent} from 'vue'
+import { useStore } from '@/pinia/index.js'
+import { storeToRefs } from 'pinia'
+export default defineComponent({
   name: 'ratings',
+  setup() {
+    const store = useStore()
+    const { seller } = storeToRefs(store)
+    return {
+      seller
+    }
+  },
   components: {
-    star
+    star,
+    [Checkbox.name]: Checkbox,
+    'yb-scroll': Scroll
   },
   props: {
-    seller: {
-      type: Object
-    }
-    // ratings: {
-    //   type: Array
-    // }
   },
   data () {
     return {
       ratings: [
-        { avatar: 'img/kobe.png', username: 'yuandabo', score: 0, text: '非常不好', rateTime: '20200829' },
-        { avatar: 'img/kobe.png', username: 'yuandabo', score: 5, text: '非常好', rateTime: '20200829' },
-        { avatar: 'img/kobe.png', username: 'yuandabo', score: 3, text: '一般般', rateTime: '20200829' },
-        { avatar: 'img/kobe.png', username: 'yuandabo', score: 3, text: '', rateTime: '20200829' },
         { avatar: 'img/kobe.png', username: 'yuandabo', score: 0, text: '非常不好', rateTime: '20200829' },
         { avatar: 'img/kobe.png', username: 'yuandabo', score: 5, text: '非常好', rateTime: '20200829' },
         { avatar: 'img/kobe.png', username: 'yuandabo', score: 3, text: '一般般', rateTime: '20200829' }
@@ -196,7 +199,7 @@ export default {
       return { constants, constantsArr }
     }
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>
@@ -322,6 +325,8 @@ export default {
 // }
 .rating-text {
   width: 100%;
+  height: 400px;
+  overflow: hidden;
 }
 .rating-text-li {
   display: flex;

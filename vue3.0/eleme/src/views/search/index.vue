@@ -12,7 +12,7 @@
       </template>
     </van-nav-bar>
 
-    <scroll ref="foodsscroll"
+    <yb-scroll ref="foodsscroll"
             class="wrapper foods-warpper flex-1"
             :pulldown="true">
       <ul>
@@ -57,7 +57,7 @@
           </span>
         </li>
       </ul>
-    </scroll>
+    </yb-scroll>
 
     <shopcar ref="shopcar"
              class="goods-shopcar"
@@ -69,15 +69,27 @@
 
 <script>
 import axios from 'axios'
-import store from '@/store'
+//  import store from '@/store'
 // import mixins from '@/mixins/cartcontrol'
-import cartcontrol from '@/components/cartcontrol'
-import shopcar from '@/components/shopcar'
-import { mapGetters } from 'vuex'
-export default {
+import cartcontrol from '@/components/cartcontrol/index.vue'
+import shopcar from '@/components/shopcar/index.vue'
+import { useStore } from '@/pinia/index.js'
+import { NavBar, Search, Image } from 'vant'
+import {defineComponent} from 'vue'
+export default defineComponent({
+  name: 'search',
+  setup() {
+    const store = useStore()
+    return {
+      shopCarData: store.shopCarData
+    }
+  },
   components: {
     cartcontrol,
-    shopcar
+    shopcar,
+    [NavBar.name]: NavBar,
+    [Search.name]: Search,
+    [Image.name]: Image
   },
   // mixins: [mixins],
   data () {
@@ -87,9 +99,9 @@ export default {
     }
   },
   computed: {
-    ...mapGetters([
-      'shopCarData'
-    ]),
+    // ...mapState([
+    //   'shopCarData'
+    // ]),
     goods () {
       return this.shopCarData
     },
@@ -160,20 +172,20 @@ export default {
       this.loading = false
     }
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>
 .search-foods {
   height: 93vh;
   background: #ffffff;
-  /deep/.van-image__img {
+  :deep(.van-image__img) {
     border-radius: 5px;
   }
-  /deep/ .van-search__content {
+  :deep(.van-search__content) {
     border-radius: 20px;
   }
-  /deep/ .van-search .van-cell {
+  :deep(.van-search .van-cell) {
     // padding: 0px 8px 0 0;
   }
   .foods-warpper {

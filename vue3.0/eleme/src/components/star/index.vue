@@ -13,7 +13,8 @@ const LENGTH = 5
 const CLS_ON = 'on'
 const CLS_HALF = 'half'
 const CLS_OFF = 'off'
-export default {
+import {defineComponent} from 'vue'
+export default defineComponent({
   props: {
     size: {
       type: Number
@@ -43,7 +44,7 @@ export default {
       return result
     }
   }
-}
+})
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->

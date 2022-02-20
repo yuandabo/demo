@@ -1,10 +1,10 @@
 <!--
  * @Author: your name
  * @Date: 2021-03-05 11:33:34
- * @LastEditTime: 2021-03-11 01:24:48
+ * @LastEditTime: 2022-02-19 16:57:29
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
- * @FilePath: \demo2\vue\eleme\phoneweb\src\views\foodsDetails\index.vue
+ * @FilePath: \demo2\vue\eleme\phoneweb\src\pages\foodsDetails\index.vue
 -->
 <template>
   <div class="food-detail">
@@ -14,11 +14,12 @@
                  @click-left="onClickLeft">
       <template #right>
         <van-icon name="share"
-                  @click="onClickRight"
-                  :color="'#ffffff'" />
+                  :color="'#ffffff'"
+                  @click="onClickRight" />
       </template>
     </van-nav-bar>
-    <van-image :src="details.image" />
+    <img class="top-img"
+         :src="details.image">
     <div class="global-card detail-title">
       <h1 class="title m15-p10">{{ details.name }}</h1>
       <div class="N6 m10-p10 sellNums">月售:{{ details.sellCount }}</div>
@@ -47,72 +48,73 @@
     <div class="global-card detail-evaluate">
       <h1 class="m15-p10">商品评价</h1>
       <div class="rating-text">
-        <ul>
-          <li v-for="(item,index) in ratings"
-              :key="index"
-              class="rating-text-li gradient-line line">
-            <div class="rating-text-li-left">
-              <img class="rating-text-li-left-avatar"
-                   :src="item.avatar"
-                   width="28"
-                   height="28">
-            </div>
-            <div class="rating-text-li-right">
-              <div class="rating-text-li-right-name">{{ item.username }}</div>
-              <star :size="24"
-                    :score="item.score"
-                    class="rating-text-li-right-star" />
-              <div class="rating-text-li-right-text">{{ item.text }}</div>
-              <div class="rating-text-li-right-time">{{ item.rateTime }}</div>
-            </div>
-          </li>
-        </ul>
+        <virtual-list style="height: 360px; overflow-y: auto;"
+                      :data-key="'uid'"
+                      :data-sources="items"
+                      :data-component="itemComponent" />
       </div>
     </div>
-    <van-share-sheet v-model="showShare"
+    <!-- <van-share-sheet v-model="showShare"
                      title="立即分享给好友"
                      :options="options"
-                     @select="onSelect" />
+                     @select="onSelect" /> -->
   </div>
 </template>
 
 <script>
-import cartcontrol from '@/components/cartcontrol'
-import star from '@/components/star'
-import store from '@/store'
-import { mapGetters } from 'vuex'
-export default {
+import {defineComponent} from 'vue'
+import VirtualList from 'vue-virtual-scroll-list'
+import cartcontrol from '@/components/cartcontrol/index.vue'
+// import star from '@/components/star'
+//  import store from '@/store'
+import { useStore } from '@/pinia/index.js'
+import { storeToRefs } from 'pinia'
+import axios from 'axios'
+import ratingItem from './components/ratings.vue'
+import { Icon, NavBar } from 'vant'
+export default defineComponent({
+  name: 'foods-details',
+  setup() {
+    const store = useStore()
+    const { shopCarData } = storeToRefs(store)
+    return {
+      store,
+      shopCarData
+    }
+  },
   components: {
     cartcontrol,
-    star
+    // star,
+    'virtual-list': VirtualList,
+    ratingItem,
+    [Icon.name]: Icon,
+    [NavBar.name]: NavBar
   },
   data () {
     return {
       // details: {},
-      showShare: false,
-      options: [
-        { name: '微信', icon: 'wechat' },
-        { name: '微博', icon: 'weibo' },
-        { name: '复制链接', icon: 'link' },
-        { name: '分享海报', icon: 'poster' },
-        { name: '二维码', icon: 'qrcode' }
-      ],
-      ratings: [
-        { avatar: 'img/kobe.png', username: 'yuandabo', score: 0, text: '非常不好', rateTime: '20200829' },
-        { avatar: 'img/kobe.png', username: 'yuandabo', score: 5, text: '非常好', rateTime: '20200829' },
-        { avatar: 'img/kobe.png', username: 'yuandabo', score: 3, text: '一般般', rateTime: '20200829' },
-        { avatar: 'img/kobe.png', username: 'yuandabo', score: 3, text: '', rateTime: '20200829' },
-        { avatar: 'img/kobe.png', username: 'yuandabo', score: 0, text: '非常不好', rateTime: '20200829' },
-        { avatar: 'img/kobe.png', username: 'yuandabo', score: 5, text: '非常好', rateTime: '20200829' },
-        { avatar: 'img/kobe.png', username: 'yuandabo', score: 3, text: '一般般', rateTime: '20200829' }
+      // showShare: false,
+      // options: [
+      //   { name: '微信', icon: 'wechat' },
+      //   { name: '微博', icon: 'weibo' },
+      //   { name: '复制链接', icon: 'link' },
+      //   { name: '分享海报', icon: 'poster' },
+      //   { name: '二维码', icon: 'qrcode' }
+      // ],
+      itemComponent: ratingItem,
+      items: [
+        { avatar: '/img/kobe.png', username: 'yuandabo', score: 0, text: '非常不好', rateTime: '20200829', uid: '1' },
+        { avatar: '/img/kobe.png', username: 'yuandabo', score: 5, text: '非常好', rateTime: '20200829', uid: '2' },
+        { avatar: '/img/kobe.png', username: 'yuandabo', score: 3, text: '一般般', rateTime: '20200829', uid: '3' }
       ]
     }
   },
   computed: {
-    ...mapGetters([
-      'shopCarData'
-    ]),
+    // ...mapState([
+    //   'shopCarData'
+    // ]),
     details () {
+      console.log(this.$route.params)
       const { id } = this.$route.params.details
       const goods = this.shopCarData
       // id
@@ -129,11 +131,40 @@ export default {
     }
   },
   created () {
+    // this.getAll()
   },
   methods: {
-    onSelect (option) {
-      this.showShare = false
+    // 获取后台数据
+    async getAll () {
+      // if (this.$mode) {
+      axios('../../data.json')
+        .then((res) => {
+          console.log('res', res)
+          this.goods = res.data.goods
+          // this.seller = res.data.seller
+          this.store.shopCarDataSet(res.data.goods)
+        })
+      // } else {
+      //   const data = await getAll()
+      //   if (data.code === '200') {
+      //     const goods = data.data.goods
+      //     const arr = []
+      //     // 过滤数据
+      //     for (let i = 0, length = goods.length; i < length; i++) {
+      //       const item = goods[i]
+      //       if (item.foods && item.foods.length !== 0) {
+      //         arr.push(item)
+      //       }
+      //     }
+      //     this.goods = arr
+      //     this.initCount() // 初始化count
+      //   }
+      // }
+      this.loading = false
     },
+    // onSelect (option) {
+    //   this.showShare = false
+    // },
     onClickLeft () {
       this.$router.go(-1)
     },
@@ -193,16 +224,24 @@ export default {
       }
     }
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>
 @import "@/assets/color.scss";
+@import "@/assets/index.scss";
 .food-detail {
   position: relative;
   height: 100vh;
   overflow: auto;
-  /deep/ .van-nav-bar {
+  .top-img {
+    width: 100vw;
+    // height: 200px;
+  }
+  // image {
+  //   width: 100vw;
+  // }
+  :deep( .van-nav-bar) {
     width: 100vw;
     position: fixed;
     background: none;

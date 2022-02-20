@@ -4,67 +4,50 @@
          ref="dec"
          class="cart-decrease"
          @click.stop="decreaseCart">
-      <van-icon :name="getIcon('dec')"
+      <Icon :name="getIcon('dec')"
                 size="25" />
     </div>
     <div v-show="!isZero"
          ref="count"
-         class="cart-count">{{ food.count }}</div>
+         class="cart-count">{{ props.food.count }}</div>
     <div class="cart-add"
          @click.stop="addCart">
-      <van-icon :name="getIcon('add')"
+      <Icon :name="getIcon('add')"
                 size="25" />
     </div>
   </div>
 </template>
 
-<script>
-export default {
-  name: 'cartcontrol',
-  props: {
-    food: {
-      type: Object
+<script setup>
+import { defineProps, computed, getCurrentInstance } from 'vue'
+import { Icon } from 'vant'
+  
+const {proxy} = getCurrentInstance()
+
+const props = defineProps({
+  food: Object
+})
+const isZero =  computed(() => props.food.count === 0)
+const getIcon = function (name) {
+    return `img/${name}.png`
+}
+function addCart(event) {
+    if (isZero) {
+      proxy.$refs.count.className = 'cart-count'
+      proxy.$refs.dec.className = 'cart-decrease'
     }
-  },
-  data () {
-    return {
-      // isZero: true
+    proxy.$emit('foodAdd', { food: props.food, target: event.target })
+}
+const decreaseCart = function () {
+    if (props.food.count - 1 === 0) {
+      proxy.$refs.count.className = 'widthDec'
+      proxy.$refs.dec.className = 'decHide'
+      setTimeout(() => {
+        proxy.$refs.dec.className = 'display-none'
+        proxy.$refs.count.className = 'display-none'
+      }, 500)
     }
-  },
-  computed: {
-    isZero () {
-      return this.food.count === 0
-    }
-  },
-  methods: {
-    // getDecIcon () {
-    //   let name = this.food.count > 0 ? 'dec' : 'whitedec'
-    //   return `img/${name}.png`
-    // },
-    getIcon (name) {
-      return `img/${name}.png`
-    },
-    addCart (event) {
-      if (this.isZero) {
-        this.$refs.count.className = 'cart-count'
-        this.$refs.dec.className = 'cart-decrease'
-        // this.isZero = false
-      }
-      this.$emit('foodAdd', { food: this.food, target: event.target })
-    },
-    decreaseCart () {
-      if (this.food.count - 1 === 0) {
-        this.$refs.count.className = 'widthDec'
-        this.$refs.dec.className = 'decHide'
-        setTimeout(() => {
-          // this.isZero = true
-          this.$refs.dec.className = 'display-none'
-          this.$refs.count.className = 'display-none'
-        }, 500)
-      }
-      this.$emit('foodDec', this.food)
-    }
-  }
+    proxy.$emit('foodDec', props.food)
 }
 </script>
 
@@ -74,8 +57,7 @@ export default {
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  // align-items: center;
-  /deep/.van-icon {
+  :deep(.van-icon) {
     display: flex;
     align-items: center;
     justify-items: center;
@@ -90,7 +72,6 @@ export default {
     justify-content: center;
     align-items: center;
     font-size: 16px;
-    // background-color: #f2f3f5;
   }
   .cart-add {
     flex: 0;
