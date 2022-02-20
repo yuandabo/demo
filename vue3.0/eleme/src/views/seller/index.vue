@@ -108,11 +108,11 @@ export default defineComponent({
   .seller-img {
     margin-top: 10px;
     // text-align: center;
-    ::v-deep.van-image {
+    :deep(.van-image) {
       display: flex;
       justify-content: center;
     }
-    ::v-deep.van-image__img {
+    :deep(.van-image__img) {
       width: 95vw;
       border-radius: 10px 10px 0 0;
     }

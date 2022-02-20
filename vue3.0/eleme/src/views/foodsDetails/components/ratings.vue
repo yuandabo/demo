@@ -56,7 +56,7 @@ export default defineComponent({
   image {
     width: 100vw;
   }
-  ::v-deep .van-nav-bar {
+  :deep(.van-nav-bar) {
     width: 100vw;
     position: fixed;
     background: none;

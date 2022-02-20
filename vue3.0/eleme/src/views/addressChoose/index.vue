@@ -85,11 +85,11 @@ export default defineComponent({
 <style lang="scss" scoped>
 @import "@/assets/color.scss";
 .address {
-  ::v-deep.van-button--danger {
+  :deep(.van-button--danger) {
     background: #1989fa;
     border: 1px solid #1989fa;
   }
-  ::v-deep .van-nav-bar .van-icon {
+  :deep( .van-nav-bar .van-icon) {
     color: $nolmao-iconGrey;
   }
 }

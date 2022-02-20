@@ -104,13 +104,13 @@ export default defineComponent({
   .input {
     flex: 1;
   }
-  ::v-deep.van-stepper__plus,
-  ::v-deep.van-stepper__minus {
+  :deep(.van-stepper__plus),
+  :deep(.van-stepper__minus) {
     border-radius: 50%;
     background: #3a89fd;
     color: #ffffff;
   }
-  ::v-deep.van-stepper__minus {
+  :deep(.van-stepper__minus) {
     background: #ffffff;
     color: #3a89fd;
     border: 1px solid #3a89fd;

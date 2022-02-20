@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-03-05 11:33:34
- * @LastEditTime: 2022-02-17 14:29:47
+ * @LastEditTime: 2022-02-19 16:57:29
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \demo2\vue\eleme\phoneweb\src\pages\foodsDetails\index.vue
@@ -241,7 +241,7 @@ export default defineComponent({
   // image {
   //   width: 100vw;
   // }
-  ::v-deep .van-nav-bar {
+  :deep( .van-nav-bar) {
     width: 100vw;
     position: fixed;
     background: none;

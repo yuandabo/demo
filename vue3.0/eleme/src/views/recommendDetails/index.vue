@@ -179,13 +179,13 @@ export default defineComponent({
 .search-foods {
   height: 93vh;
   background: #ffffff;
-  ::v-deep.van-image__img {
+  :deep(.van-image__img) {
     border-radius: 5px;
   }
-  ::v-deep .van-search__content {
+  :deep(.van-search__content) {
     border-radius: 20px;
   }
-  ::v-deep .van-search .van-cell {
+  :deep(.van-search .van-cell) {
     // padding: 0px 8px 0 0;
   }
   .foods-warpper {

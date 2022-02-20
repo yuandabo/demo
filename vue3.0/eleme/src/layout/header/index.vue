@@ -144,19 +144,19 @@ export default defineComponent({
   color: #fff;
   position: relative;
   // overflow: hidden;
-  ::v-deep .van-image__img {
+  :deep( .van-image__img) {
     border-radius: 10px;
   }
-  ::v-deep .van-nav-bar {
+  :deep( .van-nav-bar) {
     width: 100vw;
     background-color: unset;
     position: absolute;
     z-index: 10;
   }
-  ::v-deep .van-search__content {
+  :deep(.van-search__content) {
     border-radius: 20px;
   }
-  ::v-deep .van-search .van-cell {
+  :deep(.van-search .van-cell) {
     padding: 0px 8px 0 0;
   }
 }
@@ -198,7 +198,7 @@ export default defineComponent({
   margin: 2px 0px 8px 0px;
 }
 .brand {
-  ::v-deep .van-icon__image {
+  :deep(.van-icon__image) {
     display: inline-block;
     vertical-align: top;
     width: 30px;
@@ -236,7 +236,7 @@ export default defineComponent({
   }
 }
 .supports .icon {
-  ::v-deep .van-icon__image {
+  :deep(.van-icon__image) {
     display: inline-block;
     vertical-align: top;
     width: 12px;
@@ -280,7 +280,7 @@ export default defineComponent({
   background: #fff;
 }
 .bulletin-title {
-  ::v-deep .van-icon__image {
+  :deep(.van-icon__image) {
     display: inline-block;
     width: 22px;
     height: 12px;

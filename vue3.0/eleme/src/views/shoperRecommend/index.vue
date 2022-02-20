@@ -1,6 +1,5 @@
 <template>
   <div class="shoperRecommend">
-    <!-- <van-divider /> -->
     <div class="shoperRecommend-word-warpper"
          @click="$router.push('/recommendDetails')">
       <span class="shoperRecommend-word">商家推荐</span>
@@ -8,13 +7,6 @@
         <van-icon name="arrow" />
       </span>
     </div>
-    <!-- <yb-scroll ref="siscroll"
-            class="wrapper shoperRecommend-img-warrper"
-            :pulldown="true"
-            :scroll-x="true"
-            :scroll-y="false"
-            :data="foods"
-            @click="changeImgPos()"> -->
     <ul class="flexdir shoperRecommend-img-ul">
       <li v-for="(item) in foods"
           :key="item.id"
@@ -28,7 +20,6 @@
         </van-image>
         <div class="shoperRecommend-desc">
           <h1 class="shoperRecommend-desc-title">{{ item.name }}</h1>
-          <!-- <span class="shoperRecommend-desc-monthseller">月售{{ item.sellCount }}</span> -->
           <div>
             <span class="shoperRecommend-desc-newprice">
               <span class="shoperRecommend-desc-doller1">￥</span>{{ item.price }}
@@ -42,7 +33,6 @@
         </div>
       </li>
     </ul>
-    <!-- </yb-scroll> -->
   </div>
 </template>
 
@@ -208,7 +198,7 @@ export default defineComponent({
   /* width: 100px; */
   /* height: 170px; */
   padding: 0px 0px 5px 5px;
-  ::v-deep .van-image img {
+  :deep( .van-image img) {
     border-radius: 5px;
     height: 100px;
   }

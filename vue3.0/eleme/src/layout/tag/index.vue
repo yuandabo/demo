@@ -103,10 +103,10 @@ a {
   display: block;
   height: 0;
 }
-// ::v-deep .van-tabs__line {
+// :deep( .van-tabs__line {
 //   width: 4px;
 // }
-::v-deep .van-tab {
+:deep(.van-tab) {
   padding: 0 8px;
 }
 </style>
