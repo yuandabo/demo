@@ -139,10 +139,10 @@ export default defineComponent({
       this.foods = this.value
     },
     foodDec ($event) {
-      store.commit('app/shopcar/changeOneData', { id: $event.id, numberSize: -1 })
+      this.store.changeOneData({ id: $event.id, numberSize: -1 })
     },
     foodAdd ($event) {
-      store.commit('app/shopcar/changeOneData', { id: $event.food.id })
+      this.store.changeOneData({ id: $event.food.id })
       this.$refs.shopcar.drop($event.target)
     },
     // 获取后台数据

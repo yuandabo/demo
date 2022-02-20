@@ -15,7 +15,6 @@
     "vant": "^3.4.5",
     "vue": "^3.2.29",
     "vue-router": "^4.0.12",
-    "vue-virtual-scroll-list": "^2.3.3",
     "vuex": "^4.0.2"
   },
   "devDependencies": {

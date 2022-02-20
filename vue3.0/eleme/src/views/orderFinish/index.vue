@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-03-10 15:30:47
- * @LastEditTime: 2022-02-18 14:17:40
+ * @LastEditTime: 2022-02-21 00:59:29
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \demo2\vue\eleme\phoneweb\src\views\orderFinish\index.vue
@@ -158,6 +158,7 @@ export default defineComponent({
 .orderFinish {
   height: 100vh;
   overflow: auto;
+  background-image: linear-gradient(90deg, #0af, #0085ff);
   :deep(.van-nav-bar) {
     background-image: linear-gradient(90deg, #0af, #0085ff);
     .van-icon {

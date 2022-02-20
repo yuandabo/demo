@@ -5,7 +5,7 @@
                  left-arrow
                  :fixed="true"
                  @click-left="onClickLeft" />
-    <van-notice-bar style="margin:5px 10px;border-radius:5px"
+    <van-notice-bar style="margin:5px 10px;border-radius:5px;margin-top: 60px;"
                     left-icon="volume-o"
                     text="为减少接触，降低风险，请修改下方备注。" />
     <div class="flex-1 g-fS-12">
@@ -231,7 +231,7 @@ export default defineComponent({
   .order-background {
     z-index: -1;
     width: 100vw;
-    height: 70vh;
+    height: 100vh;
     position: absolute;
     top: 0;
     left: 0;

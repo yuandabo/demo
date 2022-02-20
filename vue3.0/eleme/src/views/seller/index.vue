@@ -1,6 +1,6 @@
 <template>
   <div>
-    <yb-scroll ref="div"
+    <div ref="div"
             class="wrapper seller"
             :pulldown="true">
       <div class="content">
@@ -64,7 +64,7 @@
                       color="#999">查看营业资质</van-button>
         </div>
       </div>
-    </yb-scroll>
+    </div>
   </div>
 </template>
 
@@ -103,7 +103,7 @@ export default defineComponent({
   bottom: 0;
   left: 0; */
   width: 100%;
-  overflow: hidden;
+  // overflow: hidden;
   // background: #ffffff;
   .seller-img {
     margin-top: 10px;

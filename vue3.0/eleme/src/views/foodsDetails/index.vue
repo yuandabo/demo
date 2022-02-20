@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-03-05 11:33:34
- * @LastEditTime: 2022-02-19 16:57:29
+ * @LastEditTime: 2022-02-21 00:18:36
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \demo2\vue\eleme\phoneweb\src\pages\foodsDetails\index.vue
@@ -48,10 +48,7 @@
     <div class="global-card detail-evaluate">
       <h1 class="m15-p10">商品评价</h1>
       <div class="rating-text">
-        <virtual-list style="height: 360px; overflow-y: auto;"
-                      :data-key="'uid'"
-                      :data-sources="items"
-                      :data-component="itemComponent" />
+        <div style="height: 360px; overflow-y: auto;" />
       </div>
     </div>
     <!-- <van-share-sheet v-model="showShare"
@@ -62,11 +59,8 @@
 </template>
 
 <script>
-import {defineComponent} from 'vue'
-import VirtualList from 'vue-virtual-scroll-list'
+import { defineComponent } from 'vue'
 import cartcontrol from '@/components/cartcontrol/index.vue'
-// import star from '@/components/star'
-//  import store from '@/store'
 import { useStore } from '@/pinia/index.js'
 import { storeToRefs } from 'pinia'
 import axios from 'axios'
@@ -74,7 +68,7 @@ import ratingItem from './components/ratings.vue'
 import { Icon, NavBar } from 'vant'
 export default defineComponent({
   name: 'foods-details',
-  setup() {
+  setup () {
     const store = useStore()
     const { shopCarData } = storeToRefs(store)
     return {
@@ -84,8 +78,6 @@ export default defineComponent({
   },
   components: {
     cartcontrol,
-    // star,
-    'virtual-list': VirtualList,
     ratingItem,
     [Icon.name]: Icon,
     [NavBar.name]: NavBar
@@ -172,10 +164,11 @@ export default defineComponent({
       this.showShare = true
     },
     foodDec ($event) {
-      store.commit('app/shopcar/changeOneData', { id: $event.id, numberSize: -1 })
+      this.store.changeOneData({ id: $event.id, numberSize: -1 })
     },
     foodAdd ($event) {
-      store.commit('app/shopcar/changeOneData', { id: $event.food.id })
+      console.log($event)
+      // this.store.changeOneData({ id: $event.food.id })
     },
     /**
      * 获取小数点后数字数量，整数返回0
@@ -241,7 +234,7 @@ export default defineComponent({
   // image {
   //   width: 100vw;
   // }
-  :deep( .van-nav-bar) {
+  :deep(.van-nav-bar) {
     width: 100vw;
     position: fixed;
     background: none;

@@ -1,21 +1,6 @@
 import { useStore } from '@/pinia/index.js'
-import { storeToRefs } from 'pinia'
-//  import store from '@/store'
+const store = useStore()
 export default {
-  setup(props) {
-    const store = useStore();
-    const { shopCarData } = storeToRefs(store)
-    return {
-      store,
-      shopCarData
-    }
-  },
-  // computed: {
-  //   ...mapState([
-  //     'shopCarData'
-  //   ])
-  // },
-  methods: {
     /**
      * 获取小数点后数字数量，整数返回0
      * @param {*} val 需要处理的数字
@@ -63,5 +48,4 @@ export default {
       }
       store.shopCarDataSet(goods)
     }
-  }
 }

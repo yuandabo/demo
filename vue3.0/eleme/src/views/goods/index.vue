@@ -1,7 +1,6 @@
 <template>
   <div ref="goods"
        class="goods"
-       :style="{height:height}"
        @scroll="scroll">
     <vheader />
     <vtag class="tag"
@@ -64,13 +63,13 @@ export default defineComponent({
     },
     tagclick (name) {
       if (name === 0) {
-        this.height = '93vh'
+        // this.height = '93vh'
         this.path = '/goods/index'
       } else if (name === 1) {
-        this.height = '100vh'
+        // this.height = '100vh'
         this.path = '/goods/ratings'
       } else if (name === 2) {
-        this.height = '100vh'
+        // this.height = '100vh'
         this.path = '/goods/seller'
       }
       this.$router.push({ path: this.path })
@@ -126,6 +125,7 @@ export default defineComponent({
 <style lang="scss" scoped>
 .goods {
   width: 100%;
+  height: 93vh;
   overflow-y: auto;
   overflow-x: hidden;
   .tag {

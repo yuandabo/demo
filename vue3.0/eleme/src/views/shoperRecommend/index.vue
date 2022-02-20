@@ -85,7 +85,7 @@ export default defineComponent({
       this.$router.push({ name: 'foodsDetails', params: { details: item } })
     },
     foodDec ($event) {
-      store.commit('app/shopcar/changeOneData', { id: $event.id, numberSize: -1 })
+      this.store.changeOneData({ id: $event.id, numberSize: -1 })
     },
     foodAdd ($event) {
       console.log('foodAdd', $event)

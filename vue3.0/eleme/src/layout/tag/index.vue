@@ -1,15 +1,4 @@
 <template>
-  <!-- <div class="tag gradient-line line">
-    <div class="tag-item">
-      <router-link to="/goods">请点餐</router-link>
-    </div>
-    <div class="tag-item">
-      <router-link to='/ratings'>评论</router-link>
-    </div>
-    <div class="tag-item">
-      <router-link to='/seller'>商家</router-link>
-    </div>
-  </div> -->
   <van-tabs v-model="active"
             color="rgb(0, 160, 220)"
             @click="tabsClick">

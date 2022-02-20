@@ -1,0 +1,158 @@
+.flexdir-column {
+  display: flex;
+  flex-direction: column;
+}
+
+.flexdir {
+  display: flex;
+}
+
+.flexdir-align {
+  display: flex;
+  align-items: center;
+}
+
+.flexdir-alignjust {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.flex-1 {
+  flex: 1;
+}
+
+.betterscroll-warp {
+  overflow: hidden;
+}
+
+.van-divider {
+  margin: 5px 0;
+}
+
+.van-nav-bar .van-icon {
+  color: #ffffff;
+}
+
+.global-nowprice {
+  color: #f01414;
+}
+
+.N8 {
+  color: #323233;
+}
+
+.N7 {
+  color: #646566;
+}
+
+.N6 {
+  color: #969799;
+}
+
+.global-fontSize-16px {
+  font-size: 16px;
+}
+
+.g-fS-10 {
+  font-size: 10px;
+}
+
+.g-fS-12 {
+  font-size: 12px;
+}
+
+.g-fS-14 {
+  font-size: 14px;
+}
+
+body, h1, h2, h3, h4, h5, h6, hr, p, blockquote, dl, dt, dd, ul, ol, li, pre, form, fieldset, legend, button, input, textarea, th, td {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.max-height {
+  height: 100%;
+}
+
+.pr {
+  position: relative;
+}
+
+h1 {
+  font-weight: 500;
+  margin: 2px 0 10x 0;
+  font-size: 15px;
+  line-height: 14px;
+  color: black;
+}
+
+.pad {
+  padding: 5px;
+}
+
+.pad-line {
+  padding: 0 5px;
+}
+
+.pad-right {
+  padding-right: 5px;
+}
+
+.pad-left {
+  padding-left: 5px;
+}
+
+.margin10 {
+  margin: 10px;
+}
+
+.margin-bot {
+  margin-bottom: 10px;
+}
+
+.m10-p10 {
+  margin: 10px;
+  padding: 0px 10px;
+}
+
+.m15-p10 {
+  margin: 15px 10px;
+  padding: 0px 10px;
+}
+
+.relative {
+  position: relative;
+}
+
+.singleTextOverflow {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.global-card {
+  box-sizing: border-box;
+  padding: 10px 5px;
+  background: #ffffff;
+  margin: 10px auto;
+  width: 95vw;
+  border-radius: 10px;
+}
+
+.text-right {
+  text-align: right;
+}
+
+.right {
+  text-align: right;
+}
+
+.weight {
+  font-weight: 500;
+}
+
+.wrapper {
+  overflow: auto;
+}

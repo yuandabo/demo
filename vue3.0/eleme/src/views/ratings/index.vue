@@ -325,8 +325,8 @@ export default defineComponent({
 // }
 .rating-text {
   width: 100%;
-  height: 400px;
-  overflow: hidden;
+  // height: 400px;
+  // overflow: hidden;
 }
 .rating-text-li {
   display: flex;

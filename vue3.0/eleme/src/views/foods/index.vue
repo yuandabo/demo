@@ -102,12 +102,12 @@ import Swipe from './swipe/indev.vue'
 import shopcar from '@/components/shopcar/index.vue'
 import cartcontrol from '@/components/cartcontrol/index.vue'
 import shoperrecommend from '@/views/shoperRecommend/index.vue'
-import mixins from '@/mixins/cartcontrol/index.js'
 import { useStore } from '@/pinia/index.js'
 import { storeToRefs } from 'pinia'
 import { Image, Icon } from 'vant'
 import {defineComponent} from 'vue'
 import Scroll from '@/components/scroll/index.vue'
+import setup from '@/setup/cartcontrol/index.js'
 export default defineComponent({
   name: 'foods',
   setup() {
@@ -115,7 +115,8 @@ export default defineComponent({
     const { shopCarData } = storeToRefs(store)
     return {
       shopCarData,
-      store
+      store,
+      ...setup
     }
   },
   components: {
@@ -127,7 +128,7 @@ export default defineComponent({
     [Icon.name]: Icon,
     scroll: Scroll
   },
-  mixins: [mixins],
+  // mixins: [mixins],
   props: {
     seller: {
       type: Object,
