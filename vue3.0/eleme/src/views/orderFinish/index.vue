@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-03-10 15:30:47
- * @LastEditTime: 2021-03-11 01:22:22
+ * @LastEditTime: 2022-02-18 14:17:40
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \demo2\vue\eleme\phoneweb\src\views\orderFinish\index.vue
@@ -97,14 +97,23 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
-//  import store from '@/store'
-export default {
+import { useStore } from '@/pinia/index.js'
+import { NavBar, Image, Icon } from 'vant'
+import {defineComponent} from 'vue'
+export default defineComponent({
   name: 'order-finish',
+  components: {
+    [NavBar.name]:NavBar,
+    [Image.name]:Image,
+    [Icon.name]:Icon
+  },
+  setup() {
+    const store = useStore()
+    return {
+      shopCarData: store.shopCarData
+    }
+  },
   computed: {
-    ...mapGetters([
-      'shopCarData'
-    ]),
     selectfoods: {
       get: function () {
         const foods = []
@@ -141,7 +150,7 @@ export default {
       this.$router.go(-1)
     }
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>
@@ -149,14 +158,13 @@ export default {
 .orderFinish {
   height: 100vh;
   overflow: auto;
-  /deep/.van-nav-bar {
-    // z-index: 1;
+  :deep(.van-nav-bar) {
     background-image: linear-gradient(90deg, #0af, #0085ff);
     .van-icon {
       color: #ffffff;
     }
   }
-  /deep/.van-nav-bar__title {
+  :deep(.van-nav-bar__title) {
     color: #ffffff;
     font-size: 14px;
   }
@@ -165,26 +173,22 @@ export default {
   }
   .order-cart {
     margin: 0 10px;
-    // flex: 1;
     background: #fff;
     box-shadow: 0 0.013333rem 0.026667rem 0 rgba(0, 0, 0, 0.05);
     box-shadow: 0 0.133333vw 0.266667vw 0 rgba(0, 0, 0, 0.05);
     border-radius: 5px;
     .cart-title {
       padding: 15px 20px;
-      // font-size: 16px;
       font-weight: 500;
       color: $nolmal-textColor;
     }
     .cart-content {
-      // padding: 15px;
-      // font-size: 16px;
       .content-item {
         padding: 15px 20px;
         display: flex;
         justify-content: space-between;
       }
-      /deep/ img {
+      :deep(img) {
         border-radius: 3px;
       }
     }

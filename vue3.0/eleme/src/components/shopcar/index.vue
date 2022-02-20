@@ -68,9 +68,11 @@
 </template>
 
 <script>
-import carcontrol from '@/components/cartcontrol'
+import carcontrol from '@/components/cartcontrol/index.vue'
 import { saveOrder } from '@/api/send'
-export default {
+import { Icon } from 'vant'
+import {defineComponent} from 'vue'
+export default defineComponent({
   name: 'shopcar',
   data () {
     return {
@@ -99,7 +101,8 @@ export default {
     }
   },
   components: {
-    carcontrol
+    carcontrol,
+    [Icon.name]: Icon
   },
   computed: {
     totalPrice () {
@@ -217,29 +220,29 @@ export default {
       // }
       const selects = JSON.stringify(this.cleanSelects(this.selectfoods))
       // 本地储存订单信息
-      saveOrder({
-        price: this.totalPrice,
-        selects: selects,
-        phoneNum: this.$db.getDb('phoneNum')
-      })
-        .then(res => {
-          // console.log(res)
-          if (res.code === '200') {
-            this.$message({
-              type: 'success',
-              message: '下单成功请等待上菜'
-            });
-            const data = JSON.stringify(this.selectfoods)
-            this.$db.setDb('selectfoods', data)
-            this.$router.push({
-              path: '/order',
-              query: {
-                id: res.data
-              }
-            })
-          }
-        })
-      this.$db.cleanDb()
+      // saveOrder({
+      //   price: this.totalPrice,
+      //   selects: selects,
+      //   phoneNum: this.$db.getDb('phoneNum')
+      // })
+      //   .then(res => {
+      //     // console.log(res)
+      //     if (res.code === '200') {
+      //       this.$message({
+      //         type: 'success',
+      //         message: '下单成功请等待上菜'
+      //       });
+      //       const data = JSON.stringify(this.selectfoods)
+      //       this.$db.setDb('selectfoods', data)
+      //       this.$router.push({
+      //         path: '/order',
+      //         query: {
+      //           id: res.data
+      //         }
+      //       })
+      //     }
+      //   })
+      // this.$db.cleanDb()
     },
     // 过滤selects
     cleanSelects (arr) {
@@ -273,7 +276,7 @@ export default {
       });
     }
   }
-};
+});
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
@@ -379,12 +382,12 @@ export default {
   // background: #2b343c;
   font-size: 30px;
   text-align: center;
-  /deep/.van-icon {
+  :deep(.van-icon){
     display: flex;
     align-items: center;
     justify-content: center;
   }
-  /deep/.van-info {
+  :deep(.van-info) {
     z-index: 61;
   }
 }

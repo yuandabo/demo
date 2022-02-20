@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-02-22 15:07:02
- * @LastEditTime: 2021-07-30 00:23:24
+ * @LastEditTime: 2022-02-17 15:41:03
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \demo\vue\eleme\phoneweb\src\layout\scroll\index.vue
@@ -13,8 +13,8 @@
 </template>
 <script type="text/ecmascript-6">
 import BScroll from 'better-scroll'
-
-export default {
+import {defineComponent} from 'vue'
+export default defineComponent({
   props: {
     /**
      * 1 滚动的时候会派发scroll事件，会截流。
@@ -96,16 +96,14 @@ export default {
     }
   },
   watch: {
-    top: (val) => {
-      console.log(val)
-    }
-  },
-  watch: {
     // 监听数据的变化，延时refreshDelay时间后调用refresh方法重新计算，保证滚动效果正常
     data () {
       setTimeout(() => {
         this.refresh()
       }, this.refreshDelay)
+    },
+    top: (val) => {
+      console.log(val)
     }
   },
   mounted () {
@@ -186,5 +184,5 @@ export default {
       this.scroll && this.scroll.scrollToElement.apply(this.scroll, arguments)
     }
   }
-}
+})
 </script>

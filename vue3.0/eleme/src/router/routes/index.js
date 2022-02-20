@@ -12,7 +12,7 @@
 export const routes =
   [
     {
-      path: '*',
+      path: '/',
       redirect: '/goods'
     },
     {

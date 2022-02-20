@@ -1,6 +1,5 @@
 <template>
   <div class="shoperRecommend">
-    <!-- <van-divider /> -->
     <div class="shoperRecommend-word-warpper"
          @click="$router.push('/recommendDetails')">
       <span class="shoperRecommend-word">商家推荐</span>
@@ -8,13 +7,6 @@
         <van-icon name="arrow" />
       </span>
     </div>
-    <!-- <scroll ref="siscroll"
-            class="wrapper shoperRecommend-img-warrper"
-            :pulldown="true"
-            :scroll-x="true"
-            :scroll-y="false"
-            :data="foods"
-            @click="changeImgPos()"> -->
     <ul class="flexdir shoperRecommend-img-ul">
       <li v-for="(item) in foods"
           :key="item.id"
@@ -28,7 +20,6 @@
         </van-image>
         <div class="shoperRecommend-desc">
           <h1 class="shoperRecommend-desc-title">{{ item.name }}</h1>
-          <!-- <span class="shoperRecommend-desc-monthseller">月售{{ item.sellCount }}</span> -->
           <div>
             <span class="shoperRecommend-desc-newprice">
               <span class="shoperRecommend-desc-doller1">￥</span>{{ item.price }}
@@ -42,19 +33,23 @@
         </div>
       </li>
     </ul>
-    <!-- </scroll> -->
   </div>
 </template>
 
 <script>
 // import axios from 'axios'
 //  import store from '@/store'
-import cartcontrol from '@/components/cartcontrol'
+import cartcontrol from '@/components/cartcontrol/index.vue'
 // import mixins from '@/mixins/cartcontrol'
-export default {
+import { Image, Icon, Loading } from 'vant'
+import {defineComponent} from 'vue'
+export default defineComponent({
   name: 'shoperRecommend',
   components: {
-    cartcontrol
+    cartcontrol,
+    [Icon.name]: Icon,
+    [Image.name]: Image,
+    [Loading.name]: Loading
   },
   // mixins: [mixins],
   props: {
@@ -101,7 +96,7 @@ export default {
       this.$emit('dosomenthing')
     }
   }
-}
+})
 </script>
 
 <style scoped>
@@ -203,7 +198,7 @@ export default {
   /* width: 100px; */
   /* height: 170px; */
   padding: 0px 0px 5px 5px;
-  /deep/ .van-image img {
+  :deep( .van-image img) {
     border-radius: 5px;
     height: 100px;
   }

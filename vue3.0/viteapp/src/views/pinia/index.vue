@@ -7,8 +7,8 @@
 <script>
 import { useStore } from '@/pinia/index'
 import { storeToRefs } from 'pinia'
-
-export default {
+import {defineComponent} from 'vue'
+export default defineComponent({
     setup(props) {
         const store = useStore()
         console.log(store.name);
@@ -29,7 +29,7 @@ export default {
             name
         }
     }
-}
+})
 </script>
 
 <style>

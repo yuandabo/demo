@@ -9,7 +9,7 @@
     </div>
     <!-- <van-divider /> -->
     <div class="goods-body">
-      <scroll class="wrapper menu-warpper"
+      <div class="wrapper menu-warpper"
               :pulldown="true">
         <ul class="content">
           <li v-for="(a,index) in goods"
@@ -20,9 +20,9 @@
             <span class="menu-text">{{ a.name }}</span>
           </li>
         </ul>
-      </scroll>
+      </div>
 
-      <scroll ref="foodsscroll"
+      <div ref="foodsscroll"
               class="wrapper foods-warpper"
               :pulldown="true"
               :listen-scroll="true"
@@ -32,14 +32,15 @@
               @pulldown="pulldown"
               @scroll="foodsScroll">
         <ul class="relative">
-          <div class="flexdir-align foods-warpper-topWords"
+          <!-- <div class="flexdir-align foods-warpper-topWords"
                style="justify-content: center;">
             继续上拉回到顶部
             <van-icon name="back-top" />
-          </div>
+          </div> -->
           <li v-for="(a,index) in goods"
               :key="index"
-              class="food-list food-list-hook">
+              class="food-list food-list-hook"
+              ref="liItem">
             <h1 class="food-list-title">{{ a.name }}</h1>
             <ul>
               <li v-for="(item,index2) in a.foods"
@@ -85,7 +86,7 @@
             </ul>
           </li>
         </ul>
-      </scroll>
+      </div>
 
     </div>
     <shopcar ref="shopcar"
@@ -98,19 +99,33 @@
 
 <script>
 import Swipe from './swipe/indev.vue'
-import shopcar from '@/components/shopcar'
-import cartcontrol from '@/components/cartcontrol'
-import shoperrecommend from '@/views/shoperRecommend'
-import mixins from '@/mixins/cartcontrol'
-import { mapGetters } from 'vuex'
-//  import store from '@/store'
-export default {
+import shopcar from '@/components/shopcar/index.vue'
+import cartcontrol from '@/components/cartcontrol/index.vue'
+import shoperrecommend from '@/views/shoperRecommend/index.vue'
+import mixins from '@/mixins/cartcontrol/index.js'
+import { useStore } from '@/pinia/index.js'
+import { storeToRefs } from 'pinia'
+import { Image, Icon } from 'vant'
+import {defineComponent} from 'vue'
+import Scroll from '@/components/scroll/index.vue'
+export default defineComponent({
   name: 'foods',
+  setup() {
+    const store = useStore()
+    const { shopCarData } = storeToRefs(store)
+    return {
+      shopCarData,
+      store
+    }
+  },
   components: {
     shopcar,
     cartcontrol,
     shoperrecommend,
-    Swipe
+    Swipe,
+    [Image.name]: Image,
+    [Icon.name]: Icon,
+    scroll: Scroll
   },
   mixins: [mixins],
   props: {
@@ -124,13 +139,11 @@ export default {
       loading: false,
       ulkey: 0,
       currentIndex: 0,
-      top: false
+      top: false,
+      currentLiItemTop: null
     }
   },
   computed: {
-    ...mapGetters([
-      'shopCarData'
-    ]),
     goods () {
       return this.shopCarData
     },
@@ -164,13 +177,6 @@ export default {
       return arr
     }
   },
-  // watch: {
-  //   top: (val) => {
-  //     console.log(val)
-  //   }
-  // },
-  mounted () {
-  },
   methods: {
     goToFoodDetails (item) {
       this.$router.push({ name: 'foodsDetails', params: { details: item } })
@@ -193,27 +199,34 @@ export default {
      * @return {*}
      */
     foodsScroll (pos) {
-      const y = Math.abs(pos.y)
-      const array = this.FOODSLENGTHLIST
-      let postionsIndex = 0
-      if (array.indexOf(y) !== -1) {
-        this.currentIndex = array.indexOf(y)
-        return
-      }
-      for (let index = 0; index < array.length; index++) {
-        const element = array[index]
-        if (y === 0) {
-          postionsIndex = 0
-          break
+      const { liItem } = this.$refs
+      // 计算偏移量
+      const item = liItem.length > 0 ? liItem[0] : null;
+      if (item) { 
+        const { top } = item.getBoundingClientRect()
+        if (this.currentLiItemTop == null) this.currentLiItemTop = top;
+        const y = Math.abs(top - this.currentLiItemTop)
+        const array = this.FOODSLENGTHLIST
+        let postionsIndex = 0
+        if (array.indexOf(y) !== -1) {
+          this.currentIndex = array.indexOf(y)
+          return
         }
-        if (index > 0) {
-          if (y > element && y < array[index + 1]) {
-            postionsIndex = index
+        for (let index = 0; index < array.length; index++) {
+          const element = array[index]
+          if (y === 0) {
+            postionsIndex = 0
             break
           }
+          if (index > 0) {
+            if (y > element && y < array[index + 1]) {
+              postionsIndex = index
+              break
+            }
+          }
         }
+        this.currentIndex = postionsIndex
       }
-      this.currentIndex = postionsIndex
     },
     getMenuItemClass (index) {
       if (index === this.currentIndex) {
@@ -222,10 +235,10 @@ export default {
       return ''
     },
     foodDec ($event) {
-      store.commit('app/shopcar/changeOneData', { id: $event.id, numberSize: -1 })
+      this.store.changeOneData({ id: $event.id, numberSize: -1 })
     },
     foodAdd ($event) {
-      store.commit('app/shopcar/changeOneData', { id: $event.food.id })
+      this.store.changeOneData({ id: $event.food.id })
       this.$refs.shopcar.drop($event.target)
     },
     pulldown () {
@@ -239,17 +252,18 @@ export default {
       this.currentIndex = Number(index)
       const foodList = document.getElementsByClassName('food-list-hook')
       const el = foodList[index]
-      if (!this.$refs.foodsscroll.scroll) {
+      // if (!this.$refs.foodsscroll.scroll) {
         this.$nextTick(() => {
-          this.$refs.foodsscroll._initScroll()
-          this.$refs.foodsscroll.scroll.scrollToElement(el, 300)
+          el.scrollIntoView()
+          // this.$refs.foodsscroll._initScroll()
+          // this.$refs.foodsscroll.scroll.scrollToElement(el, 300)
         })
         return
-      }
-      this.$refs.foodsscroll.scroll.scrollToElement(el, 300)
+      // }
+      // this.$refs.foodsscroll.scroll.scrollToElement(el, 300)
     }
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>
@@ -258,11 +272,11 @@ export default {
   .goods-img {
     margin: 15px 5px;
     padding: 0px 5px;
-    /deep/.van-image {
+    :deep(.van-image) {
       display: flex;
       justify-content: center;
     }
-    /deep/.van-image__img {
+    :deep(.van-image__img) {
       // width: 90%;
       border-radius: 3px;
     }
@@ -271,7 +285,7 @@ export default {
     // flex: 0;
     display: flex;
     overflow: hidden;
-    /deep/.van-image__img {
+    :deep(.van-image__img) {
       // width: 90%;
       border-radius: 3px;
     }
@@ -390,8 +404,8 @@ export default {
     flex-direction: column;
     vertical-align: top;
     font-size: 12px;
-    width: 61px;
-    height: 30px;
+    // width: 61px;
+    // height: 30px;
     line-height: 13px;
     padding: 10px;
     border-color: #f3f5f7;
@@ -465,5 +479,8 @@ export default {
     text-align: center;
     // background-color: #39a9ed;
   }
+} 
+.wrapper {
+  overflow: auto;
 }
 </style>

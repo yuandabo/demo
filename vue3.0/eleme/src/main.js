@@ -1,12 +1,10 @@
 import { createApp } from 'vue'
 import App from './App.vue'
-// import 'ant-design-vue/dist/antd.css'
 import './style/index.scss'
-// import Ant from 'ant-design-vue'
 import router from './router/index'
-// import { store } from './store/index'
 import { createPinia } from 'pinia';
-
+import {db} from '@/utils/db'
+// import scroll from '@/components/scroll/index.vue';
 
 const app = createApp(App)
 
@@ -23,9 +21,9 @@ const app = createApp(App)
 
 // 设置全局变量
 app.config.globalProperties.$author = 'yuandabo'
+app.config.globalProperties.$db = db
 
 app
 .use(router)
-// .use(store)
 .use(createPinia())
 .mount('#app')

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <scroll ref="div"
+    <yb-scroll ref="div"
             class="wrapper seller"
             :pulldown="true">
       <div class="content">
@@ -64,17 +64,22 @@
                       color="#999">查看营业资质</van-button>
         </div>
       </div>
-    </scroll>
+    </yb-scroll>
   </div>
 </template>
 
 <script>
 import betterScroll from 'better-scroll'
-import star from '@/components/star'
-export default {
+import star from '@/components/star/index.vue'
+import { Button, Image, Icon } from 'vant'
+import {defineComponent} from 'vue'
+export default defineComponent({
   name: 'seller',
   components: {
-    star
+    star,
+    [Button.name]: Button,
+    [Icon.name]: Icon,
+    [Image.name]: Image
   },
   props: {
     seller: {
@@ -87,7 +92,7 @@ export default {
   },
   methods: {
   }
-}
+})
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
@@ -103,11 +108,11 @@ export default {
   .seller-img {
     margin-top: 10px;
     // text-align: center;
-    /deep/.van-image {
+    :deep(.van-image) {
       display: flex;
       justify-content: center;
     }
-    /deep/.van-image__img {
+    :deep(.van-image__img) {
       width: 95vw;
       border-radius: 10px 10px 0 0;
     }

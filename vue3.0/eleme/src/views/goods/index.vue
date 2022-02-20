@@ -1,40 +1,46 @@
 <template>
   <div ref="goods"
        class="goods"
-       :style="{ height:height}"
+       :style="{height:height}"
        @scroll="scroll">
-    <vheader :seller="seller" />
+    <vheader />
     <vtag class="tag"
           @tabs-click="tagclick" />
-    <router-view ref="router"
-                 :seller="seller" />
+    <router-view ref="router"/>
 
   </div>
 </template>
 
 <script>
+import { defineComponent } from 'vue'
 import axios from 'axios'
-import vheader from '@/layout/header'
-import vtag from '@/layout/tag'
+import vheader from '@/layout/header/index.vue'
+import vtag from '@/layout/tag/index.vue'
 import { getAll } from '@/api/send'
-import { debounce } from '@/utils'
+import { debounce } from '@/utils/index.js'
 // import mixins from '@/mixins/cartcontrol'
 //  import store from '@/store'
-export default {
+import { useStore } from '@/pinia/index.js'
+import { storeToRefs } from 'pinia'
+export default defineComponent({
   name: 'goods',
+  setup() {
+    const store = useStore()
+    const { shopCarData, seller } = storeToRefs(store)
+    store.initGoodsData();
+    store.initSellerData();
+    return {
+      store,
+      shopCarData,
+      seller
+    }
+  },
   components: {
     vheader,
     vtag
   },
   // mixins: [mixins],
-  props: {
-    seller: {
-      type: Object,
-      default () {
-        return {}
-      }
-    }
-  },
+  props: {},
   data () {
     return {
       goods: [],
@@ -50,11 +56,11 @@ export default {
     }
   },
   mounted () {
-    this.getAll()
+    // this.getAll()
   },
   methods: {
     scroll () {
-      if (this.path === '/goods/index') this.$refs.router.computedTop()
+      // if (this.path === '/goods/index') this.$refs.router.computedTop()
     },
     tagclick (name) {
       if (name === 0) {
@@ -88,33 +94,33 @@ export default {
       }
     },
     // 获取后台数据
-    async getAll () {
-      // if (this.$mode) {
-      axios('./data.json')
-        .then((res) => {
-          this.goods = res.data.goods
-          store.commit('app/shopcar/shopCarDataSet', res.data.goods)
-        })
-      // } else {
-      //   const data = await getAll()
-      //   if (data.code === '200') {
-      //     const goods = data.data.goods
-      //     const arr = []
-      //     // 过滤数据
-      //     for (let i = 0, length = goods.length; i < length; i++) {
-      //       const item = goods[i]
-      //       if (item.foods && item.foods.length !== 0) {
-      //         arr.push(item)
-      //       }
-      //     }
-      //     this.goods = arr
-      //     this.initCount() // 初始化count
-      //   }
-      // }
-      this.loading = false
-    }
+    // async getAll () {
+    //   // if (this.$mode) {
+    //   axios('./data.json')
+    //     .then((res) => {
+    //       this.goods = res.data.goods
+    //       this.store.shopCarDataSet(res.data.goods)
+    //     })
+    //   // } else {
+    //   //   const data = await getAll()
+    //   //   if (data.code === '200') {
+    //   //     const goods = data.data.goods
+    //   //     const arr = []
+    //   //     // 过滤数据
+    //   //     for (let i = 0, length = goods.length; i < length; i++) {
+    //   //       const item = goods[i]
+    //   //       if (item.foods && item.foods.length !== 0) {
+    //   //         arr.push(item)
+    //   //       }
+    //   //     }
+    //   //     this.goods = arr
+    //   //     this.initCount() // 初始化count
+    //   //   }
+    //   // }
+    //   this.loading = false
+    // }
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>
