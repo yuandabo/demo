@@ -106,7 +106,6 @@ import { useStore } from '@/pinia/index.js'
 import { storeToRefs } from 'pinia'
 import { Image, Icon } from 'vant'
 import {defineComponent} from 'vue'
-import Scroll from '@/components/scroll/index.vue'
 import setup from '@/setup/cartcontrol/index.js'
 export default defineComponent({
   name: 'foods',
@@ -125,8 +124,7 @@ export default defineComponent({
     shoperrecommend,
     Swipe,
     [Image.name]: Image,
-    [Icon.name]: Icon,
-    scroll: Scroll
+    [Icon.name]: Icon
   },
   // mixins: [mixins],
   props: {

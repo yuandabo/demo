@@ -49,7 +49,7 @@
               </div>
             </div>
           </div>
-          <yb-scroll class="rating-text">
+          <div class="rating-text warpper">
             <ul class="relative">
               <li v-for="(item,index) in computedRatings"
                   :key="index"
@@ -70,7 +70,7 @@
                 </div>
               </li>
             </ul>
-          </yb-scroll>
+          </div>
         </div>
       </div>
     </div>
@@ -79,9 +79,6 @@
 
 <script>
 import star from '@/components/star/index.vue'
-import Scroll from '@/components/scroll/index.vue'
-
-// import betterScroll from 'better-scroll'
 import { Checkbox } from 'vant'
 import {defineComponent} from 'vue'
 import { useStore } from '@/pinia/index.js'
@@ -97,8 +94,7 @@ export default defineComponent({
   },
   components: {
     star,
-    [Checkbox.name]: Checkbox,
-    'yb-scroll': Scroll
+    [Checkbox.name]: Checkbox
   },
   props: {
   },

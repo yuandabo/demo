@@ -1,93 +1,85 @@
 <template>
   <div class="stepper">
-    <div class="cart-decrease"
-         @click.stop="decreaseCart">
-      <button type="button"
-              class="van-stepper__minus button"
-              :disabled="countIsZero"></button>
+    <div class="cart-decrease" @click.stop="decreaseCart">
+      <button
+        type="button"
+        class="van-stepper__minus button"
+        :disabled="countIsZero"
+      ></button>
     </div>
-    <input v-if="showInput"
-           ref="steInput"
-           type="text"
-           class="van-stepper__input input"
-           v-model="inputValue"
-           @input="input" />
-    <div v-else
-         class="bac-grey"
-         @click.stop="divClick">{{currentStepper.count}}</div>
-    <div class="cart-add"
-         @click.stop="addCartNums">
-      <button type="button"
-              class="van-stepper__plus button"></button>
+    <input
+      v-if="showInput"
+      ref="steInput"
+      type="text"
+      class="van-stepper__input input"
+      v-model="inputValue"
+      @input="input"
+    />
+    <div v-else class="bac-grey" @click.stop="divClick">
+      {{ currentStepper.count }}
+    </div>
+    <div class="cart-add" @click.stop="addCartNums">
+      <button type="button" class="van-stepper__plus button"></button>
     </div>
   </div>
 </template>
 
-<script>
-import {defineComponent} from 'vue'
-export default defineComponent({
-  name: 'stepper-item',
-  props: {
-    currentStepper: {
-      type: Object
-    },
-    countIsZero: {
-      type: Boolean
-    },
-    // 是否显示input框
-    showInput: {
-      type: Boolean,
-      default: false
-    }
+<script setup>
+import { defineProps, defineEmits, getCurrentInstance } from "vue";
+defineProps({
+  currentStepper: {
+    type: Object,
   },
-  data () {
-    return {
-      inputValue: 0
-    }
+  countIsZero: {
+    type: Boolean,
   },
-  created () {
-    this.inputValue = this.currentStepper.number
-    this.input() // 初始化回显inputValue
+  // 是否显示input框
+  showInput: {
+    type: Boolean,
+    default: false,
   },
-  methods: {
-    input () {
-      this.$emit('input', this.inputValue)
-    },
-    // 获取小数点后数字长度
-    getAfterDotNums (val) {
-      return String(val).substring(String(val).indexOf('.') + 1).length
-    },
-    decreaseCart () {
-      // 如果input模式 修改不发请求，enter在发请求
-      if (this.showInput) {
-        const number = this.inputValue
-        const length = this.getAfterDotNums(number)
-        const POW = Math.pow(10, length)
-        this.inputValue = (number * POW - POW * 1) / POW
-        // 触发input事件
-        this.input()
-        return
-      }
-      // 抛出事件，父组件发修改请求
-      this.$emit('decreaseCart')
-    },
-    addCartNums () {
-      // 如果input模式 修改不发请求，enter在发请求
-      if (this.showInput) {
-        const number = this.inputValue
-        const length = this.getAfterDotNums(number)
-        const POW = Math.pow(10, length)
-        this.inputValue = (number * POW + POW * 1) / POW
-        this.input()
-        return
-      }
-      this.$emit('addCartNums')
-    },
-    divClick () {
-      this.$emit('divClick')
-    }
+});
+defineEmits(["input", "addCartNums", "divClick", "decreaseCart"]);
+const instance = getCurrentInstance();
+const inputValue = 0;
+inputValue = instance.currentStepper.number;
+input(); // 初始化回显inputValue
+function input() {
+  instance.$emit("input", instance.inputValue);
+}
+// 获取小数点后数字长度
+function getAfterDotNums(val) {
+  return String(val).substring(String(val).indexOf(".") + 1).length;
+}
+function decreaseCart() {
+  // 如果input模式 修改不发请求，enter在发请求
+  if (instance.showInput) {
+    const number = instance.inputValue;
+    const length = instance.getAfterDotNums(number);
+    const POW = Math.pow(10, length);
+    instance.inputValue = (number * POW - POW * 1) / POW;
+    // 触发input事件
+    instance.input();
+    return;
   }
-})
+  // 抛出事件，父组件发修改请求
+  instance.$emit("decreaseCart");
+}
+function addCartNums() {
+  // 如果input模式 修改不发请求，enter在发请求
+  if (instance.showInput) {
+    const number = instance.inputValue;
+    const length = instance.getAfterDotNums(number);
+    const POW = Math.pow(10, length);
+    instance.inputValue = (number * POW + POW * 1) / POW;
+    instance.input();
+    return;
+  }
+  instance.$emit("addCartNums");
+}
+function divClick() {
+  instance.$emit("divClick");
+}
 </script>
 
 <style lang="scss" scoped>

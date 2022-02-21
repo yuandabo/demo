@@ -1,44 +1,50 @@
 <template>
   <div class="shopcar">
     <div class="content">
-      <div class="content-left"
-           @click="toggleList">
+      <div class="content-left" @click="toggleList">
         <div class="shop-logo-warpper">
           <div class="shop-logo">
-            <van-icon :name="getCartIcon()"
-                      size="35"
-                      :badge="totalCount" />
+            <Icon :name="getCartIcon()" size="35" :badge="totalCount" />
           </div>
           <!-- <div class="shopcar-num"
                v-show="totalCount > 0">{{totalCount}}</div> -->
         </div>
-        <div class="pay-money"
-             :class="[totalCount > 0?'price-highlight':'']">￥{{totalPrice}}</div>
+        <div
+          class="pay-money"
+          :class="[totalCount > 0 ? 'price-highlight' : '']"
+        >
+          ￥{{ totalPrice }}
+        </div>
         <!-- <div class="post-money">餐具费：{{deliveryprice}}元</div> -->
       </div>
-      <div class="content-right"
-           @click="routerTo">
-        <div class="content-right-pay"
-             @click="postTotalPrice()"
-             :class="[totalPrice >= minprice?'content-right-pay-highlight':'']">{{payDesc}}</div>
+      <div class="content-right" @click="routerTo">
+        <div
+          class="content-right-pay"
+          @click="postTotalPrice()"
+          :class="[totalPrice >= minprice ? 'content-right-pay-highlight' : '']"
+        >
+          {{ payDesc }}
+        </div>
       </div>
     </div>
     <transition name="fade">
-      <div class="shopcar-list"
-           v-show="listShow">
+      <div class="shopcar-list" v-show="listShow">
         <div class="shopcar-list-head">
           <h1 class="shopcar-list-head-title">购物车</h1>
-          <span class="empty"
-                @click="cleanlist">清空</span>
+          <span class="empty" @click="cleanlist">清空</span>
         </div>
         <div class="shopcar-list-content">
           <ul>
-            <li class="shopcar-list-content-food gradient-line line"
-                v-for="(food,index) in selectfoods"
-                :key="index">
-              <span class="shopcar-list-content-food-name">{{food.name}}</span>
+            <li
+              class="shopcar-list-content-food gradient-line line"
+              v-for="(food, index) in selectfoods"
+              :key="index"
+            >
+              <span class="shopcar-list-content-food-name">{{
+                food.name
+              }}</span>
               <div class="shopcar-list-content-food-price">
-                <span>￥{{food.price*food.count}}</span>
+                <span>￥{{ food.price * food.count }}</span>
               </div>
               <div class="shopcar-control">
                 <carcontrol :food="food"></carcontrol>
@@ -49,16 +55,14 @@
         <!-- <div class="shopcar-list-content-div"></div> -->
       </div>
     </transition>
-    <div class="list-mask"
-         @click="maskClick"
-         v-show="maskShow"></div>
-    <div v-for="(ball,index) in balls"
-         :key="index">
-      <transition @before-enter="beforeDrop"
-                  @enter="dropping"
-                  @after-enter="afterDrop">
-        <div v-show="ball.show"
-             class="flexdir-alignjust  ball">
+    <div class="list-mask" @click="maskClick" v-show="maskShow"></div>
+    <div v-for="(ball, index) in balls" :key="index">
+      <transition
+        @before-enter="beforeDrop"
+        @enter="dropping"
+        @after-enter="afterDrop"
+      >
+        <div v-show="ball.show" class="flexdir-alignjust ball">
           1
           <!-- <div class="inner inner-hook"></div> -->
         </div>
@@ -67,219 +71,199 @@
   </div>
 </template>
 
-<script>
-import carcontrol from '@/components/cartcontrol/index.vue'
-import { saveOrder } from '@/api/send'
-import { Icon } from 'vant'
-import {defineComponent} from 'vue'
-export default defineComponent({
-  name: 'shopcar',
-  data () {
-    return {
-      fold: true,
-      maskShow: false,
-      balls: [{ show: false }, { show: false }, { show: false }],
-      dropBalls: []
-    }
-  },
-  props: {
-    deliveryprice: {
-      type: Number,
-      default: 0
-    },
-    minprice: {
-      type: Number,
-      default: 0
-    },
-    selectfoods: {
-      type: Array,
-      default () {
-        return [
+<script setup>
+import carcontrol from "@/components/cartcontrol/index.vue";
+import { saveOrder } from "@/api/send";
+import { Icon } from "vant";
+import { defineProps, computed, getCurrentInstance } from "vue";
 
-        ];
-      }
-    }
+const fold = true;
+const maskShow = false;
+const balls = [{ show: false }, { show: false }, { show: false }];
+const dropBalls = [];
+const instance = getCurrentInstance();
+defineProps({
+  deliveryprice: {
+    type: Number,
+    default: 0,
   },
-  components: {
-    carcontrol,
-    [Icon.name]: Icon
+  minprice: {
+    type: Number,
+    default: 0,
   },
-  computed: {
-    totalPrice () {
-      let total = 0;
-      this.selectfoods.forEach((food) => {
-        total += food.price * food.count;
-      });
-      return total;
+  selectfoods: {
+    type: Array,
+    default() {
+      return [];
     },
-    totalCount () {
-      let count = 0;
-      this.selectfoods.forEach((food) => {
-        count += food.count;
-      })
-      return count;
-    },
-    payDesc () {
-      if (this.totalPrice === 0) {
-        return `￥${this.minprice}元起`;
-      } else if (this.totalPrice < this.minprice) {
-        let diff = this.minprice - this.totalPrice;
-        return `还差￥${diff}元`;
-      } else {
-        return '去结算';
-      }
-    },
-    listShow () {
-      if (!this.totalCount) {
-        // eslint-disable-next-line vue/no-side-effects-in-computed-properties
-        this.fold = true;
-        return false;
-      }
-      let show = !this.fold;
-      return show;
-    }
   },
-  mounted () {
-    // setTimeout(() => {
-    //   this.ball.show = true
-    // }, 1000)
-  },
-  methods: {
-    drop (el) {
-      for (let i = 0; i < this.balls.length; i++) {
-        const ball = this.balls[i]
-        if (!ball.show) {
-          ball.show = true
-          ball.el = el
-          this.dropBalls.push(ball)
-          return
-        }
-      }
-    },
-    beforeDrop (el) {
-      const ball = this.dropBalls[this.dropBalls.length - 1]
-      const rect = ball.el.getBoundingClientRect()
-      const x = rect.left - 26
-      const y = -(window.innerHeight - rect.top - 42)
-      el.style.display = ''
-      el.style.transform = el.style.webkitTransform = `translate3d(${x}px,${y}px,0)`
-    },
-    dropping (el, done) {
-      el.offsetWidth  // 取offsetWidth会使浏览器重绘
-      // setTimeout(() => {
-      el.style.transform = el.style.webkitTransform = `translate3d(0,0,0)`
-      // }, 200)
-      el.addEventListener('transitionend', done)
-    },
-    afterDrop (el) {
-      const ball = this.dropBalls.shift()
-      if (ball) {
-        ball.show = false
-        el.style.display = 'none'
-      }
-    },
-    routerTo () {
-      if (this.totalPrice >= this.minprice) {
-        // this.$db.setDb('order', { selectfoods: this.selectfoods, totalPrice: this.totalPrice })
-        this.$router.push({ path: '/order' })
-      }
-    },
-    maskClick () {
-      this.fold = true
-      this.maskShow = false
-    },
-    getCartIcon () {
-      let name = this.totalCount > 0 ? 'cartblue' : 'cartgrey'
-      return this.getIcon(name)
-    },
-    getIcon (name) {
-      return `img/${name}.png`
-    },
-    toggleList () {
-      if (!this.totalCount) {
-        return;
-      }
-      this.fold = !this.fold;
-      this.maskShow = !this.maskShow;
-    },
-    cleanlist () {
-      console.log(this.selectfoods)
-      this.selectfoods.forEach((food) => {
-        food.count = 0;
-      })
-      this.maskShow = false;
-    },
-    //结算
-    postTotalPrice () {
-      if (this.payDesc !== '去结算') {
-        return
-      }
-      // if (!this.$db.getDb('phoneNum')) {
-      //   this.open()
-      //   return
-      // }
-      const selects = JSON.stringify(this.cleanSelects(this.selectfoods))
-      // 本地储存订单信息
-      // saveOrder({
-      //   price: this.totalPrice,
-      //   selects: selects,
-      //   phoneNum: this.$db.getDb('phoneNum')
-      // })
-      //   .then(res => {
-      //     // console.log(res)
-      //     if (res.code === '200') {
-      //       this.$message({
-      //         type: 'success',
-      //         message: '下单成功请等待上菜'
-      //       });
-      //       const data = JSON.stringify(this.selectfoods)
-      //       this.$db.setDb('selectfoods', data)
-      //       this.$router.push({
-      //         path: '/order',
-      //         query: {
-      //           id: res.data
-      //         }
-      //       })
-      //     }
-      //   })
-      // this.$db.cleanDb()
-    },
-    // 过滤selects
-    cleanSelects (arr) {
-      let returnArr = []
-      arr.forEach(item => {
-        returnArr.push({
-          name: item.name,
-          count: item.count
-        })
-      })
-      // console.log(returnArr)
-      return returnArr
-    },
-    // 开启历史选择框
-    openHistoryOrder () {
-      this.$confirm('系统查询到有历史订单, 是否继续?', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
-        this.$message({
-          type: 'success',
-          message: '进入成功!'
-        });
-      }).catch(() => {
-        this.$db.cleanDb()
-        this.$message({
-          type: 'info',
-          message: '取消进入'
-        });
-      });
-    }
+});
+const totalPrice = computed(() => {
+  let total = 0;
+  instance.selectfoods.forEach((food) => {
+    total += food.price * food.count;
+  });
+  return total;
+});
+const totalCount = computed(() => {
+  let count = 0;
+  instance.selectfoods.forEach((food) => {
+    count += food.count;
+  });
+  return count;
+});
+const payDesc = computed(() => {
+  if (instance.totalPrice === 0) {
+    return `￥${instance.minprice}元起`;
+  } else if (instance.totalPrice < instance.minprice) {
+    let diff = instance.minprice - instance.totalPrice;
+    return `还差￥${diff}元`;
+  } else {
+    return "去结算";
   }
 });
-</script>
+const listShow = computed(() => {
+  if (!instance.totalCount) {
+    instance.fold = true;
+    return false;
+  }
+  let show = !instance.fold;
+  return show;
+});
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
+function drop(el) {
+  for (let i = 0; i < instance.balls.length; i++) {
+    const ball = instance.balls[i];
+    if (!ball.show) {
+      ball.show = true;
+      ball.el = el;
+      instance.dropBalls.push(ball);
+      return;
+    }
+  }
+}
+function beforeDrop(el) {
+  const ball = instance.dropBalls[instance.dropBalls.length - 1];
+  const rect = ball.el.getBoundingClientRect();
+  const x = rect.left - 26;
+  const y = -(window.innerHeight - rect.top - 42);
+  el.style.display = "";
+  el.style.transform =
+    el.style.webkitTransform = `translate3d(${x}px,${y}px,0)`;
+}
+function dropping(el, done) {
+  el.offsetWidth; // 取offsetWidth会使浏览器重绘
+  // setTimeout(() => {
+  el.style.transform = el.style.webkitTransform = `translate3d(0,0,0)`;
+  // }, 200)
+  el.addEventListener("transitionend", done);
+}
+function afterDrop(el) {
+  const ball = instance.dropBalls.shift();
+  if (ball) {
+    ball.show = false;
+    el.style.display = "none";
+  }
+}
+function routerTo() {
+  if (instance.totalPrice >= instance.minprice) {
+    instance.$router.push({ path: "/order" });
+  }
+}
+function maskClick() {
+  instance.fold = true;
+  instance.maskShow = false;
+}
+function getCartIcon() {
+  let name = instance.totalCount > 0 ? "cartblue" : "cartgrey";
+  return instance.getIcon(name);
+}
+function getIcon(name) {
+  return `img/${name}.png`;
+}
+function toggleList() {
+  if (!instance.totalCount) {
+    return;
+  }
+  instance.fold = !instance.fold;
+  instance.maskShow = !instance.maskShow;
+}
+function cleanlist() {
+  console.log(instance.selectfoods);
+  instance.selectfoods.forEach((food) => {
+    food.count = 0;
+  });
+  instance.maskShow = false;
+}
+//结算
+function postTotalPrice() {
+  if (instance.payDesc !== "去结算") {
+    return;
+  }
+  // if (!instance.$db.getDb('phoneNum')) {
+  //   instance.open()
+  //   return
+  // }
+  const selects = JSON.stringify(instance.cleanSelects(instance.selectfoods));
+  // 本地储存订单信息
+  // saveOrder({
+  //   price: instance.totalPrice,
+  //   selects: selects,
+  //   phoneNum: instance.$db.getDb('phoneNum')
+  // })
+  //   .then(res => {
+  //     // console.log(res)
+  //     if (res.code === '200') {
+  //       instance.$message({
+  //         type: 'success',
+  //         message: '下单成功请等待上菜'
+  //       });
+  //       const data = JSON.stringify(instance.selectfoods)
+  //       instance.$db.setDb('selectfoods', data)
+  //       instance.$router.push({
+  //         path: '/order',
+  //         query: {
+  //           id: res.data
+  //         }
+  //       })
+  //     }
+  //   })
+  // instance.$db.cleanDb()
+}
+// 过滤selects
+function cleanSelects(arr) {
+  let returnArr = [];
+  arr.forEach((item) => {
+    returnArr.push({
+      name: item.name,
+      count: item.count,
+    });
+  });
+  // console.log(returnArr)
+  return returnArr;
+}
+// 开启历史选择框
+function openHistoryOrder() {
+  instance.$confirm("系统查询到有历史订单, 是否继续?", "提示", {
+    confirmButtonText: "确定",
+    cancelButtonText: "取消",
+    type: "warning",
+  })
+    .then(() => {
+      instance.$message({
+        type: "success",
+        message: "进入成功!",
+      });
+    })
+    .catch(() => {
+      instance.$db.cleanDb();
+      instance.$message({
+        type: "info",
+        message: "取消进入",
+      });
+    });
+}
+</script>
 <style lang="scss" scoped>
 .shopcar {
   /* position: fixed; */
@@ -382,7 +366,7 @@ export default defineComponent({
   // background: #2b343c;
   font-size: 30px;
   text-align: center;
-  :deep(.van-icon){
+  :deep(.van-icon) {
     display: flex;
     align-items: center;
     justify-content: center;
