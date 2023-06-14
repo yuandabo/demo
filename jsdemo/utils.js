@@ -1,8 +1,8 @@
 /*
  * @Author: your name
  * @Date: 2020-10-14 11:41:43
- * @LastEditTime: 2021-03-05 00:24:18
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2023-06-14 17:30:17
+ * @LastEditors: yuandabo 540496776@qq.com
  * @Description: In User Settings Edit
  * @FilePath: \demo\jsdemo\utils.js
  */
@@ -77,34 +77,5 @@ function debounce (fn, wait) {
   return function () {
     if (timeout !== null) clearTimeout(timeout);
     timeout = setTimeout(fn, wait);
-  }
-}
-/**
- * @description: 节流
- * @param {*}
- * @return {*}
- */
-function throttle(fn, interval) {
-  var last = 0;
-  var timer = null; // 记录定时器是否已经开启
-  return function () {
-      // this和arguments;
-      var _this = this;
-      var _arguments = _arguments;
-      var now = new Date().getTime();
-      if (now - last > interval) {
-          if (timer) { //若已经开启，则不需要开启另外一个定时器了
-              clearTimeout(timer);
-              timer = null;
-          }
-          fn.apply(_this, _arguments);
-          last = now;
-      } else if (timer === null) { // 没有立即执行的情况下，就会开启定时器
-          //只是最后一次开启
-          timer = setTimeout(function () {
-              timer = null; // 如果定时器最后执行了，那么timer需要赋值为null
-              fn.apply(_this, _arguments);
-          },interval)
-      }
   }
 }
