@@ -5,7 +5,8 @@
   "main": "main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "rollup -c"
+    "build": "rollup --config rollup.config.build.js",
+    "dev": "rollup --config rollup.config.dev.js -w"
   },
   "type": "module",
   "keywords": [],
@@ -17,7 +18,12 @@
     "rollup-plugin-babel": "^4.4.0",
     "rollup-plugin-commonjs": "^10.1.0",
     "rollup-plugin-replace": "^2.2.0",
-    "rollup-plugin-uglify": "^6.0.4"
+    "rollup-plugin-uglify": "^6.0.4",
+    "tslib": "^2.6.1",
+    "typescript": "^5.1.6"
   },
-  "dependencies": {}
+  "dependencies": {
+    "@rollup/plugin-terser": "^0.4.3",
+    "@rollup/plugin-typescript": "^11.1.2"
+  }
 }
