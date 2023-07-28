@@ -8,9 +8,11 @@
  */
 import {a} from './modules/index'
 import {fun} from './modules/utils'
+import { shot} from './modules/aa'
 
 a()
 fun()
+console.log(shot());
 
 new Promise((resolve) => {
     resolve(1)

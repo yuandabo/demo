@@ -4,6 +4,12 @@ import replace from "rollup-plugin-replace"; // 替换待打包文件里的一�
 import commonjs from 'rollup-plugin-commonjs' // 将非ES6语法的包转为ES6可用
 import typescript from "@rollup/plugin-typescript";
 import terser from '@rollup/plugin-terser';
+import serve from "rollup-plugin-serve";
+import livereload from "rollup-plugin-livereload";
+// import alias from "@rollup/plugin-alias";
+
+// const path = require('path')
+// const resolveDir = dir => path.join(__dirname, dir)
 
 const env = process.env.NODE_ENV;
 const config = {
@@ -19,11 +25,22 @@ const config = {
     babel({
       exclude: "**/node_modules/**",
     }),
+    // alias({
+    //   entries: [
+    //     { find: '@', replacement: resolveDir('src')}
+    //   ]
+    // }),
     replace({
       "process.env.NODE_ENV": JSON.stringify(env),
     }),
     commonjs(),
-    terser()
+    terser(),
+    livereload(),
+    serve({
+      open: true,
+      port: 8888,
+      contentBase: ''
+    })
   ],
 };
 // if (env === "production") {
