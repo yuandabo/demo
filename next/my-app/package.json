@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "analyis": "next build --profile",
     "start": "next start",
     "lint": "next lint",
     "prepare": "husky install"
@@ -28,5 +29,8 @@
     "hooks": {
       "pre-commit": "npm run lint"
     }
+  },
+  "devDependencies": {
+    "@next/bundle-analyzer": "^14.0.4"
   }
 }
