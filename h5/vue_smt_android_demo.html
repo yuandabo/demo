@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html xmlns:v-on="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Vue File Example</title>
+<!--    <script src="vue3.2.12global.js"></script>-->
+    <script src="https://unpkg.com/vue@2.6.14/dist/vue.min.js"></script>
+    <style>
+        h1 {
+            font-size: 80px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        h2 {
+            font-size: 40px;
+            font-weight: bold;
+            color: #C8EFD4;
+        }
+
+        button1 {
+            font-size: 60px;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-bottom: 20px;
+            margin-top: 20px;
+            text-align: center;
+            /* 将文字水平居中显示 */
+            display: flex;
+            /* 将按钮设置为flex容器 */
+            align-items: center;
+            /* 将文字在垂直方向上居中显示 */
+        }
+
+        button2 {
+            font-size: 60px;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-bottom: 20px;
+            margin-top: 20px;
+            text-align: center;
+            /* 将文字水平居中显示 */
+        }
+
+        .large-component {
+            width: 500px;
+            height: 70px;
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        .large-input {
+            width: 500px;
+            height: 70px;
+            font-size: 28px;
+            padding: 10px 20px;
+            margin-bottom: 10px;
+        }
+
+        .button-canvas-container {
+            display: flex;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        canvas {
+            /* 设置Canvas的样式 */
+            margin-left: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app">
+        <h1 style="text-align: center;">{{ title }}</h1>
+        <div>
+            <button1 v-on:click="callNativeMethod" style="display: inline-block;">相机扫描</button1>
+            <h2 style="display: inline-block; margin-left: 20px;">{{ contentCamera }}</h2>
+        </div>
+        <div>
+            <form style="display: flex;">
+                <input class="large-input" type="text" placeholder="可掌机按键扫码输入" v-model="message" v-on:input="onInput" />
+                <span class="large-component" style="font-size: 40px;   color: #C8EFD4; margin-left: 20px;">掌机扫码结果：{{
+                    scanCode }}</span>
+            </form>
+        </div>
+        <div style="display: flex;">
+            <button1 @click="getLatestBluetooth">蓝牙信息</button1>
+            <span style="font-size: 40px;color: #C8EFD4; margin-left: 10px;">蓝牙名称：{{ bluetoothName }}</span>
+            <span style="font-size: 40px;color: #C8EFD4; margin-left: 10px;">蓝牙地址：{{ bluetoothAddress }}</span>
+        </div>
+        <div style="display: flex;">
+            <button1 @click="connectBTPrint">连接蓝牙</button1>
+            <span style="font-size: 40px;color: #C8EFD4; margin-left: 10px;">连接结果：{{ bluetoothConnectResult }}</span>
+        </div>
+        <div class="button-canvas-container">
+            <button1 @click="convertAndSend">制作图片</button1>
+            <span style="font-size: 40px;color: #C8EFD4; margin-left: 20px;">文本："静夜思..."</span>
+            <canvas ref="canvas" width="400" height="350"></canvas>
+        </div>
+
+        <div style="display: flex;">
+            <button1 @click="printerPicture">图片打印</button1>
+            <span style="font-size: 40px;color: #C8EFD4; margin-left: 20px;">打印結果：{{ printerPictureResult }}</span>
+        </div>
+        <div style="display: flex;">
+            <button1 @click="entryPrintLabelActivity">原生打印界面</button1>
+            <button1 style="margin-left: 20px" @click="entryBluetoothActivity">蓝牙搜索界面</button1>
+        </div>
+    </div>
+    <script>
+        var app = new Vue({
+            el: "#app",
+            data: {
+                title: "H5调用Android样例",
+                message: "",
+                scanCode: "",
+                bluetoothName: "",
+                bluetoothAddress: "",
+                bluetoothConnectResult: "",
+                contentCamera: "相机扫描结果:",
+                imageData: null,
+                printerPictureResult: "",
+            },
+            mounted() {
+                // 设置全局函数，用于接收 WebView 调用
+                window.scanCodeResult = this.scanCodeResult;
+                window.connectBTPrintResult = this.connectBTPrintResult;
+
+                this.canvas = this.$refs.canvas;
+                this.context = this.canvas.getContext("2d");
+            },
+            methods: {
+                callNativeMethod() {
+                    window.android.openScanCamera();
+                },
+                printerSomeText(text) {
+                    console.log('打印文本：', text)
+                    window.android.printSomeText(text);
+                },
+                onInput() {
+                    console.log('用户输入：', this.message)
+                },
+                scanCodeResult(codedContent) {
+                    // 在控制台打印接收到的消息
+                    console.log('Received scan code result:', codedContent);
+
+                    // 在 Vue 页面中更新数据或执行其他操作
+                    this.contentCamera = '相机扫描结果: ' + codedContent;
+                    this.scanCode = '掌机扫描结果: ' + codedContent;
+
+                    // 在 Vue 页面中调用其他方法或触发相应的事件等
+                    // ...
+                },
+                connectBTPrintResult(bluetoothConnectResult) {
+                    // 在控制台打印接收到的消息
+                    console.log('connectBTPrintResult result:', bluetoothConnectResult);
+
+                    // 在 Vue 页面中更新数据或执行其他操作
+                    this.bluetoothConnectResult = bluetoothConnectResult
+                },
+                getLatestBluetooth() {
+                    //获取蓝牙地址和名称样例
+                    this.bluetoothName = window.android.getLatestBluetoothName();
+                    //打印机是通过蓝牙地址连接以及检查连接的，调用连接蓝牙方法内有自动获取地址的操作，H5大概率无需使用该方法
+                    this.bluetoothAddress = window.android.getLatestBluetoothAddress();
+                },
+                connectBTPrint() {
+                    //蓝牙连接
+                    window.android.connectBTPrint();
+                    // 在 Vue 页面中调用其他方法或触发相应的事件等
+                    // ...
+                },
+                convertAndSend() {
+                    // 清空Canvas
+                    this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+
+                    // 绘制第一行文字（加粗、大号字体）
+                    this.context.font = "bold 40px Arial";
+                    this.context.fillText("静夜思", 0, 50);
+
+                    // 绘制第二行文字（斜体）
+                    this.context.font = "italic 20px Arial";
+                    this.context.fillText("唐.李白", 0, 100);
+
+                    // 绘制第三行文字（正楷）
+                    this.context.font = "30px KaiTi";
+                    this.context.fillText("床前明月光，疑是地上霜。", 0, 150);
+
+                    // 绘制第四行文字（宋体）
+                    this.context.font = "italic 30px SimSun";
+                    this.context.fillText("举头望明月，低头思故乡。", 0, 200);
+
+                    // 绘制第五行文字（正常字体）
+                    this.context.font = "bold 30px Arial";
+                    this.context.fillText("主动积极、以终为始、要事第一", 0, 250);
+
+                    // 绘制第六行文字（大号字体）
+                    this.context.font = "20px Arial";
+                    this.context.fillText("双赢思维、知彼解己、统合综效、不断更新", 5, 300);
+
+                    // 获取Canvas的Base64编码
+                    this.imageData = this.canvas.toDataURL();
+
+                    // 在此处将imageData传递给Android方法
+                },
+                printerPicture() {
+                    if (!this.imageData) {
+                        // 如果imageData为空，弹框提示“请先制作图片”
+                        alert("请先制作图片！");
+                        return;
+                    }
+                    console.log('打印图片内容：', this.imageData)
+                    window.android.convertDataUrlToPrintBitmap(this.imageData);
+                    // 在此处将imageData传递给Android方法
+                },
+                entryPrintLabelActivity() {
+                    console.log('entryPrintLabelActivity 进入原生打印界面')
+                    window.android.entryPrintLabelActivity();
+                },
+                entryBluetoothActivity() {
+                    console.log('entryBluetoothActivity 进入蓝牙搜索界面')
+                    window.android.entryBluetoothActivity();
+                },
+            },
+        });
+    </script>
+</body>
+
+</html>
