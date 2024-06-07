@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
+import LazyLoad from 'react-lazyload';
+import Footer from '@/components/Footer'
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -16,9 +18,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-    头部
+      头部
       <body className={inter.className}>{children}</body>
-    尾部
+      <LazyLoad>
+        <Footer/>
+      </LazyLoad>
     </html>
   );
 }
