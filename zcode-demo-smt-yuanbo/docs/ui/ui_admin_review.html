@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>审核队列 · 云ERP教程中心·管理后台</title>
+<style>
+:root{
+  --primary:#0066ff; --cta:#f97316; --success:#16a34a; --danger:#dc2626; --warn:#d97706;
+  --gray:#64748b; --border:#e2e8f0; --bg:#f8fafc; --bg2:#f1f5f9; --card:#fff; --radius:12px; --dark:#0f172a;
+  --text:#0f172a; --text2:#64748b;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'PingFang SC','Microsoft YaHei',sans-serif;background:var(--bg);color:var(--text);font-size:14px}
+a{text-decoration:none;color:inherit}
+/* ===== 布局骨架 ===== */
+.layout{display:flex;min-height:100vh}
+.sidebar{width:240px;background:var(--dark);color:#cbd5e1;display:flex;flex-direction:column;position:fixed;top:0;bottom:0;left:0;z-index:20}
+.brand{padding:18px 20px;display:flex;gap:10px;align-items:center;border-bottom:1px solid rgba(255,255,255,.08)}
+.brand-logo{width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,#0066ff,#3b82f6);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.brand-name{color:#fff;font-weight:600;font-size:14px;line-height:1.3}
+.brand-sub{font-size:11px;color:#94a3b8}
+.menu{padding:14px 12px;flex:1}
+.menu-title{font-size:11px;color:#64748b;padding:0 12px 8px;letter-spacing:1px}
+.menu-item{display:flex;align-items:center;gap:10px;padding:11px 12px;border-radius:8px;color:#cbd5e1;margin-bottom:4px;position:relative;font-size:14px;cursor:pointer}
+.menu-item:hover{background:rgba(255,255,255,.06);color:#fff}
+.menu-item.active{background:rgba(0,102,255,.20);color:#fff;font-weight:600}
+.menu-item.active::before{content:'';position:absolute;left:0;top:8px;bottom:8px;width:3px;border-radius:2px;background:var(--primary)}
+.menu-item .mi{font-size:16px;width:20px;text-align:center;flex-shrink:0}
+.menu-item .menu-badge{margin-left:auto;background:var(--danger);color:#fff;font-size:11px;border-radius:9px;padding:1px 7px;font-weight:600}
+.menu-item.reserved{color:#64748b;cursor:not-allowed}
+.menu-item.reserved:hover{background:none;color:#64748b}
+.tag-reserved{margin-left:auto;font-size:10px;color:#94a3b8;border:1px solid #475569;border-radius:4px;padding:1px 5px;flex-shrink:0}
+.side-foot{padding:14px 20px;border-top:1px solid rgba(255,255,255,.08);font-size:11px;color:#64748b}
+.main{margin-left:240px;flex:1;display:flex;flex-direction:column;min-width:0}
+.topbar{height:60px;background:#fff;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 24px;position:sticky;top:0;z-index:10}
+.crumb{color:var(--text2);font-size:13px;display:flex;align-items:center;gap:6px}
+.crumb b{color:var(--text);font-weight:600}
+.crumb .sep{color:#cbd5e1}
+.admin{display:flex;align-items:center;gap:10px}
+.avatar{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,#0066ff,#3b82f6);color:#fff;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:600}
+.admin-info{line-height:1.3}
+.admin-name{font-size:13px;font-weight:600}
+.admin-role{font-size:11px;color:var(--text2)}
+.content{padding:24px;max-width:1100px}
+.page-head{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:18px;flex-wrap:wrap;gap:10px}
+.page-title{font-size:20px;font-weight:600}
+.page-desc{font-size:12px;color:var(--text2);margin-top:4px}
+/* ===== Tab ===== */
+.tabs-bar{display:flex;gap:8px;border-bottom:2px solid var(--border);margin-bottom:18px}
+.tab{padding:10px 4px;font-size:14px;color:var(--text2);cursor:pointer;border:none;background:transparent;font-family:inherit;position:relative;display:flex;align-items:center;gap:7px}
+.tab:hover{color:var(--text)}
+.tab .n{background:var(--bg2);color:var(--text2);font-size:11px;border-radius:9px;padding:1px 8px;font-weight:600}
+.tab.has-n .n{background:#fef2f2;color:var(--danger)}
+.tab.active{color:var(--primary);font-weight:600}
+.tab.active::after{content:'';position:absolute;left:0;right:0;bottom:-2px;height:2px;background:var(--primary);border-radius:2px}
+.tab-panel{display:none}
+.tab-panel.active{display:block}
+/* 筛选 */
+.filter-row{display:flex;gap:12px;align-items:center;margin-bottom:14px}
+.filter-row label{font-size:13px;color:var(--text2)}
+.select{height:34px;border:1px solid var(--border);border-radius:8px;background:#fff;color:var(--text);font-size:13px;padding:0 10px;font-family:inherit;min-width:140px}
+.select:focus{outline:none;border-color:var(--primary)}
+/* ===== 待审卡片 ===== */
+.review-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:18px 20px;margin-bottom:14px;transition:box-shadow .15s}
+.review-card:hover{box-shadow:0 6px 20px rgba(15,23,42,.07)}
+.rc-meta{display:flex;align-items:center;gap:10px;flex-wrap:wrap;font-size:12px;color:var(--text2);margin-bottom:10px}
+.rc-cate{color:var(--primary);background:#eff6ff;border:1px solid #bfdbfe;border-radius:5px;padding:2px 8px;font-weight:600}
+.badge-v2{color:var(--warn);background:#fffbeb;border:1px solid #fde68a;border-radius:5px;padding:2px 8px;font-weight:600}
+.badge-first{color:var(--gray);background:#f1f5f9;border:1px solid var(--border);border-radius:5px;padding:2px 8px}
+.rc-title{font-size:16px;font-weight:600;margin-bottom:6px}
+.rc-sum{font-size:13px;color:#475569;line-height:1.7;margin-bottom:12px}
+/* 缩略步骤预览 */
+.steps-preview{background:#f8fafc;border:1px solid var(--border);border-radius:8px;padding:10px 14px;margin-bottom:14px}
+.steps-title{font-size:11px;color:var(--text2);margin-bottom:8px;letter-spacing:1px}
+.step-line{display:flex;align-items:center;gap:8px;font-size:12px;color:#334155;padding:4px 0}
+.step-no{width:18px;height:18px;border-radius:50%;background:var(--primary);color:#fff;font-size:10px;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0}
+.step-line .arrow{color:#cbd5e1;font-size:11px}
+/* 操作按钮 */
+.rc-actions{display:flex;align-items:center;gap:10px}
+.btn{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--border);background:#fff;color:#334155;border-radius:8px;padding:8px 18px;font-size:13px;cursor:pointer;font-family:inherit;transition:all .15s}
+.btn:hover{border-color:#cbd5e1;background:#f8fafc}
+.btn:active{transform:scale(.97)}
+.btn-success{background:var(--success);border-color:var(--success);color:#fff;font-weight:600}
+.btn-success:hover{background:#15803d;border-color:#15803d}
+.btn-danger-outline{background:#fff;border-color:#fecaca;color:var(--danger);font-weight:600}
+.btn-danger-outline:hover{background:#fef2f2;border-color:var(--danger)}
+.link-view{margin-left:auto;font-size:13px;color:var(--primary);cursor:pointer}
+.link-view:hover{text-decoration:underline}
+/* 通过后的状态 */
+.review-card.done{opacity:.65;pointer-events:auto}
+.done-tip{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--success);font-weight:600}
+/* ===== AI 预留灰卡 ===== */
+.review-card.ai{background:#f8fafc;border-style:dashed;cursor:not-allowed}
+.review-card.ai .rc-title{color:var(--gray)}
+.tag-ai{color:#fff;background:linear-gradient(135deg,#64748b,#94a3b8);border-radius:5px;padding:2px 8px;font-size:11px;font-weight:600;margin-left:8px;vertical-align:2px}
+.tag-yuliu{color:#94a3b8;border:1px solid #cbd5e1;border-radius:4px;padding:1px 6px;font-size:11px}
+.btn[disabled]{background:#f1f5f9;border-color:var(--border);color:#cbd5e1;cursor:not-allowed;font-weight:400}
+.btn[disabled]:hover{background:#f1f5f9;border-color:var(--border)}
+.btn[disabled]:active{transform:none}
+.ai-note{font-size:12px;color:var(--text2);line-height:1.8;background:#fff;border:1px dashed var(--border);border-radius:8px;padding:10px 12px;margin-top:12px}
+/* ===== 驳回弹窗 ===== */
+.modal-mask{position:fixed;inset:0;background:rgba(15,23,42,.5);display:none;align-items:center;justify-content:center;z-index:100;padding:20px}
+.modal-mask.show{display:flex}
+.modal{background:#fff;border-radius:var(--radius);width:460px;max-width:100%;padding:24px;box-shadow:0 24px 64px rgba(2,6,23,.3)}
+.modal-title{font-size:16px;font-weight:600;margin-bottom:4px;display:flex;align-items:center;gap:8px}
+.modal-target{font-size:12px;color:var(--text2);margin-bottom:14px}
+.modal textarea{
+  width:100%;min-height:110px;border:1px solid var(--border);border-radius:8px;padding:10px 12px;
+  font-size:13px;font-family:inherit;line-height:1.7;resize:vertical;
+}
+.modal textarea:focus{outline:none;border-color:var(--danger);box-shadow:0 0 0 3px rgba(220,38,38,.1)}
+.char-row{display:flex;justify-content:space-between;align-items:center;margin-top:6px;font-size:12px}
+.char-row .cnt{color:var(--text2);font-variant-numeric:tabular-nums}
+.char-row .min-tip{color:var(--danger)}
+.modal-hint{background:#fef2f2;border:1px solid #fecaca;border-radius:8px;padding:8px 12px;font-size:12px;color:#b91c1c;line-height:1.7;margin-top:10px}
+.modal-foot{display:flex;justify-content:flex-end;gap:10px;margin-top:18px}
+.empty-tip{font-size:12px;color:var(--text2);text-align:center;padding:20px 0}
+/* ===== 查看全文弹窗（menu-tree ARV-QUE-OPN · E 区 960×640） ===== */
+.modal-full{width:960px;max-width:96vw;max-height:640px;display:flex;flex-direction:column}
+.modal-scroll{overflow-y:auto;min-height:0;padding-right:4px}
+.fs-block{border:1px solid var(--border);border-radius:8px;padding:12px 16px;margin-bottom:10px}
+.fs-block h4{font-size:14px;font-weight:600;display:flex;align-items:center;gap:8px;margin-bottom:6px}
+.fs-block p{font-size:13px;color:#475569;line-height:1.8}
+.fs-img{height:88px;border:1px dashed #cbd5e1;border-radius:8px;background:var(--bg2);display:flex;align-items:center;justify-content:center;color:#94a3b8;font-size:12px;margin-top:8px}
+.fs-img.new{border-color:#93c5fd;background:#eff6ff;color:#1d4ed8}
+.full-foot{font-size:12px;color:var(--text2);text-align:center;padding-top:2px}
+</style>
+</head>
+<body>
+<div class="layout">
+  <!-- ===== 侧边栏 ===== -->
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="brand-logo">📚</div>
+      <div><div class="brand-name">云ERP教程中心</div><div class="brand-sub">管理后台</div></div>
+    </div>
+    <nav class="menu">
+      <div class="menu-title">内容管理</div>
+      <a class="menu-item" href="ui_admin_dashboard.html"><span class="mi">📊</span>统计看板</a>
+      <a class="menu-item" href="ui_admin_tutorial_list.html"><span class="mi">📚</span>教程管理</a>
+      <a class="menu-item active" href="ui_admin_review.html"><span class="mi">✅</span>审核队列<span class="menu-badge">3</span></a>
+      <a class="menu-item" href="ui_admin_category.html"><span class="mi">🌲</span>目录管理</a>
+      <div class="menu-item reserved"><span class="mi">🤖</span>AI 生成审核<span class="tag-reserved">预留</span></div>
+    </nav>
+    <div class="side-foot">v1.0 · 演示环境</div>
+  </aside>
+
+  <!-- ===== 主区域 ===== -->
+  <div class="main">
+    <header class="topbar">
+      <div class="crumb">管理后台 <span class="sep">/</span> <b>审核队列</b></div>
+      <div class="admin">
+        <div class="avatar">A</div>
+        <div class="admin-info"><div class="admin-name">admin</div><div class="admin-role">平台管理员</div></div>
+      </div>
+    </header>
+
+    <div class="content">
+      <div class="page-head">
+        <div>
+          <div class="page-title">审核队列</div>
+          <div class="page-desc">待审核教程按提交时间倒序 · 通过后前台即时可见 · 驳回必填原因 ≥5 字 · 运营撤回与审核动作互斥</div>
+        </div>
+      </div>
+
+      <!-- Tab -->
+      <div class="tabs-bar">
+        <button class="tab has-n active" data-panel="panelHuman" onclick="switchTab(this)">人工审核 <span class="n">3</span></button>
+        <button class="tab" data-panel="panelAI" onclick="switchTab(this)">AI 生成（mock） <span class="n">1</span></button>
+      </div>
+
+      <!-- ===== 人工审核 Tab ===== -->
+      <div class="tab-panel active" id="panelHuman">
+        <div class="filter-row">
+          <label>分类筛选</label>
+          <select class="select">
+            <option>全部分类</option>
+            <option>销售管理</option><option>采购管理</option><option>库存管理</option><option>生产制造</option>
+            <option>项目管理</option><option>文件管理</option><option>人事财务</option><option>系统设置</option>
+            <option>新手入门</option><option>最佳实践</option><option>常见问题</option>
+          </select>
+        </div>
+
+        <!-- 待审 1：v2 修改版回审（前台仍展示线上版本，劣质截图示例） -->
+        <div class="review-card">
+          <div class="rc-meta">
+            <span class="rc-cate">销售管理</span>
+            <span>作者：operator</span>
+            <span>提交时间：2026-08-18 14:32</span>
+            <span class="badge-v2">修改版 v2 · 回审</span>
+            <span>回审期间前台仍展示线上过审版本（v1 截图过时，反馈没帮助占比 55% 标红）</span>
+          </div>
+          <div class="rc-title">销售订单录入操作指南</div>
+          <div class="rc-sum">v2 修改要点：① 替换全部旧版界面截图 ② 新增委外件场景说明。覆盖订单录入必填校验、价格与信用拦截、提交后修改规则。</div>
+          <div class="steps-preview">
+            <div class="steps-title">缩略步骤预览（正文按步骤标题拆分）</div>
+            <div class="step-line"><span class="step-no">1</span>进入销售订单录入 <span class="arrow">›</span> <span class="step-no">2</span>填写客户与产品明细 <span class="arrow">›</span> <span class="step-no">3</span>处理价格与库存校验 <span class="arrow">›</span> <span class="step-no">4</span>提交并打印确认单</div>
+          </div>
+          <div class="rc-actions">
+            <button class="btn btn-success" onclick="approve(this)">✅ 通过</button>
+            <button class="btn btn-danger-outline" onclick="openReject('销售订单录入操作指南')">❳ 驳回</button>
+            <span class="link-view" onclick="viewFull('销售订单录入操作指南')">查看全文 →</span>
+          </div>
+        </div>
+
+        <!-- 待审 2：首次提审 -->
+        <div class="review-card">
+          <div class="rc-meta">
+            <span class="rc-cate">生产制造</span>
+            <span>作者：operator</span>
+            <span>提交时间：2026-08-18 09:05</span>
+            <span class="badge-first">首次提审</span>
+          </div>
+          <div class="rc-title">生产报工操作指南</div>
+          <div class="rc-sum">车间员工扫描工单二维码完成工序报工：完工数 / 不良数实时回传，生产进度与订单完工比例随时可查。</div>
+          <div class="steps-preview">
+            <div class="steps-title">缩略步骤预览（正文按步骤标题拆分）</div>
+            <div class="step-line"><span class="step-no">1</span>扫描工单二维码 <span class="arrow">›</span> <span class="step-no">2</span>选择工序并报工 <span class="arrow">›</span> <span class="step-no">3</span>录入完工与不良数量 <span class="arrow">›</span> <span class="step-no">4</span>查看订单完工比例</div>
+          </div>
+          <div class="rc-actions">
+            <button class="btn btn-success" onclick="approve(this)">✅ 通过</button>
+            <button class="btn btn-danger-outline" onclick="openReject('生产报工操作指南')">❳ 驳回</button>
+            <span class="link-view" onclick="viewFull('生产报工操作指南')">查看全文 →</span>
+          </div>
+        </div>
+
+        <!-- 待审 3：首次提审 -->
+        <div class="review-card">
+          <div class="rc-meta">
+            <span class="rc-cate">人事财务</span>
+            <span>作者：admin</span>
+            <span>提交时间：2026-08-17 20:11</span>
+            <span class="badge-first">首次提审</span>
+          </div>
+          <div class="rc-title">付款申请单操作指南</div>
+          <div class="rc-sum">付款申请关联采购订单与发票，多级审批通过后生成付款计划，付款完成自动冲销应付并同步对账。</div>
+          <div class="steps-preview">
+            <div class="steps-title">缩略步骤预览（正文按步骤标题拆分）</div>
+            <div class="step-line"><span class="step-no">1</span>新建付款申请 <span class="arrow">›</span> <span class="step-no">2</span>关联采购订单与发票 <span class="arrow">›</span> <span class="step-no">3</span>提交多级审批 <span class="arrow">›</span> <span class="step-no">4</span>付款与应付冲销</div>
+          </div>
+          <div class="rc-actions">
+            <button class="btn btn-success" onclick="approve(this)">✅ 通过</button>
+            <button class="btn btn-danger-outline" onclick="openReject('付款申请单操作指南')">❳ 驳回</button>
+            <span class="link-view" onclick="viewFull('付款申请单操作指南')">查看全文 →</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== AI 生成 Tab ===== -->
+      <div class="tab-panel" id="panelAI">
+        <div class="review-card ai">
+          <div class="rc-meta">
+            <span class="rc-cate" style="background:#f1f5f9;border-color:var(--border);color:var(--gray)">库存管理</span>
+            <span>来源：AI 自动生成 · 2026-08-16 03:00</span>
+            <span class="tag-yuliu">预留</span>
+          </div>
+          <div class="rc-title">库位三级管理操作指南<span class="tag-ai">AI 生成</span></div>
+          <div class="rc-sum">AI 根据操作日志与功能文档自动生成的草稿：仓库/库区/库位三级建模步骤、批量导入模板与扫码找料入口说明。</div>
+          <div class="steps-preview" style="opacity:.7">
+            <div class="steps-title">缩略步骤预览（AI 草稿）</div>
+            <div class="step-line"><span class="step-no">1</span>新建仓库档案 <span class="arrow">›</span> <span class="step-no">2</span>划分库区 <span class="arrow">›</span> <span class="step-no">3</span>生成库位编码 <span class="arrow">›</span> <span class="step-no">4</span>绑定物料默认库位</div>
+          </div>
+          <div class="rc-actions">
+            <button class="btn" disabled>✅ 通过</button>
+            <button class="btn" disabled>❳ 驳回</button>
+            <span class="link-view" style="color:#cbd5e1;pointer-events:none">查看全文 →</span>
+          </div>
+          <div class="ai-note">🤖 AI 自动生成教程（预留）：本期内仅展示不可操作。AI 生成内容需先经人工事实校验后才能进入审核流，开放时间见版本规划（v1.1+）。</div>
+        </div>
+        <div class="empty-tip">本期 AI 生成队列共 1 条 mock 数据 · 审核动作下版本开放</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 驳回弹窗 ===== -->
+<div class="modal-mask" id="rejectModal">
+  <div class="modal">
+    <div class="modal-title">❳ 驳回教程</div>
+    <div class="modal-target" id="rejectTarget">驳回对象：—</div>
+    <textarea id="rejectInput" maxlength="200" placeholder="请填写驳回原因，例如：第 X 步截图与新版界面不符，请替换后重新提交"></textarea>
+    <div class="char-row">
+      <span class="min-tip" id="minTip">原因必填，不少于 5 个字</span>
+      <span class="cnt"><span id="rejectCount">0</span>/200</span>
+    </div>
+    <div class="modal-hint">驳回原因将展示在作者的编辑页顶部（黄色告警条），教程回到<b>草稿</b>状态；若驳回的是已发布教程的回审版，仅编辑版回草稿，前台继续展示线上过审版本。</div>
+    <div class="modal-foot">
+      <button class="btn" onclick="closeReject()">取消</button>
+      <button class="btn btn-danger-outline" id="rejectSubmit" disabled style="background:var(--danger);color:#fff;border-color:var(--danger);opacity:.5" onclick="confirmReject()">确认驳回</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 查看全文弹窗（menu-tree ARV-QUE-OPN，按待审核版本渲染） ===== -->
+<div class="modal-mask" id="fullModal">
+  <div class="modal modal-full">
+    <div class="modal-title">📄 待审核版本全文预览 <span style="font-size:12px;color:var(--text2);font-weight:400" id="fullTitle">—</span></div>
+    <div class="modal-scroll">
+      <div class="modal-body" style="margin:0;padding:0" id="fullBody"></div>
+      <div class="full-foot">以上为待审核版本渲染效果 · 审核通过后前台即时替换为该版本</div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn" onclick="closeFull()">关闭</button>
+      <button class="btn btn-success" onclick="closeFull()">仅预览，不做审核动作</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// Tab 切换
+function switchTab(btn) {
+  document.querySelectorAll('.tabs-bar .tab').forEach(function (t) { t.classList.remove('active'); });
+  btn.classList.add('active');
+  document.querySelectorAll('.tab-panel').forEach(function (p) { p.classList.remove('active'); });
+  document.getElementById(btn.dataset.panel).classList.add('active');
+}
+// 通过：卡片标记已通过，Tab 计数减一
+function approve(btn) {
+  var card = btn.closest('.review-card');
+  card.classList.add('done');
+  card.querySelector('.rc-actions').innerHTML = '<span class="done-tip">✅ 已通过并发布 · 审核人 admin · ' + new Date().toLocaleTimeString('zh-CN', { hour12: false }) + ' · 前台即时可见</span><span class="link-view">撤销</span>';
+  recount();
+}
+function recount() {
+  var left = document.querySelectorAll('#panelHuman .review-card:not(.done)').length;
+  var n = document.querySelector('.tab.has-n .n');
+  n.textContent = left;
+  document.querySelector('.menu-badge').textContent = left;
+}
+// 驳回弹窗：打开/关闭/校验
+function openReject(title) {
+  document.getElementById('rejectTarget').textContent = '驳回对象：《' + title + '》';
+  document.getElementById('rejectInput').value = '';
+  updateReject();
+  document.getElementById('rejectModal').classList.add('show');
+}
+function closeReject() { document.getElementById('rejectModal').classList.remove('show'); }
+function updateReject() {
+  var len = document.getElementById('rejectInput').value.trim().length;
+  document.getElementById('rejectCount').textContent = len;
+  var ok = len >= 5;
+  var submit = document.getElementById('rejectSubmit');
+  submit.disabled = !ok;
+  submit.style.opacity = ok ? '1' : '.5';
+  document.getElementById('minTip').textContent = ok ? '已满足最少 5 字要求' : '原因必填，不少于 5 个字';
+}
+document.getElementById('rejectInput').addEventListener('input', updateReject);
+function confirmReject() {
+  closeReject();
+  alert('已驳回：教程回到草稿状态，原因已写入编辑页顶部告警条');
+}
+// 查看全文弹窗（按待审核版本渲染）
+var FULL = {
+  '销售订单录入操作指南': [
+    ['第1步 · 进入销售订单录入', '打开 销售 → 销售订单 → 新建订单，选择客户与币种，系统带出该客户最近成交价与信用额度。'],
+    ['第2步 · 填写客户与产品明细', '录入产品、数量、含税单价与预计交期；支持从报价单一键带入明细行。', '🖼 截图：新版订单录入界面（v2 已替换旧版截图）'],
+    ['第3步 · 处理价格与库存校验', '低于成本价或超出信用额度触发拦截，需上级审批放行；委外物料自动带出建议供应商（v2 新增委外件场景说明。', '🖼 截图：价格 / 信用拦截弹窗（v2 新增委外件场景说明）'],
+    ['第4步 · 提交并打印确认单', '保存提交后可打印订单确认单，同步备料与发货计划；提交后 24 小时内可撤回修改。']
+  ],
+  '生产报工操作指南': [
+    ['第1步 · 扫描工单二维码', '车间员工在小程序「生产报工」入口扫描工单二维码，自动带出工序与派工数量。'],
+    ['第2步 · 选择工序并报工', '按工艺路线选择当前工序，开始 / 暂停计时，报工数据实时回传。', '🖼 截图：小程序扫码报工界面'],
+    ['第3步 · 录入完工与不良数量', '录入合格数与不良数，不良数需选择不良原因代码，超派工量自动拦截。'],
+    ['第4步 · 查看订单完工比例', '管理者在工单详情查看各工序完工比例与进度甘特图，卡点工序高亮。']
+  ],
+  '付款申请单操作指南': [
+    ['第1步 · 新建付款申请', '打开 人事财务 → 付款申请 → 新建，选择付款类型（预付 / 到货付 / 月结）。'],
+    ['第2步 · 关联采购订单与发票', '关联采购订单与收票记录，系统自动核对数量、单价与税额差异。', '🖼 截图：付款申请关联订单界面'],
+    ['第3步 · 提交多级审批', '按金额走 组长 → 财务经理 → 总经理 多级审批流，超预算自动加签。'],
+    ['第4步 · 付款与应付冲销', '审批通过生成付款计划，出纳付款后自动冲销应付并同步对账报表。']
+  ]
+};
+function viewFull(title) {
+  document.getElementById('fullTitle').textContent = '《' + title + '》';
+  var data = FULL[title] || [];
+  document.getElementById('fullBody').innerHTML = data.map(function (s) {
+    var img = s[2] ? '<div class="fs-img' + (s[2].indexOf('v2') > -1 ? ' new' : '') + '">' + s[2] + '</div>' : '';
+    return '<div class="fs-block"><h4><span class="step-no">' + s[0].substr(1, 1) + '</span>' + s[0].substr(4) + '</h4><p>' + s[1] + '</p>' + img + '</div>';
+  }).join('');
+  document.getElementById('fullModal').classList.add('show');
+}
+function closeFull() { document.getElementById('fullModal').classList.remove('show'); }
+</script>
+</body>
+</html>

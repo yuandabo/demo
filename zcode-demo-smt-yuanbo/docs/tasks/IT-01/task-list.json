@@ -1,0 +1,338 @@
+{
+  "iteration": "IT-01",
+  "name": "工程基础设施（脚手架 + 建库种子 + 鉴权）",
+  "objective": "交付可独立运行的前后端工程骨架：server/ Express 5 + node:sqlite 建库种子、web/ Vite 三入口 + shared 共享层、Playwright 测试基建，并实现认证 4 接口与系统重置接口，为后续业务迭代提供登录态、种子数据与验收基建",
+  "techDesignPath": "design/tech-design.md",
+  "uiDesignPath": null,
+  "createdAt": "2026-08-21",
+  "updatedAt": "2026-08-21",
+  "features": [
+    {
+      "name": "搭建前后端工程脚手架",
+      "techDesignRef": "tech-design.md#2-现有代码基础与仓库结构",
+      "prdRef": "prd.md#12-版本规划m15",
+      "acRef": "ac.md#AC-NF-04",
+      "uiRef": null,
+      "relatedTasks": [
+        "INFRA-01",
+        "INFRA-02"
+      ]
+    },
+    {
+      "name": "初始化种子数据（建库 + 种子）",
+      "techDesignRef": "tech-design.md#5-数据库设计",
+      "prdRef": "prd.md#11-非功能需求m13",
+      "acRef": "ac.md#AC-OP-01",
+      "uiRef": null,
+      "relatedTasks": [
+        "INFRA-03"
+      ]
+    },
+    {
+      "name": "搭建验收测试基建",
+      "techDesignRef": "tech-design.md#9-测试方案对接-zcodegen-test-与-zcoderun-test",
+      "prdRef": "prd.md#141-验收策略概要m03a",
+      "acRef": "ac.md#AC-OP-01",
+      "uiRef": null,
+      "relatedTasks": [
+        "INFRA-04"
+      ]
+    },
+    {
+      "name": "后台账号密码登录",
+      "techDesignRef": "tech-design.md#3-api-接口总览",
+      "prdRef": "prd.md#711-公共账号-租户",
+      "acRef": "ac.md#AC-RULE-26",
+      "uiRef": null,
+      "relatedTasks": [
+        "BE-01"
+      ]
+    },
+    {
+      "name": "前台选角色快速登录",
+      "techDesignRef": "tech-design.md#3-api-接口总览",
+      "prdRef": "prd.md#711-公共账号-租户",
+      "acRef": "ac.md#AC-RULE-26",
+      "uiRef": null,
+      "relatedTasks": [
+        "BE-01"
+      ]
+    },
+    {
+      "name": "恢复与退出登录态",
+      "techDesignRef": "tech-design.md#4-后端架构与处理流程",
+      "prdRef": "prd.md#711-公共账号-租户",
+      "acRef": "ac.md#AC-RULE-26",
+      "uiRef": null,
+      "relatedTasks": [
+        "BE-01"
+      ]
+    },
+    {
+      "name": "重置系统恢复种子初始态",
+      "techDesignRef": "tech-design.md#8-非功能实现",
+      "prdRef": "prd.md#11-非功能需求m13",
+      "acRef": "ac.md#AC-OP-01",
+      "uiRef": null,
+      "relatedTasks": [
+        "BE-02"
+      ]
+    }
+  ],
+  "feature-relations": [
+    {
+      "from": "搭建前后端工程脚手架",
+      "to": "初始化种子数据（建库 + 种子）",
+      "relation": "前置"
+    },
+    {
+      "from": "搭建前后端工程脚手架",
+      "to": "搭建验收测试基建",
+      "relation": "前置"
+    },
+    {
+      "from": "初始化种子数据（建库 + 种子）",
+      "to": "后台账号密码登录",
+      "relation": "前置"
+    },
+    {
+      "from": "初始化种子数据（建库 + 种子）",
+      "to": "前台选角色快速登录",
+      "relation": "前置"
+    },
+    {
+      "from": "后台账号密码登录",
+      "to": "恢复与退出登录态",
+      "relation": "前置"
+    },
+    {
+      "from": "前台选角色快速登录",
+      "to": "恢复与退出登录态",
+      "relation": "前置"
+    },
+    {
+      "from": "后台账号密码登录",
+      "to": "重置系统恢复种子初始态",
+      "relation": "前置"
+    },
+    {
+      "from": "重置系统恢复种子初始态",
+      "to": "恢复与退出登录态",
+      "relation": "联动"
+    }
+  ],
+  "e2e-paths": [
+    {
+      "id": "PATH-01",
+      "name": "后台账号登录全流程",
+      "type": "happy",
+      "steps": [
+        "初始化种子数据（建库 + 种子）",
+        "后台账号密码登录（admin/123456 换取 token）",
+        "恢复与退出登录态（GET /api/auth/me 返回 admin 用户信息）",
+        "恢复与退出登录态（POST /api/auth/logout 作废 token）",
+        "恢复与退出登录态（logout 后再调 me 返回 401）"
+      ]
+    },
+    {
+      "id": "PATH-02",
+      "name": "前台选角色登录全流程",
+      "type": "happy",
+      "steps": [
+        "初始化种子数据（建库 + 种子）",
+        "前台选角色快速登录（erpRole=purchase）",
+        "恢复与退出登录态（me 返回 role=user 且 erpRole=purchase）",
+        "恢复与退出登录态（logout）"
+      ]
+    },
+    {
+      "id": "PATH-03",
+      "name": "登录异常流",
+      "type": "error",
+      "steps": [
+        "后台账号密码登录（密码错误 → 401 统一文案「账号或密码错误」）",
+        "后台账号密码登录（缺 username/password → 400「请输入账号和密码」）",
+        "前台选角色快速登录（erpRole 非法枚举 → 400「erpRole 参数不合法」）",
+        "后台账号密码登录（user 演示账号走 login → 403「请使用选角色登录」）"
+      ]
+    },
+    {
+      "id": "PATH-04",
+      "name": "种子重置恢复初始态",
+      "type": "happy",
+      "steps": [
+        "后台账号密码登录（admin）",
+        "重置系统恢复种子初始态（reset 返回 categories=12/tutorials=24/users=8/messages=3/checkins=5）",
+        "重置系统恢复种子初始态（重复执行第二遍各表数量不增加）",
+        "恢复与退出登录态（reset 后旧 token 401，重新登录可用）"
+      ]
+    },
+    {
+      "id": "PATH-05",
+      "name": "重置权限边界",
+      "type": "error",
+      "steps": [
+        "前台选角色快速登录（user 角色）",
+        "重置系统恢复种子初始态（user 调 reset → 403「无权限执行该操作」）",
+        "重置系统恢复种子初始态（未携带 token → 401「未登录或登录已失效」）"
+      ]
+    },
+    {
+      "id": "PATH-06",
+      "name": "空库首次启动建种幂等",
+      "type": "edge",
+      "steps": [
+        "搭建前后端工程脚手架（空库状态下启动 server）",
+        "初始化种子数据（建库 + 种子）（自动执行 9 表 DDL 并写入种子）",
+        "初始化种子数据（建库 + 种子）（seed:check 断言 12/24/8/3/5 与四态分布 18/3/2/1）",
+        "初始化种子数据（建库 + 种子）（重启服务各表数量不变，不产生脏数据）"
+      ]
+    },
+    {
+      "id": "PATH-07",
+      "name": "三入口脚手架与测试基建可达",
+      "type": "edge",
+      "steps": [
+        "搭建前后端工程脚手架（web dev 启动 5173）",
+        "搭建前后端工程脚手架（portal/admin/m 三入口各自返回 200）",
+        "搭建验收测试基建（proxy 将 /api 转发 3000，返回统一 JSON 结构而非 Vite 404 HTML）",
+        "搭建验收测试基建（playwright 冒烟用例全绿并生成 HTML 报告）"
+      ]
+    }
+  ],
+  "summary": {
+    "infra": 4,
+    "backend": 2,
+    "frontend": 0,
+    "total": 6
+  },
+  "tasks": [
+    {
+      "seq": 1,
+      "id": "INFRA-01",
+      "name": "后端服务脚手架（Express 5 + TS：入口/统一响应/错误处理/静态托管）",
+      "role": "infra",
+      "dependencies": [],
+      "assignee": "",
+      "phase": {
+        "dev": "done",
+        "selfTest": "done"
+      },
+      "artifact": "",
+      "detailFile": "INFRA-01.md"
+    },
+    {
+      "seq": 2,
+      "id": "INFRA-02",
+      "name": "前端多入口脚手架（Vite 三入口 portal/admin/m + src/shared 共享层 + /api proxy）",
+      "role": "infra",
+      "dependencies": [],
+      "assignee": "",
+      "phase": {
+        "dev": "done",
+        "selfTest": "done"
+      },
+      "artifact": "",
+      "detailFile": "INFRA-02.md"
+    },
+    {
+      "seq": 3,
+      "id": "INFRA-03",
+      "name": "数据库建库与种子数据（db.ts：9 表 DDL + 种子 + reset 函数 + VISIBLE_SQL）",
+      "role": "infra",
+      "dependencies": [
+        "INFRA-01"
+      ],
+      "assignee": "",
+      "phase": {
+        "dev": "done",
+        "selfTest": "done"
+      },
+      "artifact": "",
+      "detailFile": "INFRA-03.md"
+    },
+    {
+      "seq": 4,
+      "id": "INFRA-04",
+      "name": "Playwright 测试基建（playwright.config + tests/ + 启动冒烟用例）",
+      "role": "infra",
+      "dependencies": [
+        "INFRA-01",
+        "INFRA-02"
+      ],
+      "assignee": "",
+      "phase": {
+        "dev": "done",
+        "selfTest": "done"
+      },
+      "artifact": "",
+      "detailFile": "INFRA-04.md"
+    },
+    {
+      "seq": 5,
+      "id": "BE-01",
+      "name": "认证接口 4 端点 + DB token 鉴权中间件（login / role-login / logout / me）",
+      "role": "backend",
+      "dependencies": [
+        "INFRA-01",
+        "INFRA-03"
+      ],
+      "assignee": "",
+      "phase": {
+        "dev": "done",
+        "selfTest": "done"
+      },
+      "artifact": "",
+      "detailFile": "BE-01.md"
+    },
+    {
+      "seq": 6,
+      "id": "BE-02",
+      "name": "系统重置接口 POST /api/system/reset（admin 专属·清空重建种子）",
+      "role": "backend",
+      "dependencies": [
+        "INFRA-03",
+        "BE-01"
+      ],
+      "assignee": "",
+      "phase": {
+        "dev": "done",
+        "selfTest": "done"
+      },
+      "artifact": "",
+      "detailFile": "BE-02.md"
+    }
+  ],
+  "phases": [
+    {
+      "phase": 1,
+      "name": "工程脚手架（前后端并行）",
+      "tasks": [
+        "INFRA-01",
+        "INFRA-02"
+      ]
+    },
+    {
+      "phase": 2,
+      "name": "数据与测试基建",
+      "tasks": [
+        "INFRA-03",
+        "INFRA-04"
+      ]
+    },
+    {
+      "phase": 3,
+      "name": "认证接口",
+      "tasks": [
+        "BE-01"
+      ]
+    },
+    {
+      "phase": 4,
+      "name": "系统重置",
+      "tasks": [
+        "BE-02"
+      ]
+    }
+  ]
+}

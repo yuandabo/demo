@@ -1,0 +1,222 @@
+{
+  "total": 43,
+  "passed": 43,
+  "failed": 0,
+  "results": [
+    {
+      "name": "前置-种子就绪（采购收藏 3/5/7 + 历史 60/100/30 + 已下架 24）",
+      "pass": true,
+      "detail": "MRP 自动算料：从 BOM 到采购建议 / 销售报价单快速建档 / 采购申请到一键下单"
+    },
+    {
+      "name": "1-1 未登录进入弹 RoleSheet（AC-FN-03）",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "1-2 未登录不发起收藏/历史请求（先引导后取数）",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "1-3 登录后回本页自动并行加载（GET favorites+histories）",
+      "pass": true,
+      "detail": "fav=1 his=1"
+    },
+    {
+      "name": "1-4 导航标题「收藏与历史」",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "1-5 同步提示条文案（设计稿同源）",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "1-6 TabBar「收藏」active（路由联动）",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "1-7 收藏 Tab 初始选中 + 计数 4",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "2-1 收藏卡渲染标题/分类徽标/收藏日期/浏览量",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "2-2 正常卡 ❤️ 取消入口",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "2-3 已下架灰显（.off）+「已下架」标签",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "2-4 已下架卡无正文入口（无 Link，🤍 心形）",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "2-5 列表末尾留存提示",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "2-6 已下架卡点击拦截不进正文（AC-EG-10）",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "3-1 收藏卡点击进入详情",
+      "pass": true,
+      "detail": "http://localhost:5173/m.html#/detail/3"
+    },
+    {
+      "name": "4-1 Tab 切换本地面板（无新 HTTP）",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "4-2 历史 Tab 计数 4",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "4-3 进度环 60% 蓝弧（216°=60×3.6）+ 中心 60%",
+      "pass": true,
+      "detail": "background: conic-gradient(rgb(0, 102, 255) 0deg, rgb(0, 102, 255) 216deg, rgb(226, 232, 240) 216deg, rgb(226, 232, 240) 360deg);"
+    },
+    {
+      "name": "4-4 进度环 100% 绿环 ✓（完成口径，浏览器将 #16a34a 归一化为 rgb）",
+      "pass": true,
+      "detail": "background: conic-gradient(rgb(22, 163, 74) 0deg, rgb(22, 163, 74) 360deg);"
+    },
+    {
+      "name": "4-5 进度环 30% 部分弧（108°）",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "4-6 历史时间口径（进行中=上次阅读·续读与PC同步 / 完成=完成于）",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "4-7 已下架历史条目同规则灰显+标签（AC-FN-23）",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "4-8 已下架历史卡点击拦截",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "4-9 历史末尾三端一致提示",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "5-1 m 刷新后进度环取最新 80%（288°）",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "5-2 历史进度环与详情续读条同值（跨端同值）",
+      "pass": true,
+      "detail": "⏱ 上次读到 80%继续阅读 ›"
+    },
+    {
+      "name": "6-1 取消后卡片局部移除（不整页刷新）",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "6-2 Network 确认 DELETE /api/favorites/7",
+      "pass": true,
+      "detail": "http://localhost:5173/api/favorites/7"
+    },
+    {
+      "name": "6-3 Tab 计数 -1（4→3）",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "6-4 PC 口径（同数据源 GET）刷新后同样不可见",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "6-5 已下架条目取消收藏从列表移除",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "7-1 PC 端收藏 → m 刷新后出现（AC-FN-15 →）",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "7-2 m 端操作发出 DELETE（m 侧请求）",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "7-3 m 端操作 → PC 口径（同数据源）刷新即可见",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "8-1 下拉过阈值释放进入刷新态（正在刷新…）",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "8-2 下拉触发重取（GET favorites）",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "9-1 加载中活动面板骨架卡占位",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "9-2 网络失败错误态 + 重试入口",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "9-3 重试恢复列表",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "10-1 收藏空态引导（去首页逛逛）",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "10-2 空态引导跳首页",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "10-3 历史空态「暂无阅读记录」",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "10-4 全程无未捕获 JS 异常",
+      "pass": true,
+      "detail": ""
+    }
+  ]
+}

@@ -1,0 +1,300 @@
+/* 我的学习页（FE-04，复刻 docs/ui/ui_portal_my.html 设计令牌）：
+   页头头像 / 双 Tab / 收藏·历史条目行 / 进度徽章三档 / mini 进度条 / 已下架灰显 */
+
+/* ===== 页头（设计稿 .me-h） ===== */
+.me-h {
+  margin: 24px 0 18px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.avatar {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--p), var(--acc));
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.me-h h1 {
+  font-size: 22px;
+  margin-bottom: 2px;
+}
+
+.me-h .sub {
+  color: var(--g);
+  font-size: 13px;
+}
+
+/* ===== 双 Tab（设计稿 .tabs） ===== */
+.tabs {
+  display: flex;
+  gap: 4px;
+  border-bottom: 2px solid var(--b);
+  margin-bottom: 18px;
+}
+
+.tabs button {
+  background: none;
+  border: none;
+  font-size: 15px;
+  color: var(--g);
+  padding: 10px 20px;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -2px;
+}
+
+.tabs button.on {
+  color: var(--p);
+  font-weight: 700;
+  border-bottom-color: var(--p);
+}
+
+.tabs .n {
+  display: inline-block;
+  background: #e8f0fe;
+  color: var(--p);
+  font-size: 12px;
+  border-radius: 999px;
+  padding: 0 8px;
+  margin-left: 4px;
+}
+
+/* ===== 条目行（设计稿 .mrow） ===== */
+.mrow {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 18px;
+  margin-bottom: 10px;
+  transition: 0.15s;
+}
+
+.mrow:hover {
+  border-color: #c7dbff;
+  box-shadow: 0 6px 18px rgba(0, 102, 255, 0.1);
+}
+
+.mrow .st {
+  font-size: 18px;
+  width: 24px;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.mrow .mid {
+  flex: 1;
+  min-width: 0;
+}
+
+.mrow h3 {
+  font-size: 15px;
+  margin-bottom: 3px;
+}
+
+.mrow:hover h3 {
+  color: var(--p);
+}
+
+.mrow p {
+  font-size: 12px;
+  color: #94a3b8;
+  line-height: 1.7;
+}
+
+.mrow .ops {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+/* ===== 进度徽章三档 + mini 进度条（设计稿 .pb/.mini-prog） ===== */
+.pb {
+  font-size: 12px;
+  line-height: 22px;
+  padding: 0 12px;
+  border-radius: 999px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.pb.full {
+  background: #e7f8ef;
+  color: #0a9d58;
+}
+
+.pb.mid {
+  background: #e8f0fe;
+  color: var(--p);
+}
+
+.pb.low {
+  background: #fff3e8;
+  color: var(--cta);
+}
+
+.mini-prog {
+  width: 120px;
+  height: 6px;
+  background: #e8edf3;
+  border-radius: 999px;
+  overflow: hidden;
+  display: inline-block;
+}
+
+.mini-prog i {
+  display: block;
+  height: 100%;
+  background: linear-gradient(90deg, var(--p), var(--acc));
+  border-radius: 999px;
+}
+
+/* ===== 已下架条目（设计稿 .off，AC-FN-20/AC-EG-10/UI-ELEM-02 灰显规格） ===== */
+.off {
+  background: #f1f5f9;
+  opacity: 0.82;
+  cursor: not-allowed;
+}
+
+.off:hover {
+  border-color: var(--b);
+  box-shadow: var(--sh);
+}
+
+.off:hover h3 {
+  color: #94a3b8;
+}
+
+.off h3 {
+  color: #94a3b8;
+}
+
+.off .st {
+  filter: grayscale(1);
+}
+
+.badge-off {
+  display: inline-block;
+  background: #cbd5e1;
+  color: #fff;
+  font-size: 11px;
+  line-height: 18px;
+  padding: 0 8px;
+  border-radius: 999px;
+  margin-left: 8px;
+  vertical-align: 2px;
+  font-weight: 400;
+}
+
+.off .rel-link {
+  font-size: 12px;
+  color: var(--p);
+  cursor: pointer;
+}
+
+.off .rel-link:hover {
+  text-decoration: underline;
+}
+
+/* 已下架空占位：保持 ops 区宽度与正常行对齐 */
+.off .rel-ph {
+  font-size: 12px;
+  color: #cbd5e1;
+}
+
+/* 已下架条目"不可访问"按钮（原型内联样式收口：恒禁用灰字） */
+.off .btn:disabled {
+  cursor: not-allowed;
+  color: #cbd5e1;
+  border-color: var(--b);
+}
+
+/* ===== 空态/未登录引导/错误（设计稿 .empty-tip） ===== */
+.empty-tip {
+  border: 1.5px dashed #cbd5e1;
+  border-radius: var(--r);
+  padding: 30px;
+  text-align: center;
+  color: var(--g);
+  background: #fff;
+}
+
+.empty-tip .e-ico {
+  font-size: 26px;
+  margin-bottom: 6px;
+}
+
+.empty-tip b {
+  display: block;
+  font-size: 15px;
+  color: var(--d);
+  margin-bottom: 4px;
+}
+
+.empty-tip .e-sub {
+  display: block;
+  font-size: 12.5px;
+  color: #94a3b8;
+  margin-bottom: 14px;
+}
+
+/* ===== 骨架行（交互 1 Loading 态） ===== */
+.sk-mrow {
+  height: 68px;
+  border-radius: var(--r);
+  background: #eef2f7;
+  margin-bottom: 10px;
+  animation: mySkelPulse 1s ease-in-out infinite;
+}
+
+@keyframes mySkelPulse {
+  0%,
+  100% {
+    opacity: 0.55;
+  }
+
+  50% {
+    opacity: 1;
+  }
+}
+
+/* ===== 历史面板底部说明 + toast ===== */
+.his-note {
+  font-size: 12px;
+  color: #94a3b8;
+  margin-top: 6px;
+}
+
+.my-toast {
+  position: fixed;
+  top: 76px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(15, 23, 42, 0.88);
+  color: #fff;
+  font-size: 13px;
+  padding: 9px 18px;
+  border-radius: 8px;
+  z-index: 120;
+  box-shadow: 0 6px 18px rgba(15, 23, 42, 0.25);
+}
+
+.my-error {
+  padding: 40px 0;
+  text-align: center;
+  color: #94a3b8;
+  font-size: 13px;
+}
+
+.my-error .btn {
+  margin-top: 12px;
+}

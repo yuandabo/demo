@@ -1,0 +1,504 @@
+{
+  "iteration": "IT-05",
+  "name": "小程序 H5 端（m 5 页 + messages/checkins 接口）",
+  "objective": "交付小程序 H5 端 5 页（首页/列表搜索/详情/收藏历史/学习打卡，PhoneShell 375 视口）与 GET /api/messages、POST/GET /api/checkins 共 3 个接口；列表/详情/收藏/进度/评价复用既有端点与 PC 同数据源，实现收藏与进度跨端刷新可见、打卡幂等 +10 分与徽章激励闭环",
+  "techDesignPath": "design/tech-design.md",
+  "uiDesignPath": "ui",
+  "createdAt": "2026-08-21",
+  "updatedAt": "2026-08-21",
+  "features": [
+    {
+      "name": "查询 mock 消息列表（GET /api/messages）",
+      "techDesignRef": "tech-design.md#3-api-接口总览",
+      "prdRef": "prd.md#710-小程序端h5-cms租户",
+      "acRef": "ac.md#AC-FN-24",
+      "uiRef": "ui/ui_m_home.html",
+      "relatedTasks": [
+        "BE-01",
+        "FE-02"
+      ]
+    },
+    {
+      "name": "每日学习打卡（+10 积分/每日一次幂等）",
+      "techDesignRef": "tech-design.md#11-service-函数清单冻结命名评审修复补充",
+      "prdRef": "prd.md#710-小程序端h5-cms租户",
+      "acRef": "ac.md#AC-FN-16",
+      "uiRef": "ui/ui_m_checkin.html",
+      "relatedTasks": [
+        "BE-02",
+        "FE-06"
+      ]
+    },
+    {
+      "name": "查询打卡状态与徽章（周历/积分/连续/完成数）",
+      "techDesignRef": "tech-design.md#11-service-函数清单冻结命名评审修复补充",
+      "prdRef": "prd.md#710-小程序端h5-cms租户",
+      "acRef": "ac.md#AC-FN-21",
+      "uiRef": "ui/ui_m_checkin.html",
+      "relatedTasks": [
+        "BE-02",
+        "FE-06"
+      ]
+    },
+    {
+      "name": "m 首页角色推荐横滑",
+      "techDesignRef": "tech-design.md#7-前端架构第-8-章",
+      "prdRef": "prd.md#710-小程序端h5-cms租户",
+      "acRef": "ac.md#AC-RULE-16",
+      "uiRef": "ui/ui_m_home.html",
+      "relatedTasks": [
+        "FE-02"
+      ]
+    },
+    {
+      "name": "m 首页分类宫格（12 启用分类+角标）",
+      "techDesignRef": "tech-design.md#7-前端架构第-8-章",
+      "prdRef": "prd.md#710-小程序端h5-cms租户",
+      "acRef": "ac.md#AC-FN-24",
+      "uiRef": "ui/ui_m_home.html",
+      "relatedTasks": [
+        "FE-02"
+      ]
+    },
+    {
+      "name": "m 首页消息入口预留+打卡横幅",
+      "techDesignRef": "tech-design.md#7-前端架构第-8-章",
+      "prdRef": "prd.md#710-小程序端h5-cms租户",
+      "acRef": "ac.md#AC-FN-16",
+      "uiRef": "ui/ui_m_home.html",
+      "relatedTasks": [
+        "BE-01",
+        "FE-02"
+      ]
+    },
+    {
+      "name": "m 列表分类 chips 筛选与关键词搜索",
+      "techDesignRef": "tech-design.md#7-前端架构第-8-章",
+      "prdRef": "prd.md#710-小程序端h5-cms租户",
+      "acRef": "ac.md#AC-FN-24",
+      "uiRef": "ui/ui_m_list.html",
+      "relatedTasks": [
+        "FE-03"
+      ]
+    },
+    {
+      "name": "m 列表下拉刷新",
+      "techDesignRef": "tech-design.md#7-前端架构第-8-章",
+      "prdRef": "prd.md#710-小程序端h5-cms租户",
+      "acRef": "ac.md#UI-IXD-13",
+      "uiRef": "ui/ui_m_list.html",
+      "relatedTasks": [
+        "FE-03"
+      ]
+    },
+    {
+      "name": "m 详情字号三档调节",
+      "techDesignRef": "tech-design.md#7-前端架构第-8-章",
+      "prdRef": "prd.md#710-小程序端h5-cms租户",
+      "acRef": "ac.md#UI-IXD-04",
+      "uiRef": "ui/ui_m_detail.html",
+      "relatedTasks": [
+        "FE-04"
+      ]
+    },
+    {
+      "name": "m 详情进度续读与跨端同步",
+      "techDesignRef": "tech-design.md#4-后端架构与处理流程",
+      "prdRef": "prd.md#710-小程序端h5-cms租户",
+      "acRef": "ac.md#AC-FN-04",
+      "uiRef": "ui/ui_m_detail.html",
+      "relatedTasks": [
+        "FE-04"
+      ]
+    },
+    {
+      "name": "m 详情评价共用与收藏切换",
+      "techDesignRef": "tech-design.md#4-后端架构与处理流程",
+      "prdRef": "prd.md#710-小程序端h5-cms租户",
+      "acRef": "ac.md#AC-FN-25",
+      "uiRef": "ui/ui_m_detail.html",
+      "relatedTasks": [
+        "FE-04"
+      ]
+    },
+    {
+      "name": "m 详情已下架提示页（扫码直达分支）",
+      "techDesignRef": "tech-design.md#6-异常处理与校验",
+      "prdRef": "prd.md#710-小程序端h5-cms租户",
+      "acRef": "ac.md#AC-EG-10",
+      "uiRef": "ui/ui_m_detail.html",
+      "relatedTasks": [
+        "FE-04"
+      ]
+    },
+    {
+      "name": "m 收藏/历史列表（与 PC 同数据源）",
+      "techDesignRef": "tech-design.md#4-后端架构与处理流程",
+      "prdRef": "prd.md#710-小程序端h5-cms租户",
+      "acRef": "ac.md#AC-FN-15",
+      "uiRef": "ui/ui_m_favorite.html",
+      "relatedTasks": [
+        "FE-05"
+      ]
+    },
+    {
+      "name": "m 手机壳/底部导航/选角色登录（PhoneShell+TabBar+RoleSheet）",
+      "techDesignRef": "tech-design.md#7-前端架构第-8-章",
+      "prdRef": "prd.md#711-公共账号-租户",
+      "acRef": "ac.md#AC-NF-03",
+      "uiRef": "ui/ui_m_home.html",
+      "relatedTasks": [
+        "FE-01"
+      ]
+    }
+  ],
+  "feature-relations": [
+    {
+      "from": "m 手机壳/底部导航/选角色登录（PhoneShell+TabBar+RoleSheet）",
+      "to": "m 首页角色推荐横滑",
+      "relation": "前置"
+    },
+    {
+      "from": "m 手机壳/底部导航/选角色登录（PhoneShell+TabBar+RoleSheet）",
+      "to": "m 列表分类 chips 筛选与关键词搜索",
+      "relation": "前置"
+    },
+    {
+      "from": "m 手机壳/底部导航/选角色登录（PhoneShell+TabBar+RoleSheet）",
+      "to": "m 详情进度续读与跨端同步",
+      "relation": "前置"
+    },
+    {
+      "from": "m 手机壳/底部导航/选角色登录（PhoneShell+TabBar+RoleSheet）",
+      "to": "m 收藏/历史列表（与 PC 同数据源）",
+      "relation": "前置"
+    },
+    {
+      "from": "m 手机壳/底部导航/选角色登录（PhoneShell+TabBar+RoleSheet）",
+      "to": "查询打卡状态与徽章（周历/积分/连续/完成数）",
+      "relation": "前置"
+    },
+    {
+      "from": "m 首页分类宫格（12 启用分类+角标）",
+      "to": "m 列表分类 chips 筛选与关键词搜索",
+      "relation": "联动"
+    },
+    {
+      "from": "m 手机壳/底部导航/选角色登录（PhoneShell+TabBar+RoleSheet）",
+      "to": "m 详情评价共用与收藏切换",
+      "relation": "前置"
+    },
+    {
+      "from": "每日学习打卡（+10 积分/每日一次幂等）",
+      "to": "查询打卡状态与徽章（周历/积分/连续/完成数）",
+      "relation": "联动"
+    },
+    {
+      "from": "m 详情进度续读与跨端同步",
+      "to": "m 收藏/历史列表（与 PC 同数据源）",
+      "relation": "联动"
+    },
+    {
+      "from": "m 详情已下架提示页（扫码直达分支）",
+      "to": "m 收藏/历史列表（与 PC 同数据源）",
+      "relation": "联动"
+    },
+    {
+      "from": "m 首页消息入口预留+打卡横幅",
+      "to": "查询打卡状态与徽章（周历/积分/连续/完成数）",
+      "relation": "联动"
+    },
+    {
+      "from": "查询 mock 消息列表（GET /api/messages）",
+      "to": "m 首页消息入口预留+打卡横幅",
+      "relation": "联动"
+    }
+  ],
+  "e2e-paths": [
+    {
+      "id": "PATH-01",
+      "name": "小程序新手完整学习旅程（登录→浏览→搜索→阅读→收藏→打卡）",
+      "type": "happy",
+      "steps": [
+        "m 手机壳/底部导航/选角色登录（PhoneShell+TabBar+RoleSheet）（选角色快速登录采购）",
+        "m 首页角色推荐横滑（推荐位来自采购/库存映射分类）",
+        "m 首页分类宫格（12 启用分类+角标）（点击采购管理宫格）",
+        "m 列表分类 chips 筛选与关键词搜索（输入「算料」1s 内返回）",
+        "m 详情字号三档调节（切换大字号仅正文变化）",
+        "m 详情进度续读与跨端同步（滚动 60% 保存进度）",
+        "m 详情评价共用与收藏切换（提交有帮助并收藏）",
+        "m 收藏/历史列表（与 PC 同数据源）（收藏 Tab 可见刚收藏教程，历史 Tab 显示 60% 进度环）",
+        "每日学习打卡（+10 积分/每日一次幂等）（打卡成功 +10 积分）"
+      ]
+    },
+    {
+      "id": "PATH-02",
+      "name": "跨端续读闭环（PC 读 60% → 小程序续读至完成）",
+      "type": "happy",
+      "steps": [
+        "m 详情进度续读与跨端同步（同账号打开同篇显示继续阅读 60%，点击定位后读至 100%）",
+        "m 收藏/历史列表（与 PC 同数据源）（历史 Tab 该篇进度环变 ✓ 完成）",
+        "查询打卡状态与徽章（周历/积分/连续/完成数）（百科达人完成数 +1，口径=进度 100% 历史条数）"
+      ]
+    },
+    {
+      "id": "PATH-03",
+      "name": "打卡激励与徽章解锁",
+      "type": "happy",
+      "steps": [
+        "查询打卡状态与徽章（周历/积分/连续/完成数）（今日未打卡，按钮可点）",
+        "每日学习打卡（+10 积分/每日一次幂等）（打卡 +10，当日重复点击积分不再增加）",
+        "查询打卡状态与徽章（周历/积分/连续/完成数）（连续 7 天解锁坚持者徽章）"
+      ]
+    },
+    {
+      "id": "PATH-04",
+      "name": "游客互动登录引导（未登录点收藏/评价）",
+      "type": "error",
+      "steps": [
+        "m 详情评价共用与收藏切换（游客点收藏/评价被拦截）",
+        "m 手机壳/底部导航/选角色登录（PhoneShell+TabBar+RoleSheet）（弹出选角色登录半屏弹层并选角色）",
+        "m 详情评价共用与收藏切换（回到原页面原位置收藏成功、评价被记录）"
+      ]
+    },
+    {
+      "id": "PATH-05",
+      "name": "已下架教程善后（小程序扫码分支）",
+      "type": "error",
+      "steps": [
+        "m 详情已下架提示页（扫码直达分支）（扫码打开已下架教程显示提示页+同类推荐，正文不可见）",
+        "m 收藏/历史列表（与 PC 同数据源）（该条目灰显标注已下架，不可进入正文）",
+        "m 详情已下架提示页（扫码直达分支）（从同类推荐跳转正常详情可继续学习）"
+      ]
+    },
+    {
+      "id": "PATH-06",
+      "name": "打卡中断边界（清连续不清积分不回收徽章）",
+      "type": "edge",
+      "steps": [
+        "每日学习打卡（+10 积分/每日一次幂等）（中断 1 天后再次打卡）",
+        "查询打卡状态与徽章（周历/积分/连续/完成数）（连续天数重置从 1 重新累计，总积分不清零，已获徽章不回收，周历出现中断灰格）"
+      ]
+    },
+    {
+      "id": "PATH-07",
+      "name": "搜索超时兜底与空结果恢复",
+      "type": "edge",
+      "steps": [
+        "m 列表分类 chips 筛选与关键词搜索（响应超 1s 显示「搜索超时，请重试」；无结果空态引导清空筛选）",
+        "m 列表下拉刷新（服务恢复后下拉刷新 1s 内返回最新数据，亦可改走分类浏览）"
+      ]
+    },
+    {
+      "id": "PATH-08",
+      "name": "发布即刻同步小程序（与 PC 同数据源）",
+      "type": "happy",
+      "steps": [
+        "m 首页角色推荐横滑（管理员发布新教程后推荐位候选集下一次加载即包含）",
+        "m 列表分类 chips 筛选与关键词搜索（列表同一次请求即返回该教程，无需重启/重登）"
+      ]
+    },
+    {
+      "id": "PATH-09",
+      "name": "消息入口预留与打卡横幅展示",
+      "type": "edge",
+      "steps": [
+        "查询 mock 消息列表（GET /api/messages）（按登录角色过滤 mock 审批待办）",
+        "m 首页消息入口预留+打卡横幅（消息卡仅展示预留入口；打卡横幅显示今日打卡状态与连续天数）"
+      ]
+    }
+  ],
+  "summary": {
+    "total": 9,
+    "backend": 2,
+    "frontend": 7
+  },
+  "tasks": [
+    {
+      "seq": 1,
+      "id": "BE-01",
+      "name": "消息接口 GET /api/messages（mock 消息按角色过滤）",
+      "role": "backend",
+      "dependencies": [
+        "IT-01.INFRA-01"
+      ],
+      "assignee": "",
+      "phase": {
+        "dev": "done",
+        "selfTest": "done"
+      },
+      "artifact": "",
+      "detailFile": "BE-01.md"
+    },
+    {
+      "seq": 2,
+      "id": "BE-02",
+      "name": "学习打卡接口 POST /api/checkins + GET /api/checkins（幂等+10 积分/连续天数/徽章/周历）",
+      "role": "backend",
+      "dependencies": [
+        "IT-01.INFRA-01",
+        "IT-04.BE-02"
+      ],
+      "assignee": "",
+      "phase": {
+        "dev": "done",
+        "selfTest": "done"
+      },
+      "artifact": "",
+      "detailFile": "BE-02.md"
+    },
+    {
+      "seq": 3,
+      "id": "FE-01",
+      "name": "m 端工程骨架与手机壳（m.html 入口 + PhoneShell 375 视口 + TabBar + 选角色登录半屏弹层）",
+      "role": "frontend",
+      "dependencies": [
+        "IT-01.INFRA-02"
+      ],
+      "assignee": "",
+      "phase": {
+        "dev": "done",
+        "selfTest": "done"
+      },
+      "artifact": "",
+      "detailFile": "FE-01.md"
+    },
+    {
+      "seq": 4,
+      "id": "FE-02",
+      "name": "m 首页 #/（角色推荐横滑 + 分类宫格 + 消息入口预留 + 打卡横幅）",
+      "role": "frontend",
+      "dependencies": [
+        "FE-01"
+      ],
+      "assignee": "",
+      "phase": {
+        "dev": "done",
+        "selfTest": "done"
+      },
+      "artifact": "",
+      "detailFile": "FE-02.md"
+    },
+    {
+      "seq": 5,
+      "id": "FE-03",
+      "name": "m 列表搜索 #/list（横滑分类 chips + 关键词搜索 1s 兜底 + 下拉刷新）",
+      "role": "frontend",
+      "dependencies": [
+        "FE-01"
+      ],
+      "assignee": "",
+      "phase": {
+        "dev": "done",
+        "selfTest": "done"
+      },
+      "artifact": "",
+      "detailFile": "FE-03.md"
+    },
+    {
+      "seq": 6,
+      "id": "FE-04",
+      "name": "m 详情 #/detail/:id（字号三档 / 进度续读跨端同步 / 评价收藏共用 / 已下架提示页）",
+      "role": "frontend",
+      "dependencies": [
+        "FE-01",
+        "IT-04.BE-01",
+        "IT-04.BE-02",
+        "IT-04.BE-03"
+      ],
+      "assignee": "",
+      "phase": {
+        "dev": "done",
+        "selfTest": "done"
+      },
+      "artifact": "",
+      "detailFile": "FE-04.md"
+    },
+    {
+      "seq": 7,
+      "id": "FE-05",
+      "name": "m 收藏历史 #/favorite（收藏/历史双 Tab，与 PC 同数据源刷新可见）",
+      "role": "frontend",
+      "dependencies": [
+        "FE-01",
+        "IT-04.BE-01",
+        "IT-04.BE-02"
+      ],
+      "assignee": "",
+      "phase": {
+        "dev": "done",
+        "selfTest": "done"
+      },
+      "artifact": "",
+      "detailFile": "FE-05.md"
+    },
+    {
+      "seq": 8,
+      "id": "FE-06",
+      "name": "m 学习打卡 #/checkin（本周日历卡 / 积分卡 / 徽章墙 / 打卡幂等交互）",
+      "role": "frontend",
+      "dependencies": [
+        "FE-01"
+      ],
+      "assignee": "",
+      "phase": {
+        "dev": "done",
+        "selfTest": "done"
+      },
+      "artifact": "",
+      "detailFile": "FE-06.md"
+    },
+    {
+      "id": "FE-07",
+      "name": "Playwright 全量终验（三端 E2E+API smoke 全绿，HTML 报告含截图，AC-OP-02）",
+      "role": "frontend",
+      "phase": {
+        "dev": "done",
+        "selfTest": "done"
+      },
+      "seq": 9,
+      "dependencies": [
+        "FE-02",
+        "FE-03",
+        "FE-04",
+        "FE-05",
+        "FE-06",
+        "IT-02.BE-07",
+        "IT-03.FE-05",
+        "IT-04.FE-03"
+      ],
+      "assignee": "",
+      "artifact": "playwright-report/index.html",
+      "detailFile": "FE-07.md"
+    }
+  ],
+  "phases": [
+    {
+      "phase": 1,
+      "name": "后端接口 + m 端工程骨架（并行）",
+      "tasks": [
+        "BE-01",
+        "BE-02",
+        "FE-01"
+      ]
+    },
+    {
+      "phase": 2,
+      "name": "m 端 5 页（并行）",
+      "tasks": [
+        "FE-02",
+        "FE-03",
+        "FE-04",
+        "FE-05",
+        "FE-06"
+      ]
+    },
+    {
+      "phase": 3,
+      "name": "终验",
+      "tasks": [
+        "FE-07"
+      ]
+    }
+  ]
+}

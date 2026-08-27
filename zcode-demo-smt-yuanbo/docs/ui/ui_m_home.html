@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>云ERP教程中心 · 首页（小程序 H5）</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{background:#e2e8f0}
+body{font-family:'PingFang SC','Microsoft YaHei',sans-serif;display:flex;justify-content:center;align-items:flex-start;min-height:100vh;padding:28px 12px}
+a{text-decoration:none;color:inherit}
+ul{list-style:none}
+/* ===== 手机壳（5 页统一） ===== */
+.phone{width:375px;height:812px;background:#0f172a;border-radius:40px;padding:7px;box-shadow:0 24px 60px rgba(15,23,42,.45);flex-shrink:0}
+.screen{width:100%;height:100%;background:#f8fafc;border-radius:33px;overflow:hidden;position:relative;display:flex;flex-direction:column}
+.notch{position:absolute;top:0;left:50%;transform:translateX(-50%);width:112px;height:24px;background:#0f172a;border-radius:0 0 13px 13px;z-index:20}
+.notch::after{content:'';position:absolute;right:12px;top:7px;width:8px;height:8px;border-radius:50%;background:#334155;border:1.5px solid #475569}
+.statusbar{height:44px;flex-shrink:0;display:flex;align-items:flex-end;justify-content:space-between;padding:0 24px 5px;position:relative;z-index:10;color:#fff}
+.statusbar .time{font-size:14px;font-weight:700}
+.statusbar .sicons{display:flex;align-items:center;gap:5px}
+.statusbar svg{display:block}
+.tabbar{flex-shrink:0;background:#fff;border-top:1px solid #e2e8f0;display:flex;padding-top:5px}
+.tab{flex:1;display:flex;flex-direction:column;align-items:center;gap:1px;font-size:10px;color:#94a3b8;padding:3px 0 4px}
+.tab .ico{font-size:20px;line-height:1;filter:grayscale(1);opacity:.55}
+.tab.active{color:#0066ff;font-weight:700}
+.tab.active .ico{filter:none;opacity:1}
+.homebar{flex-shrink:0;height:16px;background:#fff;display:flex;align-items:center;justify-content:center}
+.homebar i{width:110px;height:5px;border-radius:3px;background:#0f172a;display:block}
+.scroll{flex:1;overflow-y:auto;scrollbar-width:none}
+.scroll::-webkit-scrollbar{display:none}
+/* ===== 首页头部 ===== */
+.hd{background:#0f172a;flex-shrink:0;padding-bottom:14px}
+.hd-row{display:flex;align-items:center;justify-content:space-between;padding:8px 16px 12px}
+.logo{display:flex;align-items:center;gap:9px}
+.logo-mark{width:34px;height:34px;border-radius:9px;background:linear-gradient(135deg,#0066ff,#3b82f6);display:flex;align-items:center;justify-content:center;font-size:17px;box-shadow:0 2px 8px rgba(0,102,255,.4)}
+.logo-name{font-size:17px;font-weight:700;color:#fff;letter-spacing:.5px}
+.logo-sub{font-size:10px;color:#94a3b8;margin-top:2px}
+.role-pill{font-size:10px;color:#fff;background:rgba(0,102,255,.28);border:1px solid rgba(59,130,246,.55);padding:3px 9px;border-radius:999px}
+.role-pill b{font-weight:700}
+.searchbox{margin:0 16px;height:36px;background:#1e293b;border-radius:10px;display:flex;align-items:center;gap:8px;padding:0 12px;color:#94a3b8;font-size:13px}
+.searchbox .kw{color:#e2e8f0}
+.searchbox .kw em{font-style:normal;color:#60a5fa;font-weight:600}
+/* ===== 内容区 ===== */
+.body{padding:12px 12px 24px}
+.sec-hd{display:flex;justify-content:space-between;align-items:center;margin:6px 2px 9px}
+.sec-hd:first-child{margin-top:0}
+.sec-title{font-size:15px;font-weight:700;color:#0f172a;display:flex;align-items:center;gap:6px}
+.sec-title em{font-style:normal;color:#0066ff;font-size:10px;background:#e6efff;padding:2px 7px;border-radius:999px;font-weight:600}
+.sec-more{font-size:12px;color:#94a3b8}
+.hscroll{display:flex;gap:10px;overflow-x:auto;padding-bottom:4px;scrollbar-width:none}
+.hscroll::-webkit-scrollbar{display:none}
+.rc-card{flex:0 0 150px;background:#fff;border-radius:12px;padding:12px;box-shadow:0 1px 4px rgba(15,23,42,.06);display:flex;flex-direction:column;gap:6px}
+.rc-tag{font-size:10px;color:#0066ff;background:#e6efff;align-self:flex-start;padding:2px 7px;border-radius:999px;font-weight:600}
+.rc-title{font-size:14px;font-weight:700;color:#0f172a;line-height:1.35;min-height:38px}
+.rc-meta{font-size:10px;color:#94a3b8;display:flex;align-items:center;gap:8px}
+/* 分类宫格 */
+.grid{background:#fff;border-radius:12px;padding:6px;display:grid;grid-template-columns:repeat(3,1fr);box-shadow:0 1px 4px rgba(15,23,42,.06)}
+.cell{display:flex;flex-direction:column;align-items:center;gap:3px;padding:11px 2px 9px;border-radius:10px}
+.cell .ci{font-size:24px;line-height:1}
+.cell .cn{font-size:12px;color:#0f172a;font-weight:600}
+.cell .cc{font-size:10px;color:#94a3b8}
+.cell .cc.empty{color:#cbd5e1}
+/* 消息入口（预留） */
+.msg-card{margin-top:16px;background:#fff;border-radius:12px;padding:12px 14px;display:flex;align-items:center;gap:10px;box-shadow:0 1px 4px rgba(15,23,42,.06)}
+.msg-ico{width:36px;height:36px;border-radius:10px;background:#fff7ed;display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0}
+.msg-body{flex:1;min-width:0}
+.msg-title{font-size:13px;font-weight:700;color:#0f172a;display:flex;align-items:center;gap:6px}
+.tag-reserve{font-size:9px;color:#94a3b8;border:1px dashed #cbd5e1;border-radius:4px;padding:1px 5px;font-weight:400;flex-shrink:0}
+.msg-sub{font-size:11px;color:#94a3b8;margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.chev{color:#cbd5e1;font-size:16px;flex-shrink:0}
+.msg-note{font-size:10px;color:#cbd5e1;margin:7px 2px 0}
+/* 打卡横幅 */
+.ck-banner{margin-top:14px;background:linear-gradient(135deg,#f97316,#fb923c);border-radius:12px;padding:14px 14px;display:flex;align-items:center;justify-content:space-between;color:#fff;box-shadow:0 6px 16px rgba(249,115,22,.3)}
+.ck-t{font-size:15px;font-weight:800;display:flex;align-items:center;gap:6px}
+.ck-s{font-size:11px;opacity:.92;margin-top:4px}
+.ck-btn{background:#fff;color:#f97316;font-size:12px;font-weight:700;padding:8px 13px;border-radius:999px;flex-shrink:0}
+/* ===== 选角色登录半屏弹层（PRD §7.11 · AC-FN-03） ===== */
+.role-pill{cursor:pointer;transition:.15s}
+.role-pill:active{transform:scale(.96)}
+.sheet-mask{position:absolute;inset:0;background:rgba(15,23,42,.5);z-index:40;display:none}
+.sheet-mask.show{display:block}
+.sheet{position:absolute;left:0;right:0;bottom:0;background:#fff;border-radius:18px 18px 0 0;padding:16px 14px 20px;z-index:41;display:none;max-height:78%;overflow-y:auto}
+.sheet.show{display:block}
+.sheet .bar{width:36px;height:4px;border-radius:2px;background:#e2e8f0;margin:0 auto 12px}
+.sheet h4{font-size:15px;color:#0f172a;text-align:center}
+.sheet .s-sub{font-size:11px;color:#94a3b8;text-align:center;margin-top:3px;margin-bottom:14px}
+.sheet-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}
+.sc{border:1px solid #e2e8f0;border-radius:12px;padding:12px 4px;text-align:center;transition:.15s}
+.sc:active{border-color:#0066ff;background:#e6efff}
+.sc .i{width:38px;height:38px;margin:0 auto 6px;border-radius:11px;background:#e6efff;display:flex;align-items:center;justify-content:center;font-size:19px}
+.sc b{font-size:13px;color:#0f172a;display:block}
+.sc span{font-size:10px;color:#94a3b8}
+.sheet .tip{font-size:10px;color:#cbd5e1;text-align:center;margin-top:12px}
+</style>
+</head>
+<body>
+<div class="phone">
+  <div class="screen">
+    <div class="notch"></div>
+
+    <!-- 深色头部：logo + 搜索 -->
+    <header class="hd">
+      <div class="statusbar">
+        <span class="time">9:41</span>
+        <span class="sicons">
+          <svg width="16" height="10" viewBox="0 0 16 10" fill="currentColor"><rect x="0" y="6" width="3" height="4" rx="1"/><rect x="4.3" y="4" width="3" height="6" rx="1"/><rect x="8.6" y="2" width="3" height="8" rx="1"/><rect x="12.9" y="0" width="3" height="10" rx="1"/></svg>
+          <svg width="15" height="11" viewBox="0 0 15 11" fill="currentColor"><circle cx="7.5" cy="9.4" r="1.5"/><path d="M4.6 6.6a4.6 4.6 0 0 1 5.8 0l-1.1 1.3a3 3 0 0 0-3.6 0z"/><path d="M1.9 3.9a8.6 8.6 0 0 1 11.2 0l-1.1 1.3a6.9 6.9 0 0 0-9 0z"/></svg>
+          <svg width="23" height="11" viewBox="0 0 23 11" fill="none"><rect x=".5" y=".5" width="19" height="10" rx="2.5" stroke="currentColor" opacity=".4"/><rect x="2" y="2" width="13" height="7" rx="1.2" fill="currentColor"/><rect x="20.5" y="3.2" width="2" height="4.6" rx="1" fill="currentColor" opacity=".4"/></svg>
+        </span>
+      </div>
+      <div class="hd-row">
+        <div class="logo">
+          <div class="logo-mark">📚</div>
+          <div>
+            <div class="logo-name">云ERP教程中心</div>
+            <div class="logo-sub">让每个岗位 3 分钟上手云ERP</div>
+          </div>
+        </div>
+        <span class="role-pill" onclick="openRoleSheet()" title="点击选角色快速登录 / 切换角色">当前角色：<b id="mRoleName">采购</b> ▾</span>
+      </div>
+      <a class="searchbox" href="ui_m_list.html">🔍 <span class="kw">搜索教程：试试「<em>算料</em>」</span></a>
+    </header>
+
+    <main class="scroll">
+      <div class="body">
+
+        <!-- 角色推荐横滑卡 x4 -->
+        <div class="sec-hd">
+          <span class="sec-title">为你推荐 · 采购<em>按角色匹配</em></span>
+          <a class="sec-more" href="ui_m_list.html">全部 ›</a>
+        </div>
+        <div class="hscroll">
+          <a class="rc-card" href="ui_m_detail.html">
+            <span class="rc-tag">采购管理</span>
+            <span class="rc-title">MRP 自动算料：从 BOM 到采购建议</span>
+            <span class="rc-meta">👁 2,341 · ⭐ 187</span>
+          </a>
+          <a class="rc-card" href="ui_m_list.html">
+            <span class="rc-tag">采购管理</span>
+            <span class="rc-title">采购申请到一键下单</span>
+            <span class="rc-meta">👁 1,694 · ⭐ 108</span>
+          </a>
+          <a class="rc-card" href="ui_m_list.html">
+            <span class="rc-tag">采购管理</span>
+            <span class="rc-title">供应商比价与立创同步</span>
+            <span class="rc-meta">👁 1,523 · ⭐ 91</span>
+          </a>
+          <a class="rc-card" href="ui_m_list.html">
+            <span class="rc-tag">库存管理</span>
+            <span class="rc-title">库存预警与安全库存</span>
+            <span class="rc-meta">👁 1,352 · ⭐ 84</span>
+          </a>
+        </div>
+
+        <!-- 分类宫格 12 分类（8 模块 + 4 通用），3 列 -->
+        <div class="sec-hd" style="margin-top:18px">
+          <span class="sec-title">全部分类<em>12 个</em></span>
+          <a class="sec-more" href="ui_m_list.html">分类浏览 ›</a>
+        </div>
+        <div class="grid">
+          <a class="cell" href="ui_m_list.html"><span class="ci">📈</span><span class="cn">销售管理</span><span class="cc">3 篇</span></a>
+          <a class="cell" href="ui_m_list.html"><span class="ci">📁</span><span class="cn">项目管理</span><span class="cc">2 篇</span></a>
+          <a class="cell" href="ui_m_list.html"><span class="ci">🗂️</span><span class="cn">文件管理</span><span class="cc">1 篇</span></a>
+          <a class="cell" href="ui_m_list.html"><span class="ci">🏭</span><span class="cn">生产制造</span><span class="cc">3 篇</span></a>
+          <a class="cell" href="ui_m_list.html"><span class="ci">🛒</span><span class="cn">采购管理</span><span class="cc">3 篇</span></a>
+          <a class="cell" href="ui_m_list.html"><span class="ci">📦</span><span class="cn">库存管理</span><span class="cc">2 篇</span></a>
+          <a class="cell" href="ui_m_list.html"><span class="ci">💰</span><span class="cn">人事财务</span><span class="cc">1 篇</span></a>
+          <a class="cell" href="ui_m_list.html"><span class="ci">⚙️</span><span class="cn">系统设置</span><span class="cc empty">待补充</span></a>
+          <a class="cell" href="ui_m_list.html"><span class="ci">🚀</span><span class="cn">新手入门</span><span class="cc">1 篇</span></a>
+          <a class="cell" href="ui_m_list.html"><span class="ci">🏆</span><span class="cn">最佳实践</span><span class="cc">1 篇</span></a>
+          <a class="cell" href="ui_m_list.html"><span class="ci">❓</span><span class="cn">常见问题</span><span class="cc">1 篇</span></a>
+          <a class="cell" href="ui_m_list.html"><span class="ci">🔌</span><span class="cn">开放平台</span><span class="cc empty">待补充</span></a>
+        </div>
+
+        <!-- 消息入口（迭代池预留） -->
+        <a class="msg-card" href="ui_m_list.html">
+          <span class="msg-ico">📢</span>
+          <span class="msg-body">
+            <span class="msg-title">有一条审批待办关联教程<span class="tag-reserve">预留</span></span>
+            <span class="msg-sub">《采购申请到一键下单》第 4 步演示了审批流处理</span>
+          </span>
+          <span class="chev">›</span>
+        </a>
+        <div class="msg-note">消息推送能力属迭代池功能，当前为预留入口，仅作展示</div>
+
+        <!-- 打卡入口横幅 -->
+        <a class="ck-banner" href="ui_m_checkin.html">
+          <span>
+            <span class="ck-t">📅 今日未打卡</span>
+            <span class="ck-s" style="display:block">已连 2 天 · 打卡 +10 积分，赢「坚持者」徽章</span>
+          </span>
+          <span class="ck-btn">去打卡</span>
+        </a>
+
+      </div>
+    </main>
+
+    <!-- 底部 TabBar（当前：首页） -->
+    <nav class="tabbar">
+      <a class="tab active" href="ui_m_home.html"><span class="ico">🏠</span>首页</a>
+      <a class="tab" href="ui_m_list.html"><span class="ico">📚</span>分类</a>
+      <a class="tab" href="ui_m_favorite.html"><span class="ico">⭐</span>收藏</a>
+      <a class="tab" href="ui_m_checkin.html"><span class="ico">📅</span>打卡</a>
+    </nav>
+    <div class="homebar"><i></i></div>
+
+    <!-- 选角色登录半屏弹层（PRD §7.11 · AC-FN-03）：点角色徽章弹出 -->
+    <div class="sheet-mask" id="roleMask" onclick="closeRoleSheet()"></div>
+    <div class="sheet" id="roleSheet">
+      <div class="bar"></div>
+      <h4>🔑 选角色快速登录</h4>
+      <div class="s-sub">选择一个 ERP 演示角色（免密），登录后回到原页面原位置</div>
+      <div class="sheet-grid">
+        <div class="sc" onclick="pickMRole('销售','李娜','📈')"><div class="i">📈</div><b>销售</b><span>销售 · 李娜</span></div>
+        <div class="sc" onclick="pickMRole('采购','张伟','🛒')"><div class="i">🛒</div><b>采购</b><span>采购 · 张伟</span></div>
+        <div class="sc" onclick="pickMRole('生产','王强','🏭')"><div class="i">🏭</div><b>生产</b><span>生产 · 王强</span></div>
+        <div class="sc" onclick="pickMRole('仓库','赵敏','📦')"><div class="i">📦</div><b>仓库</b><span>仓库 · 赵敏</span></div>
+        <div class="sc" onclick="pickMRole('管理','陈涛','⚙️')"><div class="i">⚙️</div><b>管理</b><span>管理 · 陈涛</span></div>
+        <div class="sc" onclick="pickMRole('财务','周莉','💰')"><div class="i">💰</div><b>财务</b><span>财务 · 周莉</span></div>
+      </div>
+      <div class="tip">演示说明：与 PC 前台共用同一套角色卡，切换后推荐位按新角色匹配分类</div>
+    </div>
+  </div>
+</div>
+<script>
+// 选角色快速登录（PRD §7.11 · AC-FN-03）
+var curRole='采购';
+function openRoleSheet(){document.getElementById('roleMask').classList.add('show');document.getElementById('roleSheet').classList.add('show')}
+function closeRoleSheet(){document.getElementById('roleMask').classList.remove('show');document.getElementById('roleSheet').classList.remove('show')}
+function pickMRole(role,name){
+  curRole=role;
+  document.getElementById('mRoleName').textContent=role;
+  closeRoleSheet();
+}
+</script>
+</body>
+</html>

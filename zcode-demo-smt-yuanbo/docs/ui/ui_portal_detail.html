@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MRP 自动算料：从 BOM 到采购建议 - 嘉立创云ERP · 教程中心</title>
+<style>
+:root{--p:#0066ff;--acc:#00d4ff;--cta:#f97316;--d:#0f172a;--g:#64748b;--b:#e2e8f0;--bg:#f8fafc;--r:12px;--rl:20px;--sh:0 1px 3px rgba(0,0,0,.06)}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'PingFang SC','Microsoft YaHei',sans-serif;background:var(--bg);color:var(--d);font-size:14px;line-height:1.6}
+html{scroll-behavior:smooth}
+a{color:inherit;text-decoration:none}
+ul,ol{list-style:none}
+button{font-family:inherit}
+.wrap{width:1200px;margin:0 auto}
+/* ===== 顶部导航（全站统一） ===== */
+.topbar{background:linear-gradient(135deg,#0c1a2e,#1a365d,#0c1a2e);position:sticky;top:0;z-index:50;box-shadow:0 2px 8px rgba(12,26,46,.35)}
+.bar{height:60px;display:flex;align-items:center;gap:28px}
+.logo{display:flex;align-items:center;gap:10px;color:#fff;font-size:17px;font-weight:700;white-space:nowrap}
+.logo .mark{width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,var(--p),var(--acc));display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;letter-spacing:.5px;color:#fff}
+.nav{display:flex;gap:4px;flex:1}
+.nav a{color:#cbd5e1;font-size:14px;padding:6px 14px;border-radius:8px;transition:.15s}
+.nav a:hover{color:#fff;background:rgba(255,255,255,.08)}
+.nav a.on{color:var(--acc);background:rgba(0,212,255,.14);font-weight:600}
+.who{display:flex;align-items:center;gap:8px;color:#e2e8f0;font-size:13px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);padding:5px 14px;border-radius:999px;white-space:nowrap;cursor:pointer;transition:.15s}
+.who:hover{border-color:var(--acc);background:rgba(0,212,255,.14)}
+.who i{width:8px;height:8px;border-radius:50%;background:var(--acc);display:inline-block}
+.who .caret{font-size:10px;color:#94a3b8}
+/* ===== 选角色快速登录弹窗（PRD §7.11 · AC-FN-03） ===== */
+.rlm-mask{position:fixed;inset:0;background:rgba(15,23,42,.55);display:none;align-items:center;justify-content:center;z-index:100}
+.rlm-mask.show{display:flex}
+.rlm{width:560px;max-width:calc(100vw - 40px);background:#fff;border-radius:var(--rl);padding:24px;position:relative}
+.rlm h3{font-size:17px;margin-bottom:4px}
+.rlm .sub{color:var(--g);font-size:12.5px;margin-bottom:16px}
+.rlm .close{position:absolute;top:14px;right:16px;cursor:pointer;color:#94a3b8;font-size:18px}
+.rlm .close:hover{color:var(--d)}
+.rlm-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.rlm-card{border:1px solid var(--b);border-radius:var(--r);padding:14px 12px;text-align:center;cursor:pointer;transition:.15s;background:#fff}
+.rlm-card:hover{border-color:var(--p);box-shadow:0 6px 18px rgba(0,102,255,.10);transform:translateY(-2px)}
+.rlm-card .ic{width:40px;height:40px;margin:0 auto 8px;border-radius:11px;background:#e8f0fe;display:flex;align-items:center;justify-content:center;font-size:20px}
+.rlm-card b{font-size:14px;display:block}
+.rlm-card span{font-size:12px;color:var(--g)}
+.rlm-tip{margin-top:14px;font-size:12px;color:#94a3b8;text-align:center}
+/* ===== 通用组件 ===== */
+.card{background:#fff;border:1px solid var(--b);border-radius:var(--r);box-shadow:var(--sh)}
+.tag{display:inline-block;background:#e8f0fe;color:var(--p);font-size:12px;line-height:20px;padding:1px 10px;border-radius:999px;margin-right:6px}
+.cat{display:inline-block;background:#f1f5f9;color:var(--g);font-size:12px;line-height:20px;padding:1px 10px;border-radius:999px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;cursor:pointer;border:none;border-radius:8px;font-size:13px;padding:8px 16px;transition:.15s}
+.btn-p{background:var(--p);color:#fff}
+.btn-p:hover{background:#0052cc}
+.btn-o{background:var(--cta);color:#fff}
+.btn-o:hover{background:#e46a0e}
+.btn-g{background:#fff;border:1px solid var(--b);color:var(--g)}
+.btn-g:hover{border-color:var(--p);color:var(--p)}
+.footer{padding:30px 0 40px;text-align:center;color:#94a3b8;font-size:12px}
+/* ===== 面包屑 + 标题 ===== */
+.crumb{margin:20px 0 10px;font-size:13px;color:var(--g)}
+.crumb a:hover{color:var(--p)}
+.crumb b{color:var(--d);font-weight:600}
+.title-box h1{font-size:24px;line-height:1.4;margin-bottom:8px}
+.title-meta{display:flex;flex-wrap:wrap;gap:14px;color:var(--g);font-size:13px;align-items:center}
+/* ===== 工具条 ===== */
+.toolbar{margin:16px 0;padding:10px 16px;display:flex;align-items:center;gap:12px}
+.toolbar .lbl{font-size:13px;color:var(--g)}
+.fs{border:1px solid var(--b);background:#fff;color:var(--g);font-size:12px;padding:5px 12px;border-radius:8px;cursor:pointer}
+.fs:hover{border-color:var(--p);color:var(--p)}
+.fs.on{background:var(--p);border-color:var(--p);color:#fff}
+.toolbar .sp{flex:1}
+/* ===== 主体两栏 ===== */
+.layout{display:flex;gap:16px;align-items:flex-start;margin-bottom:10px}
+.article-col{flex:1;min-width:0}
+.side-col{width:300px;flex-shrink:0;display:flex;flex-direction:column;gap:14px}
+.article{padding:26px 30px;font-size:15px}
+.article.fs2{font-size:17px}
+.article.fs3{font-size:19px}
+.article p{margin-bottom:12px;color:#334155}
+.article strong{color:var(--d)}
+.resume{display:flex;align-items:center;gap:10px;background:#e8f0fe;border:1px solid #c7dbff;color:#123c7a;border-radius:10px;padding:10px 14px;font-size:13px;margin-bottom:18px}
+.resume .x{margin-left:auto;cursor:pointer;color:#64748b;font-size:14px;padding:0 4px}
+/* 视频区 */
+.video{position:relative;height:320px;border-radius:var(--r);overflow:hidden;margin:16px 0;background:linear-gradient(135deg,#0c1a2e 0%,#123c7a 60%,#0c1a2e 100%);display:flex;align-items:center;justify-content:center}
+.video .play{width:66px;height:66px;border-radius:50%;background:rgba(255,255,255,.94);display:flex;align-items:center;justify-content:center;font-size:26px;color:var(--p);box-shadow:0 10px 34px rgba(0,0,0,.45);cursor:pointer;transition:.2s}
+.video .play:hover{transform:scale(1.08)}
+.video .vt{position:absolute;top:12px;left:14px;color:#cbd5e1;font-size:12px;background:rgba(12,26,46,.55);padding:2px 10px;border-radius:999px}
+.video .vc{position:absolute;bottom:12px;left:14px;right:14px;color:#cbd5e1;font-size:12px;display:flex;align-items:center;gap:10px}
+.video .vc .vb{flex:1;height:4px;background:rgba(255,255,255,.22);border-radius:999px}
+.video .vc .vb i{display:block;width:34%;height:100%;background:var(--acc);border-radius:999px}
+/* 步骤 */
+.step{display:flex;gap:16px;padding:20px 0;border-bottom:1px dashed var(--b);scroll-margin-top:150px}
+.step:last-of-type{border-bottom:none}
+.no{width:36px;height:36px;border-radius:50%;background:#e8f0fe;color:var(--p);font-weight:700;font-size:15px;display:flex;align-items:center;justify-content:center;flex-shrink:0;cursor:pointer;transition:.15s;user-select:none}
+.step-body{flex:1;min-width:0}
+.step-body h3{font-size:16px;margin-bottom:8px;cursor:pointer}
+.step-body h3:hover{color:var(--p)}
+.step.done .no{background:var(--p);color:#fff}
+.step-body ul{margin:4px 0 8px}
+.step-body ul li{padding-left:16px;position:relative;color:#334155;margin-bottom:4px}
+.step-body ul li::before{content:'';position:absolute;left:2px;top:11px;width:5px;height:5px;border-radius:50%;background:var(--acc)}
+.ph-img{height:210px;border-radius:var(--r);border:1.5px dashed #bfd3f0;background:linear-gradient(135deg,#eef4ff,#e6efff);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;color:#6b8cbf;font-size:13px;margin:10px 0}
+.ph-img b{font-size:15px}
+/* 提示框 */
+.note{border-left:4px solid var(--cta);background:#fff7ed;border-radius:0 10px 10px 0;padding:12px 16px;font-size:13px;color:#7c4a1e;margin:14px 0}
+.note b{display:block;margin-bottom:4px;color:#9a4b0d}
+/* 步骤进度条 */
+.prog-box{margin-top:18px;background:#f8fafc;border:1px solid var(--b);border-radius:10px;padding:14px 16px}
+.prog-h{display:flex;justify-content:space-between;font-size:13px;color:var(--g);margin-bottom:8px}
+.prog-h b{color:var(--p)}
+.prog{height:8px;background:#e8edf3;border-radius:999px;overflow:hidden}
+.prog i{display:block;height:100%;width:75%;background:linear-gradient(90deg,var(--p),var(--acc));border-radius:999px;transition:width .3s}
+/* 反馈 + 操作 */
+.fb-box{margin-top:16px;border-top:1px solid var(--b);padding-top:16px}
+.fb-q{font-size:14px;font-weight:600;margin-bottom:10px}
+.fb-btns{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.fb{border:1px solid var(--b);background:#fff;color:var(--g);border-radius:10px;padding:9px 18px;font-size:13px;cursor:pointer;transition:.15s}
+.fb:hover{border-color:var(--p);color:var(--p)}
+.fb.on-good{background:#e7f8ef;border-color:#0a9d58;color:#0a9d58}
+.fb.on-bad{background:#fdeaea;border-color:#dc5a5a;color:#dc5a5a}
+.fb-msg{flex:1;min-width:260px;border:1px solid var(--b);border-radius:10px;padding:8px 12px;font-size:13px;color:var(--g);font-family:inherit;outline:none;resize:vertical}
+.fb-msg:focus{border-color:var(--p)}
+.fb-sub{margin-top:10px;display:flex;align-items:center;gap:10px}
+.acts{display:flex;gap:10px;margin-top:14px;flex-wrap:wrap}
+/* ===== 侧栏 ===== */
+.toc{padding:14px 6px}
+.toc h3,.info h3,.rel h3{font-size:14px;margin-bottom:10px;display:flex;align-items:center;gap:6px}
+.toc h3::before,.info h3::before,.rel h3::before{content:'';width:3px;height:14px;border-radius:2px;background:var(--p)}
+.toc a{display:block;padding:6px 12px;border-left:2px solid var(--b);color:var(--g);font-size:13px;border-radius:0 8px 8px 0;margin-bottom:2px}
+.toc a:hover{color:var(--p);background:#f6f9ff}
+.toc a.on{color:var(--p);border-left-color:var(--p);background:#f0f6ff;font-weight:600}
+.info{padding:16px}
+.info .row{display:flex;justify-content:space-between;font-size:13px;padding:7px 0;border-bottom:1px dashed #eef2f7}
+.info .row:last-child{border-bottom:none}
+.info .row span{color:#94a3b8}
+.info .row b{font-weight:600}
+.rel{padding:16px}
+.rel a{display:block;padding:10px 12px;border:1px solid var(--b);border-radius:10px;margin-bottom:8px;transition:.15s}
+.rel a:hover{border-color:var(--p);box-shadow:0 4px 14px rgba(0,102,255,.10)}
+.rel a b{font-size:13px;display:block;margin-bottom:2px}
+.rel a:hover b{color:var(--p)}
+.rel a span{font-size:12px;color:#94a3b8}
+/* ===== 分享弹窗 ===== */
+.mask{position:fixed;inset:0;background:rgba(15,23,42,.55);display:none;align-items:center;justify-content:center;z-index:100}
+.mask.show{display:flex}
+.dlg{width:430px;background:#fff;border-radius:var(--rl);padding:24px;position:relative}
+.dlg h3{font-size:17px;margin-bottom:14px}
+.dlg .close{position:absolute;top:14px;right:16px;cursor:pointer;color:#94a3b8;font-size:18px}
+.dlg .close:hover{color:var(--d)}
+.dlg .lbl2{font-size:12px;color:#94a3b8;margin-bottom:6px}
+.link-row{display:flex;gap:8px;margin-bottom:16px}
+.link-row input{flex:1;height:38px;border:1px solid var(--b);border-radius:8px;padding:0 12px;font-size:12px;color:var(--g);outline:none}
+.qr{width:150px;height:150px;border-radius:12px;margin:6px auto 8px;border:6px solid #fff;box-shadow:0 0 0 1px var(--b);background:repeating-linear-gradient(0deg,#0f172a 0 7px,#fff 7px 14px),repeating-linear-gradient(90deg,rgba(15,23,42,.55) 0 7px,#fff 7px 14px);background-blend-mode:multiply;position:relative}
+.qr::after{content:'二维码占位';position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#fff;font-size:12px;background:rgba(15,23,42,.35)}
+.dlg .qr-cap{text-align:center;font-size:12px;color:var(--g)}
+/* ===== 已下架态样式预览（menu-tree P3） ===== */
+.off-preview{margin-top:16px;border:1.5px dashed #cbd5e1;border-radius:var(--r);padding:18px 22px;background:#fff}
+.off-preview .cap{font-size:12px;color:#94a3b8;margin-bottom:12px}
+.off-banner{display:flex;align-items:center;gap:10px;background:#f1f5f9;border:1px solid #cbd5e1;border-radius:10px;padding:14px 16px;color:#64748b}
+.off-banner b{color:#475569}
+.off-banner .ops{margin-left:auto;display:flex;gap:8px}
+.off-body{position:relative;margin-top:12px;border:1px solid var(--b);border-radius:10px;padding:18px 20px;color:#94a3b8;font-size:13px;overflow:hidden;max-height:150px}
+.off-body::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(248,250,252,.55),rgba(248,250,252,.96));backdrop-filter:blur(2px)}
+.off-rel{margin-top:12px;display:flex;gap:10px}
+.off-rel a{flex:1;border:1px solid var(--b);border-radius:10px;padding:10px 14px;transition:.15s}
+.off-rel a:hover{border-color:var(--p)}
+.off-rel a b{font-size:13px;display:block}
+.off-rel a:hover b{color:var(--p)}
+.off-rel a span{font-size:12px;color:#94a3b8}
+</style>
+</head>
+<body>
+<!-- 顶部导航：5 页统一，当前页高亮 #00d4ff（详情页归属"全部教程"） -->
+<header class="topbar">
+  <div class="wrap bar">
+    <a class="logo" href="ui_portal_home.html"><span class="mark">ERP</span>嘉立创云ERP · 教程中心</a>
+    <nav class="nav">
+      <a href="ui_portal_home.html">教程首页</a>
+      <a class="on" href="ui_portal_list.html">全部教程</a>
+      <a href="ui_portal_workbench.html">模拟工作台</a>
+      <a href="ui_portal_my.html">我的</a>
+    </nav>
+    <div class="who" id="whoPill" onclick="openRoleLogin()" title="点击选角色快速登录 / 切换角色"><i></i>请登录 / 切换角色 <span class="caret">▾</span></div>
+  </div>
+</header>
+
+<main class="wrap">
+  <!-- 面包屑 -->
+  <nav class="crumb"><a href="ui_portal_home.html">教程中心</a> / <a href="ui_portal_list.html">采购管理</a> / <b>MRP 自动算料：从 BOM 到采购建议</b></nav>
+
+  <!-- 标题区 -->
+  <div class="title-box">
+    <h1>MRP 自动算料：从 BOM 到采购建议</h1>
+    <div class="title-meta">
+      <span>👤 运营 · 李静</span><span>🕒 更新于 2026-08-15</span><span>👁 浏览 2,341</span><span>★ 收藏 187</span>
+      <span><span class="tag">#算料</span><span class="tag">#BOM</span><span class="tag">#审批</span></span>
+    </div>
+  </div>
+
+  <!-- 顶部工具条：字号调节 + 上一篇/下一篇 -->
+  <div class="toolbar card">
+    <span class="lbl">字号</span>
+    <button class="fs on" onclick="setFs(this,1)">标准</button>
+    <button class="fs" onclick="setFs(this,2)">大</button>
+    <button class="fs" onclick="setFs(this,3)">特大</button>
+    <span class="sp"></span>
+    <a class="btn btn-g" href="ui_portal_list.html" title="同分类上一篇：多级 BOM 拆解与损耗率设置">← 上一篇</a>
+    <a class="btn btn-g" href="ui_portal_list.html" title="同分类下一篇：采购申请到一键下单">下一篇 →</a>
+  </div>
+
+  <div class="layout">
+    <!-- 左侧正文 -->
+    <article class="article-col">
+      <div class="article card" id="art">
+        <!-- 继续阅读提示（按滚动位置自动保存进度） -->
+        <div class="resume" id="resume">📌 继续上次阅读：已完成 3/4 步（75%），建议从「第 4 步 · 生成采购建议并转采购申请」继续<span class="x" onclick="document.getElementById('resume').style.display='none'">✕</span></div>
+
+        <p><strong>MRP（Material Requirements Planning，物料需求计划）</strong>是云ERP生产采购链路的核心能力。本教程以「智能温控器 V2.3 收到 500 台销售订单」为例，演示从 <strong>BOM 检查 → 设置算料参数 → 执行运算 → 生成采购建议</strong> 的完整链路。学习完你将能够独立完成一次标准算料，预计耗时 8 分钟。点击步骤前的圆点可勾选完成，进度自动保存并同步到小程序端。</p>
+
+        <h3 id="s0" style="font-size:17px;margin:6px 0 4px;scroll-margin-top:150px">📺 视频演示</h3>
+        <!-- 视频区（外链 mp4 播放样式，失效时显示占位提示） -->
+        <div class="video">
+          <span class="vt">视频外链 · mp4 直链</span>
+          <div class="play">▶</div>
+          <div class="vc"><span>02:17</span><span class="vb"><i></i></span><span>06:42</span><span>1080P</span></div>
+        </div>
+
+        <!-- 第 1 步 -->
+        <div class="step done" data-n="1">
+          <div class="no" onclick="toggleStep(this)">✓</div>
+          <div class="step-body">
+            <h3 id="s1" onclick="toggleStep(this.parentNode.previousElementSibling)">第 1 步 · 检查 BOM 完整性</h3>
+            <p>进入<strong>生产 → BOM 管理</strong>，打开目标产品的 BOM 清单，确认参与运算的每一行子件信息准确无误：</p>
+            <ul>
+              <li><strong>用量与单位</strong>：核对每个子件的单位用量（如 0603 电容 100nF 每台 24 颗），用量错误会被订单量放大成整批错料；</li>
+              <li><strong>损耗率</strong>：SMT 贴片类物料建议维护 1%~3% 损耗率，接插件可设 0；</li>
+              <li><strong>替代料关系</strong>：仅在 BOM 行中维护过替代关系的物料才会参与替代运算；</li>
+              <li><strong>多级 BOM</strong>：逐层展开确认子件齐全，「智能温控器 V2.3」为 4 级结构共 86 行。</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- 第 2 步 -->
+        <div class="step done" data-n="2">
+          <div class="no" onclick="toggleStep(this)">✓</div>
+          <div class="step-body">
+            <h3 id="s2" onclick="toggleStep(this.parentNode.previousElementSibling)">第 2 步 · 设置算料参数</h3>
+            <p>打开<strong>生产 → MRP 算料 → 新建运算</strong>，按本次备料计划填写参数：</p>
+            <ul>
+              <li><strong>需求来源</strong>：选择销售订单 SO-20260812-007（智能温控器 500 台）；</li>
+              <li><strong>需求日期</strong>：2026-08-30（客户约定交期，系统按采购提前期倒推下单截止日）；</li>
+              <li><strong>勾选「含在途采购」</strong>：已下采购单未到货的数量计入可用；</li>
+              <li><strong>勾选「扣减现有库存」</strong>：现有良品库存优先抵扣，避免重复采购；</li>
+              <li>损耗率默认取 BOM 行设置，本次运算可临时覆盖。</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- 第 3 步 -->
+        <div class="step done" data-n="3">
+          <div class="no" onclick="toggleStep(this)">✓</div>
+          <div class="step-body">
+            <h3 id="s3" onclick="toggleStep(this.parentNode.previousElementSibling)">第 3 步 · 执行运算并解读缺料结果</h3>
+            <p>点击<strong>开始运算</strong>，10 秒内输出结果清单。系统按「毛需求 − 现有库存 − 在途 = 净缺料」逐行计算，并按缺料量倒序排列，<strong>红色行为紧急缺料</strong>（不满足最晚下单日）：</p>
+            <div class="ph-img"><b>🖼 截图占位</b><span>MRP 算料结果页：缺料 3 项标红，顶部汇总「本次运算 86 项，缺料 3 项」</span></div>
+            <ul>
+              <li>0603 电容 100nF：需求 12,000，可用 8,400，<strong>缺料 3,600</strong>（紧急）；</li>
+              <li>STM32F103C8T6：需求 620，可用 180，<strong>缺料 440</strong>（紧急，建议按 450 采购覆盖损耗）；</li>
+              <li>温控器主板 PCB：需求 500，可用 500，无需采购。</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- 第 4 步 -->
+        <div class="step" data-n="4">
+          <div class="no" onclick="toggleStep(this)">4</div>
+          <div class="step-body">
+            <h3 id="s4" onclick="toggleStep(this.parentNode.previousElementSibling)">第 4 步 · 生成采购建议并转采购申请</h3>
+            <p>确认缺料清单后进入收尾动作：</p>
+            <ul>
+              <li>勾选缺料行 → 点击<strong>生成采购建议</strong>，系统自动带出物料编码、建议采购量与建议交期；</li>
+              <li>一键<strong>转采购申请</strong>，按物料默认供应商自动拆分为多张申请单；</li>
+              <li>提交多级审批流（组长 → 采购经理），审批通过后可<strong>同步立创商城一键下单</strong>；</li>
+              <li>下单后回到 MRP 结果页，对应行状态自动变为「在途」，下次运算自动抵扣。</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- 注意事项 -->
+        <div class="note" id="s5" style="scroll-margin-top:150px">
+          <b>⚠️ 注意事项</b>
+          MRP 不会自动扣减「已分配给其它订单」的库存，请在参数中开启<strong>占用检查</strong>；替代料仅在 BOM 维护过替代关系才参与运算；建议每周一上午全量重算一次，避免在途数据过期导致重复采购。
+        </div>
+
+        <!-- 步骤进度条 -->
+        <div class="prog-box">
+          <div class="prog-h"><span>学习进度（点击步骤圆点可勾选完成，进度自动保存）</span><b id="progTxt">3/4 步已完成 · 75%</b></div>
+          <div class="prog"><i id="progBar" style="width:75%"></i></div>
+        </div>
+
+        <!-- 评价 + 留言（留言框仅评价"没帮助"时展开，PRD §7.3） -->
+        <div class="fb-box">
+          <div class="fb-q">这篇教程对你有帮助吗？</div>
+          <div class="fb-btns">
+            <button class="fb" id="good" onclick="vote('good')">👍 有帮助 96</button>
+            <button class="fb" id="bad" onclick="vote('bad')">👎 没帮助 8</button>
+          </div>
+          <div id="msgWrap" style="display:none;margin-top:10px">
+            <input class="fb-msg" id="fbMsg" type="text" maxlength="200" style="width:100%" placeholder="告诉我们哪里没帮助（选填，≤200 字，仅平台可见，如：截图是旧版界面，按步骤找不到按钮）">
+            <div style="text-align:right;font-size:11px;color:#94a3b8;margin-top:4px"><span id="msgCount">0</span>/200</div>
+          </div>
+          <div class="fb-sub">
+            <button class="btn btn-p" onclick="submitFb()">提交反馈</button>
+            <span style="font-size:12px;color:#94a3b8">留言仅平台运营可见，不会公开展示</span>
+          </div>
+        </div>
+
+        <!-- 分享 / 收藏 -->
+        <div class="acts">
+          <button class="btn btn-o" onclick="openShare()">🔗 分享</button>
+          <button class="btn btn-g" id="favBtn" onclick="toggleFav()">☆ 收藏（187）</button>
+          <a class="btn btn-g" href="ui_portal_list.html">返回列表</a>
+        </div>
+      </div>
+
+      <!-- 已下架态样式预览（menu-tree P3：提示横幅 + 正文不可见 + 同类推荐） -->
+      <div class="off-preview">
+        <div class="cap">▼ 以下为「已下架态」样式预览（教程被下架后进入本状态，如《来料检验操作指南》）</div>
+        <div class="off-banner">
+          <span style="font-size:18px">⛔</span>
+          <div><b>该教程已下架，正文不可见。</b><br>可能原因：内容过时或版本调整，可从下方同类推荐继续学习。</div>
+          <div class="ops"><a class="btn btn-g" href="ui_portal_list.html">浏览更多</a></div>
+        </div>
+        <div class="off-body">正文内容已隐藏……（第 1 步 · 到货扫码报检 → 第 2 步 · 记录合格数与不良数 → 第 3 步 · 检验通过自动入库 → 第 4 步 · 不合格转退货）</div>
+        <div class="off-rel">
+          <a href="ui_portal_detail.html"><b>采购申请到一键下单</b><span>👁 1,694 · 采购管理 · 同类推荐</span></a>
+          <a href="ui_portal_detail.html"><b>委外加工下单与收货</b><span>👁 1,146 · 采购管理 · 同类推荐</span></a>
+        </div>
+      </div>
+    </article>
+
+    <!-- 右侧信息栏 -->
+    <aside class="side-col">
+      <!-- 目录锚点导航 -->
+      <div class="toc card">
+        <h3>📖 本页目录</h3>
+        <a href="#s0" class="on">视频演示</a>
+        <a href="#s1">第 1 步 · 检查 BOM 完整性</a>
+        <a href="#s2">第 2 步 · 设置算料参数</a>
+        <a href="#s3">第 3 步 · 执行运算并解读缺料</a>
+        <a href="#s4">第 4 步 · 生成采购建议</a>
+        <a href="#s5">注意事项</a>
+      </div>
+
+      <!-- 信息卡 -->
+      <div class="info card">
+        <h3>📄 教程信息</h3>
+        <div class="row"><span>分类</span><b>采购管理 › MRP 算料</b></div>
+        <div class="row"><span>标签</span><b>#算料 #BOM #审批</b></div>
+        <div class="row"><span>浏览量</span><b>2,341</b></div>
+        <div class="row"><span>收藏量</span><b>187</b></div>
+        <div class="row"><span>作者</span><b>运营 · 李静</b></div>
+        <div class="row"><span>更新时间</span><b>2026-08-15</b></div>
+      </div>
+
+      <!-- 关联推荐（同分类 4 篇） -->
+      <div class="rel card">
+        <h3>🧩 相关教程</h3>
+        <a href="ui_portal_detail.html"><b>采购申请到一键下单</b><span>👁 1,694 · 采购管理</span></a>
+        <a href="ui_portal_detail.html"><b>供应商比价与立创同步</b><span>👁 1,523 · 采购管理</span></a>
+        <a href="ui_portal_detail.html"><b>委外加工下单与收货</b><span>👁 1,146 · 采购管理</span></a>
+        <a href="ui_portal_detail.html"><b>采购退货全流程</b><span>👁 987 · 采购管理</span></a>
+      </div>
+    </aside>
+  </div>
+</main>
+
+<!-- 分享弹窗 -->
+<div class="mask" id="shareMask" onclick="if(event.target===this)closeShare()">
+  <div class="dlg">
+    <span class="close" onclick="closeShare()">✕</span>
+    <h3>🔗 分享教程</h3>
+    <div class="lbl2">教程链接（PC 端）</div>
+    <div class="link-row">
+      <input id="shareLink" readonly value="https://erp.jlc-eda.com/portal/detail/tut-2026-0031">
+      <button class="btn btn-p" onclick="copyLink(this)">复制</button>
+    </div>
+    <div class="lbl2" style="text-align:center">手机扫码在小程序打开本教程</div>
+    <div class="qr"></div>
+    <div class="qr-cap">二维码内容 = 本篇教程小程序端 URL · 扫码直达续读</div>
+  </div>
+</div>
+
+<!-- 选角色快速登录弹窗（PRD §7.11 · AC-FN-03）：未登录点收藏 / 评价时弹出，登录后回到原操作位 -->
+<div class="rlm-mask" id="roleMask" onclick="if(event.target===this)closeRoleLogin()">
+  <div class="rlm">
+    <span class="close" onclick="closeRoleLogin()">✕</span>
+    <h3>🔑 选角色快速登录</h3>
+    <div class="sub" id="rlmSub">登录后才能收藏与评价，选择角色继续（免密演示，登录后回到原操作位）</div>
+    <div class="rlm-grid">
+      <div class="rlm-card" onclick="pickRole('销售','李娜','📈')"><div class="ic">📈</div><b>销售</b><span>销售 · 李娜</span></div>
+      <div class="rlm-card" onclick="pickRole('采购','张伟','🛒')"><div class="ic">🛒</div><b>采购</b><span>采购 · 张伟</span></div>
+      <div class="rlm-card" onclick="pickRole('生产','王强','🏭')"><div class="ic">🏭</div><b>生产</b><span>生产 · 王强</span></div>
+      <div class="rlm-card" onclick="pickRole('仓库','赵敏','📦')"><div class="ic">📦</div><b>仓库</b><span>仓库 · 赵敏</span></div>
+      <div class="rlm-card" onclick="pickRole('管理','陈涛','⚙️')"><div class="ic">⚙️</div><b>管理</b><span>管理 · 陈涛</span></div>
+      <div class="rlm-card" onclick="pickRole('财务','周莉','💰')"><div class="ic">💰</div><b>财务</b><span>财务 · 周莉</span></div>
+    </div>
+    <div class="rlm-tip">演示链路 AC-FN-03：未登录点收藏 → 弹出本登录框 → 选角色 → 回到原位继续操作</div>
+  </div>
+</div>
+
+<footer class="footer">嘉立创云ERP · 教程中心 原型演示 · PRD §7.3 教程详情页 · RE00001</footer>
+
+<script>
+// 选角色快速登录（PRD §7.11 · AC-FN-03）：未登录点收藏 / 评价先弹登录，登录后回原位
+var curRole=null;
+function openRoleLogin(){document.getElementById('roleMask').classList.add('show')}
+function closeRoleLogin(){document.getElementById('roleMask').classList.remove('show')}
+function pickRole(role,name){
+  curRole=role;
+  document.getElementById('whoPill').innerHTML='<i></i>'+role+' · '+name+' <span class="caret">▾</span>';
+  closeRoleLogin();
+  alert('演示：已以「'+role+' · '+name+'」登录，请继续刚才的操作');
+}
+// 字号三档（仅影响正文）
+function setFs(btn,lv){
+  document.querySelectorAll('.fs').forEach(function(b){b.classList.remove('on')});
+  btn.classList.add('on');
+  var a=document.getElementById('art');
+  a.classList.remove('fs2','fs3');
+  if(lv===2)a.classList.add('fs2');
+  if(lv===3)a.classList.add('fs3');
+}
+// 步骤勾选 → 进度条更新（自动保存，跨端同步）
+function toggleStep(no){
+  var st=no.parentNode;
+  st.classList.toggle('done');
+  no.textContent=st.classList.contains('done')?'✓':st.dataset.n;
+  var total=document.querySelectorAll('.step').length;
+  var done=document.querySelectorAll('.step.done').length;
+  var pct=Math.round(done/total*100);
+  document.getElementById('progBar').style.width=pct+'%';
+  document.getElementById('progTxt').textContent=done+'/'+total+' 步已完成 · '+pct+'%';
+}
+// 有帮助/没帮助 二选一，可修改；留言框仅"没帮助"时展开（PRD §7.3）
+function vote(t){
+  if(!curRole){document.getElementById('rlmSub').textContent='登录后才能评价，选择角色继续（免密演示，登录后回到原操作位）';openRoleLogin();return}
+  var g=document.getElementById('good'),b=document.getElementById('bad');
+  var mw=document.getElementById('msgWrap');
+  if(t==='good'){g.className='fb on-good';b.className='fb';mw.style.display='none'}
+  else{b.className='fb on-bad';g.className='fb';mw.style.display='block';document.getElementById('fbMsg').focus()}
+}
+// 留言字数计数（≤200）
+document.getElementById('fbMsg').addEventListener('input',function(){
+  document.getElementById('msgCount').textContent=this.value.length;
+});
+function submitFb(){
+  if(!curRole){document.getElementById('rlmSub').textContent='登录后才能提交反馈，选择角色继续（免密演示）';openRoleLogin();return}
+  if(!document.getElementById('good').classList.contains('on-good')&&!document.getElementById('bad').classList.contains('on-bad')){alert('请先选择「有帮助」或「没帮助」');return}
+  alert('演示：反馈已提交，每篇教程仅可提交一条，可随时修改');
+}
+// 收藏/取消收藏（未登录先弹选角色登录）
+var faved=false;
+function toggleFav(){
+  if(!curRole){document.getElementById('rlmSub').textContent='登录后才能收藏教程，选择角色继续（免密演示，登录后回到原位）';openRoleLogin();return}
+  var btn=document.getElementById('favBtn');
+  faved=!faved;
+  btn.textContent=faved?'★ 已收藏（188）':'☆ 收藏（187）';
+  btn.className=faved?'btn btn-p':'btn btn-g';
+}
+// 分享弹窗
+function openShare(){document.getElementById('shareMask').classList.add('show')}
+function closeShare(){document.getElementById('shareMask').classList.remove('show')}
+function copyLink(btn){
+  var inp=document.getElementById('shareLink');
+  inp.select();
+  if(navigator.clipboard){navigator.clipboard.writeText(inp.value)}
+  btn.textContent='已复制';
+  setTimeout(function(){btn.textContent='复制'},1500);
+}
+// 目录滚动高亮
+var tocLinks=[].slice.call(document.querySelectorAll('.toc a'));
+var ids=['s0','s1','s2','s3','s4','s5'];
+window.addEventListener('scroll',function(){
+  var cur=0;
+  ids.forEach(function(id,i){
+    var el=document.getElementById(id);
+    if(el&&el.getBoundingClientRect().top<170)cur=i;
+  });
+  tocLinks.forEach(function(a,i){a.classList.toggle('on',i===cur)});
+},{passive:true});
+</script>
+</body>
+</html>

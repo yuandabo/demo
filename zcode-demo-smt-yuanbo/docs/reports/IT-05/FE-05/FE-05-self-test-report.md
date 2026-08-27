@@ -1,0 +1,33 @@
+# FE-05 自测报告（IT-05 · m 收藏历史 #/favorite）
+
+- **任务ID**: IT-05/FE-05
+- **测试时间**: 2026-08-21
+- **测试方式**: Playwright 375×812 直驱（verify-fe05.mjs）+ 视觉复核（FE-05-impl.png / FE-05-history.png 对照 ui_m_favorite.html）
+- **AC 验证**: AC-FN-15、AC-FN-23、AC-RULE-11、UI-ELEM-02 **pass**（另覆盖 AC-FN-03 登录引导、AC-RULE-04/AC-EG-10 已下架善后、AC-NF-03 375 适配）
+  - **43/43 断言通过**：未登录引导→登录自动加载、Tab 本地切换零请求、取消收藏局部移除、已下架灰显+点击拦截、进度环 60%/100%/30% 三态、跨端取最新 80%、PC↔m 双向可见、下拉刷新手势、骨架/失败重试/双空态
+- **Mock 测试覆盖率摘要**: 无独立 mock 层——真实后端 3 端点（GET/DELETE favorites、GET histories，IT-04 交付）经 vite proxy 直连；异常分支用 Playwright route 注入（GET favorites 延迟 400ms=骨架屏、abort=网络失败）；已下架教程的收藏/历史由 verify 脚本直插 erp.db 复现"下架前已收藏"（POST 侧 VISIBLE_SQL 会 404，无法经 API 造数）；交互操作 5/5 全覆盖；测试后 POST /api/system/reset 还原种子
+- **关键断言明细**:
+  - 未登录引导（AC-FN-03）：进入 #/favorite 弹 RoleSheet 且 0 请求；选「采购」→ 回本页并行 GET favorites+histories 自动加载；导航标题/同步提示条文案与设计稿逐字一致；TabBar「收藏」active
+  - 收藏面板（UI-ELEM-02/AC-RULE-04）：标题/分类徽标/收藏于日期/👁/❤️ 完整；已下架卡 .off 灰显 +「已下架」标签 + 无正文入口（无 Link）+ 🤍；点击不跳转（仍 #/favorite）；末尾留存提示文案同源
+  - 历史+进度环（AC-FN-23/AC-RULE-11）：Tab 切换零 HTTP（面板本地切换）；60% → conic 216°+中心「60%」；100% → done 类绿环 rgb(22,163,74)+「✓」；30% → 108°；进行中「上次阅读 今天 HH:mm · 续读与 PC 同步」/完成「完成于 MM-DD」；已下架历史条目同规则灰显+标签+点击拦截
+  - 跨端取最新（AC-RULE-11）：API 写 80%（模拟 PC 续读）→ m reload → 环 288°/80%；历史环值与详情页续读条「上次读到 80%」同值
+  - 取消收藏（AC-FN-15 m 侧）：❤️ 点击 → Network 捕获 DELETE /api/favorites/7 → 卡片局部移除（不整页刷新）+ Tab 计数 4→3；PC 口径 GET 同数据源确认不可见；已下架条目（24）取消同样移除（契约：取消不校验可见性）
+  - 双向同步（AC-FN-15）：API 收藏 7（模拟 PC）→ m reload 出现；m 详情页 ❤️ 取消 5 → PC 口径 GET 确认不可见
+  - 下拉刷新（交互 5）：合成 touch 手势过 56px 阈值释放 → 「正在刷新…」+ 重发 GET（usePullToRefresh 钩子，与列表页共用）
+  - 三态：route 延迟 400ms → 骨架卡；abort → 「加载失败」+重试恢复；reset 后 warehouse 账号 → 收藏空态（去首页逛逛跳 #/）+ 历史空态「暂无阅读记录」
+  - 全程 0 未捕获 JS 异常；`npm run build`（tsc --noEmit 0 error + vite build）通过
+- **对设计稿的偏离（均可溯源）**:
+  - ① 新增下拉刷新提示条（设计稿无）：任务交互 5「下拉刷新（复用列表页下拉交互模式）」要求，复用 ui_m_list.html 的 UI-IXD-13 模式
+  - ② 进度环弧度按 progress 动态计算（N×3.6°）：设计稿 p30/p60 为离散档位且自带 75% 内联样式，动态算式为其泛化
+  - ③ 空态引导卡（⭐暂无收藏/🕘暂无阅读记录 + 去首页按钮）：任务交互 1 空态处理要求，设计稿仅含非空演示态
+  - ④ 已下架历史条目灰显+标签：设计稿历史面板无已下架示例，按 AC-FN-23「已下架教程条目标注规则同收藏列表」补齐
+  - ⑤ 已下架卡 🤍 可点击取消收藏：delete-api-favorites 契约「已下架教程的收藏也可取消」；设计稿 🤍 仅示弱化态
+  - ⑥ 收藏于日期统一 MM-DD：favoritedAt 契约 yyyy-MM-dd HH:mm:ss，设计稿「收藏于 08-19」同口径截取
+- **关键实现决策（影响后续任务）**:
+  - 下拉刷新逻辑自 List.tsx 提取为 `web/src/m/usePullToRefresh.ts`（bodyRef+onRefresh 入参，armed/refreshing 由钩子管理），List/Favorite 共用，List 行为不变已回归（请求计数 2→3、0 报错）
+  - `shared/types.ts` 新增 `FavoriteItem`/`HistoryItem`；`shared/constants.ts` 新增 `categoryIcon(name)`（模块展示名反查 erpModule 图标，收藏/历史卡片缩略位共用）
+  - 收藏/历史一次 pageSize=100 取全：Tab 计数与局部移除都以列表长度为唯一事实源，不另存 total 防双源漂移
+  - 骨架/错误块仅活动面板渲染（testid 唯一），数据列表双面板常驻 DOM 支持 Tab 零请求切换
+  - 401 中途失效回空态（不展示错误横幅），RoleSheet 由 api.ts 广播 + 页面 effect 双通道打开，重登后经 user?.id 变化自动重载
+- **实现图**: FE-05-impl.png（登录态收藏 Tab：4 卡含已下架灰显）/ FE-05-history.png（历史 Tab：80%/✓/30% 进度环 + 已下架灰✓）/ FE-05-empty.png（双空态）/ verify-result.json（43/43）
+- **类型检查/构建**: `npm run build`（tsc --noEmit 0 error + vite build）通过；无独立 lint 命令

@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>全部教程 - 嘉立创云ERP · 教程中心</title>
+<style>
+:root{--p:#0066ff;--acc:#00d4ff;--cta:#f97316;--d:#0f172a;--g:#64748b;--b:#e2e8f0;--bg:#f8fafc;--r:12px;--rl:20px;--sh:0 1px 3px rgba(0,0,0,.06)}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'PingFang SC','Microsoft YaHei',sans-serif;background:var(--bg);color:var(--d);font-size:14px;line-height:1.6}
+a{color:inherit;text-decoration:none}
+ul,ol{list-style:none}
+button{font-family:inherit}
+.wrap{width:1200px;margin:0 auto}
+/* ===== 顶部导航（全站统一） ===== */
+.topbar{background:linear-gradient(135deg,#0c1a2e,#1a365d,#0c1a2e);position:sticky;top:0;z-index:50;box-shadow:0 2px 8px rgba(12,26,46,.35)}
+.bar{height:60px;display:flex;align-items:center;gap:28px}
+.logo{display:flex;align-items:center;gap:10px;color:#fff;font-size:17px;font-weight:700;white-space:nowrap}
+.logo .mark{width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,var(--p),var(--acc));display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;letter-spacing:.5px;color:#fff}
+.nav{display:flex;gap:4px;flex:1}
+.nav a{color:#cbd5e1;font-size:14px;padding:6px 14px;border-radius:8px;transition:.15s}
+.nav a:hover{color:#fff;background:rgba(255,255,255,.08)}
+.nav a.on{color:var(--acc);background:rgba(0,212,255,.14);font-weight:600}
+.who{display:flex;align-items:center;gap:8px;color:#e2e8f0;font-size:13px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);padding:5px 14px;border-radius:999px;white-space:nowrap}
+.who i{width:8px;height:8px;border-radius:50%;background:var(--acc);display:inline-block}
+/* ===== 通用组件 ===== */
+.card{background:#fff;border:1px solid var(--b);border-radius:var(--r);box-shadow:var(--sh)}
+.tag{display:inline-block;background:#e8f0fe;color:var(--p);font-size:12px;line-height:20px;padding:1px 10px;border-radius:999px;margin-right:6px}
+.cat{display:inline-block;background:#f1f5f9;color:var(--g);font-size:12px;line-height:20px;padding:1px 10px;border-radius:999px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;cursor:pointer;border:none;border-radius:8px;font-size:13px;padding:8px 16px;transition:.15s}
+.btn-p{background:var(--p);color:#fff}
+.btn-p:hover{background:#0052cc}
+.btn-g{background:#fff;border:1px solid var(--b);color:var(--g)}
+.btn-g:hover{border-color:var(--p);color:var(--p)}
+.footer{padding:30px 0 40px;text-align:center;color:#94a3b8;font-size:12px}
+/* ===== 搜索区 ===== */
+.page-h{margin:24px 0 16px;display:flex;align-items:center;gap:10px}
+.page-h .bar-i{width:4px;height:20px;border-radius:2px;background:linear-gradient(180deg,var(--p),var(--acc))}
+.page-h h1{font-size:22px}
+.page-h .sub{color:var(--g);font-size:13px}
+.search-card{padding:18px 20px}
+.search-row{display:flex;gap:10px}
+.search-row input{flex:1;height:44px;border:1px solid var(--b);border-radius:10px;padding:0 16px;font-size:14px;font-family:inherit;outline:none;transition:.15s}
+.search-row input:focus{border-color:var(--p);box-shadow:0 0 0 3px rgba(0,102,255,.12)}
+.search-row .btn{height:44px;padding:0 26px;font-size:14px}
+.hot-words{margin-top:10px;font-size:12px;color:#94a3b8;display:flex;align-items:center;gap:8px}
+.hot-words a{color:var(--g);background:#f1f5f9;padding:2px 10px;border-radius:999px}
+.hot-words a:hover{color:var(--p);background:#e8f0fe}
+/* ===== 布局 ===== */
+.layout{display:flex;gap:16px;margin-top:16px;align-items:flex-start}
+.side{width:264px;flex-shrink:0;display:flex;flex-direction:column;gap:14px}
+.side .card{padding:14px}
+.side h3{font-size:14px;margin-bottom:10px;display:flex;align-items:center;gap:6px}
+.side h3::before{content:'';width:3px;height:14px;border-radius:2px;background:var(--p)}
+.tree a{display:flex;align-items:center;justify-content:space-between;padding:7px 10px;border-radius:8px;color:var(--g);font-size:13px;cursor:pointer}
+.tree a:hover{background:#f1f5f9;color:var(--d)}
+.tree a.on{background:#e8f0fe;color:var(--p);font-weight:600}
+.tree .cnt-n{font-size:12px;color:#94a3b8}
+.tree .child{margin-left:18px;border-left:1px dashed var(--b);padding-left:8px;display:none}
+.tree .child.show{display:block}
+.tree .child a::before{content:'└';color:#cbd5e1;margin-right:4px}
+.arrow{display:inline-block;transition:.2s;font-size:10px;color:#94a3b8}
+.exp.open .arrow{transform:rotate(90deg)}
+.tags{display:flex;flex-wrap:wrap;gap:8px}
+.tg{cursor:pointer;font-size:12px;line-height:22px;padding:0 12px;border-radius:999px;border:1px solid var(--b);color:var(--g);background:#fff;transition:.15s}
+.tg:hover{border-color:var(--p);color:var(--p)}
+.tg.sel{background:var(--p);border-color:var(--p);color:#fff}
+/* ===== 列表 ===== */
+.list{flex:1;min-width:0}
+.list-meta{display:flex;align-items:center;margin-bottom:12px;font-size:13px;color:var(--g)}
+.list-meta b{color:var(--p)}
+.list-meta .clr{margin-left:auto;color:var(--cta);cursor:pointer;font-size:12px}
+.row-card{display:flex;gap:18px;padding:18px 20px;margin-bottom:12px;transition:.15s}
+.row-card:hover{border-color:#c7dbff;box-shadow:0 6px 18px rgba(0,102,255,.10)}
+.rc-l{flex:1;min-width:0}
+.crumb{font-size:12px;color:#94a3b8;margin-bottom:4px}
+.crumb a:hover{color:var(--p)}
+.rc-l h3{font-size:16px;margin-bottom:6px}
+.row-card:hover h3{color:var(--p)}
+.pin{display:inline-block;background:var(--cta);color:#fff;font-size:11px;line-height:18px;padding:0 8px;border-radius:999px;margin-left:8px;vertical-align:2px;font-weight:400}
+.rc-l p{color:var(--g);font-size:13px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.rc-tags{margin-top:8px}
+.rc-r{width:112px;flex-shrink:0;display:flex;flex-direction:column;align-items:flex-end;gap:6px;border-left:1px dashed var(--b);padding-left:16px}
+.rc-r .n{font-size:12px;color:#94a3b8;display:flex;align-items:center;gap:4px}
+.rc-r .n b{color:var(--d);font-weight:600}
+.rc-r .go{margin-top:auto}
+/* ===== 分页 ===== */
+.pager{display:flex;gap:8px;justify-content:center;margin:22px 0}
+.pager a{min-width:36px;height:36px;display:flex;align-items:center;justify-content:center;border:1px solid var(--b);border-radius:8px;background:#fff;color:var(--g);font-size:13px;padding:0 12px}
+.pager a:hover{border-color:var(--p);color:var(--p)}
+.pager a.on{background:var(--p);border-color:var(--p);color:#fff}
+.pager .dots{align-self:center;color:#cbd5e1}
+/* ===== 空态 ===== */
+.empty-note{margin-top:20px;font-size:12px;color:#94a3b8;text-align:center}
+.empty{border:1.5px dashed #cbd5e1;border-radius:var(--r);padding:34px 20px;text-align:center;color:var(--g);background:#fff}
+.empty .eic{font-size:36px;margin-bottom:8px}
+.empty b{color:var(--d);font-size:15px;display:block;margin-bottom:4px}
+.empty .ops{margin-top:14px;display:flex;gap:10px;justify-content:center}
+</style>
+</head>
+<body>
+<!-- 顶部导航：5 页统一，当前页高亮 #00d4ff -->
+<header class="topbar">
+  <div class="wrap bar">
+    <a class="logo" href="ui_portal_home.html"><span class="mark">ERP</span>嘉立创云ERP · 教程中心</a>
+    <nav class="nav">
+      <a href="ui_portal_home.html">教程首页</a>
+      <a class="on" href="ui_portal_list.html">全部教程</a>
+      <a href="ui_portal_workbench.html">模拟工作台</a>
+      <a href="ui_portal_my.html">我的</a>
+    </nav>
+    <div class="who"><i></i>采购 · 张伟</div>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="page-h">
+    <span class="bar-i"></span><h1>全部教程</h1><span class="sub">分类 + 标签 + 关键词，1 秒内返回结果</span>
+  </div>
+
+  <!-- 搜索框：命中标题/摘要/标签 -->
+  <div class="search-card card">
+    <div class="search-row">
+      <input id="kw" type="text" placeholder="搜索教程标题/摘要/标签">
+      <button class="btn btn-p" onclick="doSearch()">搜 索</button>
+    </div>
+    <div class="hot-words">热门搜索：<a onclick="setKw('算料')">算料</a><a onclick="setKw('BOM')">BOM</a><a onclick="setKw('报工')">报工</a><a onclick="setKw('对账')">对账</a><a onclick="setKw('扫码')">扫码</a></div>
+  </div>
+
+  <div class="layout">
+    <!-- 左侧：分类树 + 标签筛选 -->
+    <aside class="side">
+      <div class="card">
+        <h3>分类目录</h3>
+        <div class="tree" id="tree">
+          <a class="on" data-c="全部教程">全部教程 <span class="cnt-n">18</span></a>
+          <a data-c="销售管理" class="exp" onclick="toggleChild(this,event)">销售管理 <span><span class="arrow">▶</span> <span class="cnt-n">3</span></span></a>
+          <div class="child">
+            <a data-c="报价管理">报价管理 <span class="cnt-n">1</span></a>
+            <a data-c="订单管理">订单管理 <span class="cnt-n">1</span></a>
+            <a data-c="销售报表">销售报表 <span class="cnt-n">1</span></a>
+          </div>
+          <a data-c="项目管理">项目管理 <span class="cnt-n">2</span></a>
+          <a data-c="文件管理">文件管理 <span class="cnt-n">1</span></a>
+          <a data-c="生产制造">生产制造 <span class="cnt-n">3</span></a>
+          <a data-c="采购管理">采购管理 <span class="cnt-n">3</span></a>
+          <a data-c="库存管理">库存管理 <span class="cnt-n">2</span></a>
+          <a data-c="人事财务">人事财务 <span class="cnt-n">1</span></a>
+          <a data-c="系统设置">系统设置 <span class="cnt-n" style="color:#cbd5e1">0</span></a>
+          <a data-c="新手入门">新手入门 <span class="cnt-n">1</span></a>
+          <a data-c="最佳实践">最佳实践 <span class="cnt-n">1</span></a>
+          <a data-c="常见问题">常见问题 <span class="cnt-n">1</span></a>
+          <a data-c="开放平台">开放平台 <span class="cnt-n" style="color:#cbd5e1">0</span></a>
+        </div>
+      </div>
+      <div class="card">
+        <h3>标签筛选 <span style="font-size:11px;color:#94a3b8;font-weight:400">可多选（交集）</span></h3>
+        <div class="tags" id="tagBox">
+          <span class="tg" onclick="tgSel(this)">#算料</span>
+          <span class="tg" onclick="tgSel(this)">#BOM</span>
+          <span class="tg" onclick="tgSel(this)">#扫码</span>
+          <span class="tg" onclick="tgSel(this)">#报工</span>
+          <span class="tg" onclick="tgSel(this)">#审批</span>
+          <span class="tg" onclick="tgSel(this)">#对账</span>
+        </div>
+      </div>
+    </aside>
+
+    <!-- 右侧：教程列表（置顶优先） -->
+    <section class="list">
+      <div class="list-meta">共 <b id="total">18</b> 篇已发布教程 · 当前分类：<b id="curCat">全部教程</b> · 标签：<b id="curTags">未选</b><span class="clr" onclick="clearAll()">✕ 清空筛选</span></div>
+
+      <a class="row-card card" href="ui_portal_detail.html">
+        <div class="rc-l">
+          <div class="crumb"><a href="ui_portal_home.html">教程中心</a> / <a href="ui_portal_list.html">采购管理</a> / MRP 算料</div>
+          <h3>MRP 自动算料：从 BOM 到采购建议<span class="pin">置顶</span></h3>
+          <p>以「智能温控器 500 台订单」为例，演示销售订单驱动 MRP 运算：检查 BOM、设置参数、解读缺料结果，最后一键生成采购建议并转采购申请。</p>
+          <div class="rc-tags"><span class="tag">#算料</span><span class="tag">#BOM</span><span class="tag">#审批</span></div>
+        </div>
+        <div class="rc-r">
+          <span class="n">👁 <b>2,341</b></span>
+          <span class="n">★ <b>187</b></span>
+          <span class="n">🕒 2026-08-15</span>
+          <button class="btn btn-g go">进入详情 →</button>
+        </div>
+      </a>
+
+      <a class="row-card card" href="ui_portal_detail.html">
+        <div class="rc-l">
+          <div class="crumb"><a href="ui_portal_home.html">教程中心</a> / <a href="ui_portal_list.html">生产制造</a> / 工序报工</div>
+          <h3>小程序车间扫码报工</h3>
+          <p>车间员工用手机扫描工单二维码即可完成工序报工，完工数量、不良数量实时回传，生产进度不再靠嘴问。</p>
+          <div class="rc-tags"><span class="tag">#报工</span><span class="tag">#扫码</span></div>
+        </div>
+        <div class="rc-r">
+          <span class="n">👁 <b>2,865</b></span>
+          <span class="n">★ <b>233</b></span>
+          <span class="n">🕒 2026-08-18</span>
+          <button class="btn btn-g go">进入详情 →</button>
+        </div>
+      </a>
+
+      <a class="row-card card" href="ui_portal_detail.html">
+        <div class="rc-l">
+          <div class="crumb"><a href="ui_portal_home.html">教程中心</a> / <a href="ui_portal_list.html">采购管理</a> / 供应商</div>
+          <h3>供应商比价与立创同步</h3>
+          <p>同一物料多家供应商报价横向对比，元器件价格实时联动 BOM 成本，勾选最优报价直接生成采购单。</p>
+          <div class="rc-tags"><span class="tag">#对账</span></div>
+        </div>
+        <div class="rc-r">
+          <span class="n">👁 <b>1,523</b></span>
+          <span class="n">★ <b>91</b></span>
+          <span class="n">🕒 2026-08-10</span>
+          <button class="btn btn-g go">进入详情 →</button>
+        </div>
+      </a>
+
+      <a class="row-card card" href="ui_portal_detail.html">
+        <div class="rc-l">
+          <div class="crumb"><a href="ui_portal_home.html">教程中心</a> / <a href="ui_portal_list.html">销售管理</a> / 报价管理</div>
+          <h3>销售报价单快速建档</h3>
+          <p>三分钟建好一份规范报价单：产品明细、税率、交期一次录入，客户确认后一键转销售订单，价格留痕可追溯。</p>
+          <div class="rc-tags"><span class="tag">#报价</span><span class="tag">#审批</span></div>
+        </div>
+        <div class="rc-r">
+          <span class="n">👁 <b>2,105</b></span>
+          <span class="n">★ <b>142</b></span>
+          <span class="n">🕒 2026-08-06</span>
+          <button class="btn btn-g go">进入详情 →</button>
+        </div>
+      </a>
+
+      <a class="row-card card" href="ui_portal_detail.html">
+        <div class="rc-l">
+          <div class="crumb"><a href="ui_portal_home.html">教程中心</a> / <a href="ui_portal_list.html">库存管理</a> / 库位初始化</div>
+          <h3>库位三级初始化与找料神器</h3>
+          <p>仓库-货架-库位三级建模，物料与库位绑定后手机扫码秒级定位，告别「翻箱倒柜找物料」。</p>
+          <div class="rc-tags"><span class="tag">#扫码</span></div>
+        </div>
+        <div class="rc-r">
+          <span class="n">👁 <b>1,980</b></span>
+          <span class="n">★ <b>118</b></span>
+          <span class="n">🕒 2026-08-05</span>
+          <button class="btn btn-g go">进入详情 →</button>
+        </div>
+      </a>
+
+      <a class="row-card card" href="ui_portal_detail.html">
+        <div class="rc-l">
+          <div class="crumb"><a href="ui_portal_home.html">教程中心</a> / <a href="ui_portal_list.html">人事财务</a> / 应收应付</div>
+          <h3>应收应付自动对账</h3>
+          <p>销售回款与采购付款自动匹配订单和发票，差异项高亮提示，月末对账从 3 天缩短到 1 小时。</p>
+          <div class="rc-tags"><span class="tag">#对账</span></div>
+        </div>
+        <div class="rc-r">
+          <span class="n">👁 <b>1,462</b></span>
+          <span class="n">★ <b>87</b></span>
+          <span class="n">🕒 2026-08-14</span>
+          <button class="btn btn-g go">进入详情 →</button>
+        </div>
+      </a>
+
+      <a class="row-card card" href="ui_portal_detail.html">
+        <div class="rc-l">
+          <div class="crumb"><a href="ui_portal_home.html">教程中心</a> / <a href="ui_portal_list.html">生产制造</a> / BOM 管理</div>
+          <h3>多级 BOM 拆解与损耗率设置</h3>
+          <p>讲清父件与子件的层级关系、用量与损耗率维护要点，避免「BOM 建错、整批料算错」的高频事故。</p>
+          <div class="rc-tags"><span class="tag">#BOM</span><span class="tag">#算料</span></div>
+        </div>
+        <div class="rc-r">
+          <span class="n">👁 <b>1,338</b></span>
+          <span class="n">★ <b>95</b></span>
+          <span class="n">🕒 2026-08-13</span>
+          <button class="btn btn-g go">进入详情 →</button>
+        </div>
+      </a>
+
+      <a class="row-card card" href="ui_portal_detail.html">
+        <div class="rc-l">
+          <div class="crumb"><a href="ui_portal_home.html">教程中心</a> / <a href="ui_portal_list.html">采购管理</a> / 退货管理</div>
+          <h3>采购退货全流程</h3>
+          <p>从来料不合格发起退货、生成退货单、供应商确认收货，到退款对账与应付冲销的完整操作链路。</p>
+          <div class="rc-tags"><span class="tag">#对账</span><span class="tag">#审批</span></div>
+        </div>
+        <div class="rc-r">
+          <span class="n">👁 <b>987</b></span>
+          <span class="n">★ <b>61</b></span>
+          <span class="n">🕒 2026-08-09</span>
+          <button class="btn btn-g go">进入详情 →</button>
+        </div>
+      </a>
+
+      <a class="row-card card" href="ui_portal_detail.html">
+        <div class="rc-l">
+          <div class="crumb"><a href="ui_portal_home.html">教程中心</a> / <a href="ui_portal_list.html">文件管理</a> / 权限</div>
+          <h3>文件中心权限与设计成果物归档</h3>
+          <p>原理图、Gerber、结构图等研发成果物集中归档，按项目设置查看/下载权限，防止设计文件散落外流。</p>
+          <div class="rc-tags"><span class="tag">#权限</span></div>
+        </div>
+        <div class="rc-r">
+          <span class="n">👁 <b>764</b></span>
+          <span class="n">★ <b>42</b></span>
+          <span class="n">🕒 2026-08-02</span>
+          <button class="btn btn-g go">进入详情 →</button>
+        </div>
+      </a>
+
+      <!-- 分页器 -->
+      <div class="pager">
+        <a>« 上一页</a>
+        <a class="on">1</a>
+        <a href="ui_portal_list.html">2</a>
+        <a href="ui_portal_list.html">3</a>
+        <span class="dots">…</span>
+        <a href="ui_portal_list.html">下一页 »</a>
+      </div>
+
+      <!-- 空态提示区块（搜索/筛选无结果时展示） -->
+      <p class="empty-note">▼ 以下为「无结果」空态样式预览（输入未命中关键词或筛选组合无教程时展示）</p>
+      <div class="empty">
+        <div class="eic">🔍</div>
+        <b>未找到相关教程</b>
+        试试清空筛选或去分类浏览，也可以换个关键词（支持标题 / 摘要 / 标签模糊命中）
+        <div class="ops">
+          <button class="btn btn-p" onclick="clearAll()">清空筛选</button>
+          <a class="btn btn-g" href="ui_portal_home.html">去分类浏览</a>
+        </div>
+      </div>
+    </section>
+  </div>
+</main>
+
+<footer class="footer">嘉立创云ERP · 教程中心 原型演示 · PRD §7.2 教程列表页 · RE00001</footer>
+
+<script>
+// 分类选中联动（原型演示：切换当前分类名）
+document.querySelectorAll('#tree a').forEach(function(a){
+  a.addEventListener('click',function(){
+    document.querySelectorAll('#tree a').forEach(function(x){x.classList.remove('on')});
+    a.classList.add('on');
+    document.getElementById('curCat').textContent=a.dataset.c;
+  });
+});
+// 二级分类展开/收起
+function toggleChild(a,e){
+  e.stopPropagation();
+  var c=a.nextElementSibling;
+  while(c&&!c.classList.contains('child')){break}
+  if(c){c.classList.toggle('show');a.classList.toggle('open')}
+}
+// 标签多选（交集筛选）
+function tgSel(t){
+  t.classList.toggle('sel');
+  var s=document.querySelectorAll('#tagBox .tg.sel');
+  document.getElementById('curTags').textContent=s.length?Array.prototype.map.call(s,function(x){return x.textContent}).join(' + '):'未选';
+}
+// 搜索（原型演示：仅提示）
+function doSearch(){
+  var v=document.getElementById('kw').value.trim();
+  alert(v?('演示环境：将搜索「'+v+'」，命中标题/摘要/标签三字段，1 秒内返回结果'):'请输入关键词，例如：算料');
+}
+function setKw(v){document.getElementById('kw').value=v}
+function clearAll(){
+  document.querySelectorAll('#tagBox .tg').forEach(function(x){x.classList.remove('sel')});
+  document.getElementById('kw').value='';
+  document.getElementById('curTags').textContent='未选';
+  document.querySelectorAll('#tree a').forEach(function(x){x.classList.remove('on')});
+  document.querySelector('#tree a').classList.add('on');
+  document.getElementById('curCat').textContent='全部教程';
+}
+</script>
+</body>
+</html>

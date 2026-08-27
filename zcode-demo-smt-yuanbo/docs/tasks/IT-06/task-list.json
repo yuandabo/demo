@@ -1,0 +1,44 @@
+{
+  "iteration": "IT-06",
+  "iterationName": "文档对齐",
+  "tasks": [
+    {
+      "id": "DOCB-01",
+      "name": "后端文档对齐（change-log 沉淀：API/DB 偏差记录）",
+      "role": "后端",
+      "phase": {
+        "dev": "done",
+        "selfTest": "-"
+      },
+      "seq": 1,
+      "dependencies": [],
+      "assignee": "",
+      "artifact": "",
+      "detailFile": "DOCB-01.md"
+    },
+    {
+      "id": "DOCF-01",
+      "name": "前端文档对齐（change-log 沉淀：页面/交互偏差记录）",
+      "role": "前端",
+      "phase": {
+        "dev": "done",
+        "selfTest": "-"
+      },
+      "seq": 2,
+      "dependencies": [],
+      "assignee": "",
+      "artifact": "",
+      "detailFile": "DOCF-01.md"
+    }
+  ],
+  "phases": [
+    {
+      "phase": 1,
+      "name": "文档对齐（探针，创建即 done）",
+      "tasks": [
+        "DOCB-01",
+        "DOCF-01"
+      ]
+    }
+  ]
+}

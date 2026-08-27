@@ -1,0 +1,146 @@
+{
+  "total": 28,
+  "failed": 0,
+  "results": [
+    {
+      "name": "未登录-自动弹 RoleSheet",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "未登录-页面渲染登录引导不渲染日历",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "登录后-回本页自动加载周历/积分",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "日历-头部统计三指标",
+      "pass": true,
+      "detail": "DOM:连续 0 天 · 本月累计 2 天 · 已打卡 2/7 天 | 接口 streak=0 done=2 month=2"
+    },
+    {
+      "name": "日历-今日格「今」橙待打",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "日历-过去已打 ✓ 绿 / 中断 ✕ 灰 / 未来置灰",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "日历-图例计数",
+      "pass": true,
+      "detail": "已打卡 2 天今天待打卡中断 3 天"
+    },
+    {
+      "name": "积分卡-当前积分与预告",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "徽章-两卡锁定态与进度（streak/7 · completedTutorials/20）",
+      "pass": true,
+      "detail": "persist:🏅坚持者🔒 未解锁需连续打卡 7 天 · 当前连续 0 天进度 0 / 7 天 · 中断后从第 1 天重新累计🔒 | encyc:📖百科达人🔒 未解锁需累计完成 20 篇教程 · 已完成 0 篇进度 0 / 20 篇 · 阅读进度 100% 记为完成🔒"
+    },
+    {
+      "name": "徽章-解锁计数",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "中断规则-streak 清零但积分不清（AC-RULE-12）",
+      "pass": true,
+      "detail": "streak=0 totalPoints=50"
+    },
+    {
+      "name": "按钮-未打卡可点 + 说明行",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "实现图-FE-06-impl.png 已截取",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "幂等-toast「今日已打卡」",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "幂等-积分不增且按钮置灰",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "打卡-防抖双击仅发 1 次 POST",
+      "pass": true,
+      "detail": "postCount=1"
+    },
+    {
+      "name": "打卡-请求体为空对象 {}",
+      "pass": true,
+      "detail": "body={}"
+    },
+    {
+      "name": "打卡-toast「打卡成功 +10 积分」",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "打卡-积分 +10 / 今日格变 ✓ / 统计刷新 / 按钮置灰",
+      "pass": true,
+      "detail": "points=60 streak=1"
+    },
+    {
+      "name": "打卡-连续天数与按钮说明刷新",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "幂等-接口 duplicated=true / pointsAdded=0 / totalPoints 不变",
+      "pass": true,
+      "detail": "duplicated=true pointsAdded=0 total=60"
+    },
+    {
+      "name": "徽章-已解锁态且中断重计进度条 3/7 不回收（AC-RULE-12）",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "徽章-解锁计数 1 / 2",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "徽章-打卡后 persist+encyclopedia 双解锁（连续 7 天 / 完成 20 篇）",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "去学习-跳转 #/list",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "控制台-全程无 error",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "新用户-全 0 指标 + 周历无绿格 + 按钮可点（打卡后连续 1 天）",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "骨架屏-加载占位出现且完成后消失",
+      "pass": true,
+      "detail": ""
+    }
+  ]
+}

@@ -1,0 +1,120 @@
+{
+  "passed": false,
+  "checks": [
+    {
+      "checkName": "任务详情完整性",
+      "passed": true,
+      "details": []
+    },
+    {
+      "checkName": "跨迭代依赖无环",
+      "passed": true,
+      "details": []
+    },
+    {
+      "checkName": "AC 全覆盖",
+      "passed": false,
+      "details": [
+        {
+          "item": "AC-EG-15",
+          "passed": false,
+          "detail": "AC 未被任何任务引用",
+          "location": "ac.md"
+        },
+        {
+          "item": "AC-EG-08",
+          "passed": false,
+          "detail": "AC 未被任何任务引用",
+          "location": "ac.md"
+        },
+        {
+          "item": "AC-EG-16",
+          "passed": false,
+          "detail": "AC 未被任何任务引用",
+          "location": "ac.md"
+        },
+        {
+          "item": "AC-EG-18",
+          "passed": false,
+          "detail": "AC 未被任何任务引用",
+          "location": "ac.md"
+        },
+        {
+          "item": "AC-OP-09",
+          "passed": false,
+          "detail": "AC 未被任何任务引用",
+          "location": "ac.md"
+        },
+        {
+          "item": "AC-OP-02",
+          "passed": false,
+          "detail": "AC 未被任何任务引用",
+          "location": "ac.md"
+        },
+        {
+          "item": "AC-RULE-22",
+          "passed": false,
+          "detail": "AC 未被任何任务引用",
+          "location": "ac.md"
+        },
+        {
+          "item": "AC-RULE-23",
+          "passed": false,
+          "detail": "AC 未被任何任务引用",
+          "location": "ac.md"
+        },
+        {
+          "item": "AC-EG-05",
+          "passed": false,
+          "detail": "AC 未被任何任务引用",
+          "location": "ac.md"
+        },
+        {
+          "item": "AC-RULE-24",
+          "passed": false,
+          "detail": "AC 未被任何任务引用",
+          "location": "ac.md"
+        },
+        {
+          "item": "AC-RULE-25",
+          "passed": false,
+          "detail": "AC 未被任何任务引用",
+          "location": "ac.md"
+        },
+        {
+          "item": "AC-NF-05",
+          "passed": false,
+          "detail": "AC 未被任何任务引用",
+          "location": "ac.md"
+        },
+        {
+          "item": "UI-IXD-12",
+          "passed": false,
+          "detail": "AC 未被任何任务引用",
+          "location": "ac.md"
+        },
+        {
+          "item": "UI-IXD-17",
+          "passed": false,
+          "detail": "AC 未被任何任务引用",
+          "location": "ac.md"
+        },
+        {
+          "item": "UI-ELEM-06",
+          "passed": false,
+          "detail": "AC 未被任何任务引用",
+          "location": "ac.md"
+        }
+      ]
+    },
+    {
+      "checkName": "功能点覆盖",
+      "passed": true,
+      "details": []
+    }
+  ],
+  "checkCount": 4,
+  "passedCount": 3,
+  "failedCount": 1,
+  "summary": "任务详情完整性:PASS; 跨迭代依赖无环:PASS; AC 全覆盖:FAIL; 功能点覆盖:PASS"
+}

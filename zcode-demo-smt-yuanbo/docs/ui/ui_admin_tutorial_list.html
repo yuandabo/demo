@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>教程管理 · 云ERP教程中心·管理后台</title>
+<style>
+:root{
+  --primary:#0066ff; --cta:#f97316; --success:#16a34a; --danger:#dc2626; --warn:#d97706;
+  --gray:#64748b; --border:#e2e8f0; --bg:#f8fafc; --bg2:#f1f5f9; --card:#fff; --radius:12px; --dark:#0f172a;
+  --text:#0f172a; --text2:#64748b;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'PingFang SC','Microsoft YaHei',sans-serif;background:var(--bg);color:var(--text);font-size:14px}
+a{text-decoration:none;color:inherit}
+/* ===== 布局骨架 ===== */
+.layout{display:flex;min-height:100vh}
+.sidebar{width:240px;background:var(--dark);color:#cbd5e1;display:flex;flex-direction:column;position:fixed;top:0;bottom:0;left:0;z-index:20}
+.brand{padding:18px 20px;display:flex;gap:10px;align-items:center;border-bottom:1px solid rgba(255,255,255,.08)}
+.brand-logo{width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,#0066ff,#3b82f6);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.brand-name{color:#fff;font-weight:600;font-size:14px;line-height:1.3}
+.brand-sub{font-size:11px;color:#94a3b8}
+.menu{padding:14px 12px;flex:1}
+.menu-title{font-size:11px;color:#64748b;padding:0 12px 8px;letter-spacing:1px}
+.menu-item{display:flex;align-items:center;gap:10px;padding:11px 12px;border-radius:8px;color:#cbd5e1;margin-bottom:4px;position:relative;font-size:14px;cursor:pointer}
+.menu-item:hover{background:rgba(255,255,255,.06);color:#fff}
+.menu-item.active{background:rgba(0,102,255,.20);color:#fff;font-weight:600}
+.menu-item.active::before{content:'';position:absolute;left:0;top:8px;bottom:8px;width:3px;border-radius:2px;background:var(--primary)}
+.menu-item .mi{font-size:16px;width:20px;text-align:center;flex-shrink:0}
+.menu-item .menu-badge{margin-left:auto;background:var(--danger);color:#fff;font-size:11px;border-radius:9px;padding:1px 7px;font-weight:600}
+.menu-item.reserved{color:#64748b;cursor:not-allowed}
+.menu-item.reserved:hover{background:none;color:#64748b}
+.tag-reserved{margin-left:auto;font-size:10px;color:#94a3b8;border:1px solid #475569;border-radius:4px;padding:1px 5px;flex-shrink:0}
+.side-foot{padding:14px 20px;border-top:1px solid rgba(255,255,255,.08);font-size:11px;color:#64748b}
+.main{margin-left:240px;flex:1;display:flex;flex-direction:column;min-width:0}
+.topbar{height:60px;background:#fff;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 24px;position:sticky;top:0;z-index:10}
+.crumb{color:var(--text2);font-size:13px;display:flex;align-items:center;gap:6px}
+.crumb b{color:var(--text);font-weight:600}
+.crumb .sep{color:#cbd5e1}
+.admin{display:flex;align-items:center;gap:10px}
+.avatar{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,#0066ff,#3b82f6);color:#fff;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:600}
+.admin-info{line-height:1.3}
+.admin-name{font-size:13px;font-weight:600}
+.admin-role{font-size:11px;color:var(--text2)}
+.content{padding:24px;max-width:1440px}
+.page-head{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:18px;flex-wrap:wrap;gap:10px}
+.page-title{font-size:20px;font-weight:600}
+.page-desc{font-size:12px;color:var(--text2);margin-top:4px}
+/* ===== 按钮 ===== */
+.btn{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--border);background:#fff;color:#334155;border-radius:8px;padding:8px 16px;font-size:13px;cursor:pointer;font-family:inherit;transition:all .15s;white-space:nowrap}
+.btn:hover{border-color:#cbd5e1;background:#f8fafc}
+.btn:active{transform:scale(.97)}
+.btn-primary{background:var(--primary);border-color:var(--primary);color:#fff;font-weight:600}
+.btn-primary:hover{background:#0052cc;border-color:#0052cc}
+.btn-cta{background:var(--cta);border-color:var(--cta);color:#fff;font-weight:600}
+.btn-cta:hover{background:#ea680c;border-color:#ea680c}
+.btn-danger{background:#fff;border-color:#fecaca;color:var(--danger)}
+.btn-danger:hover{background:#fef2f2;border-color:var(--danger)}
+/* 行内文字操作 */
+.op{background:none;border:none;font-size:13px;color:var(--primary);cursor:pointer;padding:2px 4px;font-family:inherit;border-radius:4px}
+.op:hover{background:#eff6ff;text-decoration:underline}
+.op-warn{color:var(--warn)}.op-warn:hover{background:#fffbeb}
+.op-danger{color:var(--danger)}.op-danger:hover{background:#fef2f2}
+.op-cta{color:var(--cta)}.op-cta:hover{background:#fff7ed}
+.op[disabled]{color:#cbd5e1;cursor:not-allowed;text-decoration:none}
+.op[disabled]:hover{background:none}
+/* ===== 筛选栏 ===== */
+.card{background:var(--card);border-radius:var(--radius);border:1px solid var(--border);padding:20px}
+.card + .card{margin-top:16px}
+.filter-bar{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.filter-item{display:flex;align-items:center;gap:8px}
+.filter-item label{font-size:13px;color:var(--text2);white-space:nowrap}
+.select,.keyword{
+  height:36px;border:1px solid var(--border);border-radius:8px;background:#fff;color:var(--text);
+  font-size:13px;padding:0 10px;font-family:inherit;min-width:130px;transition:border-color .15s;
+}
+.keyword{width:240px}
+.select:focus,.keyword:focus{outline:none;border-color:var(--primary);box-shadow:0 0 0 3px rgba(0,102,255,.1)}
+.btn-search{height:36px;padding:0 20px;background:var(--primary);border:none;color:#fff;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;transition:background .15s}
+.btn-search:hover{background:#0052cc}
+.btn-search:active{transform:scale(.97)}
+.link-reset{font-size:13px;color:var(--text2);cursor:pointer}
+.link-reset:hover{color:var(--primary)}
+/* ===== 徽章 ===== */
+.badge{display:inline-flex;align-items:center;gap:5px;font-size:12px;border-radius:6px;padding:3px 10px;font-weight:500;white-space:nowrap}
+.badge::before{content:'';width:6px;height:6px;border-radius:50%;background:currentColor}
+.badge-draft{color:var(--gray);background:#f1f5f9;border:1px solid #e2e8f0}
+.badge-pending{color:var(--warn);background:#fffbeb;border:1px solid #fde68a}
+.badge-published{color:var(--success);background:#f0fdf4;border:1px solid #bbf7d0}
+.badge-offline{color:#475569;background:#e2e8f0;border:1px solid #cbd5e1}
+.tag{display:inline-block;font-size:11px;border-radius:4px;padding:1px 6px;margin-left:6px;font-weight:400;vertical-align:1px}
+.tag-top{color:var(--cta);background:#ffedd5;border:1px solid #fdba74}
+.tag-v2{color:var(--warn);background:#fffbeb;border:1px solid #fde68a}
+.tag-cat{color:var(--text2);background:var(--bg2);border:1px solid var(--border)}
+/* ===== 置顶开关 + 排序值（PRD §7.6 ADT-LST-TOP/SRT） ===== */
+.top-cell{display:flex;align-items:center;gap:7px;white-space:nowrap}
+.star{background:none;border:none;font-size:15px;cursor:pointer;color:#cbd5e1;padding:0 2px;line-height:1;transition:transform .15s;font-family:inherit}
+.star:hover{transform:scale(1.2)}
+.star.on{color:var(--cta)}
+.star[disabled]{cursor:not-allowed;opacity:.5}
+.star[disabled]:hover{transform:none}
+.sort-input{width:54px;height:28px;border:1px solid var(--border);border-radius:6px;font-size:12px;color:var(--text);padding:0 6px;font-family:inherit;text-align:center;transition:border-color .15s}
+.sort-input:focus{outline:none;border-color:var(--primary);box-shadow:0 0 0 3px rgba(0,102,255,.1)}
+.sort-input[disabled]{background:var(--bg2);color:#cbd5e1;cursor:not-allowed}
+/* ===== 表格 ===== */
+.table-wrap{overflow-x:auto}
+.table{width:100%;border-collapse:collapse;min-width:1180px}
+.table th{background:#f8fafc;color:#475569;font-size:12px;font-weight:600;text-align:left;padding:10px 12px;border-bottom:1px solid var(--border);white-space:nowrap}
+.table td{padding:12px;border-bottom:1px solid var(--border);font-size:13px;vertical-align:middle}
+.table tbody tr:nth-child(even){background:#f8fafc}
+.table tbody tr:hover{background:#eff6ff}
+.t-title{font-weight:500;color:var(--text)}
+.t-title.offline{color:#64748b}
+.t-sub{font-size:12px;color:var(--text2);margin-top:3px;display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+.reject-tip{
+  margin-top:6px;display:inline-flex;align-items:flex-start;gap:6px;font-size:12px;color:#92400e;
+  background:#fffbeb;border:1px solid #fde68a;border-radius:6px;padding:5px 10px;line-height:1.5;
+}
+.reject-tip b{color:var(--warn)}
+.num{font-variant-numeric:tabular-nums}
+.muted{color:#cbd5e1}
+.rate-low{color:var(--danger);font-weight:600}
+.ops{white-space:nowrap}
+.ops .op + .op{margin-left:6px}
+.dot-sep{color:#e2e8f0;margin:0 2px}
+/* ===== 分页 ===== */
+.pager{display:flex;align-items:center;justify-content:space-between;margin-top:14px;flex-wrap:wrap;gap:10px}
+.pager-info{font-size:12px;color:var(--text2)}
+.pager-btns{display:flex;gap:6px}
+.page-btn{min-width:32px;height:32px;border:1px solid var(--border);background:#fff;border-radius:6px;font-size:13px;color:#334155;cursor:pointer;font-family:inherit;padding:0 8px;transition:all .15s}
+.page-btn:hover{border-color:var(--primary);color:var(--primary)}
+.page-btn.current{background:var(--primary);border-color:var(--primary);color:#fff;font-weight:600}
+.page-btn[disabled]{color:#cbd5e1;cursor:not-allowed;border-color:var(--border)}
+.page-btn[disabled]:hover{color:#cbd5e1}
+/* ===== 弹窗 ===== */
+.modal-mask{position:fixed;inset:0;background:rgba(15,23,42,.5);display:none;align-items:center;justify-content:center;z-index:100;padding:20px}
+.modal-mask.show{display:flex}
+.modal{background:#fff;border-radius:var(--radius);width:420px;max-width:100%;padding:24px;box-shadow:0 24px 64px rgba(2,6,23,.3)}
+.modal-title{font-size:16px;font-weight:600;margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.modal-body{font-size:13px;color:#475569;line-height:1.8}
+.modal-body b{color:var(--danger)}
+.modal-foot{display:flex;justify-content:flex-end;gap:10px;margin-top:20px}
+</style>
+</head>
+<body>
+<div class="layout">
+  <!-- ===== 侧边栏 ===== -->
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="brand-logo">📚</div>
+      <div><div class="brand-name">云ERP教程中心</div><div class="brand-sub">管理后台</div></div>
+    </div>
+    <nav class="menu">
+      <div class="menu-title">内容管理</div>
+      <a class="menu-item" href="ui_admin_dashboard.html"><span class="mi">📊</span>统计看板</a>
+      <a class="menu-item active" href="ui_admin_tutorial_list.html"><span class="mi">📚</span>教程管理</a>
+      <a class="menu-item" href="ui_admin_review.html"><span class="mi">✅</span>审核队列<span class="menu-badge">3</span></a>
+      <a class="menu-item" href="ui_admin_category.html"><span class="mi">🌲</span>目录管理</a>
+      <div class="menu-item reserved"><span class="mi">🤖</span>AI 生成审核<span class="tag-reserved">预留</span></div>
+    </nav>
+    <div class="side-foot">v1.0 · 演示环境</div>
+  </aside>
+
+  <!-- ===== 主区域 ===== -->
+  <div class="main">
+    <header class="topbar">
+      <div class="crumb">管理后台 <span class="sep">/</span> <b>教程管理</b></div>
+      <div class="admin">
+        <div class="avatar">A</div>
+        <div class="admin-info"><div class="admin-name">admin</div><div class="admin-role">平台管理员</div></div>
+      </div>
+    </header>
+
+    <div class="content">
+      <div class="page-head">
+        <div>
+          <div class="page-title">教程管理</div>
+          <div class="page-desc">全状态展示：草稿 / 待审核 / 已发布 / 已下架 · 已发布教程编辑保存后自动回审，前台持续展示线上过审版本</div>
+        </div>
+        <button class="btn btn-primary" onclick="location.href='ui_admin_tutorial_edit.html'">＋ 新建教程</button>
+      </div>
+
+      <!-- 筛选栏 -->
+      <div class="card">
+        <div class="filter-bar">
+          <div class="filter-item">
+            <label>状态</label>
+            <select class="select" id="fStatus">
+              <option value="">全部状态</option>
+              <option value="draft">草稿</option>
+              <option value="pending">待审核</option>
+              <option value="published">已发布</option>
+              <option value="offline">已下架</option>
+            </select>
+          </div>
+          <div class="filter-item">
+            <label>分类</label>
+            <select class="select" id="fCate">
+              <option value="">全部分类</option>
+              <option>新手入门</option><option>最佳实践</option><option>常见问题</option><option>开放平台</option>
+              <option>销售管理</option><option>采购管理</option><option>库存管理</option><option>生产制造</option>
+              <option>项目管理</option><option>文件管理</option><option>人事财务</option><option>系统设置</option>
+            </select>
+          </div>
+          <div class="filter-item">
+            <input class="keyword" id="fKey" type="text" placeholder="关键词：标题 / 摘要 / 标签">
+          </div>
+          <button class="btn-search" onclick="applyFilter()">🔍 搜索</button>
+          <span class="link-reset" onclick="resetFilter()">重置</span>
+        </div>
+      </div>
+
+      <!-- 列表 -->
+      <div class="card">
+        <div class="table-wrap">
+          <table class="table" id="tbl">
+            <thead>
+              <tr>
+                <th>标题</th><th>分类</th><th>作者</th><th>状态</th>
+                <th>浏览</th><th>收藏</th><th>有帮助率</th><th>置顶/排序</th><th>更新时间</th><th>操作</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr data-status="published" data-cate="新手入门">
+                <td>
+                  <div class="t-title">云ERP是什么？产品总览与核心价值</div>
+                  <div class="t-sub"><span>新手必读 · 15 分钟看懂云ERP · 浏览 Top1</span></div>
+                </td>
+                <td>新手入门</td><td>admin</td>
+                <td><span class="badge badge-published">已发布</span></td>
+                <td class="num">5,023</td><td class="num">402</td><td class="num">92.4%</td>
+                <td><div class="top-cell"><button class="star" title="点击置顶" onclick="toggleTop(this)">★</button><input class="sort-input" type="number" value="100" min="0" max="999" title="排序值（越小越靠前）" onchange="saveSort(this)"></div></td>
+                <td class="num">2026-08-12 10:20</td>
+                <td class="ops"><button class="op" onclick="location.href='ui_admin_tutorial_edit.html'">编辑</button><span class="dot-sep">·</span><button class="op op-warn" onclick="openOffModal(this)">下架</button><span class="dot-sep">·</span><button class="op" onclick="alert('演示：已复制为新草稿（副本）· 浏览 / 收藏计数清零')">复制</button></td>
+              </tr>
+              <tr data-status="published" data-cate="生产制造">
+                <td>
+                  <div class="t-title">小程序车间扫码报工</div>
+                  <div class="t-sub"><span class="tag tag-cat" style="margin-left:0">报工</span><span class="tag tag-cat" style="margin-left:0">小程序</span></div>
+                </td>
+                <td>生产制造</td><td>operator</td>
+                <td><span class="badge badge-published">已发布</span></td>
+                <td class="num">2,865</td><td class="num">233</td><td class="num">88.4%</td>
+                <td><div class="top-cell"><button class="star" title="点击置顶" onclick="toggleTop(this)">★</button><input class="sort-input" type="number" value="90" min="0" max="999" title="排序值（越小越靠前）" onchange="saveSort(this)"></div></td>
+                <td class="num">2026-08-15 09:18</td>
+                <td class="ops"><button class="op" onclick="location.href='ui_admin_tutorial_edit.html'">编辑</button><span class="dot-sep">·</span><button class="op op-warn" onclick="openOffModal(this)">下架</button><span class="dot-sep">·</span><button class="op" onclick="alert('演示：已复制为新草稿（副本）· 浏览 / 收藏计数清零')">复制</button></td>
+              </tr>
+              <tr data-status="published" data-cate="采购管理">
+                <td>
+                  <div class="t-title">MRP 自动算料：从 BOM 到采购建议<span class="tag tag-top">置顶</span></div>
+                  <div class="t-sub"><span>好评 92% · 健康（前台浏览 2,341 / 收藏 187）</span></div>
+                </td>
+                <td>采购管理</td><td>operator</td>
+                <td><span class="badge badge-published">已发布</span></td>
+                <td class="num">2,341</td><td class="num">187</td><td class="num">92.3%</td>
+                <td><div class="top-cell"><button class="star on" title="点击取消置顶" onclick="toggleTop(this)">★</button><input class="sort-input" type="number" value="80" min="0" max="999" title="排序值（越小越靠前）" onchange="saveSort(this)"></div></td>
+                <td class="num">2026-08-11 15:43</td>
+                <td class="ops"><button class="op" onclick="location.href='ui_admin_tutorial_edit.html'">编辑</button><span class="dot-sep">·</span><button class="op op-warn" onclick="openOffModal(this)">下架</button><span class="dot-sep">·</span><button class="op" onclick="alert('演示：已复制为新草稿（副本）· 浏览 / 收藏计数清零')">复制</button></td>
+              </tr>
+              <tr data-status="published" data-cate="库存管理">
+                <td>
+                  <div class="t-title">库位三级初始化：仓库/库区/库位</div>
+                  <div class="t-sub"><span>三分钟搭好库位体系，扫码找料不再翻箱倒柜</span></div>
+                </td>
+                <td>库存管理</td><td>admin</td>
+                <td><span class="badge badge-published">已发布</span></td>
+                <td class="num">1,980</td><td class="num">118</td><td class="num">87.4%</td>
+                <td><div class="top-cell"><button class="star" title="点击置顶" onclick="toggleTop(this)">★</button><input class="sort-input" type="number" value="70" min="0" max="999" title="排序值（越小越靠前）" onchange="saveSort(this)"></div></td>
+                <td class="num">2026-08-10 14:05</td>
+                <td class="ops"><button class="op" onclick="location.href='ui_admin_tutorial_edit.html'">编辑</button><span class="dot-sep">·</span><button class="op op-warn" onclick="openOffModal(this)">下架</button><span class="dot-sep">·</span><button class="op" onclick="alert('演示：已复制为新草稿（副本）· 浏览 / 收藏计数清零')">复制</button></td>
+              </tr>
+              <tr data-status="published" data-cate="销售管理">
+                <td>
+                  <div class="t-title">销售订单 13 态状态机详解</div>
+                  <div class="t-sub"><span>从报价到签收，13 态全程可视、卡点定位</span></div>
+                </td>
+                <td>销售管理</td><td>operator</td>
+                <td><span class="badge badge-published">已发布</span></td>
+                <td class="num">1,725</td><td class="num">131</td><td class="num">93.2%</td>
+                <td><div class="top-cell"><button class="star" title="点击置顶" onclick="toggleTop(this)">★</button><input class="sort-input" type="number" value="60" min="0" max="999" title="排序值（越小越靠前）" onchange="saveSort(this)"></div></td>
+                <td class="num">2026-08-13 17:26</td>
+                <td class="ops"><button class="op" onclick="location.href='ui_admin_tutorial_edit.html'">编辑</button><span class="dot-sep">·</span><button class="op op-warn" onclick="openOffModal(this)">下架</button><span class="dot-sep">·</span><button class="op" onclick="alert('演示：已复制为新草稿（副本）· 浏览 / 收藏计数清零')">复制</button></td>
+              </tr>
+              <tr data-status="pending" data-cate="销售管理">
+                <td>
+                  <div class="t-title">销售订单录入操作指南<span class="tag tag-v2">修改版 v2 · 回审中</span></div>
+                  <div class="t-sub"><span>前台仍展示线上过审版本（旧截图）· 没帮助占比 55% 标红，见看板</span></div>
+                </td>
+                <td>销售管理</td><td>operator</td>
+                <td><span class="badge badge-pending">待审核</span></td>
+                <td class="num">1,876</td><td class="num">96</td><td class="num rate-low">45.0%</td>
+                <td><div class="top-cell"><button class="star" disabled title="仅已发布教程可置顶">★</button><input class="sort-input" type="number" value="50" min="0" max="999" title="排序值（越小越靠前）" onchange="saveSort(this)"></div></td>
+                <td class="num">2026-08-18 14:32</td>
+                <td class="ops"><button class="op" disabled title="待审核状态请先撤回">编辑</button><span class="dot-sep">·</span><button class="op op-warn" onclick="withdrawRow(this)">撤回</button><span class="dot-sep">·</span><button class="op" onclick="alert('演示：已复制为新草稿（副本）· 浏览 / 收藏计数清零')">复制</button></td>
+              </tr>
+              <tr data-status="pending" data-cate="生产制造">
+                <td>
+                  <div class="t-title">生产报工操作指南</div>
+                  <div class="t-sub"><span>首次提审 · 全新教程</span></div>
+                </td>
+                <td>生产制造</td><td>operator</td>
+                <td><span class="badge badge-pending">待审核</span></td>
+                <td class="num muted">—</td><td class="num muted">—</td><td class="num muted">—</td>
+                <td><div class="top-cell"><button class="star" disabled title="仅已发布教程可置顶">★</button><input class="sort-input" type="number" value="40" min="0" max="999" title="排序值（越小越靠前）" onchange="saveSort(this)"></div></td>
+                <td class="num">2026-08-18 09:05</td>
+                <td class="ops"><button class="op" disabled title="待审核状态请先撤回">编辑</button><span class="dot-sep">·</span><button class="op op-warn" onclick="withdrawRow(this)">撤回</button><span class="dot-sep">·</span><button class="op" onclick="alert('演示：已复制为新草稿（副本）· 浏览 / 收藏计数清零')">复制</button></td>
+              </tr>
+              <tr data-status="pending" data-cate="人事财务">
+                <td>
+                  <div class="t-title">付款申请单操作指南</div>
+                  <div class="t-sub"><span>首次提审 · 全新教程</span></div>
+                </td>
+                <td>人事财务</td><td>admin</td>
+                <td><span class="badge badge-pending">待审核</span></td>
+                <td class="num muted">—</td><td class="num muted">—</td><td class="num muted">—</td>
+                <td><div class="top-cell"><button class="star" disabled title="仅已发布教程可置顶">★</button><input class="sort-input" type="number" value="30" min="0" max="999" title="排序值（越小越靠前）" onchange="saveSort(this)"></div></td>
+                <td class="num">2026-08-17 20:11</td>
+                <td class="ops"><button class="op" disabled title="待审核状态请先撤回">编辑</button><span class="dot-sep">·</span><button class="op op-warn" onclick="withdrawRow(this)">撤回</button><span class="dot-sep">·</span><button class="op" onclick="alert('演示：已复制为新草稿（副本）· 浏览 / 收藏计数清零')">复制</button></td>
+              </tr>
+              <tr data-status="draft" data-cate="库存管理">
+                <td>
+                  <div class="t-title">安全库存与补货预警设置</div>
+                  <div class="t-sub"><span>被驳回后修改中 · 仅作者与管理员可见</span></div>
+                  <div class="reject-tip">⚠ <span><b>驳回原因</b>（admin · 2026-08-17 16:20）：第3步截图含未发布界面，请替换</span></div>
+                </td>
+                <td>库存管理</td><td>operator</td>
+                <td><span class="badge badge-draft">草稿</span></td>
+                <td class="num muted">—</td><td class="num muted">—</td><td class="num muted">—</td>
+                <td><div class="top-cell"><button class="star" disabled title="仅已发布教程可置顶">★</button><input class="sort-input" type="number" value="20" min="0" max="999" title="排序值（越小越靠前）" onchange="saveSort(this)"></div></td>
+                <td class="num">2026-08-19 11:24</td>
+                <td class="ops"><button class="op" onclick="location.href='ui_admin_tutorial_edit.html'">编辑</button><span class="dot-sep">·</span><button class="op" onclick="submitRow(this)">提审</button><span class="dot-sep">·</span><button class="op" onclick="alert('演示：已复制为新草稿（副本）· 浏览 / 收藏计数清零')">复制</button><span class="dot-sep">·</span><button class="op op-danger" onclick="openDelModal(this)">删除</button></td>
+              </tr>
+              <tr data-status="draft" data-cate="项目管理">
+                <td>
+                  <div class="t-title">里程碑延期预警设置</div>
+                  <div class="t-sub"><span>纯草稿 · 从未提审 · 仅作者与管理员可见</span></div>
+                </td>
+                <td>项目管理</td><td>operator</td>
+                <td><span class="badge badge-draft">草稿</span></td>
+                <td class="num muted">—</td><td class="num muted">—</td><td class="num muted">—</td>
+                <td><div class="top-cell"><button class="star" disabled title="仅已发布教程可置顶">★</button><input class="sort-input" type="number" value="10" min="0" max="999" title="排序值（越小越靠前）" onchange="saveSort(this)"></div></td>
+                <td class="num">2026-08-19 16:08</td>
+                <td class="ops"><button class="op" onclick="location.href='ui_admin_tutorial_edit.html'">编辑</button><span class="dot-sep">·</span><button class="op" onclick="submitRow(this)">提审</button><span class="dot-sep">·</span><button class="op" onclick="alert('演示：已复制为新草稿（副本）· 浏览 / 收藏计数清零')">复制</button><span class="dot-sep">·</span><button class="op op-danger" onclick="openDelModal(this)">删除</button></td>
+              </tr>
+              <tr data-status="offline" data-cate="采购管理">
+                <td>
+                  <div class="t-title offline">来料检验操作指南</div>
+                  <div class="t-sub"><span>已下架：三端即时不可见，收藏夹标注"已下架"</span></div>
+                </td>
+                <td>采购管理</td><td>admin</td>
+                <td><span class="badge badge-offline">已下架</span></td>
+                <td class="num muted">1,204</td><td class="num muted">73</td><td class="num muted">81.6%</td>
+                <td><div class="top-cell"><button class="star" disabled title="仅已发布教程可置顶">★</button><input class="sort-input" type="number" value="5" min="0" max="999" title="排序值（越小越靠前）" onchange="saveSort(this)"></div></td>
+                <td class="num">2026-08-06 16:50</td>
+                <td class="ops"><button class="op" onclick="location.href='ui_admin_tutorial_edit.html'">编辑</button><span class="dot-sep">·</span><button class="op op-cta" onclick="republishRow(this)">重新发布</button><span class="dot-sep">·</span><button class="op" onclick="alert('演示：已复制为新草稿（副本）· 浏览 / 收藏计数清零')">复制</button></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="pager">
+          <div class="pager-info" id="pagerInfo">共 24 条记录（已发布 18 + 待审核 3 + 草稿 2 + 已下架 1）· 当前第 1 / 3 页</div>
+          <div class="pager-btns">
+            <button class="page-btn" disabled>‹ 上一页</button>
+            <button class="page-btn current">1</button>
+            <button class="page-btn" onclick="fakePage()">2</button>
+            <button class="page-btn" onclick="fakePage()">3</button>
+            <button class="page-btn" onclick="fakePage()">下一页 ›</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 下架二次确认弹窗（PRD §7.6 ADT-OFF-OK：非 confirm()，自绘弹窗） -->
+<div class="modal-mask" id="offModal">
+  <div class="modal">
+    <div class="modal-title">⬇️ 下架确认</div>
+    <div class="modal-body">
+      确认下架 <b id="offTitle">《》</b> 吗？<br>
+      <span style="color:var(--text2)">下架后前台不可见（PC / 小程序即时同步隐藏），收藏该教程的用户将在收藏夹看到「已下架」标注；下架操作留痕，可随时重新发布。</span>
+    </div>
+    <div class="modal-foot">
+      <button class="btn" onclick="closeOffModal()">取消</button>
+      <button class="btn" style="background:var(--danger);color:#fff;border-color:var(--danger);font-weight:600" onclick="confirmOff()">确认下架</button>
+    </div>
+  </div>
+</div>
+
+<!-- 删除确认弹窗（仅纯草稿可删，标题动态） -->
+<div class="modal-mask" id="delModal">
+  <div class="modal">
+    <div class="modal-title">🗑 删除教程</div>
+    <div class="modal-body">
+      确认删除草稿 <b id="delTitle">《》</b> 吗？<br>
+      <span style="color:var(--text2)">仅"从未通过审核的纯草稿"可删除，删除后不可恢复；存在线上过审版本的教程不提供删除，以下架归档代替。</span>
+    </div>
+    <div class="modal-foot">
+      <button class="btn" onclick="closeDelModal()">取消</button>
+      <button class="btn btn-danger" style="background:var(--danger);color:#fff;border-color:var(--danger)" onclick="confirmDel()">确认删除</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// 状态/分类/关键词联动筛选（原型内对当前 11 行演示）
+function applyFilter() {
+  var st = document.getElementById('fStatus').value;
+  var cate = document.getElementById('fCate').value;
+  var key = document.getElementById('fKey').value.trim();
+  var rows = document.querySelectorAll('#tbl tbody tr');
+  var shown = 0;
+  rows.forEach(function (r) {
+    if (!r.dataset.status) return; // 跳过合并行
+    var ok = (!st || r.dataset.status === st) && (!cate || r.dataset.cate === cate);
+    if (ok && key) ok = r.textContent.indexOf(key) > -1;
+    r.style.display = ok ? '' : 'none';
+    if (ok) shown++;
+  });
+  document.getElementById('pagerInfo').textContent = '筛选命中 ' + shown + ' 条记录（当前页）';
+}
+function resetFilter() {
+  document.getElementById('fStatus').value = '';
+  document.getElementById('fCate').value = '';
+  document.getElementById('fKey').value = '';
+  applyFilter();
+  document.getElementById('pagerInfo').textContent = '共 24 条记录（已发布 18 + 待审核 3 + 草稿 2 + 已下架 1）· 当前第 1 / 3 页';
+}
+// ===== 置顶开关 / 排序值（PRD §7.6 ADT-LST-TOP/SRT） =====
+function toggleTop(btn) {
+  if (btn.disabled) return;
+  var on = btn.classList.toggle('on');
+  btn.title = on ? '点击取消置顶' : '点击置顶';
+  var title = btn.closest('tr').querySelector('.t-title');
+  var tag = title.querySelector('.tag-top');
+  if (on && !tag) { tag = document.createElement('span'); tag.className = 'tag tag-top'; tag.textContent = '置顶'; title.appendChild(tag); }
+  if (tag) tag.style.display = on ? '' : 'none';
+  alert(on ? '演示：已置顶，前台列表优先展示（置顶优先，其次按排序值）' : '演示：已取消置顶，恢复按排序值与发布时间排列');
+}
+function saveSort(inp) {
+  if (inp.disabled) return;
+  alert('演示：排序值已保存为 ' + inp.value + '（同级越小越靠前，影响前台列表与上下篇）');
+}
+// ===== 行内操作反馈 =====
+function rowTitle(tr) {
+  var el = tr.querySelector('.t-title');
+  return el.childNodes[0].textContent.trim();
+}
+function setBadge(tr, cls, text) {
+  var b = tr.querySelector('.badge');
+  b.className = 'badge ' + cls;
+  b.textContent = text;
+}
+function setOps(tr, html) { tr.querySelector('.ops').innerHTML = html; }
+// 下架（二次确认，自绘弹窗）
+var offTarget = null;
+function openOffModal(btn) {
+  offTarget = btn.closest('tr');
+  document.getElementById('offTitle').textContent = '《' + rowTitle(offTarget) + '》';
+  document.getElementById('offModal').classList.add('show');
+}
+function closeOffModal() { document.getElementById('offModal').classList.remove('show'); }
+function confirmOff() {
+  if (offTarget) {
+    offTarget.dataset.status = 'offline';
+    setBadge(offTarget, 'badge-offline', '已下架');
+    offTarget.querySelector('.t-title').classList.add('offline');
+    offTarget.querySelectorAll('.num').forEach(function (n) { n.classList.add('muted'); });
+    var star = offTarget.querySelector('.star'); if (star) { star.disabled = true; star.classList.remove('on'); }
+    setOps(offTarget, '<button class="op" onclick="location.href=\'ui_admin_tutorial_edit.html\'">编辑</button><span class="dot-sep">·</span><button class="op op-cta" onclick="republishRow(this)">重新发布</button><span class="dot-sep">·</span><button class="op" onclick="alert(\'演示：已复制为新草稿（副本）· 浏览 / 收藏计数清零\')">复制</button>');
+    alert('演示：已下架，前台即时不可见，收藏夹标注「已下架」，操作已留痕');
+  }
+  closeOffModal();
+}
+// 待审核 → 撤回回草稿
+function withdrawRow(btn) {
+  var tr = btn.closest('tr');
+  tr.dataset.status = 'draft';
+  setBadge(tr, 'badge-draft', '草稿');
+  setOps(tr, '<button class="op" onclick="location.href=\'ui_admin_tutorial_edit.html\'">编辑</button><span class="dot-sep">·</span><button class="op" onclick="submitRow(this)">提审</button><span class="dot-sep">·</span><button class="op" onclick="alert(\'演示：已复制为新草稿（副本）· 浏览 / 收藏计数清零\')">复制</button><span class="dot-sep">·</span><button class="op op-danger" onclick="openDelModal(this)">删除</button>');
+  alert('演示：已撤回，状态回到草稿，可继续编辑后重新提审');
+}
+// 草稿 → 提交审核
+function submitRow(btn) {
+  var tr = btn.closest('tr');
+  tr.dataset.status = 'pending';
+  setBadge(tr, 'badge-pending', '待审核');
+  setOps(tr, '<button class="op" disabled title="待审核状态请先撤回">编辑</button><span class="dot-sep">·</span><button class="op op-warn" onclick="withdrawRow(this)">撤回</button><span class="dot-sep">·</span><button class="op" onclick="alert(\'演示：已复制为新草稿（副本）· 浏览 / 收藏计数清零\')">复制</button>');
+  alert('演示：已提交审核，进入审核队列（侧栏角标 +1）');
+}
+// 已下架 → 重新发布（一键恢复已发布，内容未变不重审，计数延续）
+function republishRow(btn) {
+  var tr = btn.closest('tr');
+  tr.dataset.status = 'published';
+  setBadge(tr, 'badge-published', '已发布');
+  tr.querySelector('.t-title').classList.remove('offline');
+  tr.querySelectorAll('.num').forEach(function (n) { n.classList.remove('muted'); });
+  var star = tr.querySelector('.star'); if (star) { star.disabled = false; star.title = '点击置顶'; }
+  setOps(tr, '<button class="op" onclick="location.href=\'ui_admin_tutorial_edit.html\'">编辑</button><span class="dot-sep">·</span><button class="op op-warn" onclick="openOffModal(this)">下架</button><span class="dot-sep">·</span><button class="op" onclick="alert(\'演示：已复制为新草稿（副本）· 浏览 / 收藏计数清零\')">复制</button>');
+  alert('演示：已重新发布（内容未变不重审），前台/小程序下一次请求即恢复可见，浏览/收藏计数延续');
+}
+// 删除（仅纯草稿，标题动态）
+var delTarget = null;
+function openDelModal(btn) {
+  delTarget = btn ? btn.closest('tr') : null;
+  document.getElementById('delTitle').textContent = '《' + (delTarget ? rowTitle(delTarget) : '安全库存与补货预警设置') + '》';
+  document.getElementById('delModal').classList.add('show');
+}
+function closeDelModal() { document.getElementById('delModal').classList.remove('show'); }
+function confirmDel() {
+  if (delTarget) delTarget.style.opacity = '.45';
+  alert('已删除（演示）');
+  closeDelModal();
+}
+function fakePage() { /* 原型演示：翻页仅示意 */ }
+document.getElementById('fKey').addEventListener('keydown', function (e) { if (e.key === 'Enter') applyFilter(); });
+</script>
+</body>
+</html>

@@ -1,0 +1,812 @@
+/* Detail 页（复刻 docs/ui/ui_portal_detail.html）：面包屑/标题区/工具条/两栏正文/目录/信息卡/关联推荐/404 提示页 */
+/* 前缀 dt- 隔离：.layout/.crumb 等设计稿类名已被 List 页与全局 row-card 占用 */
+
+/* ===== 面包屑 + 标题区 ===== */
+.dt-crumb {
+  margin: 20px 0 10px;
+  font-size: 13px;
+  color: var(--g);
+}
+
+.dt-crumb a:hover {
+  color: var(--p);
+}
+
+.dt-crumb b {
+  color: var(--d);
+  font-weight: 600;
+}
+
+.dt-title-box h1 {
+  font-size: 24px;
+  line-height: 1.4;
+  margin-bottom: 8px;
+}
+
+.dt-title-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  color: var(--g);
+  font-size: 13px;
+  align-items: center;
+}
+
+/* ===== 工具条（字号三档 + 上下篇） ===== */
+.dt-toolbar {
+  margin: 16px 0;
+  padding: 10px 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.dt-toolbar .lbl {
+  font-size: 13px;
+  color: var(--g);
+}
+
+.dt-toolbar .sp {
+  flex: 1;
+}
+
+.dt-fs {
+  border: 1px solid var(--b);
+  background: #fff;
+  color: var(--g);
+  font-size: 12px;
+  padding: 5px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.15s;
+}
+
+.dt-fs:hover {
+  border-color: var(--p);
+  color: var(--p);
+}
+
+.dt-fs.on {
+  background: var(--p);
+  border-color: var(--p);
+  color: #fff;
+}
+
+/* 上下篇置灰（UI-IXD-05：无相邻不可点） */
+.dt-toolbar .btn[disabled] {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.dt-toolbar .btn[disabled]:hover {
+  border-color: var(--b);
+  color: var(--g);
+}
+
+/* ===== 主体两栏 ===== */
+.dt-layout {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+  margin-bottom: 10px;
+}
+
+.dt-article-col {
+  flex: 1;
+  min-width: 0;
+}
+
+.dt-side {
+  width: 300px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+/* ===== 图文正文（字号三档经 CSS 变量仅作用于本区域，AC-RULE-21） ===== */
+.dt-article {
+  padding: 26px 30px;
+  font-size: var(--fs-article, 15px);
+}
+
+.dt-article p {
+  margin-bottom: 12px;
+  color: #334155;
+}
+
+.dt-article strong {
+  color: var(--d);
+}
+
+/* 正文图片：lazy 加载期间显示占位底（AC-EG-13） */
+.dt-article img {
+  display: block;
+  max-width: 100%;
+  min-height: 60px;
+  margin: 10px 0;
+  border-radius: var(--r);
+  border: 1.5px dashed #bfd3f0;
+  background: linear-gradient(135deg, #eef4ff, #e6efff);
+}
+
+/* 步骤内截图占位框（种子正文 p.ph-img，样式值对齐原型 ui_portal_detail.html .ph-img） */
+.dt-article .ph-img {
+  height: 210px;
+  border-radius: var(--r);
+  border: 1.5px dashed #bfd3f0;
+  background: linear-gradient(135deg, #eef4ff, #e6efff);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  color: #6b8cbf;
+  font-size: 13px;
+  margin: 10px 0;
+}
+
+.dt-article .ph-img b {
+  font-size: 15px;
+}
+
+.dt-article ul,
+.dt-article ol {
+  margin: 4px 0 8px;
+}
+
+.dt-article ul li {
+  padding-left: 16px;
+  position: relative;
+  color: #334155;
+  margin-bottom: 4px;
+}
+
+.dt-article ul li::before {
+  content: '';
+  position: absolute;
+  left: 2px;
+  top: 11px;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--acc);
+}
+
+/* 锚点定位预留吸顶头部（交互 2） */
+.dt-article [data-sec] {
+  scroll-margin-top: 150px;
+}
+
+.dt-sec-h {
+  font-size: 17px;
+  margin: 6px 0 4px;
+}
+
+/* 继续阅读横幅（UI-IXD-11） */
+.dt-resume {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: #e8f0fe;
+  border: 1px solid #c7dbff;
+  color: #123c7a;
+  border-radius: 10px;
+  padding: 10px 14px;
+  font-size: 13px;
+  margin-bottom: 18px;
+  cursor: pointer;
+}
+
+.dt-resume .x {
+  margin-left: auto;
+  cursor: pointer;
+  color: #64748b;
+  font-size: 14px;
+  padding: 0 4px;
+}
+
+.dt-resume .x:hover {
+  color: var(--d);
+}
+
+/* ===== 视频区（外链 mp4，不自动播放；失效占位 AC-EG-02/UI-ELEM-06） ===== */
+.dt-video {
+  position: relative;
+  height: 320px;
+  border-radius: var(--r);
+  overflow: hidden;
+  margin: 16px 0;
+  background: linear-gradient(135deg, #0c1a2e 0%, #123c7a 60%, #0c1a2e 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dt-video video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.dt-video .vt {
+  position: absolute;
+  top: 12px;
+  left: 14px;
+  z-index: 2;
+  color: #cbd5e1;
+  font-size: 12px;
+  background: rgba(12, 26, 46, 0.55);
+  padding: 2px 10px;
+  border-radius: 999px;
+}
+
+.dt-video .play {
+  position: relative;
+  z-index: 2;
+  width: 66px;
+  height: 66px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.94);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 26px;
+  color: var(--p);
+  box-shadow: 0 10px 34px rgba(0, 0, 0, 0.45);
+  cursor: pointer;
+  transition: 0.2s;
+  border: none;
+}
+
+.dt-video .play:hover {
+  transform: scale(1.08);
+}
+
+.dt-video-fallback {
+  height: 320px;
+  border-radius: var(--r);
+  border: 1.5px dashed #bfd3f0;
+  background: linear-gradient(135deg, #eef4ff, #e6efff);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  color: #6b8cbf;
+  font-size: 13px;
+  margin: 16px 0;
+}
+
+.dt-video-fallback b {
+  font-size: 15px;
+}
+
+/* ===== 步骤块（圆点勾选） ===== */
+.dt-step {
+  display: flex;
+  gap: 16px;
+  padding: 20px 0;
+  border-bottom: 1px dashed var(--b);
+}
+
+.dt-step:last-of-type {
+  border-bottom: none;
+}
+
+.dt-no {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #e8f0fe;
+  color: var(--p);
+  font-weight: 700;
+  font-size: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  cursor: pointer;
+  transition: 0.15s;
+  user-select: none;
+  border: none;
+  padding: 0;
+}
+
+.dt-step.done .dt-no {
+  background: var(--p);
+  color: #fff;
+}
+
+.dt-step-body {
+  flex: 1;
+  min-width: 0;
+}
+
+.dt-step-body h3 {
+  font-size: 16px;
+  margin-bottom: 8px;
+}
+
+/* 注意事项块（正文中非「第 N 步」小节） */
+.dt-note {
+  border-left: 4px solid var(--cta);
+  background: #fff7ed;
+  border-radius: 0 10px 10px 0;
+  padding: 12px 16px;
+  font-size: 13px;
+  color: #7c4a1e;
+  margin: 14px 0;
+}
+
+.dt-note b {
+  display: block;
+  margin-bottom: 4px;
+  color: #9a4b0d;
+}
+
+/* note 体内段落：继承 note 棕色（原型 .note 文案色），去段底距 */
+.dt-note p {
+  margin: 0;
+  color: inherit;
+}
+
+/* ===== 步骤进度条 ===== */
+.dt-prog-box {
+  margin-top: 18px;
+  background: #f8fafc;
+  border: 1px solid var(--b);
+  border-radius: 10px;
+  padding: 14px 16px;
+}
+
+.dt-prog-h {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+  color: var(--g);
+  margin-bottom: 8px;
+}
+
+.dt-prog-h b {
+  color: var(--p);
+}
+
+.dt-prog {
+  height: 8px;
+  background: #e8edf3;
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.dt-prog i {
+  display: block;
+  height: 100%;
+  background: linear-gradient(90deg, var(--p), var(--acc));
+  border-radius: 999px;
+  transition: width 0.3s;
+}
+
+/* ===== 侧栏：目录 / 信息卡 / 关联推荐 ===== */
+.dt-toc {
+  padding: 14px 6px;
+}
+
+.dt-toc h3,
+.dt-info h3,
+.dt-rel h3 {
+  font-size: 14px;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.dt-toc h3::before,
+.dt-info h3::before,
+.dt-rel h3::before {
+  content: '';
+  width: 3px;
+  height: 14px;
+  border-radius: 2px;
+  background: var(--p);
+}
+
+.dt-toc button {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 6px 12px;
+  border-left: 2px solid var(--b);
+  background: none;
+  color: var(--g);
+  font-size: 13px;
+  border-radius: 0 8px 8px 0;
+  margin-bottom: 2px;
+  cursor: pointer;
+  transition: 0.15s;
+}
+
+.dt-toc button:hover {
+  color: var(--p);
+  background: #f6f9ff;
+}
+
+.dt-toc button.on {
+  color: var(--p);
+  border-left-color: var(--p);
+  background: #f0f6ff;
+  font-weight: 600;
+}
+
+.dt-info {
+  padding: 16px;
+}
+
+.dt-info .row {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  font-size: 13px;
+  padding: 7px 0;
+  border-bottom: 1px dashed #eef2f7;
+}
+
+.dt-info .row:last-child {
+  border-bottom: none;
+}
+
+.dt-info .row span {
+  color: #94a3b8;
+  flex-shrink: 0;
+}
+
+.dt-info .row b {
+  font-weight: 600;
+  text-align: right;
+}
+
+.dt-rel {
+  padding: 16px;
+}
+
+.dt-rel a {
+  display: block;
+  padding: 10px 12px;
+  border: 1px solid var(--b);
+  border-radius: 10px;
+  margin-bottom: 8px;
+  transition: 0.15s;
+}
+
+.dt-rel a:hover {
+  border-color: var(--p);
+  box-shadow: 0 4px 14px rgba(0, 102, 255, 0.1);
+}
+
+.dt-rel a b {
+  font-size: 13px;
+  display: block;
+  margin-bottom: 2px;
+}
+
+.dt-rel a:hover b {
+  color: var(--p);
+}
+
+.dt-rel a span {
+  font-size: 12px;
+  color: #94a3b8;
+}
+
+/* ===== 404 已下架提示页（AC-FN-20 / AC-EG-10） ===== */
+.dt-off-banner {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: #f1f5f9;
+  border: 1px solid #cbd5e1;
+  border-radius: 10px;
+  padding: 14px 16px;
+  color: var(--g);
+  margin-top: 20px;
+}
+
+.dt-off-banner .ic {
+  font-size: 18px;
+}
+
+.dt-off-banner b {
+  color: #475569;
+}
+
+.dt-off-banner .ops {
+  margin-left: auto;
+  display: flex;
+  gap: 8px;
+}
+
+.dt-off-rel {
+  margin-top: 12px;
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.dt-off-rel a {
+  flex: 1;
+  min-width: 240px;
+  border: 1px solid var(--b);
+  border-radius: 10px;
+  padding: 10px 14px;
+  transition: 0.15s;
+}
+
+.dt-off-rel a:hover {
+  border-color: var(--p);
+}
+
+.dt-off-rel a b {
+  font-size: 13px;
+  display: block;
+}
+
+.dt-off-rel a:hover b {
+  color: var(--p);
+}
+
+.dt-off-rel a span {
+  font-size: 12px;
+  color: #94a3b8;
+}
+
+.dt-off-empty {
+  margin-top: 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--g);
+  font-size: 13px;
+}
+
+/* ===== 不可见空态 / 网络错误 ===== */
+.dt-empty {
+  padding: 80px 0;
+  text-align: center;
+  color: var(--g);
+}
+
+.dt-empty .eic {
+  font-size: 40px;
+  margin-bottom: 10px;
+}
+
+.dt-empty b {
+  display: block;
+  font-size: 16px;
+  color: var(--d);
+  margin-bottom: 6px;
+}
+
+.dt-empty .btn {
+  margin-top: 14px;
+}
+
+/* ===== 整页骨架 ===== */
+.dt-sk {
+  background: #eef2f7;
+  border-radius: var(--r);
+  animation: skelPulse 1s ease-in-out infinite;
+}
+
+.dt-sk.crumb {
+  height: 14px;
+  width: 40%;
+  margin: 20px 0 10px;
+  border-radius: 6px;
+}
+
+.dt-sk.title {
+  height: 30px;
+  width: 70%;
+  border-radius: 6px;
+}
+
+.dt-sk.bar {
+  height: 46px;
+  margin: 16px 0;
+}
+
+.dt-skel-cols {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+}
+
+.dt-sk.article {
+  flex: 1;
+  height: 620px;
+}
+
+.dt-skel-side {
+  width: 300px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.dt-sk.side {
+  height: 260px;
+}
+
+/* ===== FE-03 互动区：评价/留言/操作区（复刻原型 .fb-box/.fb/.acts） ===== */
+.dt-fb-box {
+  margin-top: 16px;
+  border-top: 1px solid var(--b);
+  padding-top: 16px;
+}
+
+.dt-fb-q {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+.dt-fb-btns {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.dt-fb {
+  border: 1px solid var(--b);
+  background: #fff;
+  color: var(--g);
+  border-radius: 10px;
+  padding: 9px 18px;
+  font-size: 13px;
+  cursor: pointer;
+  transition: 0.15s;
+}
+
+.dt-fb:hover:not(:disabled) {
+  border-color: var(--p);
+  color: var(--p);
+}
+
+.dt-fb:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* 二选一互斥高亮（UI-IXD-07）：有帮助绿 / 没帮助红 */
+.dt-fb.on-good {
+  background: #e7f8ef;
+  border-color: #0a9d58;
+  color: #0a9d58;
+}
+
+.dt-fb.on-bad {
+  background: #fdeaea;
+  border-color: #dc5a5a;
+  color: #dc5a5a;
+}
+
+.dt-fb-msgwrap {
+  margin-top: 10px;
+}
+
+.dt-fb-msg {
+  width: 100%;
+  border: 1px solid var(--b);
+  border-radius: 10px;
+  padding: 8px 12px;
+  font-size: 13px;
+  color: var(--g);
+  font-family: inherit;
+  outline: none;
+}
+
+.dt-fb-msg:focus {
+  border-color: var(--p);
+}
+
+.dt-fb-cnt {
+  text-align: right;
+  font-size: 11px;
+  color: #94a3b8;
+  margin-top: 4px;
+}
+
+.dt-fb-sub {
+  margin-top: 10px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.dt-fb-note {
+  font-size: 12px;
+  color: #94a3b8;
+}
+
+.dt-acts {
+  display: flex;
+  gap: 10px;
+  margin-top: 14px;
+  flex-wrap: wrap;
+}
+
+/* 互动区轻提示（收藏 404/超长留言等业务文案，tech-design §6） */
+.dt-toast {
+  position: fixed;
+  top: 76px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(15, 23, 42, 0.82);
+  color: #fff;
+  font-size: 12px;
+  padding: 8px 16px;
+  border-radius: 8px;
+  z-index: 120;
+  max-width: calc(100vw - 40px);
+}
+
+/* ===== 正文底部关联推荐（UI-IXD-16，同分类 4 篇排除本篇） ===== */
+.dt-rel-btm {
+  margin-top: 16px;
+  padding: 16px;
+}
+
+.dt-rel-btm h3 {
+  font-size: 14px;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.dt-rel-btm h3::before {
+  content: '';
+  width: 3px;
+  height: 14px;
+  border-radius: 2px;
+  background: var(--p);
+}
+
+.dt-rel-btm-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 10px;
+}
+
+.dt-rel-btm-grid a {
+  border: 1px solid var(--b);
+  border-radius: 10px;
+  padding: 10px 12px;
+  transition: 0.15s;
+}
+
+.dt-rel-btm-grid a:hover {
+  border-color: var(--p);
+  box-shadow: 0 4px 14px rgba(0, 102, 255, 0.1);
+}
+
+.dt-rel-btm-grid a b {
+  font-size: 13px;
+  display: block;
+  margin-bottom: 2px;
+}
+
+.dt-rel-btm-grid a:hover b {
+  color: var(--p);
+}
+
+.dt-rel-btm-grid a span {
+  font-size: 12px;
+  color: #94a3b8;
+}

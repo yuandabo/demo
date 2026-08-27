@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>云ERP教程中心 · 学习打卡（小程序 H5）</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{background:#e2e8f0}
+body{font-family:'PingFang SC','Microsoft YaHei',sans-serif;display:flex;justify-content:center;align-items:flex-start;min-height:100vh;padding:28px 12px}
+a{text-decoration:none;color:inherit}
+ul{list-style:none}
+/* ===== 手机壳（5 页统一） ===== */
+.phone{width:375px;height:812px;background:#0f172a;border-radius:40px;padding:7px;box-shadow:0 24px 60px rgba(15,23,42,.45);flex-shrink:0}
+.screen{width:100%;height:100%;background:#f8fafc;border-radius:33px;overflow:hidden;position:relative;display:flex;flex-direction:column}
+.notch{position:absolute;top:0;left:50%;transform:translateX(-50%);width:112px;height:24px;background:#0f172a;border-radius:0 0 13px 13px;z-index:20}
+.notch::after{content:'';position:absolute;right:12px;top:7px;width:8px;height:8px;border-radius:50%;background:#334155;border:1.5px solid #475569}
+.statusbar{height:44px;flex-shrink:0;display:flex;align-items:flex-end;justify-content:space-between;padding:0 24px 5px;position:relative;z-index:10;color:#0f172a;background:#fff}
+.statusbar .time{font-size:14px;font-weight:700}
+.statusbar .sicons{display:flex;align-items:center;gap:5px}
+.statusbar svg{display:block}
+.tabbar{flex-shrink:0;background:#fff;border-top:1px solid #e2e8f0;display:flex;padding-top:5px}
+.tab{flex:1;display:flex;flex-direction:column;align-items:center;gap:1px;font-size:10px;color:#94a3b8;padding:3px 0 4px}
+.tab .ico{font-size:20px;line-height:1;filter:grayscale(1);opacity:.55}
+.tab.active{color:#0066ff;font-weight:700}
+.tab.active .ico{filter:none;opacity:1}
+.homebar{flex-shrink:0;height:16px;background:#fff;display:flex;align-items:center;justify-content:center}
+.homebar i{width:110px;height:5px;border-radius:3px;background:#0f172a;display:block}
+.scroll{flex:1;overflow-y:auto;scrollbar-width:none}
+.scroll::-webkit-scrollbar{display:none}
+/* ===== 顶部导航 ===== */
+.nav{flex-shrink:0;background:#fff;display:flex;align-items:center;gap:8px;padding:6px 12px 8px;border-bottom:1px solid #f1f5f9}
+.back{font-size:20px;line-height:1;color:#0f172a;padding:2px 4px 0 0}
+.nav-title{font-size:15px;font-weight:700;color:#0f172a}
+/* ===== 打卡日历卡 ===== */
+.body{padding:12px 12px 20px}
+.cal-card{background:#fff;border-radius:12px;padding:14px;box-shadow:0 1px 4px rgba(15,23,42,.06)}
+.cal-hd{display:flex;justify-content:space-between;align-items:center}
+.cal-title{font-size:15px;font-weight:800;color:#0f172a}
+.cal-sub{font-size:11px;color:#94a3b8;margin-top:3px}
+.cal-sub b{color:#f97316;font-weight:700}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin-top:13px;text-align:center}
+.dow{font-size:10px;color:#94a3b8;padding:2px 0}
+.day{height:46px;border-radius:10px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px}
+.day .g{font-size:15px;font-weight:800;line-height:1}
+.day .lbl{font-size:9px;font-weight:400}
+.day.done{background:#e8f7ee;color:#16a34a}
+.day.miss{background:#f1f5f9;color:#cbd5e1}
+.day.today{background:#f97316;color:#fff;box-shadow:0 4px 12px rgba(249,115,22,.4)}
+.legend{display:flex;gap:12px;margin-top:13px;font-size:10px;color:#94a3b8;justify-content:center;flex-wrap:wrap}
+.lg{display:flex;align-items:center;gap:4px}
+.lg i{width:10px;height:10px;border-radius:3px;display:inline-block}
+/* ===== 积分卡 ===== */
+.pt-card{background:linear-gradient(135deg,#0066ff,#3b82f6);border-radius:12px;color:#fff;padding:14px;margin-top:12px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 6px 16px rgba(0,102,255,.3)}
+.pt-label{font-size:11px;opacity:.85}
+.pt-row{display:flex;align-items:baseline;gap:6px;margin-top:2px}
+.pt-num{font-size:32px;font-weight:800;line-height:1}
+.pt-unit{font-size:12px;opacity:.85}
+.pt-next{font-size:10px;opacity:.8;margin-top:4px}
+.pt-pill{background:rgba(255,255,255,.2);border:1px solid rgba(255,255,255,.45);font-size:12px;font-weight:700;padding:7px 12px;border-radius:999px;flex-shrink:0}
+.pt-rule{font-size:10px;color:#94a3b8;margin-top:8px;line-height:1.6}
+/* ===== 徽章墙 ===== */
+.sec-hd{display:flex;justify-content:space-between;align-items:center;margin:16px 2px 9px}
+.sec-title{font-size:15px;font-weight:700;color:#0f172a;display:flex;align-items:center;gap:6px}
+.sec-title em{font-style:normal;color:#0066ff;font-size:10px;background:#e6efff;padding:2px 7px;border-radius:999px;font-weight:600}
+.sec-more{font-size:12px;color:#94a3b8}
+.badge-card{background:#f8fafc;border:1.5px dashed #cbd5e1;border-radius:12px;padding:12px 14px;display:flex;gap:12px;align-items:center;margin-bottom:10px}
+.b-ico{width:46px;height:46px;border-radius:50%;background:#e2e8f0;display:flex;align-items:center;justify-content:center;font-size:22px;filter:grayscale(1);opacity:.65;flex-shrink:0}
+.b-body{flex:1;min-width:0}
+.b-name{font-size:14px;font-weight:700;color:#64748b;display:flex;align-items:center;gap:6px}
+.b-lock{font-size:9px;color:#94a3b8;background:#e2e8f0;border-radius:4px;padding:1px 5px}
+.b-desc{font-size:11px;color:#94a3b8;margin-top:3px}
+.b-bar{height:5px;background:#e2e8f0;border-radius:3px;margin-top:8px;overflow:hidden}
+.b-bar i{display:block;height:100%;background:#cbd5e1;border-radius:3px}
+.b-prog{font-size:10px;color:#94a3b8;margin-top:4px}
+.b-state{font-size:18px;flex-shrink:0;opacity:.6}
+/* ===== 底部大按钮 ===== */
+.cta{flex-shrink:0;background:#fff;border-top:1px solid #f1f5f9;padding:9px 12px}
+.cta-btn{width:100%;height:46px;border:0;border-radius:23px;background:linear-gradient(135deg,#f97316,#fb923c);color:#fff;font-size:16px;font-weight:800;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:7px;box-shadow:0 6px 16px rgba(249,115,22,.4)}
+.cta-note{font-size:9px;color:#cbd5e1;text-align:center;margin-top:6px}
+</style>
+</head>
+<body>
+<div class="phone">
+  <div class="screen">
+    <div class="notch"></div>
+
+    <div class="statusbar">
+      <span class="time">9:41</span>
+      <span class="sicons">
+        <svg width="16" height="10" viewBox="0 0 16 10" fill="currentColor"><rect x="0" y="6" width="3" height="4" rx="1"/><rect x="4.3" y="4" width="3" height="6" rx="1"/><rect x="8.6" y="2" width="3" height="8" rx="1"/><rect x="12.9" y="0" width="3" height="10" rx="1"/></svg>
+        <svg width="15" height="11" viewBox="0 0 15 11" fill="currentColor"><circle cx="7.5" cy="9.4" r="1.5"/><path d="M4.6 6.6a4.6 4.6 0 0 1 5.8 0l-1.1 1.3a3 3 0 0 0-3.6 0z"/><path d="M1.9 3.9a8.6 8.6 0 0 1 11.2 0l-1.1 1.3a6.9 6.9 0 0 0-9 0z"/></svg>
+        <svg width="23" height="11" viewBox="0 0 23 11" fill="none"><rect x=".5" y=".5" width="19" height="10" rx="2.5" stroke="currentColor" opacity=".4"/><rect x="2" y="2" width="13" height="7" rx="1.2" fill="currentColor"/><rect x="20.5" y="3.2" width="2" height="4.6" rx="1" fill="currentColor" opacity=".4"/></svg>
+      </span>
+    </div>
+
+    <div class="nav">
+      <a class="back" href="ui_m_home.html">‹</a>
+      <span class="nav-title">学习打卡</span>
+    </div>
+
+    <main class="scroll">
+      <div class="body">
+
+        <!-- 打卡日历卡：本周 7 天（5 绿 + 1 灰中断 + 今天橙） -->
+        <div class="cal-card">
+          <div class="cal-hd">
+            <div>
+              <div class="cal-title">📅 本周打卡</div>
+              <div class="cal-sub">连续 <b>2</b> 天 · 本月累计 <b>18</b> 天 · 已打卡 <b>5</b>/7 天</div>
+            </div>
+          </div>
+          <div class="cal-grid">
+            <div class="dow">一</div><div class="dow">二</div><div class="dow">三</div><div class="dow">四</div><div class="dow">五</div><div class="dow">六</div><div class="dow">日</div>
+            <div class="day done"><span class="g">✓</span><span class="lbl">已打</span></div>
+            <div class="day done"><span class="g">✓</span><span class="lbl">已打</span></div>
+            <div class="day done"><span class="g">✓</span><span class="lbl">已打</span></div>
+            <div class="day miss"><span class="g">✕</span><span class="lbl">中断</span></div>
+            <div class="day done"><span class="g">✓</span><span class="lbl">已打</span></div>
+            <div class="day done"><span class="g">✓</span><span class="lbl">已打</span></div>
+            <div class="day today"><span class="g">今</span><span class="lbl">待打</span></div>
+          </div>
+          <div class="legend">
+            <span class="lg"><i style="background:#e8f7ee;border:1px solid #16a34a"></i>已打卡 5 天</span>
+            <span class="lg"><i style="background:#f97316"></i>今天待打卡</span>
+            <span class="lg"><i style="background:#f1f5f9;border:1px solid #cbd5e1"></i>中断 1 天</span>
+          </div>
+        </div>
+
+        <!-- 积分卡 -->
+        <div class="pt-card">
+          <div>
+            <div class="pt-label">当前积分</div>
+            <div class="pt-row"><span class="pt-num">120</span><span class="pt-unit">分</span></div>
+            <div class="pt-next">今日打卡后 130 分</div>
+          </div>
+          <span class="pt-pill">+10 积分 / 天</span>
+        </div>
+        <div class="pt-rule">打卡规则：每日可打卡 1 次 +10 积分；中断只清连续天数，不清积分、不扣徽章进度。</div>
+
+        <!-- 徽章墙（两张锁定态） -->
+        <div class="sec-hd">
+          <span class="sec-title">徽章墙<em>0 / 2 已解锁</em></span>
+          <a class="sec-more" href="ui_m_list.html">去学习 ›</a>
+        </div>
+        <div class="badge-card">
+          <span class="b-ico">🏅</span>
+          <span class="b-body">
+            <span class="b-name">坚持者<span class="b-lock">🔒 未解锁</span></span>
+            <span class="b-desc">需连续打卡 7 天 · 当前连续 2 天</span>
+            <span class="b-bar"><i style="width:28.6%"></i></span>
+            <span class="b-prog">进度 2 / 7 天 · 中断后从第 1 天重新累计</span>
+          </span>
+          <span class="b-state">🔒</span>
+        </div>
+        <div class="badge-card">
+          <span class="b-ico">📖</span>
+          <span class="b-body">
+            <span class="b-name">百科达人<span class="b-lock">🔒 未解锁</span></span>
+            <span class="b-desc">需累计完成 20 篇教程 · 已完成 8 篇</span>
+            <span class="b-bar"><i style="width:40%"></i></span>
+            <span class="b-prog">进度 8 / 20 篇 · 阅读进度 100% 记为完成</span>
+          </span>
+          <span class="b-state">🔒</span>
+        </div>
+
+      </div>
+    </main>
+
+    <!-- 底部大按钮 -->
+    <div class="cta">
+      <button class="cta-btn">📅 今日打卡 +10 积分</button>
+      <div class="cta-note">今日未打卡 · 打卡后连续 3 天 · 当日重复点击无效</div>
+    </div>
+
+    <!-- 底部 TabBar（当前：打卡） -->
+    <nav class="tabbar">
+      <a class="tab" href="ui_m_home.html"><span class="ico">🏠</span>首页</a>
+      <a class="tab" href="ui_m_list.html"><span class="ico">📚</span>分类</a>
+      <a class="tab" href="ui_m_favorite.html"><span class="ico">⭐</span>收藏</a>
+      <a class="tab active" href="ui_m_checkin.html"><span class="ico">📅</span>打卡</a>
+    </nav>
+    <div class="homebar"><i></i></div>
+  </div>
+</div>
+</body>
+</html>

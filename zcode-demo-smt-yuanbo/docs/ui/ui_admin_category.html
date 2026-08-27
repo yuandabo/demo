@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>目录管理 · 云ERP教程中心·管理后台</title>
+<style>
+:root{
+  --primary:#0066ff; --cta:#f97316; --success:#16a34a; --danger:#dc2626; --warn:#d97706;
+  --gray:#64748b; --border:#e2e8f0; --bg:#f8fafc; --bg2:#f1f5f9; --card:#fff; --radius:12px; --dark:#0f172a;
+  --text:#0f172a; --text2:#64748b;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'PingFang SC','Microsoft YaHei',sans-serif;background:var(--bg);color:var(--text);font-size:14px}
+a{text-decoration:none;color:inherit}
+/* ===== 布局骨架 ===== */
+.layout{display:flex;min-height:100vh}
+.sidebar{width:240px;background:var(--dark);color:#cbd5e1;display:flex;flex-direction:column;position:fixed;top:0;bottom:0;left:0;z-index:20}
+.brand{padding:18px 20px;display:flex;gap:10px;align-items:center;border-bottom:1px solid rgba(255,255,255,.08)}
+.brand-logo{width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,#0066ff,#3b82f6);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.brand-name{color:#fff;font-weight:600;font-size:14px;line-height:1.3}
+.brand-sub{font-size:11px;color:#94a3b8}
+.menu{padding:14px 12px;flex:1}
+.menu-title{font-size:11px;color:#64748b;padding:0 12px 8px;letter-spacing:1px}
+.menu-item{display:flex;align-items:center;gap:10px;padding:11px 12px;border-radius:8px;color:#cbd5e1;margin-bottom:4px;position:relative;font-size:14px;cursor:pointer}
+.menu-item:hover{background:rgba(255,255,255,.06);color:#fff}
+.menu-item.active{background:rgba(0,102,255,.20);color:#fff;font-weight:600}
+.menu-item.active::before{content:'';position:absolute;left:0;top:8px;bottom:8px;width:3px;border-radius:2px;background:var(--primary)}
+.menu-item .mi{font-size:16px;width:20px;text-align:center;flex-shrink:0}
+.menu-item .menu-badge{margin-left:auto;background:var(--danger);color:#fff;font-size:11px;border-radius:9px;padding:1px 7px;font-weight:600}
+.menu-item.reserved{color:#64748b;cursor:not-allowed}
+.menu-item.reserved:hover{background:none;color:#64748b}
+.tag-reserved{margin-left:auto;font-size:10px;color:#94a3b8;border:1px solid #475569;border-radius:4px;padding:1px 5px;flex-shrink:0}
+.side-foot{padding:14px 20px;border-top:1px solid rgba(255,255,255,.08);font-size:11px;color:#64748b}
+.main{margin-left:240px;flex:1;display:flex;flex-direction:column;min-width:0}
+.topbar{height:60px;background:#fff;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 24px;position:sticky;top:0;z-index:10}
+.crumb{color:var(--text2);font-size:13px;display:flex;align-items:center;gap:6px}
+.crumb b{color:var(--text);font-weight:600}
+.crumb .sep{color:#cbd5e1}
+.admin{display:flex;align-items:center;gap:10px}
+.avatar{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,#0066ff,#3b82f6);color:#fff;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:600}
+.admin-info{line-height:1.3}
+.admin-name{font-size:13px;font-weight:600}
+.admin-role{font-size:11px;color:var(--text2)}
+.content{padding:24px;max-width:1280px}
+.page-head{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:18px;flex-wrap:wrap;gap:10px}
+.page-title{font-size:20px;font-weight:600}
+.page-desc{font-size:12px;color:var(--text2);margin-top:4px}
+/* ===== 按钮 ===== */
+.btn{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--border);background:#fff;color:#334155;border-radius:8px;padding:8px 16px;font-size:13px;cursor:pointer;font-family:inherit;transition:all .15s}
+.btn:hover{border-color:#cbd5e1;background:#f8fafc}
+.btn:active{transform:scale(.97)}
+.btn-primary{background:var(--primary);border-color:var(--primary);color:#fff;font-weight:600}
+.btn-primary:hover{background:#0052cc;border-color:#0052cc}
+/* ===== 双栏 ===== */
+.cate-grid{display:grid;grid-template-columns:7fr 5fr;gap:16px;align-items:start}
+.card{background:var(--card);border-radius:var(--radius);border:1px solid var(--border);padding:20px}
+.card-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.card-title{font-size:15px;font-weight:600;display:flex;align-items:center;gap:8px}
+.card-title::before{content:'';width:4px;height:14px;border-radius:2px;background:var(--primary)}
+.card-note{font-size:12px;color:var(--text2)}
+/* ===== 分类树 ===== */
+.tree{font-size:13px}
+.tree-row{display:flex;align-items:center;gap:8px;padding:9px 10px;border-radius:8px;transition:background .12s}
+.tree-row:hover{background:#f8fafc}
+.tree-row.selected{background:#eff6ff}
+.tree-row.disabled-row .node-name{color:var(--gray);text-decoration:line-through;text-decoration-color:#cbd5e1}
+.grip{cursor:grab;color:#cbd5e1;font-size:14px;letter-spacing:-1px;user-select:none;padding:0 2px}
+.grip:hover{color:var(--gray)}
+.grip:active{cursor:grabbing}
+.caret{width:18px;height:18px;display:inline-flex;align-items:center;justify-content:center;color:var(--gray);cursor:pointer;font-size:11px;transition:transform .15s;flex-shrink:0;border-radius:4px}
+.caret:hover{background:var(--bg2)}
+.caret.open{transform:rotate(90deg)}
+.caret.leaf{visibility:hidden}
+.node-name{font-weight:500;white-space:nowrap}
+.sort-no{font-size:11px;color:#cbd5e1;background:var(--bg2);border-radius:4px;padding:1px 6px;flex-shrink:0;font-variant-numeric:tabular-nums}
+.mod-tag{font-size:11px;color:var(--text2);border:1px solid var(--border);border-radius:4px;padding:1px 6px;white-space:nowrap}
+.cnt-tag{font-size:11px;color:var(--primary);background:#eff6ff;border-radius:4px;padding:1px 6px;white-space:nowrap;font-variant-numeric:tabular-nums}
+.cnt-tag.zero{color:var(--cta);background:#fff7ed}
+.node-ops{margin-left:auto;display:flex;align-items:center;gap:8px}
+.op{background:none;border:none;font-size:12px;color:var(--primary);cursor:pointer;padding:2px 6px;font-family:inherit;border-radius:4px}
+.op:hover{background:#eff6ff;text-decoration:underline}
+.op-danger{color:var(--danger)}
+.op-danger:hover{background:#fef2f2}
+/* 开关 */
+.switch{position:relative;width:34px;height:19px;flex-shrink:0;cursor:pointer}
+.switch input{opacity:0;width:0;height:0}
+.slider{position:absolute;inset:0;background:#cbd5e1;border-radius:10px;transition:background .18s}
+.slider::before{content:'';position:absolute;width:15px;height:15px;border-radius:50%;background:#fff;top:2px;left:2px;transition:transform .18s;box-shadow:0 1px 3px rgba(0,0,0,.2)}
+.switch input:checked + .slider{background:var(--success)}
+.switch input:checked + .slider::before{transform:translateX(15px)}
+.switch input:disabled + .slider{opacity:.55;cursor:not-allowed}
+/* 子级 */
+.children{margin-left:26px;border-left:1px dashed var(--border);padding-left:6px;display:none}
+.children.open{display:block}
+.child-row .node-name{font-weight:400;color:#334155}
+.tree-foot{margin-top:12px;font-size:12px;color:var(--text2);line-height:1.8;background:var(--bg2);border-radius:8px;padding:10px 12px}
+/* ===== 右侧表单 ===== */
+.form-row{margin-bottom:15px}
+.form-row:last-child{margin-bottom:0}
+.form-label{display:flex;align-items:center;justify-content:space-between;font-size:13px;font-weight:500;color:#334155;margin-bottom:6px}
+.form-label .req{color:var(--danger);margin-right:3px}
+.input,.select{width:100%;border:1px solid var(--border);border-radius:8px;background:#fff;color:var(--text);font-size:13px;padding:9px 12px;font-family:inherit;transition:border-color .15s}
+.input:focus,.select:focus{outline:none;border-color:var(--primary);box-shadow:0 0 0 3px rgba(0,102,255,.1)}
+.form-hint{font-size:12px;color:var(--text2);margin-top:5px;line-height:1.6}
+.switch-line{display:flex;align-items:center;justify-content:space-between;border:1px solid var(--border);border-radius:8px;padding:10px 12px}
+.switch-line .t{font-size:13px;color:#334155}
+.switch-line .d{font-size:11px;color:var(--text2);margin-top:2px}
+.form-foot{display:flex;gap:10px;margin-top:16px}
+.btn-block-warning{
+  margin-top:14px;background:#fffbeb;border:1px solid #fde68a;border-radius:8px;
+  font-size:12px;color:#92400e;line-height:1.7;padding:10px 12px;
+}
+/* ===== 删除确认弹窗（阻断示例） ===== */
+.modal-mask{position:fixed;inset:0;background:rgba(15,23,42,.5);display:none;align-items:center;justify-content:center;z-index:100;padding:20px}
+.modal-mask.show{display:flex}
+.modal{background:#fff;border-radius:var(--radius);width:440px;max-width:100%;padding:24px;box-shadow:0 24px 64px rgba(2,6,23,.3)}
+.modal-title{font-size:16px;font-weight:600;margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.modal-block{
+  display:flex;gap:10px;background:#fef2f2;border:1px solid #fecaca;border-radius:10px;
+  padding:14px;font-size:13px;color:var(--danger);line-height:1.8;
+}
+.modal-block b{font-weight:700}
+.modal-body{font-size:13px;color:#475569;line-height:1.8;margin-top:12px}
+.modal-foot{display:flex;justify-content:flex-end;gap:10px;margin-top:18px}
+@media (max-width:1000px){.cate-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="layout">
+  <!-- ===== 侧边栏 ===== -->
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="brand-logo">📚</div>
+      <div><div class="brand-name">云ERP教程中心</div><div class="brand-sub">管理后台</div></div>
+    </div>
+    <nav class="menu">
+      <div class="menu-title">内容管理</div>
+      <a class="menu-item" href="ui_admin_dashboard.html"><span class="mi">📊</span>统计看板</a>
+      <a class="menu-item" href="ui_admin_tutorial_list.html"><span class="mi">📚</span>教程管理</a>
+      <a class="menu-item" href="ui_admin_review.html"><span class="mi">✅</span>审核队列<span class="menu-badge">3</span></a>
+      <a class="menu-item active" href="ui_admin_category.html"><span class="mi">🌲</span>目录管理</a>
+      <div class="menu-item reserved"><span class="mi">🤖</span>AI 生成审核<span class="tag-reserved">预留</span></div>
+    </nav>
+    <div class="side-foot">v1.0 · 演示环境</div>
+  </aside>
+
+  <!-- ===== 主区域 ===== -->
+  <div class="main">
+    <header class="topbar">
+      <div class="crumb">管理后台 <span class="sep">/</span> <b>目录管理</b></div>
+      <div class="admin">
+        <div class="avatar">A</div>
+        <div class="admin-info"><div class="admin-name">admin</div><div class="admin-role">平台管理员</div></div>
+      </div>
+    </header>
+
+    <div class="content">
+      <div class="page-head">
+        <div>
+          <div class="page-title">目录管理</div>
+          <div class="page-desc">本期限两级分类树 · 同级拖拽或调整排序值影响前台宫格与列表顺序 · 分类下存在教程时禁止删除</div>
+        </div>
+        <button class="btn btn-primary" onclick="newCate()">＋ 新增分类</button>
+      </div>
+
+      <div class="cate-grid">
+        <!-- ===== 左：分类树 ===== -->
+        <div class="card">
+          <div class="card-head">
+            <div class="card-title">分类树</div>
+            <div class="card-note">共 12 个一级分类 · 点击行选中后右侧编辑</div>
+          </div>
+          <div class="tree">
+            <div class="tree-row" data-name="新手入门" data-parent="" data-mod="不限" data-sort="1" data-on="1" onclick="selectNode(this)">
+              <span class="grip" title="拖拽排序">⠿</span>
+              <span class="caret open" onclick="toggleKids(this,event)">▶</span>
+              <span class="node-name">新手入门</span>
+              <span class="sort-no">#1</span>
+              <span class="mod-tag">不限</span>
+              <span class="cnt-tag">1 篇</span>
+              <div class="node-ops">
+                <label class="switch" onclick="event.stopPropagation()"><input type="checkbox" checked onchange="flipToast(this)"><span class="slider"></span></label>
+              </div>
+            </div>
+            <div class="children open">
+              <div class="tree-row child-row" data-name="30 分钟上手" data-parent="新手入门" data-mod="不限" data-sort="1" data-on="1" onclick="selectNode(this)">
+                <span class="grip">⠿</span><span class="caret leaf">▶</span>
+                <span class="node-name">30 分钟上手</span><span class="sort-no">#1</span><span class="mod-tag">不限</span><span class="cnt-tag">1 篇</span>
+                <div class="node-ops"><label class="switch" onclick="event.stopPropagation()"><input type="checkbox" checked onchange="flipToast(this)"><span class="slider"></span></label><button class="op op-danger" onclick="askDelete(event,this)">删除</button></div>
+              </div>
+            </div>
+
+            <div class="tree-row" data-name="最佳实践" data-parent="" data-mod="不限" data-sort="2" data-on="1" onclick="selectNode(this)">
+              <span class="grip">⠿</span><span class="caret leaf">▶</span>
+              <span class="node-name">最佳实践</span><span class="sort-no">#2</span><span class="mod-tag">不限</span><span class="cnt-tag">1 篇</span>
+              <div class="node-ops"><label class="switch" onclick="event.stopPropagation()"><input type="checkbox" checked onchange="flipToast(this)"><span class="slider"></span></label></div>
+            </div>
+
+            <div class="tree-row" data-name="常见问题" data-parent="" data-mod="不限" data-sort="3" data-on="1" onclick="selectNode(this)">
+              <span class="grip">⠿</span><span class="caret leaf">▶</span>
+              <span class="node-name">常见问题</span><span class="sort-no">#3</span><span class="mod-tag">不限</span><span class="cnt-tag">1 篇</span>
+              <div class="node-ops"><label class="switch" onclick="event.stopPropagation()"><input type="checkbox" checked onchange="flipToast(this)"><span class="slider"></span></label></div>
+            </div>
+
+            <div class="tree-row" data-name="开放平台" data-parent="" data-mod="不限" data-sort="4" data-on="1" onclick="selectNode(this)">
+              <span class="grip">⠿</span><span class="caret leaf">▶</span>
+              <span class="node-name">开放平台</span>
+              <span class="sort-no">#4</span><span class="mod-tag">不限</span><span class="cnt-tag zero">0 篇 · 待补充</span>
+              <div class="node-ops"><label class="switch" onclick="event.stopPropagation()"><input type="checkbox" checked onchange="flipToast(this)"><span class="slider"></span></label></div>
+            </div>
+
+            <div class="tree-row" data-name="销售管理" data-parent="" data-mod="销售管理" data-sort="5" data-on="1" data-cnt="3" onclick="selectNode(this)">
+              <span class="grip">⠿</span>
+              <span class="caret open" onclick="toggleKids(this,event)">▶</span>
+              <span class="node-name">销售管理</span><span class="sort-no">#5</span><span class="mod-tag">销售管理</span><span class="cnt-tag">3 篇</span>
+              <div class="node-ops">
+                <label class="switch" onclick="event.stopPropagation()"><input type="checkbox" checked onchange="flipToast(this)"><span class="slider"></span></label>
+                <button class="op op-danger" onclick="askDelete(event,this)">删除</button>
+              </div>
+            </div>
+            <div class="children open">
+              <div class="tree-row child-row" data-name="报价管理" data-parent="销售管理" data-mod="销售管理" data-sort="1" data-on="1" onclick="selectNode(this)">
+                <span class="grip">⠿</span><span class="caret leaf">▶</span>
+                <span class="node-name">报价管理</span><span class="sort-no">#1</span><span class="mod-tag">销售管理</span><span class="cnt-tag">1 篇</span>
+                <div class="node-ops"><label class="switch" onclick="event.stopPropagation()"><input type="checkbox" checked onchange="flipToast(this)"><span class="slider"></span></label><button class="op op-danger" onclick="askDelete(event,this)">删除</button></div>
+              </div>
+              <div class="tree-row child-row" data-name="退货处理" data-parent="销售管理" data-mod="销售管理" data-sort="2" data-on="1" onclick="selectNode(this)">
+                <span class="grip">⠿</span><span class="caret leaf">▶</span>
+                <span class="node-name">退货处理</span><span class="sort-no">#2</span><span class="mod-tag">销售管理</span><span class="cnt-tag zero">0 篇</span>
+                <div class="node-ops"><label class="switch" onclick="event.stopPropagation()"><input type="checkbox" checked onchange="flipToast(this)"><span class="slider"></span></label><button class="op op-danger" onclick="askDelete(event,this)">删除</button></div>
+              </div>
+            </div>
+
+            <div class="tree-row" data-name="采购管理" data-parent="" data-mod="采购管理" data-sort="6" data-on="1" onclick="selectNode(this)">
+              <span class="grip">⠿</span><span class="caret open" onclick="toggleKids(this,event)">▶</span>
+              <span class="node-name">采购管理</span><span class="sort-no">#6</span><span class="mod-tag">采购管理</span><span class="cnt-tag">3 篇</span>
+              <div class="node-ops">
+                <label class="switch" onclick="event.stopPropagation()"><input type="checkbox" checked onchange="flipToast(this)"><span class="slider"></span></label>
+                <button class="op op-danger" onclick="askDelete(event,this)">删除</button>
+              </div>
+            </div>
+            <div class="children open">
+              <div class="tree-row child-row" data-name="供应商管理" data-parent="采购管理" data-mod="采购管理" data-sort="1" data-on="1" onclick="selectNode(this)">
+                <span class="grip">⠿</span><span class="caret leaf">▶</span>
+                <span class="node-name">供应商管理</span><span class="sort-no">#1</span><span class="mod-tag">采购管理</span><span class="cnt-tag">1 篇</span>
+                <div class="node-ops"><label class="switch" onclick="event.stopPropagation()"><input type="checkbox" checked onchange="flipToast(this)"><span class="slider"></span></label><button class="op op-danger" onclick="askDelete(event,this)">删除</button></div>
+              </div>
+            </div>
+
+            <div class="tree-row selected" data-name="库存管理" data-parent="" data-mod="库存管理" data-sort="7" data-on="1" data-cnt="3" onclick="selectNode(this)">
+              <span class="grip">⠿</span>
+              <span class="caret open" onclick="toggleKids(this,event)">▶</span>
+              <span class="node-name">库存管理</span><span class="sort-no">#7</span><span class="mod-tag">库存管理</span><span class="cnt-tag">2 篇</span>
+              <div class="node-ops">
+                <label class="switch" onclick="event.stopPropagation()"><input type="checkbox" checked onchange="flipToast(this)"><span class="slider"></span></label>
+                <button class="op op-danger" onclick="askDelete(event,this)">删除</button>
+              </div>
+            </div>
+            <div class="children open">
+              <div class="tree-row child-row" data-name="库位管理" data-parent="库存管理" data-mod="库存管理" data-sort="1" data-on="1" onclick="selectNode(this)">
+                <span class="grip">⠿</span><span class="caret leaf">▶</span>
+                <span class="node-name">库位管理</span><span class="sort-no">#1</span><span class="mod-tag">库存管理</span><span class="cnt-tag">1 篇</span>
+                <div class="node-ops"><label class="switch" onclick="event.stopPropagation()"><input type="checkbox" checked onchange="flipToast(this)"><span class="slider"></span></label><button class="op op-danger" onclick="askDelete(event,this)">删除</button></div>
+              </div>
+              <div class="tree-row child-row" data-name="盘点作业" data-parent="库存管理" data-mod="库存管理" data-sort="2" data-on="1" onclick="selectNode(this)">
+                <span class="grip">⠿</span><span class="caret leaf">▶</span>
+                <span class="node-name">盘点作业</span><span class="sort-no">#2</span><span class="mod-tag">库存管理</span><span class="cnt-tag zero">0 篇</span>
+                <div class="node-ops"><label class="switch" onclick="event.stopPropagation()"><input type="checkbox" checked onchange="flipToast(this)"><span class="slider"></span></label><button class="op op-danger" onclick="askDelete(event,this)">删除</button></div>
+              </div>
+            </div>
+
+            <div class="tree-row" data-name="生产制造" data-parent="" data-mod="生产制造" data-sort="8" data-on="1" onclick="selectNode(this)">
+              <span class="grip">⠿</span>
+              <span class="caret open" onclick="toggleKids(this,event)">▶</span>
+              <span class="node-name">生产制造</span><span class="sort-no">#8</span><span class="mod-tag">生产制造</span><span class="cnt-tag">3 篇</span>
+              <div class="node-ops">
+                <label class="switch" onclick="event.stopPropagation()"><input type="checkbox" checked onchange="flipToast(this)"><span class="slider"></span></label>
+                <button class="op op-danger" onclick="askDelete(event,this)">删除</button>
+              </div>
+            </div>
+            <div class="children open">
+              <div class="tree-row child-row" data-name="工序报工" data-parent="生产制造" data-mod="生产制造" data-sort="1" data-on="1" onclick="selectNode(this)">
+                <span class="grip">⠿</span><span class="caret leaf">▶</span>
+                <span class="node-name">工序报工</span><span class="sort-no">#1</span><span class="mod-tag">生产制造</span><span class="cnt-tag">1 篇</span>
+                <div class="node-ops"><label class="switch" onclick="event.stopPropagation()"><input type="checkbox" checked onchange="flipToast(this)"><span class="slider"></span></label><button class="op op-danger" onclick="askDelete(event,this)">删除</button></div>
+              </div>
+            </div>
+
+            <div class="tree-row" data-name="项目管理" data-parent="" data-mod="项目管理" data-sort="9" data-on="1" onclick="selectNode(this)">
+              <span class="grip">⠿</span><span class="caret leaf">▶</span>
+              <span class="node-name">项目管理</span><span class="sort-no">#9</span><span class="mod-tag">项目管理</span><span class="cnt-tag">2 篇</span>
+              <div class="node-ops"><label class="switch" onclick="event.stopPropagation()"><input type="checkbox" checked onchange="flipToast(this)"><span class="slider"></span></label></div>
+            </div>
+
+            <div class="tree-row" data-name="文件管理" data-parent="" data-mod="文件管理" data-sort="10" data-on="1" onclick="selectNode(this)">
+              <span class="grip">⠿</span><span class="caret leaf">▶</span>
+              <span class="node-name">文件管理</span><span class="sort-no">#10</span><span class="mod-tag">文件管理</span><span class="cnt-tag">1 篇</span>
+              <div class="node-ops"><label class="switch" onclick="event.stopPropagation()"><input type="checkbox" checked onchange="flipToast(this)"><span class="slider"></span></label></div>
+            </div>
+
+            <div class="tree-row" data-name="人事财务" data-parent="" data-mod="人事财务" data-sort="11" data-on="1" onclick="selectNode(this)">
+              <span class="grip">⠿</span><span class="caret leaf">▶</span>
+              <span class="node-name">人事财务</span><span class="sort-no">#11</span><span class="mod-tag">人事财务</span><span class="cnt-tag">1 篇</span>
+              <div class="node-ops"><label class="switch" onclick="event.stopPropagation()"><input type="checkbox" checked onchange="flipToast(this)"><span class="slider"></span></label></div>
+            </div>
+
+            <div class="tree-row" data-name="系统设置" data-parent="" data-mod="系统设置" data-sort="12" data-on="1" onclick="selectNode(this)">
+              <span class="grip">⠿</span><span class="caret leaf">▶</span>
+              <span class="node-name">系统设置</span><span class="sort-no">#12</span><span class="mod-tag">系统设置</span><span class="cnt-tag zero">0 篇</span>
+              <div class="node-ops"><label class="switch" onclick="event.stopPropagation()"><input type="checkbox" checked onchange="flipToast(this)"><span class="slider"></span></label></div>
+            </div>
+          </div>
+          <div class="tree-foot">
+            说明：⠿ 为同级拖拽把手（拖拽与排序值二选一，均影响前台宫格与列表顺序）；停用分类前台宫格与筛选隐藏，其下已发布教程仍可经收藏/历史/直达链接访问。
+          </div>
+        </div>
+
+        <!-- ===== 右：分类编辑表单 ===== -->
+        <div class="card">
+          <div class="card-head">
+            <div class="card-title" id="formTitle">编辑分类</div>
+            <div class="card-note" id="formTarget">当前：库存管理</div>
+          </div>
+          <div class="form-row">
+            <div class="form-label"><span><span class="req">*</span>分类名称</span></div>
+            <input class="input" id="fName" type="text" value="库存管理" maxlength="20">
+          </div>
+          <div class="form-row">
+            <div class="form-label"><span>父分类（本期限两级）</span></div>
+            <select class="select" id="fParent">
+              <option value="" selected>无（作为一级分类）</option>
+              <option>新手入门</option><option>最佳实践</option><option>常见问题</option>
+              <option>销售管理</option><option>采购管理</option><option>库存管理</option><option>生产制造</option>
+              <option>项目管理</option><option>文件管理</option><option>人事财务</option><option>系统设置</option>
+            </select>
+          </div>
+          <div class="form-row">
+            <div class="form-label"><span>ERP 模块映射（8 选 1 或不限）</span></div>
+            <select class="select" id="fMod">
+              <option>不限</option>
+              <option>销售管理</option>
+              <option>项目管理</option>
+              <option>文件管理</option>
+              <option>生产制造</option>
+              <option>采购管理</option>
+              <option selected>库存管理</option>
+              <option>人事财务</option>
+              <option>系统设置</option>
+            </select>
+            <div class="form-hint">映射驱动角色推荐与 ERP 工作台"查看教程"入口的命中集（如：仓库角色 → 库存管理）</div>
+          </div>
+          <div class="form-row">
+            <div class="form-label"><span>排序值（同级内升序）</span></div>
+            <input class="input" id="fSort" type="number" value="7" min="1" max="999">
+            <div class="form-hint">置顶优先，其余按排序值与发布时间排列，影响前台分类宫格与上下篇顺序</div>
+          </div>
+          <div class="form-row">
+            <div class="switch-line">
+              <div><div class="t">启用状态</div><div class="d">停用后前台隐藏（宫格/筛选）</div></div>
+              <label class="switch"><input type="checkbox" id="fOn" checked onchange="flipToast(this)"><span class="slider"></span></label>
+            </div>
+          </div>
+          <div class="form-foot">
+            <button class="btn btn-primary" onclick="saveCate()">保存</button>
+            <button class="btn" onclick="resetForm()">重置</button>
+            <button class="btn" style="color:var(--danger);border-color:#fecaca" onclick="askDelete(event)">删除该分类</button>
+          </div>
+          <div class="btn-block-warning">
+            ⚠ 删除保护：分类下存在<b style="color:var(--warn)">任意状态</b>的教程时阻断删除，提示"请先移走 N 篇教程"。当前选中分类下有 3 篇教程，删除将被阻断（点击"删除该分类"查看阻断示例）。
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 删除确认/阻断弹窗 -->
+<div class="modal-mask" id="delModal">
+  <div class="modal">
+    <div class="modal-title">🗑 删除分类</div>
+    <div class="modal-block">
+      <span>⛔</span>
+      <div>无法删除：<b>该分类下还有 3 篇教程，请先移走。</b><br>删除保护命中：分类下存在任意状态的教程（含草稿）即阻断删除。</div>
+    </div>
+    <div class="modal-body">
+      处理建议：将《库位三级初始化：仓库/库区/库位》《安全库存与补货预警设置》等 3 篇教程迁移到其它分类后，方可删除该分类。
+    </div>
+    <div class="modal-foot">
+      <button class="btn" onclick="closeDel()">取消</button>
+      <button class="btn" style="background:var(--danger);color:#fff;border-color:var(--danger);font-weight:600" onclick="closeDel()">我知道了</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// 折叠/展开子分类
+function toggleKids(caret, e) {
+  e.stopPropagation();
+  caret.classList.toggle('open');
+  var kids = caret.closest('.tree-row').nextElementSibling;
+  if (kids && kids.classList.contains('children')) kids.classList.toggle('open');
+}
+// 选中节点 → 右侧表单联动
+function selectNode(row) {
+  document.querySelectorAll('.tree-row').forEach(function (r) { r.classList.remove('selected'); });
+  row.classList.add('selected');
+  document.getElementById('fName').value = row.dataset.name;
+  document.getElementById('fParent').value = row.dataset.parent || '';
+  document.getElementById('fMod').value = row.dataset.mod || '不限';
+  document.getElementById('fSort').value = row.dataset.sort || 1;
+  document.getElementById('fOn').checked = row.dataset.on === '1';
+  document.getElementById('formTarget').textContent = '当前：' + row.dataset.name;
+}
+// 新增分类
+function newCate() {
+  document.querySelectorAll('.tree-row').forEach(function (r) { r.classList.remove('selected'); });
+  document.getElementById('formTitle').textContent = '新增分类';
+  document.getElementById('formTarget').textContent = '默认启用 · 保存后进入分类树';
+  document.getElementById('fName').value = '';
+  document.getElementById('fParent').value = '';
+  document.getElementById('fMod').value = '不限';
+  document.getElementById('fSort').value = 13;
+  document.getElementById('fOn').checked = true;
+  document.getElementById('fName').focus();
+}
+function resetForm() {
+  var sel = document.querySelector('.tree-row.selected');
+  if (sel) selectNode(sel);
+}
+function saveCate() { alert('已保存分类（演示）：前台宫格与列表顺序按排序值即时更新'); }
+// 删除 → 阻断弹窗
+function askDelete(e, btn) {
+  if (e) e.stopPropagation();
+  document.getElementById('delModal').classList.add('show');
+}
+function closeDel() { document.getElementById('delModal').classList.remove('show'); }
+// 启停开关提示
+function flipToast(sw) {
+  var row = sw.closest('.tree-row');
+  var name = row ? (row.dataset.name || '') : '当前分类';
+  if (!sw.checked) { sw.closest('.tree-row').classList.add('disabled-row'); }
+  else { sw.closest('.tree-row').classList.remove('disabled-row'); }
+}
+</script>
+</body>
+</html>

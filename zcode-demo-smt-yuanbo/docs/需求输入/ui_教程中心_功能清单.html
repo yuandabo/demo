@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>教程中心 - 功能清单</title>
+<style>
+:root {
+  --p: #0066ff;
+  --p-light: #e8f0fe;
+  --acc: #00d4ff;
+  --cta: #f97316;
+  --d: #0f172a;
+  --g: #64748b;
+  --g-light: #94a3b8;
+  --b: #e2e8f0;
+  --bg: #f8fafc;
+  --card: #ffffff;
+  --radius: 12px;
+  --radius-lg: 20px;
+  --shadow: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+  --shadow-lg: 0 10px 40px rgba(0,0,0,0.08);
+  --font: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: var(--font);
+  background: var(--bg);
+  color: var(--d);
+  line-height: 1.6;
+}
+
+/* Header */
+.header {
+  background: linear-gradient(135deg, #0c1a2e 0%, #1a365d 50%, #0c1a2e 100%);
+  padding: 60px 0 80px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.header::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle at 30% 50%, rgba(0,102,255,0.15) 0%, transparent 50%),
+              radial-gradient(circle at 70% 50%, rgba(0,212,255,0.1) 0%, transparent 50%);
+}
+.header h1 {
+  font-size: clamp(28px, 4vw, 42px);
+  font-weight: 800;
+  color: #fff;
+  position: relative;
+  margin-bottom: 12px;
+}
+.header p {
+  color: var(--g-light);
+  font-size: 16px;
+  position: relative;
+}
+.header .tag {
+  display: inline-block;
+  background: rgba(0,102,255,0.2);
+  color: var(--acc);
+  padding: 4px 14px;
+  border-radius: 20px;
+  font-size: 13px;
+  margin-top: 16px;
+  position: relative;
+}
+
+/* Container */
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* Overview */
+.overview {
+  margin-top: -40px;
+  margin-bottom: 48px;
+  position: relative;
+  z-index: 1;
+}
+.overview-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+.overview-card {
+  background: var(--card);
+  border-radius: var(--radius-lg);
+  padding: 28px 24px;
+  box-shadow: var(--shadow-lg);
+  border: 1px solid var(--b);
+  transition: transform 0.2s;
+}
+.overview-card:hover { transform: translateY(-2px); }
+.overview-card .icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  margin-bottom: 14px;
+}
+.overview-card h3 { font-size: 17px; margin-bottom: 6px; }
+.overview-card p { font-size: 13px; color: var(--g); }
+
+/* Section */
+.section {
+  margin-bottom: 48px;
+}
+.section-title {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 24px;
+  padding-bottom: 12px;
+  border-bottom: 2px solid var(--b);
+}
+.section-title .badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+.section-title h2 { font-size: 22px; font-weight: 700; }
+.section-title .sub { font-size: 14px; color: var(--g); margin-left: auto; }
+
+/* Feature Group */
+.feature-group {
+  background: var(--card);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--b);
+  overflow: hidden;
+  margin-bottom: 20px;
+  box-shadow: var(--shadow);
+}
+.feature-group-header {
+  padding: 18px 24px;
+  background: var(--bg);
+  border-bottom: 1px solid var(--b);
+  font-size: 15px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.feature-group-header .dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.feature-list {
+  padding: 8px 0;
+}
+.feature-item {
+  display: flex;
+  align-items: flex-start;
+  padding: 12px 24px;
+  gap: 12px;
+  transition: background 0.15s;
+}
+.feature-item:hover { background: #fafbfc; }
+.feature-item .check {
+  width: 20px;
+  height: 20px;
+  border-radius: 6px;
+  border: 2px solid var(--b);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-top: 2px;
+  font-size: 11px;
+  color: transparent;
+  transition: all 0.15s;
+}
+.feature-item:hover .check {
+  border-color: var(--p);
+  color: var(--p);
+}
+.feature-item .text {
+  flex: 1;
+}
+.feature-item .name {
+  font-size: 14px;
+  font-weight: 500;
+  margin-bottom: 2px;
+}
+.feature-item .desc {
+  font-size: 13px;
+  color: var(--g);
+}
+.feature-item .extend-tag {
+  display: inline-block;
+  background: #fff7ed;
+  color: var(--cta);
+  font-size: 11px;
+  padding: 2px 8px;
+  border-radius: 4px;
+  margin-left: 8px;
+  font-weight: 500;
+}
+
+/* Intern Zone */
+.intern-zone {
+  background: linear-gradient(135deg, #fef9c3 0%, #fef3c7 100%);
+  border: 2px dashed #f59e0b;
+  border-radius: var(--radius-lg);
+  padding: 32px;
+  margin-bottom: 48px;
+}
+.intern-zone h3 {
+  font-size: 18px;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.intern-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+.intern-card {
+  background: rgba(255,255,255,0.7);
+  border-radius: var(--radius);
+  padding: 20px;
+  border: 1px solid rgba(245,158,11,0.3);
+}
+.intern-card h4 {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 6px;
+  color: #92400e;
+}
+.intern-card p {
+  font-size: 13px;
+  color: #a16207;
+  line-height: 1.5;
+}
+
+/* Module Map */
+.module-map {
+  background: var(--card);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--b);
+  padding: 28px;
+  box-shadow: var(--shadow);
+  margin-bottom: 48px;
+}
+.module-map h3 {
+  font-size: 17px;
+  margin-bottom: 20px;
+}
+.module-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.module-tag {
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 500;
+  border: 1px solid var(--b);
+  background: var(--bg);
+  transition: all 0.15s;
+  cursor: default;
+}
+.module-tag:hover {
+  border-color: var(--p);
+  background: var(--p-light);
+  color: var(--p);
+}
+.module-tag.active {
+  background: var(--p);
+  color: #fff;
+  border-color: var(--p);
+}
+
+/* Footer */
+.footer {
+  text-align: center;
+  padding: 40px 24px;
+  color: var(--g);
+  font-size: 13px;
+  border-top: 1px solid var(--b);
+}
+.footer .line { margin-bottom: 4px; }
+
+/* Responsive */
+@media (max-width: 768px) {
+  .overview-grid { grid-template-columns: 1fr; }
+  .intern-grid { grid-template-columns: 1fr; }
+  .section-title .sub { display: none; }
+}
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<div class="header">
+  <h1>教程中心 · 功能清单</h1>
+  <p>JLC 云 ERP — 帮助用户快速上手，降低学习成本</p>
+  <div class="tag">待开发需求 · 功能大纲</div>
+</div>
+
+<div class="container">
+
+<!-- Overview Cards -->
+<div class="overview">
+  <div class="overview-grid">
+    <div class="overview-card">
+      <div class="icon" style="background:#e8f0fe;color:var(--p);">🖥</div>
+      <h3>前台（PC 端）</h3>
+      <p>面向终端用户的教程浏览、搜索、收藏等完整学习体验</p>
+    </div>
+    <div class="overview-card">
+      <div class="icon" style="background:#f0fdf4;color:#16a34a;">⚙</div>
+      <h3>后台（管理端）</h3>
+      <p>教程内容的创建、审核、目录管理、数据统计</p>
+    </div>
+    <div class="overview-card">
+      <div class="icon" style="background:#fef3c7;color:#f59e0b;">📱</div>
+      <h3>移动端（小程序）</h3>
+      <p>适配移动场景的教程浏览，扫码直达，消息联动</p>
+    </div>
+  </div>
+</div>
+
+<!-- ============ 前台 ============ -->
+<div class="section">
+  <div class="section-title">
+    <div class="badge" style="background:var(--p);">1</div>
+    <h2>前台（PC 端用户侧）</h2>
+    <span class="sub">面向所有 ERP 用户</span>
+  </div>
+
+  <div class="feature-group">
+    <div class="feature-group-header">
+      <span class="dot" style="background:var(--p);"></span>
+      入口与首页
+    </div>
+    <div class="feature-list">
+      <div class="feature-item">
+        <div class="check">✓</div>
+        <div class="text">
+          <div class="name">导航入口</div>
+          <div class="desc">顶部导航栏或侧边栏增加"教程中心"入口，全局可达</div>
+        </div>
+      </div>
+      <div class="feature-item">
+        <div class="check">✓</div>
+        <div class="text">
+          <div class="name">教程首页</div>
+          <div class="desc">展示推荐教程、最近更新、热门教程等内容区块</div>
+        </div>
+      </div>
+      <div class="feature-item">
+        <div class="check">✓</div>
+        <div class="text">
+          <div class="name">分类浏览</div>
+          <div class="desc">按系统 8 大模块分类（销售、项目、生产、采购、库存、人事财务、系统设置等）</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="feature-group">
+    <div class="feature-group-header">
+      <span class="dot" style="background:var(--p);"></span>
+      浏览与检索
+    </div>
+    <div class="feature-list">
+      <div class="feature-item">
+        <div class="check">✓</div>
+        <div class="text">
+          <div class="name">教程列表页</div>
+          <div class="desc">支持分类筛选、关键词搜索、标签筛选</div>
+        </div>
+      </div>
+      <div class="feature-item">
+        <div class="check">✓</div>
+        <div class="text">
+          <div class="name">教程详情页</div>
+          <div class="desc">图文/视频内容展示，步骤式操作引导</div>
+        </div>
+      </div>
+      <div class="feature-item">
+        <div class="check">✓</div>
+        <div class="text">
+          <div class="name">目录侧边导航</div>
+          <div class="desc">同一分类下的上下篇教程快速跳转</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="feature-group">
+    <div class="feature-group-header">
+      <span class="dot" style="background:var(--p);"></span>
+      用户互动
+    </div>
+    <div class="feature-list">
+      <div class="feature-item">
+        <div class="check">✓</div>
+        <div class="text">
+          <div class="name">收藏与历史</div>
+          <div class="desc">教程收藏、浏览历史记录</div>
+        </div>
+      </div>
+      <div class="feature-item">
+        <div class="check">✓</div>
+        <div class="text">
+          <div class="name">评价与反馈</div>
+          <div class="desc">教程是否有帮助、留言补充说明</div>
+        </div>
+      </div>
+      <div class="feature-item">
+        <div class="check">✓</div>
+        <div class="text">
+          <div class="name">分享</div>
+          <div class="desc">生成教程链接，分享给同企业同事</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="feature-group">
+    <div class="feature-group-header">
+      <span class="dot" style="background:var(--cta);"></span>
+      场景联动（扩展方向）
+      <span style="font-size:12px;color:var(--cta);font-weight:400;margin-left:auto;">实习生自由发挥</span>
+    </div>
+    <div class="feature-list">
+      <div class="feature-item">
+        <div class="check">✓</div>
+        <div class="text">
+          <div class="name">系统内嵌引导</div>
+          <div class="desc">在具体功能页面展示关联教程入口，如 BOM 管理页面右下角"查看教程"<span class="extend-tag">可发挥</span></div>
+        </div>
+      </div>
+      <div class="feature-item">
+        <div class="check">✓</div>
+        <div class="text">
+          <div class="name">新手引导</div>
+          <div class="desc">首次使用某模块时弹出推荐教程，帮助用户快速上手<span class="extend-tag">可发挥</span></div>
+        </div>
+      </div>
+      <div class="feature-item">
+        <div class="check">✓</div>
+        <div class="text">
+          <div class="name">按角色推荐</div>
+          <div class="desc">采购角色优先展示采购/库存教程，管理层优先展示审批/报表教程<span class="extend-tag">可发挥</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ 后台 ============ -->
+<div class="section">
+  <div class="section-title">
+    <div class="badge" style="background:#16a34a;">2</div>
+    <h2>后台（管理端）</h2>
+    <span class="sub">面向运营/管理员</span>
+  </div>
+
+  <div class="feature-group">
+    <div class="feature-group-header">
+      <span class="dot" style="background:#16a34a;"></span>
+      内容管理
+    </div>
+    <div class="feature-list">
+      <div class="feature-item">
+        <div class="check">✓</div>
+        <div class="text">
+          <div class="name">教程 CRUD</div>
+          <div class="desc">教程的新建、编辑、删除、复制</div>
+        </div>
+      </div>
+      <div class="feature-item">
+        <div class="check">✓</div>
+        <div class="text">
+          <div class="name">富文本编辑</div>
+          <div class="desc">图文混排编辑器，支持视频上传/嵌入</div>
+        </div>
+      </div>
+      <div class="feature-item">
+        <div class="check">✓</div>
+        <div class="text">
+          <div class="name">状态管理</div>
+          <div class="desc">草稿、待审核、已发布、已下架四种状态流转</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="feature-group">
+    <div class="feature-group-header">
+      <span class="dot" style="background:#16a34a;"></span>
+      目录管理
+    </div>
+    <div class="feature-list">
+      <div class="feature-item">
+        <div class="check">✓</div>
+        <div class="text">
+          <div class="name">分类树管理</div>
+          <div class="desc">支持多级分类的新增、编辑、拖拽排序、启停用</div>
+        </div>
+      </div>
+      <div class="feature-item">
+        <div class="check">✓</div>
+        <div class="text">
+          <div class="name">教程排序</div>
+          <div class="desc">教程与分类的关联、排序调整、置顶设置</div>
+        </div>
+      </div>
+      <div class="feature-item">
+        <div class="check">✓</div>
+        <div class="text">
+          <div class="name">模块映射</div>
+          <div class="desc">分类与 ERP 系统模块的映射关系维护，用于场景联动推荐</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="feature-group">
+    <div class="feature-group-header">
+      <span class="dot" style="background:#16a34a;"></span>
+      审核流程
+    </div>
+    <div class="feature-list">
+      <div class="feature-item">
+        <div class="check">✓</div>
+        <div class="text">
+          <div class="name">审核队列</div>
+          <div class="desc">教程提交审核，支持审核通过/驳回，驳回需填写原因</div>
+        </div>
+      </div>
+      <div class="feature-item">
+        <div class="check">✓</div>
+        <div class="text">
+          <div class="name">AI 生成审核</div>
+          <div class="desc">预留 AI 自动生成教程的审核队列（对接后续 AI 自动生成需求）</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="feature-group">
+    <div class="feature-group-header">
+      <span class="dot" style="background:var(--cta);"></span>
+      数据统计
+      <span style="font-size:12px;color:var(--cta);font-weight:400;margin-left:auto;">实习生自由发挥</span>
+    </div>
+    <div class="feature-list">
+      <div class="feature-item">
+        <div class="check">✓</div>
+        <div class="text">
+          <div class="name">浏览与互动统计</div>
+          <div class="desc">教程浏览量、收藏量、完成率等核心指标<span class="extend-tag">可发挥</span></div>
+        </div>
+      </div>
+      <div class="feature-item">
+        <div class="check">✓</div>
+        <div class="text">
+          <div class="name">反馈分析</div>
+          <div class="desc">用户反馈汇总，标记"没帮助"的教程优先优化<span class="extend-tag">可发挥</span></div>
+        </div>
+      </div>
+      <div class="feature-item">
+        <div class="check">✓</div>
+        <div class="text">
+          <div class="name">覆盖度统计</div>
+          <div class="desc">按模块/分类统计教程内容覆盖情况，发现空白区<span class="extend-tag">可发挥</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ 移动端 ============ -->
+<div class="section">
+  <div class="section-title">
+    <div class="badge" style="background:#f59e0b;">3</div>
+    <h2>移动端（小程序）</h2>
+    <span class="sub">面向移动办公用户</span>
+  </div>
+
+  <div class="feature-group">
+    <div class="feature-group-header">
+      <span class="dot" style="background:#f59e0b;"></span>
+      浏览与学习
+    </div>
+    <div class="feature-list">
+      <div class="feature-item">
+        <div class="check">✓</div>
+        <div class="text">
+          <div class="name">教程列表与搜索</div>
+          <div class="desc">分类浏览、关键词搜索，适配移动端列表交互</div>
+        </div>
+      </div>
+      <div class="feature-item">
+        <div class="check">✓</div>
+        <div class="text">
+          <div class="name">教程详情页</div>
+          <div class="desc">移动端适配的图文/视频展示，字号可调</div>
+        </div>
+      </div>
+      <div class="feature-item">
+        <div class="check">✓</div>
+        <div class="text">
+          <div class="name">收藏与历史</div>
+          <div class="desc">收藏教程、浏览历史同步（与 PC 端数据打通）</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="feature-group">
+    <div class="feature-group-header">
+      <span class="dot" style="background:var(--cta);"></span>
+      场景联动（扩展方向）
+      <span style="font-size:12px;color:var(--cta);font-weight:400;margin-left:auto;">实习生自由发挥</span>
+    </div>
+    <div class="feature-list">
+      <div class="feature-item">
+        <div class="check">✓</div>
+        <div class="text">
+          <div class="name">首页/工作台推荐</div>
+          <div class="desc">在小程序首页或工作台推荐与当前角色相关的教程<span class="extend-tag">可发挥</span></div>
+        </div>
+      </div>
+      <div class="feature-item">
+        <div class="check">✓</div>
+        <div class="text">
+          <div class="name">消息推送关联</div>
+          <div class="desc">收到审批待办时推送审批操作教程等联动场景<span class="extend-tag">可发挥</span></div>
+        </div>
+      </div>
+      <div class="feature-item">
+        <div class="check">✓</div>
+        <div class="text">
+          <div class="name">扫码直达</div>
+          <div class="desc">PC 端页面展示二维码，扫码在小程序打开对应教程<span class="extend-tag">可发挥</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ 模块映射 ============ -->
+<div class="module-map">
+  <h3>教程分类 ↔ ERP 系统模块映射</h3>
+  <div class="module-tags">
+    <span class="module-tag active">销售管理</span>
+    <span class="module-tag active">项目管理</span>
+    <span class="module-tag active">文件管理</span>
+    <span class="module-tag active">生产制造</span>
+    <span class="module-tag active">采购管理</span>
+    <span class="module-tag active">库存管理</span>
+    <span class="module-tag active">人事财务</span>
+    <span class="module-tag active">系统设置</span>
+    <span class="module-tag">开放平台</span>
+    <span class="module-tag">新手入门</span>
+    <span class="module-tag">最佳实践</span>
+    <span class="module-tag">常见问题</span>
+  </div>
+</div>
+
+<!-- ============ 实习生发挥区 ============ -->
+<div class="intern-zone">
+  <h3>🎯 实习生自由发挥空间</h3>
+  <div class="intern-grid">
+    <div class="intern-card">
+      <h4>交互与体验设计</h4>
+      <p>教程详情页的阅读体验由实习生自主设计：步骤进度条、目录锚点、字号调节、阅读进度保存等交互细节。</p>
+    </div>
+    <div class="intern-card">
+      <h4>数据统计看板</h4>
+      <p>后台统计页面的指标选取和可视化形式开放定义，可自由选择图表类型、维度组合和展示风格。</p>
+    </div>
+    <div class="intern-card">
+      <h4>场景联动方案</h4>
+      <p>系统内嵌引导、角色推荐、消息联动等扩展功能，可自主规划优先级和实现方案。</p>
+    </div>
+    <div class="intern-card">
+      <h4>移动端差异化</h4>
+      <p>小程序端是否有独立于 PC 端的特色功能（如学习打卡、积分激励、进度徽章等），可自由探索。</p>
+    </div>
+  </div>
+</div>
+
+</div>
+
+<!-- Footer -->
+<div class="footer">
+  <div class="line">JLC 云 ERP · 产品管理知识库</div>
+  <div class="line">教程中心功能清单 · V0.1 大纲版</div>
+</div>
+
+</body>
+</html>

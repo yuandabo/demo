@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>原型导航 - 云ERP教程中心 · 高保真原型</title>
+<style>
+:root{--p:#0066ff;--acc:#00d4ff;--cta:#f97316;--d:#0f172a;--g:#64748b;--b:#e2e8f0;--bg:#f8fafc;--r:12px;--rl:20px;--sh:0 1px 3px rgba(0,0,0,.06)}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'PingFang SC','Microsoft YaHei',sans-serif;background:var(--bg);color:var(--d);font-size:14px;line-height:1.6}
+a{color:inherit;text-decoration:none}
+ul{list-style:none}
+.wrap{width:1200px;margin:0 auto}
+/* 头部横幅 */
+.hero{background:linear-gradient(135deg,#0c1a2e,#1a365d,#0c1a2e);padding:52px 0 66px;text-align:center;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 28% 50%,rgba(0,102,255,.16) 0,transparent 55%),radial-gradient(circle at 72% 50%,rgba(0,212,255,.10) 0,transparent 55%)}
+.hero h1{color:#fff;font-size:34px;position:relative;margin-bottom:10px}
+.hero p{color:#94a3b8;font-size:15px;position:relative}
+.hero .chip{display:inline-block;margin-top:16px;background:rgba(0,212,255,.12);border:1px solid rgba(0,212,255,.35);color:var(--acc);font-size:13px;padding:5px 18px;border-radius:999px;position:relative}
+/* 分组 */
+.grp{margin-top:34px}
+.grp-h{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.grp-h .ic{width:34px;height:34px;border-radius:10px;background:#e8f0fe;display:flex;align-items:center;justify-content:center;font-size:17px}
+.grp-h h2{font-size:19px}
+.grp-h .sub{color:var(--g);font-size:13px}
+.grp-h .n{margin-left:auto;background:#e8f0fe;color:var(--p);font-size:12px;padding:2px 12px;border-radius:999px}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.pcard{background:#fff;border:1px solid var(--b);border-radius:var(--r);box-shadow:var(--sh);padding:16px 18px;transition:.15s;display:flex;flex-direction:column;gap:6px}
+.pcard:hover{transform:translateY(-2px);border-color:#c7dbff;box-shadow:0 6px 18px rgba(0,102,255,.10)}
+.pcard .t{display:flex;align-items:center;gap:8px}
+.pcard .t b{font-size:15px}
+.pcard:hover .t b{color:var(--p)}
+.pcard p{font-size:12.5px;color:var(--g)}
+.pcard .f{display:flex;align-items:center;gap:8px;margin-top:4px}
+.pcard .file{font-size:11.5px;color:#94a3b8;background:#f1f5f9;padding:1px 8px;border-radius:6px;font-family:Consolas,monospace}
+.st{font-size:11px;line-height:18px;padding:0 8px;border-radius:999px}
+.st-ok{background:#e7f8ef;color:#0a9d58}
+.st-wait{background:#f1f5f9;color:#94a3b8}
+.footer{padding:34px 0 44px;text-align:center;color:#94a3b8;font-size:12px}
+</style>
+</head>
+<body>
+<div class="hero">
+  <h1>云ERP教程中心 · 高保真原型</h1>
+  <p>RE00001 · 三端 17 个页面 · 每页自包含单文件（内联 CSS，可直接双击打开）</p>
+  <span class="chip">设计 Token 统一 · PC 前台 / 管理后台 / 小程序 H5 三端</span>
+</div>
+
+<main class="wrap">
+  <!-- PC 前台 -->
+  <section class="grp">
+    <div class="grp-h"><span class="ic">🖥️</span><h2>PC 前台 portal</h2><span class="sub">面向 ERP 学习用户 · PRD §7.1–§7.5</span><span class="n">5 页</span></div>
+    <div class="grid">
+      <a class="pcard" href="ui_portal_home.html">
+        <div class="t"><b>P1 教程首页</b><span class="st st-ok">已产出</span></div>
+        <p>角色推荐位（采购 Top6）+ 12 分类宫格 + 最近更新 + 热门教程</p>
+        <div class="f"><span class="file">ui_portal_home.html</span><span class="st st-ok">/portal</span></div>
+      </a>
+      <a class="pcard" href="ui_portal_list.html">
+        <div class="t"><b>P2 教程列表页</b><span class="st st-ok">已产出</span></div>
+        <p>分类树 + 标签多选 + 关键词搜索 + 置顶卡片 + 分页 + 空态</p>
+        <div class="f"><span class="file">ui_portal_list.html</span><span class="st st-ok">/portal/list</span></div>
+      </a>
+      <a class="pcard" href="ui_portal_detail.html">
+        <div class="t"><b>P3 教程详情页</b><span class="st st-ok">已产出</span></div>
+        <p>步骤式正文 + 目录锚点 + 字号三档 + 进度条 + 评价/分享/收藏</p>
+        <div class="f"><span class="file">ui_portal_detail.html</span><span class="st st-ok">/portal/detail/:id</span></div>
+      </a>
+      <a class="pcard" href="ui_portal_my.html">
+        <div class="t"><b>P4 我的（收藏与历史）</b><span class="st st-ok">已产出</span></div>
+        <p>收藏/历史双 Tab + 进度徽章 + 已下架灰显与同类推荐</p>
+        <div class="f"><span class="file">ui_portal_my.html</span><span class="st st-ok">/portal/my</span></div>
+      </a>
+      <a class="pcard" href="ui_portal_workbench.html">
+        <div class="t"><b>P5 模拟 ERP 工作台</b><span class="st st-ok">已产出</span></div>
+        <p>模拟云ERP框架 + 功能占位卡片 + 查看教程入口 + 悬浮教程中心</p>
+        <div class="f"><span class="file">ui_portal_workbench.html</span><span class="st st-ok">/portal/workbench</span></div>
+      </a>
+    </div>
+  </section>
+
+  <!-- 管理后台 -->
+  <section class="grp">
+    <div class="grp-h"><span class="ic">🛠️</span><h2>管理后台 admin</h2><span class="sub">运营与管理员 · PRD §7.6–§7.9 / §7.11</span><span class="n">6 页</span></div>
+    <div class="grid">
+      <a class="pcard" href="ui_admin_login.html">
+        <div class="t"><b>A0 后台登录</b><span class="st st-ok">已产出</span></div>
+        <p>账号密码登录（admin / 运营编辑两类角色），错误统一提示</p>
+        <div class="f"><span class="file">ui_admin_login.html</span><span class="st st-ok">/admin/login</span></div>
+      </a>
+      <a class="pcard" href="ui_admin_dashboard.html">
+        <div class="t"><b>A1 统计看板</b><span class="st st-ok">已产出</span></div>
+        <p>总览 4 指标卡 + 浏览量 Top10 + 反馈分析 + 覆盖度矩阵</p>
+        <div class="f"><span class="file">ui_admin_dashboard.html</span><span class="st st-wait">/admin/dashboard</span></div>
+      </a>
+      <a class="pcard" href="ui_admin_tutorial_list.html">
+        <div class="t"><b>A2 教程管理列表</b><span class="st st-ok">已产出</span></div>
+        <p>全状态列表（草稿/待审核/已发布/已下架）+ 置顶排序 + 下架</p>
+        <div class="f"><span class="file">ui_admin_tutorial_list.html</span><span class="st st-wait">/admin/tutorial</span></div>
+      </a>
+      <a class="pcard" href="ui_admin_tutorial_edit.html">
+        <div class="t"><b>A3 教程编辑器</b><span class="st st-ok">已产出</span></div>
+        <p>必填校验 + 富文本工具 + 提审/撤回 + 编辑回审（旧版不断供）</p>
+        <div class="f"><span class="file">ui_admin_tutorial_edit.html</span><span class="st st-wait">/admin/tutorial/edit/:id</span></div>
+      </a>
+      <a class="pcard" href="ui_admin_review.html">
+        <div class="t"><b>A4 审核队列</b><span class="st st-ok">已产出</span></div>
+        <p>待审核倒序列表 + 通过/驳回（原因 ≥5 字）+ AI 生成 Tab</p>
+        <div class="f"><span class="file">ui_admin_review.html</span><span class="st st-wait">/admin/review</span></div>
+      </a>
+      <a class="pcard" href="ui_admin_category.html">
+        <div class="t"><b>A5 目录管理</b><span class="st st-ok">已产出</span></div>
+        <p>两级分类树 + 删除保护 + 排序启停用 + ERP 模块映射</p>
+        <div class="f"><span class="file">ui_admin_category.html</span><span class="st st-wait">/admin/category</span></div>
+      </a>
+    </div>
+  </section>
+
+  <!-- 小程序 H5 -->
+  <section class="grp">
+    <div class="grp-h"><span class="ic">📱</span><h2>小程序 H5 端 m</h2><span class="sub">移动学习场景 · PRD §7.10 · 与 PC 同账号数据同步</span><span class="n">5 页</span></div>
+    <div class="grid">
+      <a class="pcard" href="ui_m_home.html">
+        <div class="t"><b>M1 首页</b><span class="st st-ok">已产出</span></div>
+        <p>角色推荐位 + 分类宫格 + 学习打卡入口</p>
+        <div class="f"><span class="file">ui_m_home.html</span><span class="st st-wait">/m</span></div>
+      </a>
+      <a class="pcard" href="ui_m_list.html">
+        <div class="t"><b>M2 列表与搜索</b><span class="st st-ok">已产出</span></div>
+        <p>分类浏览 + 关键词搜索（命中规则同 P2）+ 下拉刷新</p>
+        <div class="f"><span class="file">ui_m_list.html</span><span class="st st-wait">/m/list</span></div>
+      </a>
+      <a class="pcard" href="ui_m_detail.html">
+        <div class="t"><b>M3 详情页（扫码直达落点）</b><span class="st st-ok">已产出</span></div>
+        <p>图文/视频 + 字号三档 + 进度续读 + 有帮助/没帮助</p>
+        <div class="f"><span class="file">ui_m_detail.html</span><span class="st st-wait">/m/detail/:id</span></div>
+      </a>
+      <a class="pcard" href="ui_m_favorite.html">
+        <div class="t"><b>M4 收藏与历史</b><span class="st st-ok">已产出</span></div>
+        <p>与 PC 端同一数据层，任一端操作另一端刷新可见</p>
+        <div class="f"><span class="file">ui_m_favorite.html</span><span class="st st-wait">/m/favorite</span></div>
+      </a>
+      <a class="pcard" href="ui_m_checkin.html">
+        <div class="t"><b>M5 学习打卡页</b><span class="st st-ok">已产出</span></div>
+        <p>每日打卡 +10 积分 + 坚持者/百科达人徽章 + 连续天数</p>
+        <div class="f"><span class="file">ui_m_checkin.html</span><span class="st st-wait">/m/checkin</span></div>
+      </a>
+    </div>
+  </section>
+
+  <!-- 公共 -->
+  <section class="grp">
+    <div class="grp-h"><span class="ic">🔑</span><h2>公共 · 选角色登录演示</h2><span class="sub">PRD §7.11 · AC-FN-03 · 弹窗已内嵌各页，不单独建页</span><span class="n">内嵌 5 页</span></div>
+    <div class="grid">
+      <a class="pcard" href="ui_portal_home.html">
+        <div class="t"><b>L1 选角色快速登录（内嵌演示）</b><span class="st st-ok">已产出</span></div>
+        <p>6 个 ERP 角色卡（销售·李娜 / 采购·张伟 / 生产·王强 / 仓库·赵敏 / 管理·陈涛 / 财务·周莉）。PC 弹窗内嵌于教程首页/详情/我的 3 页顶栏徽章，m 端半屏弹层内嵌于首页/详情 2 页；未登录点收藏 / 评价自动弹出，选角色后回到原操作位</p>
+        <div class="f"><span class="file">ui_portal_home.html · ui_portal_detail.html · ui_portal_my.html · ui_m_home.html · ui_m_detail.html</span></div>
+      </a>
+      <a class="pcard" href="ui_admin_login.html">
+        <div class="t"><b>L2 后台账号登录</b><span class="st st-ok">已产出</span></div>
+        <p>admin / operator 两类后台角色，operator 登录后按角色显隐菜单（仅教程管理 + 看板只读）</p>
+        <div class="f"><span class="file">ui_admin_login.html</span><span class="st st-ok">/admin/login</span></div>
+      </a>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">云ERP教程中心 · 原型导航首页 · 合计 17 页（PC 前台 5 + 管理后台 6 + 小程序 5 + 公共登录 1）· RE00001</footer>
+</body>
+</html>

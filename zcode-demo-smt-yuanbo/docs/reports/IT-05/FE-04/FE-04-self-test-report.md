@@ -1,0 +1,31 @@
+# FE-04 自测报告（IT-05 · m 详情 #/detail/:id）
+
+- **任务ID**: IT-05/FE-04
+- **测试时间**: 2026-08-21
+- **测试方式**: Playwright 375×812 浏览器断言（verify-fe04.mjs）+ 视觉复核（FE-04-impl.png 对照 ui_m_detail.html）
+- **AC 验证**: UI-IXD-04、UI-IXD-11、AC-RULE-21、AC-RULE-11、AC-FN-03、AC-FN-04、AC-FN-20、AC-FN-25、AC-EG-02、AC-EG-10（另覆盖 AC-EG-17 同规则静默、AC-NF-04 sanitize、UI-IXD-07/08）**pass**
+  - 52/52 断言通过：初始化/骨架三态、字号三档、续读跨端定位、滚动保存单值覆盖、收藏登录回原位、评价互斥与留言、已下架/不可见双分支、视频占位、sanitize 注入剥离、网络失败重试
+- **Mock 测试覆盖率摘要**: 本任务无独立 mock 层——真实后端 5 端点（tutorials/:id、histories、favorites×2、feedbacks）已由 IT-02/IT-04 交付，vite proxy /api→3000 直连；异常分支用 Playwright route 注入（histories abort=保存失败静默、tutorials abort=网络失败、tutorials 响应改写=恶意富文本、400ms 延迟=骨架屏）；交互操作 8/8 全覆盖；测试后 POST /api/system/reset 还原种子
+- **关键断言明细**:
+  - 初始化（游客）：导航先渲染+正文骨架屏；标题/分类徽标/标签/meta 四项/左蓝边摘要卡同源渲染；快照正文 4 步骤完整（h3=4）；步骤蓝底 24px 圆号（CSS 计数器，rgb(0,102,255)）；游客无续读条、滚动零 histories 请求；视频区仅播放按钮无 video 元素（不自动播放）
+  - 字号三档（AC-RULE-21/UI-IXD-04）：15/19px 仅 .article 变化（导航 15px、摘要卡 15px 不变）；档位高亮互斥；刷新后档位保持（localStorage m-font-size）
+  - 续读（AC-FN-04/UI-IXD-11）：API 写 75%（模拟 PC 端）→ m 同账号刷新显示「上次读到 75%」+进度条宽 75%；点击继续阅读平滑定位 scrollTop≈denom×0.75（实测 408/408）
+  - 滚动保存（AC-RULE-11）：滚动至 60% → 防抖 POST /api/histories/3 {progress:60}（Network 捕获）；GET /api/histories 确认同教程仅一条且取最新值（单值覆盖）
+  - 收藏（AC-FN-03）：游客点收藏 → RoleSheet 弹出 → 选「采购」→ 回原位收藏成功：按钮实心 #f97316「已收藏」+计数 187→188；接口侧 favorites 列表含 tutorialId=3；再点取消 188→187
+  - 评价留言（AC-FN-25/UI-IXD-07/08）：有帮助选中 96→97；切没帮助互斥 96/8→计数联动 95/9；留言框展开 maxlength=200、250 字输入截断为 200；提交后收起+toast「留言已提交」；刷新 myFeedback=0 回显没帮助选中（与 PC 共用同一条记录）
+  - 进度保存失败（AC-EG-17 同规则）：route abort histories → 滚动 → 静默重试仍失败：0 弹窗、0 toast、0 JS 报错，进度不归零
+  - 已下架（AC-FN-20/AC-EG-10）：#/detail/24 → 404 reason=offline → 横幅「该教程已下架，正文不可见」+正文遮蔽块+同类推荐 3 条（接口同源）；点击 related-item-3 跳转正常详情；评价按钮禁用、无收藏入口；#/detail/9999 → invisible 分支「该教程不存在或暂不可见」无推荐
+  - 视频（AC-EG-02）：种子外链（cdn.example.com）无效 → 点击播放 → video 元素 onError → 占位「⚠️ 视频暂不可用 可先阅读图文步骤」；图文步骤完整不阻断
+  - sanitize（AC-NF-04）：route 注入 `<script>`/`onerror`/`javascript:` 链接的富文本 → script 标签剥离且 window.__pwned undefined、onerror 属性剥离、javascript: href 剥离、白名单 h3/p 保留
+  - 三态：骨架屏（400ms 延迟）→ 正常；网络失败「加载失败，请稍后重试」+重试恢复；全程 0 pageerror
+- **对设计稿的偏离（均可溯源）**:
+  - ① 视频区渲染在正文步骤之后（设计稿嵌于第 3 步内）：videoUrl 为接口独立字段、content 为通用富文本，无法注入步骤内部（任务「调用接口」表字段口径）
+  - ② 步骤标题保留种子原文「第 N 步 · …」并叠加 CSS 圆号计数器：AC-EG-02 要求「步骤序号与文字内容不缺失」，不做展示层文本删改
+  - ③ 视频时长角标仅在 metadata 成功加载后显示：不预加载不自动播放（tech-design §8），种子外链失效故演示态无角标
+  - ④ 已下架态未复刻设计稿「▼ 以下为样式预览」外框自述文案：该文案为原型说明，非任务页面元素表条目；实现为真实提示页（横幅+遮蔽+推荐）
+- **关键实现决策（影响后续任务）**:
+  - RoleSheet 登录回放（replay）同步执行时 React 未重渲染，闭包 user 仍为 null 会二次拦截——互动入口（收藏/评价）登录态判断读 `getToken()`（localStorage 同步写入）而非 render 闭包；portal 端同类回放场景应沿用
+  - 详情 404 提示页负载经 `ApiError.data` 透传（shared/api.ts，portal 详情共用）；`TutorialDetail` 已扩展 prev/next/related/my* 字段（与并发 portal 任务共用的 `PortalTutorialDetail`/`DetailNeighbor`/`RelatedItem` 命名对齐）
+  - PhoneShell 新增 `footer` 插槽（滚动区与 TabBar 之间，不随内容滚动）；富文本白名单沉淀 `web/src/shared/sanitize.ts`（portal/m 共用，dompurify 已在依赖中）
+- **实现图**: FE-04-impl.png（登录态+续读 75%+已收藏+字号浮层，与 ui_m_detail.html 演示态同区域）/ FE-04-offline.png（已下架提示页）/ verify-result.json（52/52）
+- **类型检查/构建**: `npm run build`（tsc --noEmit 0 error + vite build）通过；无独立 lint 命令

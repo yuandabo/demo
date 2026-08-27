@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>编辑教程 · 云ERP教程中心·管理后台</title>
+<style>
+:root{
+  --primary:#0066ff; --cta:#f97316; --success:#16a34a; --danger:#dc2626; --warn:#d97706;
+  --gray:#64748b; --border:#e2e8f0; --bg:#f8fafc; --bg2:#f1f5f9; --card:#fff; --radius:12px; --dark:#0f172a;
+  --text:#0f172a; --text2:#64748b;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'PingFang SC','Microsoft YaHei',sans-serif;background:var(--bg);color:var(--text);font-size:14px}
+a{text-decoration:none;color:inherit}
+/* ===== 布局骨架 ===== */
+.layout{display:flex;min-height:100vh}
+.sidebar{width:240px;background:var(--dark);color:#cbd5e1;display:flex;flex-direction:column;position:fixed;top:0;bottom:0;left:0;z-index:20}
+.brand{padding:18px 20px;display:flex;gap:10px;align-items:center;border-bottom:1px solid rgba(255,255,255,.08)}
+.brand-logo{width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,#0066ff,#3b82f6);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.brand-name{color:#fff;font-weight:600;font-size:14px;line-height:1.3}
+.brand-sub{font-size:11px;color:#94a3b8}
+.menu{padding:14px 12px;flex:1}
+.menu-title{font-size:11px;color:#64748b;padding:0 12px 8px;letter-spacing:1px}
+.menu-item{display:flex;align-items:center;gap:10px;padding:11px 12px;border-radius:8px;color:#cbd5e1;margin-bottom:4px;position:relative;font-size:14px;cursor:pointer}
+.menu-item:hover{background:rgba(255,255,255,.06);color:#fff}
+.menu-item.active{background:rgba(0,102,255,.20);color:#fff;font-weight:600}
+.menu-item.active::before{content:'';position:absolute;left:0;top:8px;bottom:8px;width:3px;border-radius:2px;background:var(--primary)}
+.menu-item .mi{font-size:16px;width:20px;text-align:center;flex-shrink:0}
+.menu-item .menu-badge{margin-left:auto;background:var(--danger);color:#fff;font-size:11px;border-radius:9px;padding:1px 7px;font-weight:600}
+.menu-item.reserved{color:#64748b;cursor:not-allowed}
+.menu-item.reserved:hover{background:none;color:#64748b}
+.tag-reserved{margin-left:auto;font-size:10px;color:#94a3b8;border:1px solid #475569;border-radius:4px;padding:1px 5px;flex-shrink:0}
+.side-foot{padding:14px 20px;border-top:1px solid rgba(255,255,255,.08);font-size:11px;color:#64748b}
+.main{margin-left:240px;flex:1;display:flex;flex-direction:column;min-width:0}
+.topbar{height:60px;background:#fff;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 24px;position:sticky;top:0;z-index:10}
+.crumb{color:var(--text2);font-size:13px;display:flex;align-items:center;gap:6px}
+.crumb b{color:var(--text);font-weight:600}
+.crumb .sep{color:#cbd5e1}
+.crumb a:hover{color:var(--primary)}
+.admin{display:flex;align-items:center;gap:10px}
+.avatar{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,#0066ff,#3b82f6);color:#fff;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:600}
+.admin-info{line-height:1.3}
+.admin-name{font-size:13px;font-weight:600}
+.admin-role{font-size:11px;color:var(--text2)}
+.content{padding:24px;max-width:1280px}
+/* ===== 驳回告警条 ===== */
+.reject-bar{
+  display:flex;align-items:flex-start;gap:10px;background:#fffbeb;border:1px solid #fde68a;
+  border-radius:10px;padding:12px 16px;margin-bottom:16px;font-size:13px;color:#92400e;line-height:1.7;
+}
+.reject-bar .close{margin-left:auto;cursor:pointer;color:#d97706;font-size:16px;line-height:1;padding:0 4px;border:none;background:none}
+.reject-bar .close:hover{color:var(--danger)}
+.reject-bar b{color:var(--warn)}
+.reject-bar .link{color:var(--primary);cursor:pointer}
+/* ===== 双栏 ===== */
+.edit-grid{display:grid;grid-template-columns:1fr 300px;gap:16px;align-items:start}
+.card{background:var(--card);border-radius:var(--radius);border:1px solid var(--border);padding:20px}
+.card + .card{margin-top:16px}
+.card-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.card-title{font-size:15px;font-weight:600;display:flex;align-items:center;gap:8px}
+.card-title::before{content:'';width:4px;height:14px;border-radius:2px;background:var(--primary)}
+.card-note{font-size:12px;color:var(--text2)}
+/* ===== 表单 ===== */
+.form-row{margin-bottom:16px}
+.form-row:last-child{margin-bottom:0}
+.form-label{display:flex;align-items:center;justify-content:space-between;font-size:13px;font-weight:500;color:#334155;margin-bottom:6px}
+.form-label .req{color:var(--danger);margin-right:3px}
+.char-count{font-size:12px;color:var(--text2);font-weight:400;font-variant-numeric:tabular-nums}
+.char-count.over{color:var(--danger);font-weight:600}
+.input,.textarea,.select{
+  width:100%;border:1px solid var(--border);border-radius:8px;background:#fff;color:var(--text);
+  font-size:13px;padding:9px 12px;font-family:inherit;transition:border-color .15s;
+}
+.input:focus,.textarea:focus,.select:focus{outline:none;border-color:var(--primary);box-shadow:0 0 0 3px rgba(0,102,255,.1)}
+.textarea{min-height:84px;resize:vertical;line-height:1.6}
+.form-hint{font-size:12px;color:var(--text2);margin-top:5px;line-height:1.6}
+.form-hint .ok{color:var(--success)}
+/* 标签 chips */
+.chips{display:flex;flex-wrap:wrap;gap:8px;align-items:center;border:1px solid var(--border);border-radius:8px;padding:8px 10px;min-height:40px;background:#fff}
+.chips:focus-within{border-color:var(--primary);box-shadow:0 0 0 3px rgba(0,102,255,.1)}
+.chip{display:inline-flex;align-items:center;gap:6px;background:#eff6ff;border:1px solid #bfdbfe;color:var(--primary);border-radius:6px;padding:3px 8px;font-size:12px}
+.chip .x{cursor:pointer;font-size:13px;color:#93c5fd}
+.chip .x:hover{color:var(--danger)}
+.chips input{border:none;outline:none;flex:1;min-width:110px;font-size:13px;font-family:inherit;background:transparent}
+/* ===== 富文本工具条 ===== */
+.toolbar{display:flex;align-items:center;gap:4px;border:1px solid var(--border);border-bottom:none;border-radius:8px 8px 0 0;background:#f8fafc;padding:8px 10px;flex-wrap:wrap}
+.tb-btn{
+  min-width:30px;height:30px;border:none;background:transparent;border-radius:6px;cursor:pointer;
+  font-size:13px;color:#334155;font-family:inherit;padding:0 8px;transition:all .15s;display:inline-flex;align-items:center;justify-content:center;gap:4px;
+}
+.tb-btn:hover{background:#e2e8f0}
+.tb-btn:active{transform:scale(.94)}
+.tb-btn.bold{font-weight:800}
+.tb-btn.heading{font-weight:700;font-size:12px}
+.tb-btn.preview-on{background:var(--primary);color:#fff}
+.tb-sep{width:1px;height:18px;background:var(--border);margin:0 6px}
+/* 编辑区 */
+.editor{
+  min-height:380px;border:1px solid var(--border);border-radius:0 0 8px 8px;background:#fff;
+  padding:18px 22px;line-height:1.8;font-size:14px;outline:none;overflow-y:auto;max-height:560px;
+}
+.editor:focus{border-color:var(--primary);box-shadow:0 0 0 3px rgba(0,102,255,.08)}
+.editor h2{font-size:16px;margin:18px 0 8px;color:var(--text);display:flex;align-items:center;gap:8px}
+.editor h2 .step-no{
+  width:22px;height:22px;border-radius:50%;background:var(--primary);color:#fff;font-size:12px;
+  display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;
+}
+.editor p{margin:6px 0;color:#334155}
+.editor ul,.editor ol{margin:6px 0 6px 22px;color:#334155}
+.editor .img-ph{
+  display:flex;align-items:center;justify-content:center;height:120px;margin:10px 0;
+  background:var(--bg2);border:1px dashed #cbd5e1;border-radius:8px;color:var(--text2);font-size:12px;gap:8px;
+}
+.editor .img-ph.stale{border-color:#fdba74;background:#fffbeb;color:#92400e}
+.step-alert{font-size:12px;color:#92400e;background:#fffbeb;border:1px solid #fde68a;border-radius:6px;padding:4px 10px;display:inline-flex;gap:6px;margin-top:4px}
+/* ===== 右侧操作卡 ===== */
+.side-card{position:sticky;top:84px}
+.status-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px}
+.badge{display:inline-flex;align-items:center;gap:5px;font-size:12px;border-radius:6px;padding:3px 10px;font-weight:500}
+.badge::before{content:'';width:6px;height:6px;border-radius:50%;background:currentColor}
+.badge-draft{color:var(--gray);background:#f1f5f9;border:1px solid #e2e8f0}
+.autosave{font-size:12px;color:var(--success);display:flex;align-items:center;gap:5px}
+.autosave i{width:7px;height:7px;border-radius:50%;background:var(--success);display:inline-block;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;border:1px solid var(--border);background:#fff;color:#334155;border-radius:8px;padding:9px 16px;font-size:13px;cursor:pointer;font-family:inherit;transition:all .15s;width:100%}
+.btn:hover{border-color:#cbd5e1;background:#f8fafc}
+.btn:active{transform:scale(.98)}
+.btn-primary{background:var(--primary);border-color:var(--primary);color:#fff;font-weight:600}
+.btn-primary:hover{background:#0052cc;border-color:#0052cc}
+.btn-cta{background:var(--cta);border-color:var(--cta);color:#fff;font-weight:600}
+.btn-cta:hover{background:#ea680c;border-color:#ea680c}
+.btn-ghost-danger{color:var(--danger);border-color:#fecaca}
+.btn-ghost-danger:hover{background:#fef2f2;border-color:var(--danger)}
+.btn + .btn{margin-top:10px}
+.meta-list{margin-top:14px;border-top:1px dashed var(--border);padding-top:12px;font-size:12px;color:var(--text2);line-height:2}
+.meta-list b{color:#334155;font-weight:500;margin-left:6px}
+.notice{margin-top:12px;background:var(--bg2);border-radius:8px;padding:10px 12px;font-size:12px;color:var(--text2);line-height:1.7}
+/* ===== 置顶开关 + 排序值（PRD §7.6 ADT-EDT-TOP/SRT） ===== */
+.top-sort-row{display:flex;align-items:center;gap:10px;margin-top:6px}
+.switch{display:inline-flex;align-items:center;gap:7px;font-size:13px;color:#334155;cursor:pointer;user-select:none}
+.switch input{display:none}
+.switch i{width:34px;height:19px;border-radius:10px;background:#cbd5e1;position:relative;transition:.15s;flex-shrink:0}
+.switch i::after{content:'';position:absolute;left:2px;top:2px;width:15px;height:15px;border-radius:50%;background:#fff;transition:.15s}
+.switch input:checked + i{background:var(--cta)}
+.switch input:checked + i::after{left:17px}
+.sort-num{width:70px;height:32px;border:1px solid var(--border);border-radius:8px;font-size:13px;padding:0 8px;font-family:inherit;color:var(--text);text-align:center}
+.sort-num:focus{outline:none;border-color:var(--primary);box-shadow:0 0 0 3px rgba(0,102,255,.1)}
+.sort-lbl{font-size:12px;color:var(--text2)}
+@media (max-width:1000px){.edit-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="layout">
+  <!-- ===== 侧边栏 ===== -->
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="brand-logo">📚</div>
+      <div><div class="brand-name">云ERP教程中心</div><div class="brand-sub">管理后台</div></div>
+    </div>
+    <nav class="menu">
+      <div class="menu-title">内容管理</div>
+      <a class="menu-item" href="ui_admin_dashboard.html"><span class="mi">📊</span>统计看板</a>
+      <a class="menu-item active" href="ui_admin_tutorial_list.html"><span class="mi">📚</span>教程管理</a>
+      <a class="menu-item" href="ui_admin_review.html"><span class="mi">✅</span>审核队列<span class="menu-badge">3</span></a>
+      <a class="menu-item" href="ui_admin_category.html"><span class="mi">🌲</span>目录管理</a>
+      <div class="menu-item reserved"><span class="mi">🤖</span>AI 生成审核<span class="tag-reserved">预留</span></div>
+    </nav>
+    <div class="side-foot">v1.0 · 演示环境</div>
+  </aside>
+
+  <!-- ===== 主区域 ===== -->
+  <div class="main">
+    <header class="topbar">
+      <div class="crumb">管理后台 <span class="sep">/</span> <a href="ui_admin_tutorial_list.html">教程管理</a> <span class="sep">/</span> <b>编辑教程</b></div>
+      <div class="admin">
+        <div class="avatar">A</div>
+        <div class="admin-info"><div class="admin-name">admin</div><div class="admin-role">平台管理员</div></div>
+      </div>
+    </header>
+
+    <div class="content">
+      <!-- 驳回原因告警条（驳回后展示在编辑页顶部） -->
+      <div class="reject-bar" id="rejectBar">
+        <span>⚠</span>
+        <div>
+          <b>驳回原因</b>（审核人：admin · 2026-08-17 16:20）：第3步截图含未发布界面，请替换后重新提交审核。
+          <span class="link" onclick="locateStep3()">定位到第 3 步 →</span>
+        </div>
+        <button class="close" title="关闭" onclick="document.getElementById('rejectBar').style.display='none'">×</button>
+      </div>
+
+      <div class="edit-grid">
+        <!-- ===== 左列：表单 + 富文本 ===== -->
+        <div>
+          <div class="card">
+            <div class="card-head">
+              <div class="card-title">基本信息</div>
+              <div class="card-note">标 * 为提审必填项</div>
+            </div>
+            <div class="form-row">
+              <div class="form-label"><span><span class="req">*</span>标题（≤100 字）</span><span class="char-count" id="titleCount">14/100</span></div>
+              <input class="input" id="titleInput" type="text" value="安全库存与补货预警设置" maxlength="100">
+            </div>
+            <div class="form-row">
+              <div class="form-label"><span><span class="req">*</span>所属分类（启用节点）</span></div>
+              <select class="select" id="cateSelect">
+                <option>新手入门</option><option>最佳实践</option><option>常见问题</option><option>开放平台</option>
+                <option>销售管理</option><option>采购管理</option><option selected>库存管理</option><option>生产制造</option>
+                <option>项目管理</option><option>文件管理</option><option>人事财务</option><option>系统设置</option>
+              </select>
+            </div>
+            <div class="form-row">
+              <div class="form-label"><span><span class="req">*</span>摘要（≤200 字）</span><span class="char-count" id="sumCount">0/200</span></div>
+              <textarea class="textarea" id="sumArea" maxlength="200" placeholder="一句话说明教程解决什么问题，将展示在列表卡片与搜索结果中">讲解如何在库存管理模块为关键物料设置安全库存阈值与补货预警，覆盖仓库/物料范围选择、阈值规则、预警消息配置，适合采购与仓库角色跟做。</textarea>
+            </div>
+            <div class="form-row">
+              <div class="form-label"><span>标签（≤5 个）</span><span class="char-count" id="tagCount">3/5</span></div>
+              <div class="chips" id="chips">
+                <span class="chip">安全库存<span class="x" onclick="removeChip(this)">×</span></span>
+                <span class="chip">补货预警<span class="x" onclick="removeChip(this)">×</span></span>
+                <span class="chip">库存管理<span class="x" onclick="removeChip(this)">×</span></span>
+                <input id="tagInput" type="text" placeholder="输入后回车添加">
+              </div>
+              <div class="form-hint">标签参与前台标签筛选与关键词搜索命中（标题/摘要/标签三字段）</div>
+            </div>
+            <div class="form-row">
+              <div class="form-label"><span>视频外链（可选）</span><span class="char-count">mp4 直链</span></div>
+              <input class="input" type="text" value="https://cdn.jlc-erp-demo.com/videos/safety-stock.mp4" placeholder="https://...mp4">
+              <div class="form-hint">详情页视频区渲染播放，外链失效时显示占位提示，不影响图文正文展示</div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-head">
+              <div class="card-title">图文正文</div>
+              <div class="card-note">按步骤标题自动拆分步骤进度条 · 支持标题/加粗/列表/图片/视频</div>
+            </div>
+            <div class="toolbar">
+              <button class="tb-btn bold" title="加粗" onclick="fmt('bold')"><b>B</b></button>
+              <span class="tb-sep"></span>
+              <button class="tb-btn heading" title="步骤标题（H2）" onclick="fmt('formatBlock','h2')">H 步骤标题</button>
+              <button class="tb-btn" title="无序列表" onclick="fmt('insertUnorderedList')">• 列表</button>
+              <button class="tb-btn" title="有序列表" onclick="fmt('insertOrderedList')">1. 列表</button>
+              <span class="tb-sep"></span>
+              <button class="tb-btn" title="插入图片 URL" onclick="insertImage()">🖼 图片</button>
+              <button class="tb-btn" title="插入视频外链" onclick="insertVideo()">▶ 视频</button>
+              <span class="tb-sep"></span>
+              <button class="tb-btn" id="previewBtn" title="预览前台渲染效果" onclick="togglePreview()">👁 预览</button>
+            </div>
+            <div class="editor" id="editor" contenteditable="true" oninput="onEdit()">
+              <h2><span class="step-no">1</span>第1步 · 进入安全库存设置</h2>
+              <p>登录云ERP，依次打开 <b>库存管理 → 安全库存设置</b>，确认当前账套与仓库权限已开通。</p>
+              <ul>
+                <li>路径：库存管理 → 安全库存设置</li>
+                <li>权限：仓库主管及以上角色可见</li>
+              </ul>
+              <h2><span class="step-no">2</span>第2步 · 选择仓库与物料范围</h2>
+              <p>按仓库逐个配置，或按物料分类批量圈定需要设置安全库存的物料范围，建议先对 A 类物料启用。</p>
+              <div class="img-ph">🖼 截图占位：仓库与物料范围选择界面</div>
+              <h2><span class="step-no">3</span>第3步 · 设置安全库存阈值与补货预警</h2>
+              <p>填写最低库存、补货点与最大库存，勾选"低于补货点自动生成补货预警"。</p>
+              <div class="img-ph stale">🖼 截图占位（旧版界面 · 待替换）<span class="step-alert">⚠ 驳回项：此截图含未发布界面，请替换为新版截图</span></div>
+              <h2><span class="step-no">4</span>第4步 · 启用预警并配置消息通知</h2>
+              <p>保存后启用预警规则，配置站内 + 小程序消息通知，低于补货点时采购与仓库角色同步收到提醒。</p>
+              <ol>
+                <li>保存阈值规则并启用</li>
+                <li>在消息设置中勾选"补货预警"渠道</li>
+                <li>用测试物料验证预警触发链路</li>
+              </ol>
+            </div>
+          </div>
+        </div>
+
+        <!-- ===== 右列：操作卡 ===== -->
+        <div class="side-card">
+          <div class="card">
+            <div class="status-row">
+              <span class="badge badge-draft">草稿</span>
+              <span class="autosave" id="autosaveTip"><i></i>30 秒前已自动保存</span>
+            </div>
+            <div class="meta-list">
+              作者<b>operator</b><br>
+              创建时间<b>2026-08-15 10:02</b><br>
+              最近更新<b>2026-08-19 11:24</b><br>
+              浏览 / 收藏 / 有帮助率<b>— / — / —（草稿期无前台数据）</b>
+            </div>
+            <!-- 置顶与排序（PRD §7.6：置顶布尔 + 排序值编辑，影响前台列表与上下篇） -->
+            <div style="margin-top:14px;border-top:1px dashed var(--border);padding-top:12px">
+              <div class="form-label" style="margin-bottom:8px"><span>置顶与排序</span><span class="card-note">发布后生效</span></div>
+              <div class="top-sort-row">
+                <label class="switch"><input type="checkbox" id="topSwitch" onchange="toggleTopEdit(this)"><i></i>置顶</label>
+                <input class="sort-num" id="sortNum" type="number" value="100" min="0" max="999" title="排序值（同级越小越靠前）" onchange="saveSortEdit(this)">
+                <span class="sort-lbl">排序值</span>
+              </div>
+              <div class="form-hint">置顶教程优先展示于前台列表与分类顶部；未置顶时按排序值升序 + 发布时间倒序排列，并影响同分类上/下一篇</div>
+            </div>
+            <div style="margin-top:14px">
+              <button class="btn" onclick="saveDraft()">💾 保存草稿</button>
+              <button class="btn btn-primary" onclick="submitReview()">📤 提交审核</button>
+              <button class="btn btn-cta" onclick="previewFront()">👁 预览前台效果</button>
+              <button class="btn btn-ghost-danger" onclick="confirmDraftDelete()">🗑 删除草稿</button>
+            </div>
+            <div class="notice">
+              提示：本篇为<b style="color:#334155">纯草稿</b>（从未通过审核），可删除；提审必填：标题 / 分类 / 摘要 / 正文。被驳回后修改完成请重新提交审核。
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// 字数计数：标题 / 摘要
+function count(el, out, max) {
+  var n = el.value.length;
+  var o = document.getElementById(out);
+  o.textContent = n + '/' + max;
+  o.classList.toggle('over', n > max);
+}
+var titleInput = document.getElementById('titleInput');
+var sumArea = document.getElementById('sumArea');
+titleInput.addEventListener('input', function () { count(titleInput, 'titleCount', 100); });
+sumArea.addEventListener('input', function () { count(sumArea, 'sumCount', 200); });
+count(titleInput, 'titleCount', 100);
+count(sumArea, 'sumCount', 200);
+
+// 标签 chips：回车添加，≤5 个，点 × 移除
+var tagInput = document.getElementById('tagInput');
+function refreshTagCount() {
+  var n = document.querySelectorAll('#chips .chip').length;
+  document.getElementById('tagCount').textContent = n + '/5';
+}
+function removeChip(x) { x.parentElement.remove(); refreshTagCount(); }
+tagInput.addEventListener('keydown', function (e) {
+  if (e.key !== 'Enter') return;
+  e.preventDefault();
+  var v = tagInput.value.trim();
+  if (!v) return;
+  if (document.querySelectorAll('#chips .chip').length >= 5) { alert('标签最多 5 个'); return; }
+  var s = document.createElement('span');
+  s.className = 'chip';
+  s.innerHTML = v + '<span class="x" onclick="removeChip(this)">×</span>';
+  tagInput.parentElement.insertBefore(s, tagInput);
+  tagInput.value = '';
+  refreshTagCount();
+  markSaved();
+});
+
+// 富文本命令
+function fmt(cmd, val) {
+  document.getElementById('editor').focus();
+  document.execCommand(cmd, false, val || null);
+}
+function insertImage() {
+  var url = prompt('请输入图片 URL：', 'https://cdn.jlc-erp-demo.com/img/step.png');
+  if (url) fmt('insertHTML', '<div class="img-ph">🖼 图片：' + url + '</div><p><br></p>');
+}
+function insertVideo() {
+  var url = prompt('请输入视频外链（mp4 直链）：', 'https://cdn.jlc-erp-demo.com/videos/demo.mp4');
+  if (url) fmt('insertHTML', '<p>▶ 视频外链：<a href="' + url + '">' + url + '</a></p>');
+}
+// 预览模式：切换 contenteditable
+var previewing = false;
+function togglePreview() {
+  previewing = !previewing;
+  var ed = document.getElementById('editor');
+  ed.contentEditable = previewing ? 'false' : 'true';
+  ed.style.background = previewing ? '#fffdf5' : '#fff';
+  document.getElementById('previewBtn').classList.toggle('preview-on', previewing);
+}
+function previewFront() { if (!previewing) togglePreview(); window.scrollTo({ top: 0, behavior: 'smooth' }); }
+
+// 自动保存提示模拟
+function markSaved() {
+  document.getElementById('autosaveTip').innerHTML = '<i></i>刚刚已自动保存';
+}
+document.getElementById('editor').addEventListener('blur', markSaved);
+
+// 操作反馈
+function saveDraft() { markSaved(); alert('已保存草稿（可反复保存，不影响前台）'); }
+function submitReview() {
+  var ok = titleInput.value.trim() && sumArea.value.trim() && document.getElementById('editor').textContent.trim().length > 10;
+  if (!ok) { alert('提审校验：标题 / 摘要 / 正文必填，请补全后重新提交'); return; }
+  alert('已提交审核：草稿 → 待审核，管理员审核通过后前台即时可见');
+}
+function confirmDraftDelete() {
+  if (confirm('仅"从未通过审核的纯草稿"可删除，确认删除《' + titleInput.value + '》？')) alert('已删除（演示）');
+}
+function locateStep3() {
+  var ed = document.getElementById('editor');
+  ed.scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+// 置顶开关 / 排序值（PRD §7.6 ADT-EDT-TOP/SRT）
+function toggleTopEdit(sw) {
+  markSaved();
+  alert(sw.checked ? '演示：已开启置顶，发布后前台列表优先展示' : '演示：已关闭置顶，按排序值与发布时间排列');
+}
+function saveSortEdit(inp) {
+  markSaved();
+  alert('演示：排序值已保存为 ' + inp.value + '（0-999，同级越小越靠前）');
+}
+</script>
+</body>
+</html>

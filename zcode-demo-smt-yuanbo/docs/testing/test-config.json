@@ -1,0 +1,8 @@
+{
+  "project": "RE00001 云ERP教程中心",
+  "backend": { "baseUrl": "http://localhost:3000", "apiPrefix": "/api" },
+  "frontend": { "entries": { "portal": "http://localhost:3000/portal.html", "admin": "http://localhost:3000/admin.html", "m": "http://localhost:3000/m.html" } },
+  "auth": { "admin": { "username": "admin", "password": "123456" }, "operator": { "username": "operator", "password": "123456" }, "roleLogin": ["sales","purchase","produce","warehouse","manage","finance"] },
+  "autoExecute": { "enabled": true, "runner": "playwright", "configFile": "playwright.config.ts" },
+  "seedReset": { "endpoint": "POST /api/system/reset", "note": "admin token required" }
+}

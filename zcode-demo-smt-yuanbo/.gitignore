@@ -1,0 +1,8 @@
+node_modules/
+dist/
+test-results/
+playwright-report/.gitignore
+server/erp.db
+*.log
+.DS_Store
+process-docs/

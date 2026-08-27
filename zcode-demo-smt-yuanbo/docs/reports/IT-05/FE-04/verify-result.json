@@ -1,0 +1,262 @@
+[
+  {
+    "name": "前置-种子教程 3 就绪（含 videoUrl）",
+    "pass": true,
+    "detail": "tags=3"
+  },
+  {
+    "name": "初始化-正文骨架屏（导航先渲染）",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "name": "初始化-导航标题=教程标题",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "name": "初始化-收藏按钮默认未收藏",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "name": "初始化-分类徽标+标签行",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "name": "初始化-meta 四项（浏览/收藏/作者/更新于）",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "name": "初始化-摘要卡（左蓝边白卡）",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "name": "初始化-快照正文步骤完整渲染",
+    "pass": true,
+    "detail": "h3=4"
+  },
+  {
+    "name": "初始化-步骤蓝底圆号（CSS 计数器）",
+    "pass": true,
+    "detail": "{\"content\":\"counter(step)\",\"bg\":\"rgb(0, 102, 255)\",\"w\":\"24px\"}"
+  },
+  {
+    "name": "初始化-游客无续读条（myProgress null）",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "name": "初始化-视频区不自动播放（无 video 元素）",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "name": "初始化-操作条计数与同步说明",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "name": "初始化-评价未选中/留言框隐藏",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "name": "游客滚动-不发 histories 请求",
+    "pass": true,
+    "detail": "reqs=0"
+  },
+  {
+    "name": "字号-标准 15px 仅正文生效",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "name": "字号-档位高亮切换",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "name": "字号-特大 19px",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "name": "字号-刷新后档位保持（localStorage）",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "name": "sanitize-script 剥离不执行",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "name": "sanitize-onerror 事件属性剥离",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "name": "sanitize-javascript: 链接剥离",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "name": "sanitize-白名单内容保留",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "name": "视频-点击才加载，失效显示占位文案",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "name": "视频-图文步骤不受阻断",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "name": "已下架-横幅文案",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "name": "已下架-正文遮蔽块",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "name": "已下架-同类推荐列表（接口同源）",
+    "pass": true,
+    "detail": "related=3"
+  },
+  {
+    "name": "已下架-评价操作条禁用",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "name": "已下架-无收藏入口",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "name": "已下架-推荐可跳转正常详情",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "name": "不可见-文案与无推荐",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "name": "网络失败-错误态+重试入口",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "name": "网络失败-重试恢复正常",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "name": "游客链路-无 JS 报错/无弹窗",
+    "pass": true,
+    "detail": "errors=0 dialogs=0"
+  },
+  {
+    "name": "收藏-未登录弹 RoleSheet",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "name": "收藏-登录后回原位收藏成功（AC-FN-03）",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "name": "收藏-计数 +1 局部更新",
+    "pass": true,
+    "detail": "187→188"
+  },
+  {
+    "name": "收藏-接口侧已入库",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "name": "续读-显示 75% 与进度条宽度（UI-IXD-11）",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "name": "续读-点击定位到上次位置",
+    "pass": true,
+    "detail": "scrollTop=408 expect≈408"
+  },
+  {
+    "name": "滚动保存-POST histories progress=60",
+    "pass": true,
+    "detail": "[{\"progress\":60}]"
+  },
+  {
+    "name": "滚动保存-单值覆盖（同教程仅一条，取最新）",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "name": "评价-有帮助选中（+1 计数）",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "name": "评价-二选一互斥切换（计数联动）",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "name": "评价-「没帮助」展开留言框 maxlength=200",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "name": "评价-留言超长截断 200 字",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "name": "评价-留言提交后收起+提示已记录",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "name": "评价-myFeedback 回显（与 PC 共用同一条记录，AC-FN-25）",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "name": "收藏-再点取消收藏计数 -1",
+    "pass": true,
+    "detail": "188→187"
+  },
+  {
+    "name": "进度保存失败-静默重试仍失败不弹窗",
+    "pass": true,
+    "detail": "dialogs=0"
+  },
+  {
+    "name": "实现图-已截取（FE-04-impl.png）",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "name": "登录链路-无 JS 报错",
+    "pass": true,
+    "detail": "errors=0"
+  }
+]

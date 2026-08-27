@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>云ERP教程中心 · 分类与搜索（小程序 H5）</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{background:#e2e8f0}
+body{font-family:'PingFang SC','Microsoft YaHei',sans-serif;display:flex;justify-content:center;align-items:flex-start;min-height:100vh;padding:28px 12px}
+a{text-decoration:none;color:inherit}
+ul{list-style:none}
+/* ===== 手机壳（5 页统一） ===== */
+.phone{width:375px;height:812px;background:#0f172a;border-radius:40px;padding:7px;box-shadow:0 24px 60px rgba(15,23,42,.45);flex-shrink:0}
+.screen{width:100%;height:100%;background:#f8fafc;border-radius:33px;overflow:hidden;position:relative;display:flex;flex-direction:column}
+.notch{position:absolute;top:0;left:50%;transform:translateX(-50%);width:112px;height:24px;background:#0f172a;border-radius:0 0 13px 13px;z-index:20}
+.notch::after{content:'';position:absolute;right:12px;top:7px;width:8px;height:8px;border-radius:50%;background:#334155;border:1.5px solid #475569}
+.statusbar{height:44px;flex-shrink:0;display:flex;align-items:flex-end;justify-content:space-between;padding:0 24px 5px;position:relative;z-index:10;color:#0f172a;background:#fff}
+.statusbar .time{font-size:14px;font-weight:700}
+.statusbar .sicons{display:flex;align-items:center;gap:5px}
+.statusbar svg{display:block}
+.tabbar{flex-shrink:0;background:#fff;border-top:1px solid #e2e8f0;display:flex;padding-top:5px}
+.tab{flex:1;display:flex;flex-direction:column;align-items:center;gap:1px;font-size:10px;color:#94a3b8;padding:3px 0 4px}
+.tab .ico{font-size:20px;line-height:1;filter:grayscale(1);opacity:.55}
+.tab.active{color:#0066ff;font-weight:700}
+.tab.active .ico{filter:none;opacity:1}
+.homebar{flex-shrink:0;height:16px;background:#fff;display:flex;align-items:center;justify-content:center}
+.homebar i{width:110px;height:5px;border-radius:3px;background:#0f172a;display:block}
+.scroll{flex:1;overflow-y:auto;scrollbar-width:none}
+.scroll::-webkit-scrollbar{display:none}
+/* ===== 顶部导航 + 搜索 + 分类 chips ===== */
+.nav{flex-shrink:0;background:#fff;display:flex;align-items:center;gap:8px;padding:6px 12px 8px;border-bottom:1px solid #f1f5f9}
+.back{font-size:20px;line-height:1;color:#0f172a;padding:2px 4px 0 0}
+.nav-title{font-size:15px;font-weight:700;color:#0f172a}
+.searchrow{flex-shrink:0;background:#fff;padding:2px 12px 10px;display:flex;gap:8px}
+.sinput{flex:1;height:36px;background:#f1f5f9;border-radius:10px;display:flex;align-items:center;gap:7px;padding:0 12px;font-size:13px;color:#0f172a}
+.sinput .ph{color:#94a3b8}
+.sinput .kw{color:#0066ff;font-weight:700}
+.sinput .cur{width:1px;height:14px;background:#0066ff;display:inline-block}
+.sbtn{width:66px;height:36px;border-radius:10px;background:#0066ff;color:#fff;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(0,102,255,.3)}
+.chips{flex-shrink:0;display:flex;gap:8px;overflow-x:auto;padding:2px 12px 10px;background:#fff;scrollbar-width:none}
+.chips::-webkit-scrollbar{display:none}
+.chip{flex-shrink:0;font-size:12px;color:#475569;background:#f1f5f9;padding:6px 13px;border-radius:999px;font-weight:500}
+.chip.on{background:#0066ff;color:#fff;font-weight:700;box-shadow:0 2px 8px rgba(0,102,255,.3)}
+/* ===== 列表 ===== */
+.list-body{padding:0 12px 20px}
+.refresh{display:flex;align-items:center;justify-content:center;gap:6px;font-size:11px;color:#94a3b8;padding:9px 0 10px;background:#f8fafc;position:sticky;top:0}
+.refresh .arr{display:inline-block;transform:rotate(180deg)}
+.result-line{font-size:11px;color:#94a3b8;margin:0 2px 10px}
+.result-line b{color:#0066ff;font-weight:700}
+.tcard{display:block;background:#fff;border-radius:12px;padding:13px 14px;margin-bottom:10px;box-shadow:0 1px 4px rgba(15,23,42,.06)}
+.t-title{font-size:15px;font-weight:700;color:#0f172a;line-height:1.4}
+.t-title em{font-style:normal;color:#0066ff}
+.t-sum{font-size:12px;color:#64748b;line-height:1.55;margin-top:5px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.t-tags{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}
+.ttag{font-size:10px;color:#0066ff;background:#e6efff;padding:2px 8px;border-radius:4px}
+.t-foot{display:flex;justify-content:space-between;align-items:center;margin-top:9px}
+.t-cat{font-size:10px;color:#64748b;border:1px solid #e2e8f0;border-radius:4px;padding:2px 7px}
+.t-meta{font-size:10px;color:#94a3b8}
+.empty-hint{font-size:11px;color:#cbd5e1;text-align:center;padding:4px 0 8px}
+</style>
+</head>
+<body>
+<div class="phone">
+  <div class="screen">
+    <div class="notch"></div>
+
+    <div class="statusbar">
+      <span class="time">9:41</span>
+      <span class="sicons">
+        <svg width="16" height="10" viewBox="0 0 16 10" fill="currentColor"><rect x="0" y="6" width="3" height="4" rx="1"/><rect x="4.3" y="4" width="3" height="6" rx="1"/><rect x="8.6" y="2" width="3" height="8" rx="1"/><rect x="12.9" y="0" width="3" height="10" rx="1"/></svg>
+        <svg width="15" height="11" viewBox="0 0 15 11" fill="currentColor"><circle cx="7.5" cy="9.4" r="1.5"/><path d="M4.6 6.6a4.6 4.6 0 0 1 5.8 0l-1.1 1.3a3 3 0 0 0-3.6 0z"/><path d="M1.9 3.9a8.6 8.6 0 0 1 11.2 0l-1.1 1.3a6.9 6.9 0 0 0-9 0z"/></svg>
+        <svg width="23" height="11" viewBox="0 0 23 11" fill="none"><rect x=".5" y=".5" width="19" height="10" rx="2.5" stroke="currentColor" opacity=".4"/><rect x="2" y="2" width="13" height="7" rx="1.2" fill="currentColor"/><rect x="20.5" y="3.2" width="2" height="4.6" rx="1" fill="currentColor" opacity=".4"/></svg>
+      </span>
+    </div>
+
+    <!-- 导航 -->
+    <div class="nav">
+      <a class="back" href="ui_m_home.html">‹</a>
+      <span class="nav-title">教程列表</span>
+    </div>
+
+    <!-- 搜索框：关键词「算料」+ 搜索按钮 -->
+    <div class="searchrow">
+      <div class="sinput">🔍<span class="kw">算料</span><span class="cur"></span></div>
+      <a class="sbtn" href="ui_m_list.html">搜索</a>
+    </div>
+
+    <!-- 分类横向滑动 chips（12 个启用分类，采购管理高亮） -->
+    <div class="chips">
+      <a class="chip" href="ui_m_list.html">全部</a>
+      <a class="chip" href="ui_m_list.html">销售管理</a>
+      <a class="chip" href="ui_m_list.html">项目管理</a>
+      <a class="chip" href="ui_m_list.html">文件管理</a>
+      <a class="chip" href="ui_m_list.html">生产制造</a>
+      <a class="chip on" href="ui_m_list.html">采购管理</a>
+      <a class="chip" href="ui_m_list.html">库存管理</a>
+      <a class="chip" href="ui_m_list.html">人事财务</a>
+      <a class="chip" href="ui_m_list.html">系统设置</a>
+      <a class="chip" href="ui_m_list.html">新手入门</a>
+      <a class="chip" href="ui_m_list.html">最佳实践</a>
+      <a class="chip" href="ui_m_list.html">常见问题</a>
+      <a class="chip" href="ui_m_list.html">开放平台</a>
+    </div>
+
+    <main class="scroll">
+      <div class="list-body">
+
+        <!-- 下拉刷新提示条 -->
+        <div class="refresh"><span class="arr">↑</span>下拉刷新…<span style="color:#cbd5e1">·</span>上次更新 09:41</div>
+        <div class="result-line">「<b>算料</b>」相关结果 6 篇 · 当前筛选：采购管理（命中跨分类，其余 3 篇来自生产制造/常见问题）</div>
+
+        <!-- 教程卡片流 x6（计数与 PC 前台 / 后台同源） -->
+        <a class="tcard" href="ui_m_detail.html">
+          <div class="t-title">MRP 自动<em>算料</em>：从 BOM 到采购建议</div>
+          <div class="t-sum">告别手工 Excel 算料：销售订单驱动 MRP 运算，自动比对库存、在途与安全库存，输出缺料清单与采购建议，与本站 PC 端同一篇教程。</div>
+          <div class="t-tags"><span class="ttag">MRP</span><span class="ttag">BOM</span><span class="ttag">审批流</span></div>
+          <div class="t-foot"><span class="t-cat">采购管理</span><span class="t-meta">👁 2,341 · ⭐ 187</span></div>
+        </a>
+
+        <a class="tcard" href="ui_m_detail.html">
+          <div class="t-title">采购申请到一键下单全流程实操</div>
+          <div class="t-sum">从请购需求汇总、供应商自动匹配到一键下单，覆盖比价、寄售与分批交期设置，附常见拦截原因的处理办法，<em>算料</em>后的采购动作一次跑通。</div>
+          <div class="t-tags"><span class="ttag">采购流程</span><span class="ttag">下单</span><span class="ttag">分批交期</span></div>
+          <div class="t-foot"><span class="t-cat">采购管理</span><span class="t-meta">👁 1,694 · ⭐ 108</span></div>
+        </a>
+
+        <a class="tcard" href="ui_m_detail.html">
+          <div class="t-title">供应商比价与立创同步：<em>算料</em>采购件自动选型</div>
+          <div class="t-sum">算料后的采购件如何自动同步立创商城，比价、选型、下单一次完成，支持价格波动提醒与替代料推荐，采购成本一目了然。</div>
+          <div class="t-tags"><span class="ttag">比价</span><span class="ttag">立创同步</span><span class="ttag">替代料</span></div>
+          <div class="t-foot"><span class="t-cat">采购管理</span><span class="t-meta">👁 1,523 · ⭐ 91</span></div>
+        </a>
+
+        <a class="tcard" href="ui_m_detail.html">
+          <div class="t-title"><em>算料</em>参数入门：净需求与安全库存天数设置</div>
+          <div class="t-sum">毛需求从哪来？净需求怎么算？安全库存天数与损耗率如何影响建议量？一篇讲清 MRP 算料公式的每个参数及默认取值规则。</div>
+          <div class="t-tags"><span class="ttag">MRP</span><span class="ttag">参数</span><span class="ttag">安全库存</span></div>
+          <div class="t-foot"><span class="t-cat">生产制造</span><span class="t-meta">👁 1,298 · ⭐ 84</span></div>
+        </a>
+
+        <a class="tcard" href="ui_m_detail.html">
+          <div class="t-title">缺料预警：<em>算料</em>后的采购跟单看板用法</div>
+          <div class="t-sum">采购申请下达不等于万事大吉。跟单看板按交期倒排缺料风险，红灯件一键催料并自动通知供应商，到料进度实时可查。</div>
+          <div class="t-tags"><span class="ttag">预警</span><span class="ttag">跟单</span><span class="ttag">催料</span></div>
+          <div class="t-foot"><span class="t-cat">生产制造</span><span class="t-meta">👁 963 · ⭐ 61</span></div>
+        </a>
+
+        <a class="tcard" href="ui_m_detail.html">
+          <div class="t-title">MRP <em>算料</em>建议采购量为 0？三步排查</div>
+          <div class="t-sum">明明缺料却算不出建议量？依次检查可用量策略、BOM 生效版本与需求日期跨期三类高频原因，快速定位算料异常。</div>
+          <div class="t-tags"><span class="ttag">常见问题</span><span class="ttag">排查</span><span class="ttag">FAQ</span></div>
+          <div class="t-foot"><span class="t-cat">常见问题</span><span class="t-meta">👁 731 · ⭐ 42</span></div>
+        </a>
+
+        <div class="empty-hint">— 已加载全部 6 篇（采购管理 3 篇 + 生产制造 2 篇 + 常见问题 1 篇）—</div>
+
+      </div>
+    </main>
+
+    <!-- 底部 TabBar（当前：分类） -->
+    <nav class="tabbar">
+      <a class="tab" href="ui_m_home.html"><span class="ico">🏠</span>首页</a>
+      <a class="tab active" href="ui_m_list.html"><span class="ico">📚</span>分类</a>
+      <a class="tab" href="ui_m_favorite.html"><span class="ico">⭐</span>收藏</a>
+      <a class="tab" href="ui_m_checkin.html"><span class="ico">📅</span>打卡</a>
+    </nav>
+    <div class="homebar"><i></i></div>
+  </div>
+</div>
+</body>
+</html>

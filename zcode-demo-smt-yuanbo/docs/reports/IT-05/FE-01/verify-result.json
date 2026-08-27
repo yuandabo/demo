@@ -1,0 +1,146 @@
+{
+  "total": 28,
+  "failed": 0,
+  "results": [
+    {
+      "name": "手机壳元素 .phone",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "手机壳元素 .screen",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "手机壳元素 .notch",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "手机壳元素 .statusbar",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "手机壳元素 .homebar",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "手机壳元素 .tabbar",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "375 宽无横向滚动条",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "游客态首屏",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "路由 #/ 占位页",
+      "pass": true,
+      "detail": "首页"
+    },
+    {
+      "name": "路由 #/list 占位页",
+      "pass": true,
+      "detail": "分类"
+    },
+    {
+      "name": "路由 #/detail/1 占位页",
+      "pass": true,
+      "detail": "教程详情"
+    },
+    {
+      "name": "路由 #/favorite 占位页",
+      "pass": true,
+      "detail": "我的收藏"
+    },
+    {
+      "name": "路由 #/checkin 占位页",
+      "pass": true,
+      "detail": "学习打卡"
+    },
+    {
+      "name": "TabBar #/ 高亮 tabbar-home",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "TabBar #/list 高亮 tabbar-list",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "TabBar #/favorite 高亮 tabbar-favorite",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "TabBar #/checkin 高亮 tabbar-checkin",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "#/detail/:id 无 tab 误高亮",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "弹层展开（mask+sheet）",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "6 角色卡齐全",
+      "pass": true,
+      "detail": "count=6"
+    },
+    {
+      "name": "登录后 AuthContext 更新",
+      "pass": true,
+      "detail": "当前身份：采购·演示用户（采购）"
+    },
+    {
+      "name": "登录后留在原路由 #/",
+      "pass": true,
+      "detail": "http://localhost:5173/m.html#/"
+    },
+    {
+      "name": "role-login 请求格式",
+      "pass": true,
+      "detail": "{\"method\":\"POST\",\"url\":\"http://localhost:5173/api/auth/role-login\",\"body\":\"{\\\"erpRole\\\":\\\"purchase\\\"}\"}"
+    },
+    {
+      "name": "刷新后 me 恢复登录态",
+      "pass": true,
+      "detail": "当前身份：采购·演示用户（采购）"
+    },
+    {
+      "name": "me 请求带 Bearer token",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "401 事件自动弹层",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "414 宽自适应无横向滚动",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "360 宽自适应无横向滚动",
+      "pass": true,
+      "detail": ""
+    }
+  ]
+}

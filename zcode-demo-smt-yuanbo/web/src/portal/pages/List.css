@@ -1,0 +1,403 @@
+/* List 页（复刻 docs/ui/ui_portal_list.html）：页头/搜索卡/侧栏树+标签/列表/分页/空态/超时条 */
+
+/* ===== 页头 ===== */
+.page-h {
+  margin: 24px 0 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.page-h .bar-i {
+  width: 4px;
+  height: 20px;
+  border-radius: 2px;
+  background: linear-gradient(180deg, var(--p), var(--acc));
+}
+
+.page-h h1 {
+  font-size: 22px;
+}
+
+.page-h .sub {
+  color: var(--g);
+  font-size: 13px;
+}
+
+/* ===== 搜索卡 ===== */
+.search-card {
+  padding: 18px 20px;
+}
+
+.search-row {
+  display: flex;
+  gap: 10px;
+}
+
+.search-row input {
+  flex: 1;
+  height: 44px;
+  border: 1px solid var(--b);
+  border-radius: 10px;
+  padding: 0 16px;
+  font-size: 14px;
+  font-family: inherit;
+  outline: none;
+  transition: 0.15s;
+}
+
+.search-row input:focus {
+  border-color: var(--p);
+  box-shadow: 0 0 0 3px rgba(0, 102, 255, 0.12);
+}
+
+.search-row .btn {
+  height: 44px;
+  padding: 0 26px;
+  font-size: 14px;
+}
+
+.kw-hint {
+  margin-top: 8px;
+  font-size: 12px;
+  color: #dc2626;
+}
+
+.hot-words {
+  margin-top: 10px;
+  font-size: 12px;
+  color: #94a3b8;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.hot-words button {
+  color: var(--g);
+  background: #f1f5f9;
+  border: none;
+  padding: 2px 10px;
+  border-radius: 999px;
+  cursor: pointer;
+  font-size: 12px;
+  font-family: inherit;
+  transition: 0.15s;
+}
+
+.hot-words button:hover {
+  color: var(--p);
+  background: #e8f0fe;
+}
+
+/* ===== 双栏布局 ===== */
+.layout {
+  display: flex;
+  gap: 16px;
+  margin-top: 16px;
+  align-items: flex-start;
+}
+
+.side {
+  width: 264px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.side .card {
+  padding: 14px;
+}
+
+.side h3 {
+  font-size: 14px;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.side h3::before {
+  content: '';
+  width: 3px;
+  height: 14px;
+  border-radius: 2px;
+  background: var(--p);
+}
+
+.side h3 .thint {
+  font-size: 11px;
+  color: #94a3b8;
+  font-weight: 400;
+}
+
+/* ===== 分类树 ===== */
+.tree-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 7px 10px;
+  border-radius: 8px;
+  border: none;
+  background: none;
+  color: var(--g);
+  font-size: 13px;
+  font-family: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition: 0.15s;
+}
+
+.tree-row:hover {
+  background: #f1f5f9;
+  color: var(--d);
+}
+
+.tree-row.on {
+  background: #e8f0fe;
+  color: var(--p);
+  font-weight: 600;
+}
+
+.tree-row .right {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.cnt-n {
+  font-size: 12px;
+  color: #94a3b8;
+}
+
+.cnt-n.zero {
+  color: #cbd5e1;
+}
+
+.tree .child {
+  margin-left: 18px;
+  border-left: 1px dashed var(--b);
+  padding-left: 8px;
+  display: none;
+}
+
+.tree .child.show {
+  display: block;
+}
+
+.tree .child .tree-row::before {
+  content: '└';
+  color: #cbd5e1;
+  margin-right: 4px;
+}
+
+.arrow-box {
+  border: none;
+  background: none;
+  padding: 0;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+}
+
+.arrow {
+  display: inline-block;
+  transition: 0.2s;
+  font-size: 10px;
+  color: #94a3b8;
+}
+
+.arrow-box.open .arrow {
+  transform: rotate(90deg);
+}
+
+/* ===== 标签筛选 ===== */
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.tg {
+  cursor: pointer;
+  font-size: 12px;
+  line-height: 22px;
+  padding: 0 12px;
+  border-radius: 999px;
+  border: 1px solid var(--b);
+  color: var(--g);
+  background: #fff;
+  font-family: inherit;
+  transition: 0.15s;
+}
+
+.tg:hover {
+  border-color: var(--p);
+  color: var(--p);
+}
+
+.tg.sel {
+  background: var(--p);
+  border-color: var(--p);
+  color: #fff;
+}
+
+/* ===== 结果区 ===== */
+.list {
+  flex: 1;
+  min-width: 0;
+}
+
+.list-meta {
+  display: flex;
+  align-items: center;
+  margin-bottom: 12px;
+  font-size: 13px;
+  color: var(--g);
+}
+
+.list-meta b {
+  color: var(--p);
+  font-weight: 600;
+}
+
+.list-meta .clr {
+  margin-left: auto;
+  color: var(--cta);
+  cursor: pointer;
+  font-size: 12px;
+  border: none;
+  background: none;
+  padding: 0;
+  font-family: inherit;
+}
+
+.list-meta .clr:hover {
+  text-decoration: underline;
+}
+
+.list-error {
+  padding: 30px 0;
+  text-align: center;
+  color: #94a3b8;
+  font-size: 13px;
+}
+
+/* 搜索 1s 超时提示条（AC-EG-11）：筛选保留 + 重试内联链接 */
+.timeout-alert {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #fff7ed;
+  border: 1px solid #fdba74;
+  color: #c2410c;
+  font-size: 13px;
+  border-radius: 8px;
+  padding: 8px 14px;
+  margin-bottom: 12px;
+}
+
+.timeout-alert .retry {
+  border: none;
+  background: none;
+  padding: 0;
+  color: var(--p);
+  font-size: 13px;
+  font-family: inherit;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+/* ===== 分页 ===== */
+.pager {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  margin: 22px 0;
+}
+
+.pager .pg {
+  min-width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--b);
+  border-radius: 8px;
+  background: #fff;
+  color: var(--g);
+  font-size: 13px;
+  padding: 0 12px;
+  cursor: pointer;
+  font-family: inherit;
+  transition: 0.15s;
+}
+
+.pager .pg:hover:not(:disabled):not(.on) {
+  border-color: var(--p);
+  color: var(--p);
+}
+
+.pager .pg.on {
+  background: var(--p);
+  border-color: var(--p);
+  color: #fff;
+}
+
+.pager .pg:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.pager .dots {
+  align-self: center;
+  color: #cbd5e1;
+}
+
+/* ===== 空态（虚线框引导，AC-FN-02） ===== */
+.empty {
+  border: 1.5px dashed #cbd5e1;
+  border-radius: var(--r);
+  padding: 34px 20px;
+  text-align: center;
+  color: var(--g);
+  background: #fff;
+}
+
+.empty .eic {
+  font-size: 36px;
+  margin-bottom: 8px;
+}
+
+.empty b {
+  color: var(--d);
+  font-size: 15px;
+  display: block;
+  margin-bottom: 4px;
+}
+
+.empty .ops {
+  margin-top: 14px;
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+
+/* ===== 骨架（树/列表各自 skeleton） ===== */
+.sk-row {
+  height: 118px;
+  border-radius: var(--r);
+  background: #eef2f7;
+  margin-bottom: 12px;
+  animation: skelPulse 1s ease-in-out infinite;
+}
+
+.sk-tree-line {
+  height: 30px;
+  border-radius: 8px;
+  background: #eef2f7;
+  margin-bottom: 6px;
+  animation: skelPulse 1s ease-in-out infinite;
+}

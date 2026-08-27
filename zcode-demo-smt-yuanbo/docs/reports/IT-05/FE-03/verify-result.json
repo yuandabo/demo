@@ -1,0 +1,221 @@
+{
+  "total": 43,
+  "passed": 43,
+  "results": [
+    {
+      "name": "初始化-卡片骨架屏 3 张",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "初始化-搜索按钮 loading 禁用",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "初始化-导航标题与返回按钮",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "初始化-下拉刷新提示条默认态",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "初始化-无关键词无分类时结果行隐藏",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "初始化-TabBar「分类」active",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "初始化-列表=接口同源全量",
+      "pass": true,
+      "detail": "dom=19 api=19"
+    },
+    {
+      "name": "初始化-底部「已加载全部 N 篇」+ 分类分布",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "初始化-chips=全部+12 个启用一级分类",
+      "pass": true,
+      "detail": "chips=13"
+    },
+    {
+      "name": "初始化-「全部」默认选中",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "初始化-请求参数 page=1&pageSize=20 无 keyword/categoryId",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "分类进入-chip 选中与 URL 一致",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "分类进入-结果行「当前筛选：采购管理」",
+      "pass": true,
+      "detail": "当前筛选：采购管理"
+    },
+    {
+      "name": "分类进入-列表限定该分类且计数同源",
+      "pass": true,
+      "detail": "dom=3 api=3"
+    },
+    {
+      "name": "搜索-结果行「「算料」相关结果 N 篇·当前筛选保留",
+      "pass": true,
+      "detail": "「算料」相关结果 1 篇 · 当前筛选：采购管理"
+    },
+    {
+      "name": "搜索-请求携带 keyword+保留 categoryId（同 PC 参数）",
+      "pass": true,
+      "detail": "http://localhost:5173/api/tutorials?page=1&pageSize=20&keyword=%E7%AE%97%E6%96%99&categoryId=5"
+    },
+    {
+      "name": "搜索-结果计数与卡片数=接口同源",
+      "pass": true,
+      "detail": "dom=1 api=1"
+    },
+    {
+      "name": "搜索-标题/摘要/标签命中词 em 高亮（三字段）",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "搜索-置顶角标（AC-RULE-17，id3 isTop=1）",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "搜索-软键盘回车提交 + 英文大小写不敏感高亮",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "chip 切换-选中高亮+URL 同步+关键词保留",
+      "pass": true,
+      "detail": "「mrp」相关结果 1 篇 · 当前筛选：生产制造"
+    },
+    {
+      "name": "chip 切换-列表限定新分类",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "chip 切换-列表滚动回顶部",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "chip 切换-「全部」清除分类筛选",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "超时-延迟>1s 响应被中止（~1s 出现提示条）",
+      "pass": true,
+      "detail": "1446ms"
+    },
+    {
+      "name": "超时-提示「搜索超时，请重试」+ 保留已输入关键词",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "超时-恢复路径A：重试 1s 内返回",
+      "pass": true,
+      "detail": "88ms"
+    },
+    {
+      "name": "超时-恢复路径B：改走分类浏览正常获取",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "下拉-释放后提示条「正在刷新…」",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "下拉-箭头自旋态",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "下拉-完成回默认态且「上次更新」时间刷新",
+      "pass": true,
+      "detail": "19:04 → 19:05 (now 19:05)"
+    },
+    {
+      "name": "下拉-按当前参数重新请求（page 重置 1）",
+      "pass": true,
+      "detail": "http://localhost:5173/api/tutorials?page=1&pageSize=20"
+    },
+    {
+      "name": "下拉-刷新后列表完整",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "下拉失败-toast 提示且保留原列表",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "卡片-点击进 #/detail/:id",
+      "pass": true,
+      "detail": "http://localhost:5173/m.html#/detail/3"
+    },
+    {
+      "name": "返回-应用内历史回上一页（#/）",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "返回-直达（无历史）兜底回首页",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "空态-引导含「清空筛选」+「去分类浏览」",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "空态-清空筛选回「全部」并恢复列表",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "AC-FN-08-发布后下拉刷新同一次请求即返回",
+      "pass": true,
+      "detail": "3 → 4"
+    },
+    {
+      "name": "AC-FN-08-种子库已重置还原",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "无页面 JS 异常",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "请求清单-含 tutorials 与 categories",
+      "pass": true,
+      "detail": ""
+    }
+  ]
+}

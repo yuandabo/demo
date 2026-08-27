@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>我的 - 嘉立创云ERP · 教程中心</title>
+<style>
+:root{--p:#0066ff;--acc:#00d4ff;--cta:#f97316;--d:#0f172a;--g:#64748b;--b:#e2e8f0;--bg:#f8fafc;--r:12px;--rl:20px;--sh:0 1px 3px rgba(0,0,0,.06)}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'PingFang SC','Microsoft YaHei',sans-serif;background:var(--bg);color:var(--d);font-size:14px;line-height:1.6}
+a{color:inherit;text-decoration:none}
+ul,ol{list-style:none}
+button{font-family:inherit}
+.wrap{width:1200px;margin:0 auto}
+/* ===== 顶部导航（全站统一） ===== */
+.topbar{background:linear-gradient(135deg,#0c1a2e,#1a365d,#0c1a2e);position:sticky;top:0;z-index:50;box-shadow:0 2px 8px rgba(12,26,46,.35)}
+.bar{height:60px;display:flex;align-items:center;gap:28px}
+.logo{display:flex;align-items:center;gap:10px;color:#fff;font-size:17px;font-weight:700;white-space:nowrap}
+.logo .mark{width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,var(--p),var(--acc));display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;letter-spacing:.5px;color:#fff}
+.nav{display:flex;gap:4px;flex:1}
+.nav a{color:#cbd5e1;font-size:14px;padding:6px 14px;border-radius:8px;transition:.15s}
+.nav a:hover{color:#fff;background:rgba(255,255,255,.08)}
+.nav a.on{color:var(--acc);background:rgba(0,212,255,.14);font-weight:600}
+.who{display:flex;align-items:center;gap:8px;color:#e2e8f0;font-size:13px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);padding:5px 14px;border-radius:999px;white-space:nowrap;cursor:pointer;transition:.15s}
+.who:hover{border-color:var(--acc);background:rgba(0,212,255,.14)}
+.who i{width:8px;height:8px;border-radius:50%;background:var(--acc);display:inline-block}
+.who .caret{font-size:10px;color:#94a3b8}
+/* ===== 选角色快速登录弹窗（PRD §7.11 · AC-FN-03） ===== */
+.rlm-mask{position:fixed;inset:0;background:rgba(15,23,42,.55);display:none;align-items:center;justify-content:center;z-index:100}
+.rlm-mask.show{display:flex}
+.rlm{width:560px;max-width:calc(100vw - 40px);background:#fff;border-radius:var(--rl);padding:24px;position:relative}
+.rlm h3{font-size:17px;margin-bottom:4px}
+.rlm .sub{color:var(--g);font-size:12.5px;margin-bottom:16px}
+.rlm .close{position:absolute;top:14px;right:16px;cursor:pointer;color:#94a3b8;font-size:18px}
+.rlm .close:hover{color:var(--d)}
+.rlm-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.rlm-card{border:1px solid var(--b);border-radius:var(--r);padding:14px 12px;text-align:center;cursor:pointer;transition:.15s;background:#fff}
+.rlm-card:hover{border-color:var(--p);box-shadow:0 6px 18px rgba(0,102,255,.10);transform:translateY(-2px)}
+.rlm-card .ic{width:40px;height:40px;margin:0 auto 8px;border-radius:11px;background:#e8f0fe;display:flex;align-items:center;justify-content:center;font-size:20px}
+.rlm-card b{font-size:14px;display:block}
+.rlm-card span{font-size:12px;color:var(--g)}
+.rlm-tip{margin-top:14px;font-size:12px;color:#94a3b8;text-align:center}
+/* ===== 通用组件 ===== */
+.card{background:#fff;border:1px solid var(--b);border-radius:var(--r);box-shadow:var(--sh)}
+.tag{display:inline-block;background:#e8f0fe;color:var(--p);font-size:12px;line-height:20px;padding:1px 10px;border-radius:999px;margin-right:6px}
+.cat{display:inline-block;background:#f1f5f9;color:var(--g);font-size:12px;line-height:20px;padding:1px 10px;border-radius:999px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;cursor:pointer;border:none;border-radius:8px;font-size:13px;padding:8px 16px;transition:.15s}
+.btn-p{background:var(--p);color:#fff}
+.btn-p:hover{background:#0052cc}
+.btn-g{background:#fff;border:1px solid var(--b);color:var(--g)}
+.btn-g:hover{border-color:var(--p);color:var(--p)}
+.footer{padding:30px 0 40px;text-align:center;color:#94a3b8;font-size:12px}
+/* ===== 页头 ===== */
+.me-h{margin:24px 0 18px;display:flex;align-items:center;gap:16px}
+.avatar{width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,var(--p),var(--acc));color:#fff;display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:700}
+.me-h h1{font-size:22px;margin-bottom:2px}
+.me-h .sub{color:var(--g);font-size:13px}
+/* ===== Tab ===== */
+.tabs{display:flex;gap:4px;border-bottom:2px solid var(--b);margin-bottom:18px}
+.tabs button{background:none;border:none;font-size:15px;color:var(--g);padding:10px 20px;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-2px}
+.tabs button.on{color:var(--p);font-weight:700;border-bottom-color:var(--p)}
+.tabs .n{display:inline-block;background:#e8f0fe;color:var(--p);font-size:12px;border-radius:999px;padding:0 8px;margin-left:4px}
+.pane{display:none}
+.pane.show{display:block}
+/* ===== 条目 ===== */
+.mrow{display:flex;align-items:center;gap:14px;padding:14px 18px;margin-bottom:10px;transition:.15s}
+.mrow:hover{border-color:#c7dbff;box-shadow:0 6px 18px rgba(0,102,255,.10)}
+.mrow .st{font-size:18px;width:24px;text-align:center;flex-shrink:0}
+.mrow .mid{flex:1;min-width:0}
+.mrow h3{font-size:15px;margin-bottom:3px}
+.mrow:hover h3{color:var(--p)}
+.mrow p{font-size:12px;color:#94a3b8}
+.mrow .ops{display:flex;align-items:center;gap:10px;flex-shrink:0}
+/* 进度徽章 */
+.pb{font-size:12px;line-height:22px;padding:0 12px;border-radius:999px;font-weight:600;white-space:nowrap}
+.pb.full{background:#e7f8ef;color:#0a9d58}
+.pb.mid{background:#e8f0fe;color:var(--p)}
+.pb.low{background:#fff3e8;color:var(--cta)}
+.mini-prog{width:120px;height:6px;background:#e8edf3;border-radius:999px;overflow:hidden}
+.mini-prog i{display:block;height:100%;background:linear-gradient(90deg,var(--p),var(--acc));border-radius:999px}
+/* 已下架条目 */
+.off{background:#f1f5f9;opacity:.82;cursor:not-allowed}
+.off:hover{border-color:var(--b);box-shadow:var(--sh)}
+.off h3{color:#94a3b8}
+.off .st{filter:grayscale(1)}
+.badge-off{display:inline-block;background:#cbd5e1;color:#fff;font-size:11px;line-height:18px;padding:0 8px;border-radius:999px;margin-left:8px;vertical-align:2px;font-weight:400}
+.off .rel-link{font-size:12px;color:var(--p);cursor:pointer}
+.off .rel-link:hover{text-decoration:underline}
+.empty-tip{border:1.5px dashed #cbd5e1;border-radius:var(--r);padding:30px;text-align:center;color:var(--g);background:#fff}
+</style>
+</head>
+<body>
+<!-- 顶部导航：5 页统一，当前页高亮 #00d4ff -->
+<header class="topbar">
+  <div class="wrap bar">
+    <a class="logo" href="ui_portal_home.html"><span class="mark">ERP</span>嘉立创云ERP · 教程中心</a>
+    <nav class="nav">
+      <a href="ui_portal_home.html">教程首页</a>
+      <a href="ui_portal_list.html">全部教程</a>
+      <a href="ui_portal_workbench.html">模拟工作台</a>
+      <a class="on" href="ui_portal_my.html">我的</a>
+    </nav>
+    <div class="who" id="whoPill" onclick="openRoleLogin()" title="点击切换演示角色（选角色快速登录）"><i></i>采购 · 张伟 <span class="caret">▾</span></div>
+  </div>
+</header>
+
+<main class="wrap">
+  <!-- 用户信息 -->
+  <div class="me-h">
+    <div class="avatar" id="meAvatar">张</div>
+    <div>
+      <h1>我的学习</h1>
+      <div class="sub" id="meSub">采购 · 张伟 · 收藏与阅读进度在 PC / 小程序两端实时同步</div>
+    </div>
+  </div>
+
+  <!-- Tab 切换 -->
+  <div class="tabs">
+    <button class="on" onclick="setTab(this,'p1')">收藏列表<span class="n">8</span></button>
+    <button onclick="setTab(this,'p2')">浏览历史<span class="n">8</span></button>
+  </div>
+
+  <!-- 收藏列表（按收藏时间倒序） -->
+  <section class="pane show" id="p1">
+    <a class="mrow card" href="ui_portal_detail.html">
+      <span class="st">⭐</span>
+      <div class="mid">
+        <h3>MRP 自动算料：从 BOM 到采购建议</h3>
+        <p>采购管理 · 收藏于 2026-08-16 · 👁 2,341 · #算料 #BOM #审批</p>
+      </div>
+      <div class="ops"><button class="btn btn-g" onclick="event.preventDefault();cancelFav(this)">取消收藏</button></div>
+    </a>
+    <a class="mrow card" href="ui_portal_detail.html">
+      <span class="st">⭐</span>
+      <div class="mid">
+        <h3>小程序车间扫码报工</h3>
+        <p>生产制造 · 收藏于 2026-08-15 · 👁 2,865 · #报工 #扫码</p>
+      </div>
+      <div class="ops"><button class="btn btn-g" onclick="event.preventDefault();cancelFav(this)">取消收藏</button></div>
+    </a>
+    <a class="mrow card" href="ui_portal_detail.html">
+      <span class="st">⭐</span>
+      <div class="mid">
+        <h3>供应商比价与立创同步</h3>
+        <p>采购管理 · 收藏于 2026-08-14 · 👁 1,523 · #对账</p>
+      </div>
+      <div class="ops"><button class="btn btn-g" onclick="event.preventDefault();cancelFav(this)">取消收藏</button></div>
+    </a>
+    <!-- 已下架教程：灰显 + 不可点击 + 同类推荐 -->
+    <div class="mrow card off">
+      <span class="st">⭐</span>
+      <div class="mid">
+        <h3>来料检验操作指南<span class="badge-off">已下架</span></h3>
+        <p>采购管理 · 收藏于 2026-08-12 · 该教程已下架，正文不可见</p>
+        <p>同类推荐：<a class="rel-link" href="ui_portal_detail.html">《采购申请到一键下单》→</a>&nbsp;&nbsp;<a class="rel-link" href="ui_portal_list.html">浏览采购管理更多教程 →</a></p>
+      </div>
+      <div class="ops"><button class="btn btn-g" style="cursor:not-allowed;color:#cbd5e1;border-color:#e2e8f0">不可访问</button></div>
+    </div>
+    <a class="mrow card" href="ui_portal_detail.html">
+      <span class="st">⭐</span>
+      <div class="mid">
+        <h3>库位三级初始化与找料神器</h3>
+        <p>库存管理 · 收藏于 2026-08-11 · 👁 1,980 · #扫码</p>
+      </div>
+      <div class="ops"><button class="btn btn-g" onclick="event.preventDefault();cancelFav(this)">取消收藏</button></div>
+    </a>
+    <a class="mrow card" href="ui_portal_detail.html">
+      <span class="st">⭐</span>
+      <div class="mid">
+        <h3>云ERP是什么？产品总览与核心价值</h3>
+        <p>新手入门 · 收藏于 2026-08-10 · 👁 5,023 · #新手 #总览</p>
+      </div>
+      <div class="ops"><button class="btn btn-g" onclick="event.preventDefault();cancelFav(this)">取消收藏</button></div>
+    </a>
+    <a class="mrow card" href="ui_portal_detail.html">
+      <span class="st">⭐</span>
+      <div class="mid">
+        <h3>销售订单 13 态状态机详解</h3>
+        <p>销售管理 · 收藏于 2026-08-09 · 👁 1,725 · #订单 #审批</p>
+      </div>
+      <div class="ops"><button class="btn btn-g" onclick="event.preventDefault();cancelFav(this)">取消收藏</button></div>
+    </a>
+    <a class="mrow card" href="ui_portal_detail.html">
+      <span class="st">⭐</span>
+      <div class="mid">
+        <h3>多级 BOM 拆解与损耗率设置</h3>
+        <p>生产制造 · 收藏于 2026-08-08 · 👁 1,338 · #BOM #算料</p>
+      </div>
+      <div class="ops"><button class="btn btn-g" onclick="event.preventDefault();cancelFav(this)">取消收藏</button></div>
+    </a>
+  </section>
+
+  <!-- 浏览历史（按最近阅读时间倒序，带进度徽章，点击从进度处续读） -->
+  <section class="pane" id="p2">
+    <a class="mrow card" href="ui_portal_detail.html">
+      <span class="st">📄</span>
+      <div class="mid">
+        <h3>MRP 自动算料：从 BOM 到采购建议</h3>
+        <p>采购管理 · 最近阅读 2026-08-20 09:42</p>
+      </div>
+      <div class="ops"><span class="pb mid">75%</span><span class="mini-prog"><i style="width:75%"></i></span><button class="btn btn-p">继续阅读 →</button></div>
+    </a>
+    <a class="mrow card" href="ui_portal_detail.html">
+      <span class="st">📄</span>
+      <div class="mid">
+        <h3>销售报价单快速建档</h3>
+        <p>销售管理 · 最近阅读 2026-08-20 08:15</p>
+      </div>
+      <div class="ops"><span class="pb mid">60%</span><span class="mini-prog"><i style="width:60%"></i></span><button class="btn btn-p">继续阅读 →</button></div>
+    </a>
+    <a class="mrow card" href="ui_portal_detail.html">
+      <span class="st">📄</span>
+      <div class="mid">
+        <h3>小程序车间扫码报工</h3>
+        <p>生产制造 · 最近阅读 2026-08-19 17:30</p>
+      </div>
+      <div class="ops"><span class="pb full">100%</span><span class="mini-prog"><i style="width:100%"></i></span><button class="btn btn-g">重新学习</button></div>
+    </a>
+    <a class="mrow card" href="ui_portal_detail.html">
+      <span class="st">📄</span>
+      <div class="mid">
+        <h3>云ERP是什么？产品总览与核心价值</h3>
+        <p>新手入门 · 最近阅读 2026-08-19 14:08</p>
+      </div>
+      <div class="ops"><span class="pb full">100%</span><span class="mini-prog"><i style="width:100%"></i></span><button class="btn btn-g">重新学习</button></div>
+    </a>
+    <a class="mrow card" href="ui_portal_detail.html">
+      <span class="st">📄</span>
+      <div class="mid">
+        <h3>销售订单 13 态状态机详解</h3>
+        <p>销售管理 · 最近阅读 2026-08-18 16:22</p>
+      </div>
+      <div class="ops"><span class="pb low">40%</span><span class="mini-prog"><i style="width:40%"></i></span><button class="btn btn-p">继续阅读 →</button></div>
+    </a>
+    <a class="mrow card" href="ui_portal_detail.html">
+      <span class="st">📄</span>
+      <div class="mid">
+        <h3>应收应付自动对账</h3>
+        <p>人事财务 · 最近阅读 2026-08-18 10:47</p>
+      </div>
+      <div class="ops"><span class="pb mid">60%</span><span class="mini-prog"><i style="width:60%"></i></span><button class="btn btn-p">继续阅读 →</button></div>
+    </a>
+    <a class="mrow card" href="ui_portal_detail.html">
+      <span class="st">📄</span>
+      <div class="mid">
+        <h3>库位三级初始化与找料神器</h3>
+        <p>库存管理 · 最近阅读 2026-08-17 15:33</p>
+      </div>
+      <div class="ops"><span class="pb full">100%</span><span class="mini-prog"><i style="width:100%"></i></span><button class="btn btn-g">重新学习</button></div>
+    </a>
+    <a class="mrow card" href="ui_portal_detail.html">
+      <span class="st">📄</span>
+      <div class="mid">
+        <h3>多级 BOM 拆解与损耗率设置</h3>
+        <p>生产制造 · 最近阅读 2026-08-16 11:20</p>
+      </div>
+      <div class="ops"><span class="pb low">25%</span><span class="mini-prog"><i style="width:25%"></i></span><button class="btn btn-p">继续阅读 →</button></div>
+    </a>
+    <p style="font-size:12px;color:#94a3b8;margin-top:6px">提示：阅读进度按滚动位置与步骤勾选自动保存，同一账号在小程序端续读同步。</p>
+  </section>
+</main>
+
+<!-- 选角色快速登录弹窗（PRD §7.11 · AC-FN-03）：点击顶栏角色徽章弹出，切换演示角色 -->
+<div class="rlm-mask" id="roleMask" onclick="if(event.target===this)closeRoleLogin()">
+  <div class="rlm">
+    <span class="close" onclick="closeRoleLogin()">✕</span>
+    <h3>🔑 选角色快速登录</h3>
+    <div class="sub">切换一个 ERP 演示角色（免密），收藏与阅读进度按账号跟随切换</div>
+    <div class="rlm-grid">
+      <div class="rlm-card" onclick="pickRole('销售','李娜','📈')"><div class="ic">📈</div><b>销售</b><span>销售 · 李娜</span></div>
+      <div class="rlm-card" onclick="pickRole('采购','张伟','🛒')"><div class="ic">🛒</div><b>采购</b><span>采购 · 张伟</span></div>
+      <div class="rlm-card" onclick="pickRole('生产','王强','🏭')"><div class="ic">🏭</div><b>生产</b><span>生产 · 王强</span></div>
+      <div class="rlm-card" onclick="pickRole('仓库','赵敏','📦')"><div class="ic">📦</div><b>仓库</b><span>仓库 · 赵敏</span></div>
+      <div class="rlm-card" onclick="pickRole('管理','陈涛','⚙️')"><div class="ic">⚙️</div><b>管理</b><span>管理 · 陈涛</span></div>
+      <div class="rlm-card" onclick="pickRole('财务','周莉','💰')"><div class="ic">💰</div><b>财务</b><span>财务 · 周莉</span></div>
+    </div>
+    <div class="rlm-tip">演示说明：当前演示数据以「采购 · 张伟」为示例，切换后仅头部徽章与身份信息变化</div>
+  </div>
+</div>
+
+<footer class="footer">嘉立创云ERP · 教程中心 原型演示 · PRD §7.4 我的（收藏与历史）· RE00001</footer>
+
+<script>
+// 选角色快速登录（PRD §7.11 · AC-FN-03）
+function openRoleLogin(){document.getElementById('roleMask').classList.add('show')}
+function closeRoleLogin(){document.getElementById('roleMask').classList.remove('show')}
+function pickRole(role,name){
+  document.getElementById('whoPill').innerHTML='<i></i>'+role+' · '+name+' <span class="caret">▾</span>';
+  document.getElementById('meAvatar').textContent=name.charAt(0);
+  document.getElementById('meSub').textContent=role+' · '+name+' · 收藏与阅读进度在 PC / 小程序两端实时同步';
+  closeRoleLogin();
+}
+// Tab 切换
+function setTab(btn,id){
+  document.querySelectorAll('.tabs button').forEach(function(b){b.classList.remove('on')});
+  btn.classList.add('on');
+  document.querySelectorAll('.pane').forEach(function(p){p.classList.remove('show')});
+  document.getElementById(id).classList.add('show');
+}
+// 取消收藏（演示）
+function cancelFav(btn){
+  var row=btn.closest('.mrow');
+  row.style.opacity='.45';
+  btn.textContent='已取消';
+  btn.disabled=true;
+  btn.style.cursor='default';
+  btn.style.borderColor='var(--b)';
+  btn.style.color='#cbd5e1';
+}
+</script>
+</body>
+</html>

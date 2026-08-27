@@ -1,0 +1,450 @@
+{
+  "iteration": "IT-03",
+  "name": "PC 前台·浏览检索（首页/列表/工作台）",
+  "objective": "交付 portal 前台浏览检索链路：#/ 教程首页（角色推荐/最近更新/热门三区块 + 12 分类宫格角标）、#/list 列表页（分类树/标签多选交集/关键词搜索 1s/置顶角标/空态/超时兜底）、#/workbench 模拟 ERP 工作台（模块卡查看教程入口 + 悬浮教程中心入口），并以真实后端完成 tutorials/recommend/categories/:id 四接口联调验证（BE 端点由 IT-02 交付，本迭代为 FE 页面 + 联调）。",
+  "techDesignPath": "design/tech-design.md",
+  "uiDesignPath": "ui",
+  "createdAt": "2026-08-21",
+  "updatedAt": "2026-08-21",
+  "features": [
+    {
+      "name": "查看首页角色推荐区（登录按角色映射命中集取浏览量 Top6，未登录全站 Top6）",
+      "techDesignRef": "tech-design.md#7-前端架构第-8-章",
+      "prdRef": "prd.md#71-前台教程首页-cms",
+      "acRef": "ac.md#AC-FN-17",
+      "uiRef": "ui/ui_portal_home.html",
+      "relatedTasks": [
+        "FE-01",
+        "FE-02",
+        "FE-05"
+      ]
+    },
+    {
+      "name": "查看首页最近更新/热门区块（前台可见口径 Top6）",
+      "techDesignRef": "tech-design.md#7-前端架构第-8-章",
+      "prdRef": "prd.md#71-前台教程首页-cms",
+      "acRef": "ac.md#AC-FN-22",
+      "uiRef": "ui/ui_portal_home.html",
+      "relatedTasks": [
+        "FE-02",
+        "FE-05"
+      ]
+    },
+    {
+      "name": "查看首页分类宫格（12 个启用一级分类 + 角标计数，0 篇显示待补充）",
+      "techDesignRef": "tech-design.md#7-前端架构第-8-章",
+      "prdRef": "prd.md#71-前台教程首页-cms",
+      "acRef": "ac.md#AC-FN-01",
+      "uiRef": "ui/ui_portal_home.html",
+      "relatedTasks": [
+        "FE-02",
+        "FE-05"
+      ]
+    },
+    {
+      "name": "选角色快速登录（六角色弹窗，登录后回原页面原位置）",
+      "techDesignRef": "tech-design.md#7-前端架构第-8-章",
+      "prdRef": "prd.md#711-公共账号-租户",
+      "acRef": "ac.md#AC-FN-17",
+      "uiRef": "ui/ui_portal_home.html",
+      "relatedTasks": [
+        "FE-01"
+      ]
+    },
+    {
+      "name": "顶部导航教程中心全局入口（5 页统一导航）",
+      "techDesignRef": "tech-design.md#7-前端架构第-8-章",
+      "prdRef": "prd.md#71-前台教程首页-cms",
+      "acRef": "ac.md#UI-IXD-15",
+      "uiRef": "ui/ui_portal_home.html",
+      "relatedTasks": [
+        "FE-01"
+      ]
+    },
+    {
+      "name": "分类宫格/分类树点击跳转列表页并选中该分类",
+      "techDesignRef": "tech-design.md#7-前端架构第-8-章",
+      "prdRef": "prd.md#72-前台教程列表页-cms",
+      "acRef": "ac.md#UI-IXD-01",
+      "uiRef": "ui/ui_portal_list.html",
+      "relatedTasks": [
+        "FE-02",
+        "FE-03"
+      ]
+    },
+    {
+      "name": "关键词搜索教程（命中标题/摘要/标签三字段，1s 内返回）",
+      "techDesignRef": "tech-design.md#8-非功能实现",
+      "prdRef": "prd.md#72-前台教程列表页-cms",
+      "acRef": "ac.md#AC-FN-02",
+      "uiRef": "ui/ui_portal_list.html",
+      "relatedTasks": [
+        "FE-03",
+        "FE-05"
+      ]
+    },
+    {
+      "name": "标签多选交集筛选（多个标签按交集过滤列表）",
+      "techDesignRef": "tech-design.md#7-前端架构第-8-章",
+      "prdRef": "prd.md#72-前台教程列表页-cms",
+      "acRef": "ac.md#UI-IXD-02",
+      "uiRef": "ui/ui_portal_list.html",
+      "relatedTasks": [
+        "FE-03"
+      ]
+    },
+    {
+      "name": "分类树筛选（两级树 + 各节点计数，含停用分类隐藏）",
+      "techDesignRef": "tech-design.md#7-前端架构第-8-章",
+      "prdRef": "prd.md#72-前台教程列表页-cms",
+      "acRef": "ac.md#UI-IXD-01",
+      "uiRef": "ui/ui_portal_list.html",
+      "relatedTasks": [
+        "FE-03"
+      ]
+    },
+    {
+      "name": "置顶角标与列表排序展示（置顶最前带角标）",
+      "techDesignRef": "tech-design.md#3-api-接口总览",
+      "prdRef": "prd.md#72-前台教程列表页-cms",
+      "acRef": "ac.md#UI-ELEM-01",
+      "uiRef": "ui/ui_portal_list.html",
+      "relatedTasks": [
+        "FE-03"
+      ]
+    },
+    {
+      "name": "搜索空态引导（清空筛选 + 去分类浏览入口）",
+      "techDesignRef": "tech-design.md#7-前端架构第-8-章",
+      "prdRef": "prd.md#72-前台教程列表页-cms",
+      "acRef": "ac.md#AC-FN-02",
+      "uiRef": "ui/ui_portal_list.html",
+      "relatedTasks": [
+        "FE-03"
+      ]
+    },
+    {
+      "name": "搜索 1s 超时兜底（提示搜索超时请重试，两条恢复路径）",
+      "techDesignRef": "tech-design.md#8-非功能实现",
+      "prdRef": "prd.md#9-异常与边界m11",
+      "acRef": "ac.md#AC-EG-11",
+      "uiRef": "ui/ui_portal_list.html",
+      "relatedTasks": [
+        "FE-03",
+        "FE-05"
+      ]
+    },
+    {
+      "name": "工作台模块卡查看教程入口（跳转列表页并选中模块映射分类）",
+      "techDesignRef": "tech-design.md#7-前端架构第-8-章",
+      "prdRef": "prd.md#75-前台模拟-erp-工作台页内嵌引导演示cms",
+      "acRef": "ac.md#UI-IXD-14",
+      "uiRef": "ui/ui_portal_workbench.html",
+      "relatedTasks": [
+        "FE-03",
+        "FE-04"
+      ]
+    },
+    {
+      "name": "工作台悬浮教程中心客服式入口（固定右下角跳教程首页）",
+      "techDesignRef": "tech-design.md#7-前端架构第-8-章",
+      "prdRef": "prd.md#75-前台模拟-erp-工作台页内嵌引导演示cms",
+      "acRef": "ac.md#UI-IXD-15",
+      "uiRef": "ui/ui_portal_workbench.html",
+      "relatedTasks": [
+        "FE-04"
+      ]
+    },
+    {
+      "name": "三页四接口真实后端联调验证（sort/tag 补充契约对齐 + 详情接口数据基础）",
+      "techDesignRef": "tech-design.md#3-api-接口总览",
+      "prdRef": "prd.md#11-非功能需求m13",
+      "acRef": "ac.md#AC-NF-01",
+      "uiRef": null,
+      "relatedTasks": [
+        "FE-05"
+      ]
+    }
+  ],
+  "feature-relations": [
+    {
+      "from": "选角色快速登录（六角色弹窗，登录后回原页面原位置）",
+      "to": "查看首页角色推荐区（登录按角色映射命中集取浏览量 Top6，未登录全站 Top6）",
+      "relation": "联动"
+    },
+    {
+      "from": "查看首页分类宫格（12 个启用一级分类 + 角标计数，0 篇显示待补充）",
+      "to": "分类宫格/分类树点击跳转列表页并选中该分类",
+      "relation": "前置"
+    },
+    {
+      "from": "分类宫格/分类树点击跳转列表页并选中该分类",
+      "to": "分类树筛选（两级树 + 各节点计数，含停用分类隐藏）",
+      "relation": "联动"
+    },
+    {
+      "from": "标签多选交集筛选（多个标签按交集过滤列表）",
+      "to": "关键词搜索教程（命中标题/摘要/标签三字段，1s 内返回）",
+      "relation": "联动"
+    },
+    {
+      "from": "分类树筛选（两级树 + 各节点计数，含停用分类隐藏）",
+      "to": "关键词搜索教程（命中标题/摘要/标签三字段，1s 内返回）",
+      "relation": "联动"
+    },
+    {
+      "from": "关键词搜索教程（命中标题/摘要/标签三字段，1s 内返回）",
+      "to": "搜索空态引导（清空筛选 + 去分类浏览入口）",
+      "relation": "联动"
+    },
+    {
+      "from": "关键词搜索教程（命中标题/摘要/标签三字段，1s 内返回）",
+      "to": "搜索 1s 超时兜底（提示搜索超时请重试，两条恢复路径）",
+      "relation": "联动"
+    },
+    {
+      "from": "工作台模块卡查看教程入口（跳转列表页并选中模块映射分类）",
+      "to": "分类树筛选（两级树 + 各节点计数，含停用分类隐藏）",
+      "relation": "联动"
+    },
+    {
+      "from": "查看首页分类宫格（12 个启用一级分类 + 角标计数，0 篇显示待补充）",
+      "to": "分类树筛选（两级树 + 各节点计数，含停用分类隐藏）",
+      "relation": "互斥"
+    },
+    {
+      "from": "三页四接口真实后端联调验证（sort/tag 补充契约对齐 + 详情接口数据基础）",
+      "to": "查看首页角色推荐区（登录按角色映射命中集取浏览量 Top6，未登录全站 Top6）",
+      "relation": "前置"
+    }
+  ],
+  "e2e-paths": [
+    {
+      "id": "PATH-01",
+      "name": "游客首页浏览全链路（三区块 + 宫格进入列表再进详情路由）",
+      "type": "happy",
+      "steps": [
+        "打开 #/ 教程首页（游客态）",
+        "查看首页最近更新/热门区块（前台可见口径 Top6）",
+        "查看首页分类宫格（12 启用分类，0 篇分类角标显示待补充）",
+        "分类宫格/分类树点击跳转列表页并选中该分类",
+        "置顶角标与列表排序展示（置顶最前带角标）",
+        "点击教程卡进入 #/detail/:id 路由（IT-04 详情页占位可路由跳转）",
+        "顶部导航教程中心全局入口返回首页"
+      ]
+    },
+    {
+      "id": "PATH-02",
+      "name": "选角色登录刷新推荐命中集",
+      "type": "happy",
+      "steps": [
+        "首页点击顶栏角色徽章弹出选角色快速登录",
+        "选择采购角色（张伟）登录成功回到原页面原位置",
+        "查看首页角色推荐区刷新为采购/库存映射分类命中集内浏览量 Top6（全部来自命中集，不足 6 条展示实际数量）"
+      ]
+    },
+    {
+      "id": "PATH-03",
+      "name": "关键词搜索与热门词快捷搜索",
+      "type": "happy",
+      "steps": [
+        "进入 #/list 输入关键词算料",
+        "关键词搜索教程 1s 内返回命中标题/摘要/标签的列表",
+        "点击热门词 BOM 快捷填充并搜索",
+        "分页切换第 2 页保持筛选条件"
+      ]
+    },
+    {
+      "id": "PATH-04",
+      "name": "标签多选交集筛选",
+      "type": "happy",
+      "steps": [
+        "进入 #/list 多选标签 #算料 + #BOM",
+        "列表按交集过滤（仅同时含两标签的教程）",
+        "点击清空筛选恢复全量列表"
+      ]
+    },
+    {
+      "id": "PATH-05",
+      "name": "搜索无结果空态引导",
+      "type": "edge",
+      "steps": [
+        "输入未命中关键词（如 zzxxzz）",
+        "显示空态（未找到相关教程）",
+        "点击去分类浏览回到分类入口",
+        "点击清空筛选恢复全量列表"
+      ]
+    },
+    {
+      "id": "PATH-06",
+      "name": "搜索超时兜底与恢复",
+      "type": "error",
+      "steps": [
+        "模拟接口响应超过 1s",
+        "显示搜索超时，请重试（筛选条件保留）",
+        "重试成功 1s 内返回结果",
+        "改走分类浏览正常获取列表"
+      ]
+    },
+    {
+      "id": "PATH-07",
+      "name": "分类树下钻与停用分类隐藏",
+      "type": "edge",
+      "steps": [
+        "展开一级分类显示二级子分类",
+        "点击二级分类列表刷新为该分类",
+        "停用分类不出现在宫格与筛选树",
+        "搜索不返回停用分类下教程"
+      ]
+    },
+    {
+      "id": "PATH-08",
+      "name": "工作台内嵌入口链路",
+      "type": "happy",
+      "steps": [
+        "进入 #/workbench 模拟 ERP 工作台",
+        "点击模块卡（如 MRP 算料）查看教程按钮",
+        "跳转 #/list 并选中该模块映射分类（生产制造）",
+        "点击右下角悬浮教程中心入口返回 #/ 首页"
+      ]
+    },
+    {
+      "id": "PATH-09",
+      "name": "三页四接口真实后端联调验证",
+      "type": "happy",
+      "steps": [
+        "启动 server（IT-02 端点）+ web dev",
+        "验证 GET /api/tutorials sort=latest/hot、tag 逗号交集、keyword、categoryId 场景",
+        "验证 GET /api/categories withCount=1 角标计数（0 篇为 0）",
+        "验证 GET /api/recommend 游客全站/采购角色命中集两口径",
+        "验证 GET /api/tutorials/:id 详情含 prev/next/related/myProgress（浏览计数 +1）",
+        "Chrome/Edge 最新稳定版与上一稳定版实测并登记版本清单"
+      ]
+    },
+    {
+      "id": "PATH-10",
+      "name": "角色推荐命中集不足与空区块边界",
+      "type": "edge",
+      "steps": [
+        "以仓库角色登录（命中集仅库存管理）",
+        "推荐区展示命中集内实际数量（不足 6 条）",
+        "命中集为 0 时推荐区显示空态占位不报错"
+      ]
+    }
+  ],
+  "summary": {
+    "infra": 0,
+    "backend": 0,
+    "frontend": 5,
+    "total": 5
+  },
+  "tasks": [
+    {
+      "seq": 1,
+      "id": "FE-01",
+      "name": "portal 共享组件与布局（Topbar 导航 + TutorialCard 卡片 + RoleLoginModal 选角色登录）",
+      "role": "frontend",
+      "dependencies": [
+        "IT-01.INFRA-02"
+      ],
+      "assignee": "",
+      "phase": {
+        "dev": "done",
+        "selfTest": "done"
+      },
+      "artifact": "",
+      "detailFile": "FE-01.md"
+    },
+    {
+      "seq": 2,
+      "id": "FE-02",
+      "name": "portal 教程首页 #/（角色推荐/最近更新/热门三区块 + 12 分类宫格角标）",
+      "role": "frontend",
+      "dependencies": [
+        "FE-01"
+      ],
+      "assignee": "",
+      "phase": {
+        "dev": "done",
+        "selfTest": "done"
+      },
+      "artifact": "",
+      "detailFile": "FE-02.md"
+    },
+    {
+      "seq": 3,
+      "id": "FE-03",
+      "name": "portal 列表页 #/list（分类树/标签多选交集/关键词搜索/置顶角标/空态/1s 超时兜底）",
+      "role": "frontend",
+      "dependencies": [
+        "FE-01"
+      ],
+      "assignee": "",
+      "phase": {
+        "dev": "done",
+        "selfTest": "done"
+      },
+      "artifact": "",
+      "detailFile": "FE-03.md"
+    },
+    {
+      "seq": 4,
+      "id": "FE-04",
+      "name": "portal 模拟 ERP 工作台 #/workbench（模块卡查看教程入口 + 悬浮教程中心入口）",
+      "role": "frontend",
+      "dependencies": [
+        "FE-01"
+      ],
+      "assignee": "",
+      "phase": {
+        "dev": "done",
+        "selfTest": "done"
+      },
+      "artifact": "",
+      "detailFile": "FE-04.md"
+    },
+    {
+      "seq": 5,
+      "id": "FE-05",
+      "name": "前台浏览检索三页联调验证（tutorials 列表/详情、recommend、categories 四接口契约对齐）",
+      "role": "frontend",
+      "dependencies": [
+        "FE-02",
+        "FE-03",
+        "FE-04"
+      ],
+      "assignee": "",
+      "phase": {
+        "dev": "done",
+        "selfTest": "done"
+      },
+      "artifact": "",
+      "detailFile": "FE-05.md"
+    }
+  ],
+  "phases": [
+    {
+      "phase": 1,
+      "name": "共享组件与工作台（无 FE 内依赖，可并行）",
+      "tasks": [
+        "FE-01",
+        "FE-04"
+      ]
+    },
+    {
+      "phase": 2,
+      "name": "首页与列表页（依赖共享组件）",
+      "tasks": [
+        "FE-02",
+        "FE-03"
+      ]
+    },
+    {
+      "phase": 3,
+      "name": "三页联调验证（依赖本迭代全部 FE 任务）",
+      "tasks": [
+        "FE-05"
+      ]
+    }
+  ]
+}

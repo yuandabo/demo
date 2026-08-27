@@ -1,0 +1,176 @@
+{
+  "total": 34,
+  "passed": 34,
+  "results": [
+    {
+      "name": "游客-推荐骨架屏",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "游客-宫格骨架屏",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "头部-logo 名称",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "头部-角色徽章游客文案",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "头部-搜索框关键词高亮文案",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "TabBar-首页 active",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "游客-推荐标题「全站热门」且无角色标签",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "游客-推荐条数=接口全站 Top6 实际数量（≤6）",
+      "pass": true,
+      "detail": "dom=6 api=6"
+    },
+    {
+      "name": "游客-推荐卡片标题与接口一致",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "宫格-启用一级分类 12 格",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "宫格-角标=前台可见教程数，0 篇显示「待补充」",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "宫格-存在待补充空分类",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "宫格-区块标题计数标签",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "游客-消息卡隐藏（未请求 /api/messages）",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "游客-打卡横幅引导文案",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "游客-请求清单：recommend(无 erpRole)+categories；无 messages/checkins",
+      "pass": true,
+      "detail": "http://localhost:5173/api/categories?withCount=1 , http://localhost:5173/api/recommend , http://localhost:5173/api/categories?withCount=1 , http://localhost:5173/api/recommend"
+    },
+    {
+      "name": "跳转-搜索框进列表页",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "跳转-宫格带 categoryId+name",
+      "pass": true,
+      "detail": "http://localhost:5173/m.html#/list?categoryId=1&name=%E9%94%80%E5%94%AE%E7%AE%A1%E7%90%86"
+    },
+    {
+      "name": "跳转-打卡横幅进打卡页",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "跳转-推荐卡进详情页",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "登录-RoleSheet 弹出",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "登录-角色徽章更新「当前角色：采购」",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "采购-区块标题联动「为你推荐 · 采购」+「按角色匹配」",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "采购-推荐请求携带 erpRole 参数",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "采购-推荐全部来自采购/库存映射分类（AC-RULE-16）",
+      "pass": true,
+      "detail": "api 5 条：采购管理/库存管理/采购管理/采购管理/库存管理"
+    },
+    {
+      "name": "采购-推荐条数=接口实际数量（≤6）",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "采购-消息卡显示第一条 mock 消息+「预留」标签",
+      "pass": true,
+      "detail": "审批待办：《采购申请到一键下单》第 4 步演示了多级审批流处理"
+    },
+    {
+      "name": "采购-消息请求已发（token 隐式过滤）",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "采购-打卡横幅显示真实 todayChecked/streak",
+      "pass": true,
+      "detail": "todayChecked=false streak=0"
+    },
+    {
+      "name": "跳转-消息卡进列表页（预留仅展示引导）",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "切角色-推荐按新角色重取（sales）",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "切角色-区块标题同步「为你推荐 · 销售」",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "AC-FN-08-发布后宫格角标同次请求 +1",
+      "pass": true,
+      "detail": "销售管理: 4 → 5"
+    },
+    {
+      "name": "AC-FN-08-种子库已重置还原",
+      "pass": true,
+      "detail": ""
+    }
+  ]
+}

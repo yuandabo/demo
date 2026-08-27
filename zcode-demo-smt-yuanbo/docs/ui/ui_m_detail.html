@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>云ERP教程中心 · MRP 自动算料（小程序 H5）</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{background:#e2e8f0}
+body{font-family:'PingFang SC','Microsoft YaHei',sans-serif;display:flex;justify-content:center;align-items:flex-start;min-height:100vh;padding:28px 12px}
+a{text-decoration:none;color:inherit}
+ul{list-style:none}
+/* ===== 手机壳（5 页统一） ===== */
+.phone{width:375px;height:812px;background:#0f172a;border-radius:40px;padding:7px;box-shadow:0 24px 60px rgba(15,23,42,.45);flex-shrink:0}
+.screen{width:100%;height:100%;background:#f8fafc;border-radius:33px;overflow:hidden;position:relative;display:flex;flex-direction:column}
+.notch{position:absolute;top:0;left:50%;transform:translateX(-50%);width:112px;height:24px;background:#0f172a;border-radius:0 0 13px 13px;z-index:20}
+.notch::after{content:'';position:absolute;right:12px;top:7px;width:8px;height:8px;border-radius:50%;background:#334155;border:1.5px solid #475569}
+.statusbar{height:44px;flex-shrink:0;display:flex;align-items:flex-end;justify-content:space-between;padding:0 24px 5px;position:relative;z-index:10;color:#0f172a;background:#fff}
+.statusbar .time{font-size:14px;font-weight:700}
+.statusbar .sicons{display:flex;align-items:center;gap:5px}
+.statusbar svg{display:block}
+.tabbar{flex-shrink:0;background:#fff;border-top:1px solid #e2e8f0;display:flex;padding-top:5px}
+.tab{flex:1;display:flex;flex-direction:column;align-items:center;gap:1px;font-size:10px;color:#94a3b8;padding:3px 0 4px}
+.tab .ico{font-size:20px;line-height:1;filter:grayscale(1);opacity:.55}
+.tab.active{color:#0066ff;font-weight:700}
+.tab.active .ico{filter:none;opacity:1}
+.homebar{flex-shrink:0;height:16px;background:#fff;display:flex;align-items:center;justify-content:center}
+.homebar i{width:110px;height:5px;border-radius:3px;background:#0f172a;display:block}
+.scroll{flex:1;overflow-y:auto;scrollbar-width:none}
+.scroll::-webkit-scrollbar{display:none}
+/* ===== 顶部导航：返回 + 标题 + 收藏（已收藏态） ===== */
+.nav{flex-shrink:0;background:#fff;display:flex;align-items:center;gap:8px;padding:6px 12px 8px;border-bottom:1px solid #f1f5f9}
+.back{font-size:20px;line-height:1;color:#0f172a;padding:2px 4px 0 0}
+.nav-title{font-size:15px;font-weight:700;color:#0f172a;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.fav{display:flex;flex-direction:column;align-items:center;gap:1px;font-size:9px;color:#f97316;font-weight:600}
+.fav svg{display:block}
+/* 继续阅读提示条 */
+.resume{flex-shrink:0;background:#e6efff;color:#0066ff;font-size:12px;font-weight:600;display:flex;align-items:center;gap:8px;padding:7px 14px}
+.resume .txt{flex-shrink:0}
+.resume .bar{flex:1;height:4px;background:#c7dcff;border-radius:2px;position:relative;overflow:hidden}
+.resume .bar i{position:absolute;left:0;top:0;bottom:0;width:75%;background:#0066ff;border-radius:2px}
+.resume .pct{font-size:11px;font-weight:700}
+/* ===== 正文 ===== */
+.article{padding:16px 16px 22px;font-size:17px;color:#334155;line-height:1.7}
+.a-top{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.a-cat{font-size:10px;color:#0066ff;background:#e6efff;padding:2px 8px;border-radius:4px;font-weight:700}
+.a-tag{font-size:10px;color:#64748b;border:1px solid #e2e8f0;padding:2px 8px;border-radius:4px}
+.a-title{font-size:20px;font-weight:800;color:#0f172a;line-height:1.4;margin-top:10px}
+.a-meta{font-size:11px;color:#94a3b8;margin-top:8px;display:flex;gap:10px;flex-wrap:wrap}
+.a-intro{margin-top:12px;background:#fff;border-radius:12px;padding:12px 14px;box-shadow:0 1px 4px rgba(15,23,42,.06);font-size:15px;color:#475569;border-left:3px solid #0066ff}
+/* 步骤 */
+.step{display:flex;gap:10px;margin-top:20px}
+.step-no{width:24px;height:24px;border-radius:50%;background:#0066ff;color:#fff;font-size:13px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.step-title{font-size:16px;font-weight:800;color:#0f172a;line-height:1.5}
+.step ul{margin-top:6px}
+.step li{padding-left:13px;position:relative;color:#334155;font-size:inherit;line-height:1.65;margin-top:3px}
+.step li::before{content:'';position:absolute;left:0;top:.66em;width:4px;height:4px;border-radius:50%;background:#0066ff}
+.step li b{color:#0f172a}
+/* 视频占位 */
+.video{margin-top:10px;background:#0f172a;border-radius:12px;height:150px;display:flex;align-items:center;justify-content:center;position:relative}
+.play{width:46px;height:46px;border-radius:50%;background:rgba(255,255,255,.14);border:1.5px solid rgba(255,255,255,.55);display:flex;align-items:center;justify-content:center;color:#fff;font-size:17px;padding-left:4px}
+.v-dur{position:absolute;right:9px;bottom:9px;font-size:10px;color:#fff;background:rgba(0,0,0,.55);padding:2px 7px;border-radius:4px}
+.v-cap{font-size:11px;color:#94a3b8;margin-top:6px;line-height:1.5}
+/* 配图：MRP 结果表示意（CSS 绘制） */
+.fig{margin-top:10px;border:1px solid #e2e8f0;border-radius:10px;overflow:hidden;font-size:10px;background:#fff}
+.fig-bar{background:#f1f5f9;padding:6px 10px;font-weight:700;color:#475569;display:flex;justify-content:space-between;gap:6px}
+.fig-bar span:last-child{color:#0066ff;font-weight:600}
+.fig table{width:100%;border-collapse:collapse}
+.fig th{background:#e6efff;color:#0066ff;font-weight:700;padding:5px 6px;text-align:left;white-space:nowrap}
+.fig td{padding:5px 6px;color:#334155;border-top:1px solid #f1f5f9;white-space:nowrap}
+.fig td.hot{color:#f97316;font-weight:700}
+.fig-foot{display:flex;justify-content:flex-end;gap:6px;padding:7px 10px;background:#fafafa}
+.fig-btn{background:#0066ff;color:#fff;border-radius:5px;padding:4px 9px;font-size:10px;font-weight:600}
+.fig-btn.ghost{background:#fff;color:#64748b;border:1px solid #e2e8f0}
+.fig-cap{font-size:11px;color:#94a3b8;margin-top:6px;line-height:1.5}
+/* 字号调节浮层 */
+.fs-panel{position:absolute;right:12px;bottom:196px;z-index:15;background:#fff;border-radius:12px;box-shadow:0 8px 28px rgba(15,23,42,.22);padding:10px;width:112px}
+.fs-title{font-size:10px;color:#94a3b8;text-align:center;margin-bottom:6px;font-weight:600}
+.fs-opt{display:flex;justify-content:space-between;align-items:center;padding:6px 9px;border-radius:8px;font-size:13px;color:#475569;margin-top:3px}
+.fs-opt span:last-child{font-size:10px}
+.fs-opt.on{background:#e6efff;color:#0066ff;font-weight:800}
+/* 底部操作条：评价 + 留言 */
+.helpbar{flex-shrink:0;background:#fff;border-top:1px solid #f1f5f9;padding:9px 12px}
+.votes{display:flex;gap:8px}
+.vote{flex:1;height:34px;border-radius:9px;border:1px solid #e2e8f0;background:#fff;font-size:13px;color:#475569;display:flex;align-items:center;justify-content:center;gap:5px}
+.vote.on{border-color:#0066ff;background:#e6efff;color:#0066ff;font-weight:700}
+.cmt{display:flex;gap:8px;margin-top:8px}
+.cmt input{flex:1;height:34px;border-radius:9px;border:1px solid #e2e8f0;background:#f8fafc;padding:0 12px;font-size:12px;color:#0f172a;font-family:inherit;outline:none}
+.cmt input::placeholder{color:#94a3b8}
+.cmt button{width:66px;height:34px;border-radius:9px;background:#0066ff;color:#fff;font-size:12px;font-weight:700;border:0;box-shadow:0 2px 8px rgba(0,102,255,.3);font-family:inherit}
+.help-note{font-size:9px;color:#cbd5e1;text-align:center;margin-top:6px}
+/* 留言框默认隐藏：仅评价"没帮助"时展开（PRD §7.3） */
+.cmt{display:none}
+.cmt.show{display:flex}
+/* ===== 已下架态预览 ===== */
+.off-pre{margin-top:22px;border:1.5px dashed #cbd5e1;border-radius:12px;padding:12px 13px 14px;background:#fff}
+.off-pre .cap{font-size:10px;color:#94a3b8;margin-bottom:8px}
+.off-pre .bn{display:flex;gap:8px;align-items:flex-start;background:#f1f5f9;border:1px solid #cbd5e1;border-radius:10px;padding:10px 12px;color:#64748b;font-size:12px;line-height:1.6}
+.off-pre .bn b{color:#475569}
+.off-pre .bd{position:relative;margin-top:8px;border:1px solid #e2e8f0;border-radius:10px;padding:12px;color:#94a3b8;font-size:11px;max-height:64px;overflow:hidden}
+.off-pre .bd::after{content:'';position:absolute;inset:0;background:rgba(248,250,252,.9)}
+.off-pre .rl a{display:block;margin-top:8px;border:1px solid #e2e8f0;border-radius:10px;padding:9px 11px}
+.off-pre .rl b{font-size:12px;color:#0f172a;display:block}
+.off-pre .rl span{font-size:10px;color:#94a3b8}
+/* ===== 选角色登录半屏弹层（PRD §7.11 · AC-FN-03） ===== */
+.sheet-mask{position:absolute;inset:0;background:rgba(15,23,42,.5);z-index:40;display:none}
+.sheet-mask.show{display:block}
+.sheet{position:absolute;left:0;right:0;bottom:0;background:#fff;border-radius:18px 18px 0 0;padding:16px 14px 20px;z-index:41;display:none;max-height:78%;overflow-y:auto}
+.sheet.show{display:block}
+.sheet .bar{width:36px;height:4px;border-radius:2px;background:#e2e8f0;margin:0 auto 12px}
+.sheet h4{font-size:15px;color:#0f172a;text-align:center}
+.sheet .s-sub{font-size:11px;color:#94a3b8;text-align:center;margin-top:3px;margin-bottom:14px}
+.sheet-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}
+.sc{border:1px solid #e2e8f0;border-radius:12px;padding:12px 4px;text-align:center;transition:.15s}
+.sc:active{border-color:#0066ff;background:#e6efff}
+.sc .i{width:38px;height:38px;margin:0 auto 6px;border-radius:11px;background:#e6efff;display:flex;align-items:center;justify-content:center;font-size:19px}
+.sc b{font-size:13px;color:#0f172a;display:block}
+.sc span{font-size:10px;color:#94a3b8}
+.sheet .tip{font-size:10px;color:#cbd5e1;text-align:center;margin-top:12px}
+</style>
+</head>
+<body>
+<div class="phone">
+  <div class="screen">
+    <div class="notch"></div>
+
+    <div class="statusbar">
+      <span class="time">9:41</span>
+      <span class="sicons">
+        <svg width="16" height="10" viewBox="0 0 16 10" fill="currentColor"><rect x="0" y="6" width="3" height="4" rx="1"/><rect x="4.3" y="4" width="3" height="6" rx="1"/><rect x="8.6" y="2" width="3" height="8" rx="1"/><rect x="12.9" y="0" width="3" height="10" rx="1"/></svg>
+        <svg width="15" height="11" viewBox="0 0 15 11" fill="currentColor"><circle cx="7.5" cy="9.4" r="1.5"/><path d="M4.6 6.6a4.6 4.6 0 0 1 5.8 0l-1.1 1.3a3 3 0 0 0-3.6 0z"/><path d="M1.9 3.9a8.6 8.6 0 0 1 11.2 0l-1.1 1.3a6.9 6.9 0 0 0-9 0z"/></svg>
+        <svg width="23" height="11" viewBox="0 0 23 11" fill="none"><rect x=".5" y=".5" width="19" height="10" rx="2.5" stroke="currentColor" opacity=".4"/><rect x="2" y="2" width="13" height="7" rx="1.2" fill="currentColor"/><rect x="20.5" y="3.2" width="2" height="4.6" rx="1" fill="currentColor" opacity=".4"/></svg>
+      </span>
+    </div>
+
+    <!-- 返回 + 标题 + 收藏（未登录点收藏先弹选角色登录） -->
+    <div class="nav">
+      <a class="back" href="ui_m_list.html">‹</a>
+      <span class="nav-title">MRP 自动算料</span>
+      <a class="fav" href="ui_m_favorite.html" title="登录后收藏，点击管理收藏" onclick="return favGuard()">
+        <svg width="20" height="18" viewBox="0 0 24 22" fill="#f97316"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+        <span>已收藏</span>
+      </a>
+    </div>
+
+    <!-- 继续阅读 75% 提示条（与 PC 端进度同步：3/4 步已完成） -->
+    <div class="resume">
+      <span class="txt">⏱ 上次读到 75%</span>
+      <span class="bar"><i style="width:75%"></i></span>
+      <span class="pct">继续阅读 ›</span>
+    </div>
+
+    <main class="scroll">
+      <article class="article" id="art">
+
+        <div class="a-top">
+          <span class="a-cat">采购管理</span>
+          <span class="a-tag">MRP</span>
+          <span class="a-tag">BOM</span>
+          <span class="a-tag">缺料分析</span>
+        </div>
+        <h1 class="a-title">MRP 自动算料：从 BOM 到采购建议</h1>
+        <div class="a-meta">
+          <span>👁 浏览 2,341</span><span>⭐ 收藏 187</span><span>✍ 运营 · 李静</span><span>更新于 08-15</span>
+        </div>
+
+        <p class="a-intro">MRP 自动算料把销售订单按 BOM 展开成物料需求，自动扣除现有库存与在途预计入库，算出净需求并生成建议采购量 / 建议生产量。本教程 4 步跑通全流程。</p>
+
+        <!-- 步骤 1 -->
+        <div class="step">
+          <div class="step-no">1</div>
+          <div>
+            <div class="step-title">进入 MRP 运算并选择方案</div>
+            <ul>
+              <li>登录云ERP，进入 <b>「生产制造 › MRP 运算」</b></li>
+              <li>运算方案选<b>「按销售订单」</b>，也支持「预测 + 订单」混合</li>
+              <li>圈定参与运算的订单：按客户、交期区间筛选</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- 步骤 2 -->
+        <div class="step">
+          <div class="step-no">2</div>
+          <div>
+            <div class="step-title">设置算料参数</div>
+            <ul>
+              <li><b>BOM 版本</b>：默认取最新生效版本，可手工锁定</li>
+              <li><b>可用量</b> = 现有库存 + 预计入库 − 已分配</li>
+              <li><b>安全库存天数、损耗率</b>按物料档案带出，可单行覆盖</li>
+            </ul>
+            <!-- 一张图：MRP 运算结果示意 -->
+            <div class="fig">
+              <div class="fig-bar"><span>MRP 运算结果</span><span>方案：按销售订单</span></div>
+              <table>
+                <tr><th>物料</th><th>单位</th><th>毛需求</th><th>可用库存</th><th>净需求</th><th>建议采购量</th></tr>
+                <tr><td>贴片电阻 0402</td><td>PCS</td><td>120,000</td><td>60,000</td><td class="hot">60,000</td><td class="hot">60,000</td></tr>
+                <tr><td>PCB 主板 A 款</td><td>PCS</td><td>5,000</td><td>1,200</td><td class="hot">3,800</td><td class="hot">3,800</td></tr>
+                <tr><td>电容 0805 100nF</td><td>PCS</td><td>80,000</td><td>75,000</td><td>5,000</td><td>5,000</td></tr>
+              </table>
+              <div class="fig-foot"><span class="fig-btn ghost">重新运算</span><span class="fig-btn">一键生成采购申请</span></div>
+            </div>
+            <div class="fig-cap">▲ 图：MRP 运算结果示意（演示数据），橙色列为需要关注的缺料净需求</div>
+          </div>
+        </div>
+
+        <!-- 步骤 3 -->
+        <div class="step">
+          <div class="step-no">3</div>
+          <div>
+            <div class="step-title">执行运算并解读结果</div>
+            <!-- 视频区占位 -->
+            <div class="video">
+              <span class="play">▶</span>
+              <span class="v-dur">08:32</span>
+            </div>
+            <div class="v-cap">视频：MRP 自动算料实操演示 · 弱网环境仅提示流量，不自动播放</div>
+            <ul style="margin-top:8px">
+              <li><b>缺料汇总</b>：按物料汇总净需求，交期风险件标红</li>
+              <li>建议采购量 / 建议生产量可<b>逐条调整</b>后再下达</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- 步骤 4 -->
+        <div class="step">
+          <div class="step-no">4</div>
+          <div>
+            <div class="step-title">一键下达与跟踪</div>
+            <ul>
+              <li>建议采购量一键生成<b>采购申请</b>，进入审批流</li>
+              <li>建议生产量转入<b>生产工单</b>，自动带出工艺路线</li>
+              <li>下达后在「采购跟单看板」跟踪到料进度，缺料自动预警</li>
+            </ul>
+          </div>
+        </div>
+
+      </article>
+
+      <!-- 已下架态样式预览（menu-tree M3：提示横幅 + 正文不可见 + 同类推荐） -->
+      <div class="off-pre" style="margin:0 16px 22px">
+        <div class="cap">▼ 以下为「已下架态」样式预览（如《来料检验操作指南》）</div>
+        <div class="bn"><span style="font-size:16px">⛔</span><span><b>该教程已下架，正文不可见。</b>可从下方同类推荐继续学习。</span></div>
+        <div class="bd">正文内容已隐藏……（第 1 步 · 到货扫码报检 → 第 2 步 · 记录合格数与不良数 → 第 3 步 · 检验通过自动入库）</div>
+        <div class="rl">
+          <a href="ui_m_detail.html"><b>采购申请到一键下单</b><span>👁 1,694 · 采购管理 · 同类推荐</span></a>
+          <a href="ui_m_list.html"><b>供应商比价与立创同步</b><span>👁 1,523 · 采购管理 · 同类推荐</span></a>
+        </div>
+      </div>
+    </main>
+
+    <!-- 字号调节浮层（三档命名与 PC 端一致：标准 / 大 / 特大） -->
+    <div class="fs-panel">
+      <div class="fs-title">字号调节</div>
+      <div class="fs-opt" onclick="setFs(15,this)"><span>A</span><span>标准</span></div>
+      <div class="fs-opt on" onclick="setFs(17,this)"><span>A⁺</span><span>大</span></div>
+      <div class="fs-opt" onclick="setFs(19,this)"><span>A⁺⁺</span><span>特大</span></div>
+    </div>
+
+    <!-- 底部操作条：有帮助 / 没帮助 + 留言（仅"没帮助"时展开，PRD §7.3） -->
+    <div class="helpbar">
+      <div class="votes">
+        <button class="vote" id="mGood" onclick="voteOnly(this,false)">👍 有帮助 96</button>
+        <button class="vote" id="mBad" onclick="voteOnly(this,true)">👎 没帮助 8</button>
+      </div>
+      <div class="cmt" id="cmtBox">
+        <input type="text" id="cmtInput" maxlength="200" placeholder="告诉我们哪里没帮助（选填，≤200 字）">
+        <button onclick="submitCmt()">提交</button>
+      </div>
+      <div class="help-note">评价与留言同 PC 端共用同一记录（当前 👍96 / 👎8，好评 92%）· 进度已与 PC 端同步</div>
+    </div>
+
+    <!-- 底部 TabBar（当前：分类） -->
+    <nav class="tabbar">
+      <a class="tab" href="ui_m_home.html"><span class="ico">🏠</span>首页</a>
+      <a class="tab active" href="ui_m_list.html"><span class="ico">📚</span>分类</a>
+      <a class="tab" href="ui_m_favorite.html"><span class="ico">⭐</span>收藏</a>
+      <a class="tab" href="ui_m_checkin.html"><span class="ico">📅</span>打卡</a>
+    </nav>
+    <div class="homebar"><i></i></div>
+
+    <!-- 选角色登录半屏弹层（PRD §7.11 · AC-FN-03）：未登录点收藏 / 评价时弹出 -->
+    <div class="sheet-mask" id="roleMask" onclick="closeRoleSheet()"></div>
+    <div class="sheet" id="roleSheet">
+      <div class="bar"></div>
+      <h4>🔑 选角色快速登录</h4>
+      <div class="s-sub" id="sheetSub">登录后才能收藏与评价，选择角色继续（免密，登录后回到原操作位）</div>
+      <div class="sheet-grid">
+        <div class="sc" onclick="pickMRole('销售','李娜','📈')"><div class="i">📈</div><b>销售</b><span>销售 · 李娜</span></div>
+        <div class="sc" onclick="pickMRole('采购','张伟','🛒')"><div class="i">🛒</div><b>采购</b><span>采购 · 张伟</span></div>
+        <div class="sc" onclick="pickMRole('生产','王强','🏭')"><div class="i">🏭</div><b>生产</b><span>生产 · 王强</span></div>
+        <div class="sc" onclick="pickMRole('仓库','赵敏','📦')"><div class="i">📦</div><b>仓库</b><span>仓库 · 赵敏</span></div>
+        <div class="sc" onclick="pickMRole('管理','陈涛','⚙️')"><div class="i">⚙️</div><b>管理</b><span>管理 · 陈涛</span></div>
+        <div class="sc" onclick="pickMRole('财务','周莉','💰')"><div class="i">💰</div><b>财务</b><span>财务 · 周莉</span></div>
+      </div>
+      <div class="tip">演示链路 AC-FN-03：未登录点收藏 → 弹出本登录层 → 选角色 → 回到原位继续操作</div>
+    </div>
+  </div>
+</div>
+<script>
+// 选角色快速登录（PRD §7.11 · AC-FN-03）
+var curRole=null;
+function openRoleSheet(){document.getElementById('roleMask').classList.add('show');document.getElementById('roleSheet').classList.add('show')}
+function closeRoleSheet(){document.getElementById('roleMask').classList.remove('show');document.getElementById('roleSheet').classList.remove('show')}
+function pickMRole(role,name){
+  curRole=role;
+  closeRoleSheet();
+  alert('演示：已以「'+role+' · '+name+'」登录，请继续刚才的操作');
+}
+// 未登录点收藏 → 弹登录层，登录后回原位
+function favGuard(){
+  if(!curRole){openRoleSheet();return false}
+  return true;
+}
+// 字号三档（标准 / 大 / 特大，与 PC 端命名一致）
+function setFs(v, el) {
+  document.getElementById('art').style.fontSize = v + 'px';
+  document.querySelectorAll('.fs-opt').forEach(function (b) { b.classList.toggle('on', b === el); });
+}
+// 有帮助 / 没帮助：未登录先弹登录；留言框仅"没帮助"时展开（PRD §7.3）
+function voteOnly(el, isBad) {
+  if(!curRole){openRoleSheet();return}
+  document.querySelectorAll('.vote').forEach(function (b) { b.classList.toggle('on', b === el); });
+  document.getElementById('cmtBox').classList.toggle('show', !!isBad);
+  if(isBad){document.getElementById('cmtInput').focus()}
+}
+function submitCmt(){
+  if(!curRole){openRoleSheet();return}
+  alert('演示：留言已提交（仅平台可见），与 PC 端共用同一条反馈记录');
+}
+</script>
+</body>
+</html>

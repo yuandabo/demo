@@ -1,0 +1,5460 @@
+{
+  "feature": "2-1-全局业务规则-AC-RULE__2-2-功能验收标准-AC-FN__2-3-业务操作标准-AC-OP__2-4-异常与边界场景-AC-EG API",
+  "version": "v1",
+  "generatedAt": "2026-08-23T14:01:49",
+  "source_api_docs": [
+    "d:\\code\\demo\\zcode-demo-smt-yuanbo\\docs\\design\\api\\post-api-auth-login.md",
+    "d:\\code\\demo\\zcode-demo-smt-yuanbo\\docs\\design\\api\\post-api-auth-role-login.md",
+    "d:\\code\\demo\\zcode-demo-smt-yuanbo\\docs\\design\\api\\get-api-categories.md",
+    "d:\\code\\demo\\zcode-demo-smt-yuanbo\\docs\\design\\api\\get-api-tutorials.md",
+    "d:\\code\\demo\\zcode-demo-smt-yuanbo\\docs\\design\\api\\post-api-tutorials-id-review.md",
+    "d:\\code\\demo\\zcode-demo-smt-yuanbo\\docs\\design\\api\\post-api-tutorials-id-offline.md",
+    "d:\\code\\demo\\zcode-demo-smt-yuanbo\\docs\\design\\api\\post-api-tutorials-id-republish.md",
+    "d:\\code\\demo\\zcode-demo-smt-yuanbo\\docs\\design\\api\\post-api-tutorials-id-copy.md",
+    "d:\\code\\demo\\zcode-demo-smt-yuanbo\\docs\\design\\api\\post-api-favorites-tutorialId.md",
+    "d:\\code\\demo\\zcode-demo-smt-yuanbo\\docs\\design\\api\\post-api-checkins.md",
+    "d:\\code\\demo\\zcode-demo-smt-yuanbo\\docs\\design\\api\\post-api-auth-login.md",
+    "d:\\code\\demo\\zcode-demo-smt-yuanbo\\docs\\design\\api\\post-api-auth-role-login.md",
+    "d:\\code\\demo\\zcode-demo-smt-yuanbo\\docs\\design\\api\\get-api-categories.md",
+    "d:\\code\\demo\\zcode-demo-smt-yuanbo\\docs\\design\\api\\delete-api-categories-id.md",
+    "d:\\code\\demo\\zcode-demo-smt-yuanbo\\docs\\design\\api\\get-api-tutorials.md",
+    "d:\\code\\demo\\zcode-demo-smt-yuanbo\\docs\\design\\api\\get-api-tutorials-id.md",
+    "d:\\code\\demo\\zcode-demo-smt-yuanbo\\docs\\design\\api\\post-api-tutorials-id-review.md",
+    "d:\\code\\demo\\zcode-demo-smt-yuanbo\\docs\\design\\api\\post-api-tutorials-id-offline.md",
+    "d:\\code\\demo\\zcode-demo-smt-yuanbo\\docs\\design\\api\\post-api-tutorials-id-republish.md",
+    "d:\\code\\demo\\zcode-demo-smt-yuanbo\\docs\\design\\api\\post-api-tutorials-id-copy.md",
+    "d:\\code\\demo\\zcode-demo-smt-yuanbo\\docs\\design\\api\\post-api-favorites-tutorialId.md",
+    "d:\\code\\demo\\zcode-demo-smt-yuanbo\\docs\\design\\api\\post-api-checkins.md",
+    "d:\\code\\demo\\zcode-demo-smt-yuanbo\\docs\\design\\api\\post-api-auth-login.md",
+    "d:\\code\\demo\\zcode-demo-smt-yuanbo\\docs\\design\\api\\get-api-categories.md",
+    "d:\\code\\demo\\zcode-demo-smt-yuanbo\\docs\\design\\api\\post-api-tutorials-id-offline.md",
+    "d:\\code\\demo\\zcode-demo-smt-yuanbo\\docs\\design\\api\\post-api-auth-login.md",
+    "d:\\code\\demo\\zcode-demo-smt-yuanbo\\docs\\design\\api\\post-api-auth-role-login.md",
+    "d:\\code\\demo\\zcode-demo-smt-yuanbo\\docs\\design\\api\\get-api-categories.md",
+    "d:\\code\\demo\\zcode-demo-smt-yuanbo\\docs\\design\\api\\get-api-tutorials.md",
+    "d:\\code\\demo\\zcode-demo-smt-yuanbo\\docs\\design\\api\\get-api-tutorials-id.md",
+    "d:\\code\\demo\\zcode-demo-smt-yuanbo\\docs\\design\\api\\post-api-tutorials-id-review.md",
+    "d:\\code\\demo\\zcode-demo-smt-yuanbo\\docs\\design\\api\\post-api-tutorials-id-offline.md",
+    "d:\\code\\demo\\zcode-demo-smt-yuanbo\\docs\\design\\api\\post-api-favorites-tutorialId.md"
+  ],
+  "test_cases": [
+    {
+      "id": "API-LOGIN-001",
+      "title": "管理员 admin 账号密码登录成功返回 DB token 与用户信息",
+      "priority": "P0",
+      "type": "happy_path",
+      "covers": [
+        "AC-RULE-26",
+        "AC-RULE-22",
+        "AC-OP-01"
+      ],
+      "preconditions": [
+        "种子库已初始化，后台账号 admin/123456 存在"
+      ],
+      "steps": [
+        "POST /api/auth/login，Header Content-Type: application/json",
+        "请求体 {\"username\":\"admin\",\"password\":\"123456\"}"
+      ],
+      "expected": [
+        "HTTP 200，code=0，message=ok",
+        "data.token 为非空字符串（DB token，写入 auth_tokens 表）",
+        "data.user.role=admin，data.user.erpRole=null，data.user.displayName=平台管理员"
+      ],
+      "design_method": "AC 驱动",
+      "tags": [
+        "认证",
+        "后台登录",
+        "种子账号"
+      ]
+    },
+    {
+      "id": "API-LOGIN-002",
+      "title": "运营编辑 operator 账号密码登录成功",
+      "priority": "P0",
+      "type": "happy_path",
+      "covers": [
+        "AC-RULE-26",
+        "AC-RULE-23",
+        "AC-OP-01"
+      ],
+      "preconditions": [
+        "种子库已初始化，后台账号 operator/123456 存在"
+      ],
+      "steps": [
+        "POST /api/auth/login",
+        "请求体 {\"username\":\"operator\",\"password\":\"123456\"}"
+      ],
+      "expected": [
+        "HTTP 200，code=0",
+        "data.user.role=operator，data.user.erpRole=null，data.user.displayName=运营编辑",
+        "data.token 非空，可用于后台管理态接口（status/all 管理参数）"
+      ],
+      "design_method": "AC 驱动",
+      "tags": [
+        "认证",
+        "后台登录"
+      ]
+    },
+    {
+      "id": "API-LOGIN-003",
+      "title": "登录返回的 token 携带 Bearer 可直接访问管理接口",
+      "priority": "P0",
+      "type": "happy_path",
+      "covers": [
+        "AC-RULE-22",
+        "AC-EG-06"
+      ],
+      "preconditions": [
+        "已按 API-LOGIN-001 取得 admin token，记为 {adminToken}"
+      ],
+      "steps": [
+        "GET /api/categories?all=1，Header Authorization: Bearer {adminToken}"
+      ],
+      "expected": [
+        "HTTP 200，code=0，返回含停用分类的全量树",
+        "携带 token 即视为有效后台会话，接口不返回 401"
+      ],
+      "design_method": "AC 驱动",
+      "tags": [
+        "认证",
+        "会话",
+        "接口联动"
+      ]
+    },
+    {
+      "id": "API-LOGIN-004-E01",
+      "title": "username 缺失时登录被 400 阻断",
+      "priority": "P0",
+      "type": "negative",
+      "covers": [
+        "AC-RULE-26"
+      ],
+      "preconditions": [
+        "服务正常运行"
+      ],
+      "steps": [
+        "POST /api/auth/login",
+        "请求体仅 {\"password\":\"123456\"}（缺失 username）"
+      ],
+      "expected": [
+        "HTTP 400，code=400",
+        "message=\"请输入账号和密码\"",
+        "不返回 token"
+      ],
+      "design_method": "等价类划分",
+      "tags": [
+        "认证",
+        "参数校验"
+      ]
+    },
+    {
+      "id": "API-LOGIN-005-E02",
+      "title": "password 缺失时登录被 400 阻断",
+      "priority": "P0",
+      "type": "negative",
+      "covers": [
+        "AC-RULE-26"
+      ],
+      "preconditions": [
+        "服务正常运行"
+      ],
+      "steps": [
+        "POST /api/auth/login",
+        "请求体仅 {\"username\":\"admin\"}（缺失 password）"
+      ],
+      "expected": [
+        "HTTP 400，code=400",
+        "message=\"请输入账号和密码\""
+      ],
+      "design_method": "等价类划分",
+      "tags": [
+        "认证",
+        "参数校验"
+      ]
+    },
+    {
+      "id": "API-LOGIN-006-E03",
+      "title": "username 为空串或纯空白时登录被 400 阻断",
+      "priority": "P1",
+      "type": "negative",
+      "covers": [
+        "AC-RULE-26"
+      ],
+      "preconditions": [
+        "服务正常运行"
+      ],
+      "steps": [
+        "POST /api/auth/login",
+        "请求体 {\"username\":\"   \",\"password\":\"123456\"}（纯空白）与 {\"username\":\"\",\"password\":\"123456\"}（空串）各执行一次"
+      ],
+      "expected": [
+        "两次均 HTTP 400，code=400",
+        "message=\"请输入账号和密码\"（约束：长度 1-50 且不允许空白）"
+      ],
+      "design_method": "边界值分析",
+      "tags": [
+        "认证",
+        "参数校验"
+      ]
+    },
+    {
+      "id": "API-LOGIN-007-E04",
+      "title": "账号不存在返回 401 统一文案防账号枚举",
+      "priority": "P0",
+      "type": "negative",
+      "covers": [
+        "AC-RULE-26"
+      ],
+      "preconditions": [
+        "账号 admin_not_exist 不存在"
+      ],
+      "steps": [
+        "POST /api/auth/login",
+        "请求体 {\"username\":\"admin_not_exist\",\"password\":\"123456\"}"
+      ],
+      "expected": [
+        "HTTP 401，code=401",
+        "message=\"账号或密码错误\"（不区分账号不存在与密码错误）"
+      ],
+      "design_method": "错误推测法",
+      "tags": [
+        "认证",
+        "安全"
+      ]
+    },
+    {
+      "id": "API-LOGIN-008-E05",
+      "title": "密码错误返回 401 且文案与账号不存在完全一致",
+      "priority": "P0",
+      "type": "negative",
+      "covers": [
+        "AC-RULE-26"
+      ],
+      "preconditions": [
+        "账号 admin 存在，密码为 123456"
+      ],
+      "steps": [
+        "POST /api/auth/login",
+        "请求体 {\"username\":\"admin\",\"password\":\"wrong123\"}",
+        "对比 API-LOGIN-007-E04 的 message 文案"
+      ],
+      "expected": [
+        "HTTP 401，code=401",
+        "message=\"账号或密码错误\"，与账号不存在场景字面完全相同（防枚举）"
+      ],
+      "design_method": "错误推测法",
+      "tags": [
+        "认证",
+        "安全"
+      ]
+    },
+    {
+      "id": "API-LOGIN-009-E06",
+      "title": "普通用户演示账号走后台密码登录被 403 引导走选角色登录",
+      "priority": "P0",
+      "type": "negative",
+      "covers": [
+        "AC-RULE-24",
+        "AC-RULE-26"
+      ],
+      "preconditions": [
+        "种子演示账号 sales/123456（role=user）存在"
+      ],
+      "steps": [
+        "POST /api/auth/login",
+        "请求体 {\"username\":\"sales\",\"password\":\"123456\"}"
+      ],
+      "expected": [
+        "HTTP 403，code=403",
+        "message=\"请使用选角色登录\"（普通用户应走 POST /api/auth/role-login）"
+      ],
+      "design_method": "AC 驱动",
+      "tags": [
+        "认证",
+        "权限矩阵"
+      ]
+    },
+    {
+      "id": "API-LOGIN-010-E07",
+      "title": "空请求体登录被 400 阻断",
+      "priority": "P1",
+      "type": "negative",
+      "covers": [
+        "AC-RULE-26"
+      ],
+      "preconditions": [
+        "服务正常运行"
+      ],
+      "steps": [
+        "POST /api/auth/login",
+        "请求体 {}，两个必填字段均缺失"
+      ],
+      "expected": [
+        "HTTP 400，code=400",
+        "message=\"请输入账号和密码\""
+      ],
+      "design_method": "等价类划分",
+      "tags": [
+        "认证",
+        "参数校验"
+      ]
+    },
+    {
+      "id": "API-LOGIN-011-B01",
+      "title": "username 长度 50 字上边界请求不引发服务端异常",
+      "priority": "P2",
+      "type": "edge_case",
+      "covers": [
+        "AC-RULE-26"
+      ],
+      "preconditions": [
+        "服务正常运行"
+      ],
+      "steps": [
+        "POST /api/auth/login",
+        "请求体 username 为 50 个字符（不存在的账号）、password=123456"
+      ],
+      "expected": [
+        "返回 HTTP 401（账号不存在），code=401",
+        "不返回 500，服务稳定"
+      ],
+      "design_method": "边界值分析",
+      "tags": [
+        "认证",
+        "边界值"
+      ]
+    },
+    {
+      "id": "API-LOGIN-012-B02",
+      "title": "username 长度 51 字超边界请求被稳定处理",
+      "priority": "P2",
+      "type": "edge_case",
+      "covers": [
+        "AC-RULE-26"
+      ],
+      "preconditions": [
+        "服务正常运行"
+      ],
+      "steps": [
+        "POST /api/auth/login",
+        "请求体 username 为 51 个字符、password=123456"
+      ],
+      "expected": [
+        "返回 HTTP 400 或 401（按约束长度 1-50 拒绝或按不存在账号处理）",
+        "不返回 500"
+      ],
+      "design_method": "边界值分析",
+      "tags": [
+        "认证",
+        "边界值"
+      ]
+    },
+    {
+      "id": "API-LOGIN-013-B03",
+      "title": "password 长度 50/51 字边界请求不引发服务端异常",
+      "priority": "P2",
+      "type": "edge_case",
+      "covers": [
+        "AC-RULE-26"
+      ],
+      "preconditions": [
+        "账号 admin 存在"
+      ],
+      "steps": [
+        "POST /api/auth/login",
+        "请求体 username=admin、password 分别为 50 字与 51 字各执行一次"
+      ],
+      "expected": [
+        "均返回 HTTP 401（密码错误），code=401",
+        "不返回 500"
+      ],
+      "design_method": "边界值分析",
+      "tags": [
+        "认证",
+        "边界值"
+      ]
+    },
+    {
+      "id": "API-LOGIN-014",
+      "title": "同一账号多次登录生成多个 token 且均有效",
+      "priority": "P2",
+      "type": "edge_case",
+      "covers": [
+        "AC-RULE-26"
+      ],
+      "preconditions": [
+        "账号 admin/123456 存在"
+      ],
+      "steps": [
+        "连续两次 POST /api/auth/login（相同账号密码），取得 tokenA、tokenB",
+        "分别用 tokenA、tokenB 调 GET /api/categories?all=1"
+      ],
+      "expected": [
+        "两次登录均 200 且 token 均非空（tokenA≠tokenB 或相同，以实现为准）",
+        "两个 token 调用管理接口均返回 200（DB token 方案支持多端并存）"
+      ],
+      "design_method": "错误推测法",
+      "tags": [
+        "认证",
+        "多端会话"
+      ]
+    },
+    {
+      "id": "API-RLOGIN-001",
+      "title": "采购角色选角色快速登录成功返回 user 身份与 token",
+      "priority": "P0",
+      "type": "happy_path",
+      "covers": [
+        "AC-RULE-24",
+        "AC-RULE-26",
+        "AC-OP-01"
+      ],
+      "preconditions": [
+        "种子库已初始化，6 个演示账号存在"
+      ],
+      "steps": [
+        "POST /api/auth/role-login",
+        "请求体 {\"erpRole\":\"purchase\"}"
+      ],
+      "expected": [
+        "HTTP 200，code=0",
+        "data.user.role=user，data.user.erpRole=purchase，data.user.username=purchase",
+        "data.token 非空，可用于收藏/打卡等用户行为接口"
+      ],
+      "design_method": "AC 驱动",
+      "tags": [
+        "认证",
+        "选角色登录"
+      ]
+    },
+    {
+      "id": "API-RLOGIN-002",
+      "title": "六个 ERP 角色枚举逐个登录全部成功且身份字段正确",
+      "priority": "P0",
+      "type": "happy_path",
+      "covers": [
+        "AC-RULE-24",
+        "AC-RULE-26",
+        "AC-FN-17",
+        "AC-OP-01"
+      ],
+      "preconditions": [
+        "种子库已初始化"
+      ],
+      "steps": [
+        "对 erpRole 依次取 sales / purchase / produce / warehouse / manage / finance，分别 POST /api/auth/role-login"
+      ],
+      "expected": [
+        "6 次请求均 HTTP 200，code=0",
+        "每次 data.user.erpRole 与请求值一致，data.user.role=user",
+        "token 均非空（erpRole 驱动角色推荐与消息过滤）"
+      ],
+      "design_method": "等价类划分",
+      "tags": [
+        "认证",
+        "参数化",
+        "角色枚举"
+      ]
+    },
+    {
+      "id": "API-RLOGIN-003-E01",
+      "title": "erpRole 缺失时选角色登录被 400 阻断",
+      "priority": "P0",
+      "type": "negative",
+      "covers": [
+        "AC-RULE-24"
+      ],
+      "preconditions": [
+        "服务正常运行"
+      ],
+      "steps": [
+        "POST /api/auth/role-login",
+        "请求体 {}（缺失 erpRole）"
+      ],
+      "expected": [
+        "HTTP 400，code=400",
+        "message=\"erpRole 参数不合法\""
+      ],
+      "design_method": "等价类划分",
+      "tags": [
+        "认证",
+        "参数校验"
+      ]
+    },
+    {
+      "id": "API-RLOGIN-004-E02",
+      "title": "erpRole 为非枚举值 hr 时被 400 阻断",
+      "priority": "P0",
+      "type": "negative",
+      "covers": [
+        "AC-RULE-24"
+      ],
+      "preconditions": [
+        "服务正常运行"
+      ],
+      "steps": [
+        "POST /api/auth/role-login",
+        "请求体 {\"erpRole\":\"hr\"}（不在 6 角色枚举内）"
+      ],
+      "expected": [
+        "HTTP 400，code=400",
+        "message=\"erpRole 参数不合法\""
+      ],
+      "design_method": "等价类划分",
+      "tags": [
+        "认证",
+        "参数校验"
+      ]
+    },
+    {
+      "id": "API-RLOGIN-005-E03",
+      "title": "erpRole 为空字符串时被 400 阻断",
+      "priority": "P1",
+      "type": "negative",
+      "covers": [
+        "AC-RULE-24"
+      ],
+      "preconditions": [
+        "服务正常运行"
+      ],
+      "steps": [
+        "POST /api/auth/role-login",
+        "请求体 {\"erpRole\":\"\"}"
+      ],
+      "expected": [
+        "HTTP 400，code=400",
+        "message=\"erpRole 参数不合法\""
+      ],
+      "design_method": "边界值分析",
+      "tags": [
+        "认证",
+        "参数校验"
+      ]
+    },
+    {
+      "id": "API-RLOGIN-006-E04",
+      "title": "erpRole 类型错误（数字/数组）时被 400 且不引发 500",
+      "priority": "P1",
+      "type": "negative",
+      "covers": [
+        "AC-RULE-24"
+      ],
+      "preconditions": [
+        "服务正常运行"
+      ],
+      "steps": [
+        "POST /api/auth/role-login",
+        "请求体分别 {\"erpRole\":123} 与 {\"erpRole\":[\"sales\"]} 各执行一次"
+      ],
+      "expected": [
+        "两次均 HTTP 400，code=400",
+        "message=\"erpRole 参数不合法\"，服务不崩溃"
+      ],
+      "design_method": "错误推测法",
+      "tags": [
+        "认证",
+        "参数校验",
+        "健壮性"
+      ]
+    },
+    {
+      "id": "API-RLOGIN-007-B01",
+      "title": "erpRole 大小写敏感边界（SALES）被按非法枚举处理",
+      "priority": "P2",
+      "type": "edge_case",
+      "covers": [
+        "AC-RULE-24"
+      ],
+      "preconditions": [
+        "服务正常运行"
+      ],
+      "steps": [
+        "POST /api/auth/role-login",
+        "请求体 {\"erpRole\":\"SALES\"}"
+      ],
+      "expected": [
+        "返回 HTTP 400 \"erpRole 参数不合法\"（枚举大小写敏感）；若实现做大小写归一则返回 sales 用户（标记待验证）",
+        "不返回 500"
+      ],
+      "design_method": "边界值分析",
+      "tags": [
+        "认证",
+        "边界值",
+        "待验证"
+      ]
+    },
+    {
+      "id": "API-RLOGIN-008",
+      "title": "选角色登录的 user token 调管理参数接口被 403 拒绝",
+      "priority": "P0",
+      "type": "negative",
+      "covers": [
+        "AC-RULE-24",
+        "AC-RULE-25"
+      ],
+      "preconditions": [
+        "已按 API-RLOGIN-001 取得 {userToken}"
+      ],
+      "steps": [
+        "GET /api/tutorials?status=draft，Header Authorization: Bearer {userToken}"
+      ],
+      "expected": [
+        "HTTP 403，code=403",
+        "message=\"无权限执行该操作\"（普通用户权限边界=浏览/搜索/详情/收藏/历史/评价/打卡）"
+      ],
+      "design_method": "AC 驱动",
+      "tags": [
+        "认证",
+        "权限矩阵",
+        "接口联动"
+      ]
+    },
+    {
+      "id": "API-RLOGIN-009",
+      "title": "同一角色重复登录新 token 生效且旧 token 仍有效",
+      "priority": "P2",
+      "type": "edge_case",
+      "covers": [
+        "AC-RULE-26"
+      ],
+      "preconditions": [
+        "种子库就绪"
+      ],
+      "steps": [
+        "两次 POST /api/auth/role-login {\"erpRole\":\"sales\"} 取得 tokenA、tokenB",
+        "分别用 tokenA、tokenB 调 POST /api/checkins（或已打卡则验证 200 幂等响应）"
+      ],
+      "expected": [
+        "两次登录均 200",
+        "tokenA、tokenB 调用用户行为接口均 200（登录态本地保持，多端并存）"
+      ],
+      "design_method": "错误推测法",
+      "tags": [
+        "认证",
+        "多端会话"
+      ]
+    },
+    {
+      "id": "API-CAT-LIST-001",
+      "title": "无参请求返回仅启用分类的两级树结构",
+      "priority": "P0",
+      "type": "happy_path",
+      "covers": [
+        "AC-RULE-06",
+        "AC-FN-01",
+        "AC-RULE-17"
+      ],
+      "preconditions": [
+        "种子库已初始化（12 个启用一级分类）"
+      ],
+      "steps": [
+        "GET /api/categories（无 Header、无参数，模拟游客）"
+      ],
+      "expected": [
+        "HTTP 200，code=0",
+        "data.list 为一级分类数组，每个节点 parentId=null",
+        "children 数组最多一层（本期限两级），所有节点 status=enabled（不出现 disabled）"
+      ],
+      "design_method": "AC 驱动",
+      "tags": [
+        "分类",
+        "前台口径"
+      ]
+    },
+    {
+      "id": "API-CAT-LIST-002",
+      "title": "一级分类共 12 个且构成符合 8 大模块+4 通用分类",
+      "priority": "P0",
+      "type": "happy_path",
+      "covers": [
+        "AC-FN-01",
+        "AC-RULE-17",
+        "AC-OP-01"
+      ],
+      "preconditions": [
+        "种子库按 PRD §7.1 初始化"
+      ],
+      "steps": [
+        "GET /api/categories",
+        "统计 data.list 中 parentId=null 的节点数量与名称"
+      ],
+      "expected": [
+        "一级分类共 12 个",
+        "包含 8 大模块（销售管理/项目管理/文件管理/生产制造/采购管理/库存管理/人事财务/系统设置对应映射）与 新手入门/最佳实践/常见问题/开放平台"
+      ],
+      "design_method": "AC 驱动",
+      "tags": [
+        "分类",
+        "种子校验"
+      ]
+    },
+    {
+      "id": "API-CAT-LIST-003",
+      "title": "withCount=1 返回角标计数且一级汇总含子分类",
+      "priority": "P0",
+      "type": "happy_path",
+      "covers": [
+        "AC-RULE-17",
+        "AC-FN-01"
+      ],
+      "preconditions": [
+        "种子库就绪，存在带子分类且有教程的分类"
+      ],
+      "steps": [
+        "GET /api/categories?withCount=1"
+      ],
+      "expected": [
+        "HTTP 200，每个分类节点含 tutorialCount 字段",
+        "一级分类 tutorialCount = 本分类直接教程数 + 子分类教程数（前台可见口径汇总）",
+        "二级分类 tutorialCount = 本分类直接计数",
+        "计数仅统计前台可见教程（存在线上过审版本且未下架）"
+      ],
+      "design_method": "AC 驱动",
+      "tags": [
+        "分类",
+        "计数口径"
+      ]
+    },
+    {
+      "id": "API-CAT-LIST-004",
+      "title": "0 篇教程的分类角标计数返回 0（前端显示待补充）",
+      "priority": "P1",
+      "type": "edge_case",
+      "covers": [
+        "AC-RULE-17",
+        "AC-OP-08"
+      ],
+      "preconditions": [
+        "存在一个启用且下无前台可见教程的分类（种子或后台预置）"
+      ],
+      "steps": [
+        "GET /api/categories?withCount=1",
+        "定位该分类节点"
+      ],
+      "expected": [
+        "HTTP 200，该节点 tutorialCount=0（前端渲染为\"待补充\"角标）"
+      ],
+      "design_method": "边界值分析",
+      "tags": [
+        "分类",
+        "空值"
+      ]
+    },
+    {
+      "id": "API-CAT-LIST-005",
+      "title": "同级分类按 sort 字段升序返回",
+      "priority": "P1",
+      "type": "happy_path",
+      "covers": [
+        "AC-RULE-17"
+      ],
+      "preconditions": [
+        "种子库就绪"
+      ],
+      "steps": [
+        "GET /api/categories",
+        "遍历 data.list 与各 children，校验同级 sort 序列"
+      ],
+      "expected": [
+        "HTTP 200，同级节点按 sort 升序排列（影响前台宫格与列表顺序）"
+      ],
+      "design_method": "AC 驱动",
+      "tags": [
+        "分类",
+        "排序"
+      ]
+    },
+    {
+      "id": "API-CAT-LIST-006",
+      "title": "admin 携 all=1 返回含停用分类的全量树",
+      "priority": "P1",
+      "type": "happy_path",
+      "covers": [
+        "AC-RULE-07",
+        "AC-RULE-22"
+      ],
+      "preconditions": [
+        "已取得 {adminToken}",
+        "系统中存在至少 1 个停用分类（后台停用操作，接口不在本批判次）"
+      ],
+      "steps": [
+        "GET /api/categories?all=1，Header Authorization: Bearer {adminToken}"
+      ],
+      "expected": [
+        "HTTP 200，data.list 含 status=disabled 的分类节点",
+        "启用与停用分类均返回（管理全量口径）"
+      ],
+      "design_method": "AC 驱动",
+      "tags": [
+        "分类",
+        "管理口径"
+      ]
+    },
+    {
+      "id": "API-CAT-LIST-007-E01",
+      "title": "all=1 未登录请求被 401 拒绝",
+      "priority": "P0",
+      "type": "exception",
+      "covers": [
+        "AC-EG-06",
+        "AC-RULE-22"
+      ],
+      "preconditions": [
+        "不携带任何 Authorization 头"
+      ],
+      "steps": [
+        "GET /api/categories?all=1"
+      ],
+      "expected": [
+        "HTTP 401，code=401",
+        "message=\"未登录或登录已失效\"，不返回任何分类数据"
+      ],
+      "design_method": "AC 驱动",
+      "tags": [
+        "分类",
+        "鉴权"
+      ]
+    },
+    {
+      "id": "API-CAT-LIST-008-E02",
+      "title": "all=1 运营编辑请求被 403 拒绝",
+      "priority": "P0",
+      "type": "negative",
+      "covers": [
+        "AC-RULE-23"
+      ],
+      "preconditions": [
+        "已取得 {operatorToken}（operator/123456 登录）"
+      ],
+      "steps": [
+        "GET /api/categories?all=1，Header Authorization: Bearer {operatorToken}"
+      ],
+      "expected": [
+        "HTTP 403，code=403",
+        "message=\"无权限执行该操作\"（分类树管理为管理员专属）"
+      ],
+      "design_method": "AC 驱动",
+      "tags": [
+        "分类",
+        "权限矩阵"
+      ]
+    },
+    {
+      "id": "API-CAT-LIST-009-E03",
+      "title": "all=1 普通用户请求被 403 拒绝",
+      "priority": "P0",
+      "type": "negative",
+      "covers": [
+        "AC-RULE-24"
+      ],
+      "preconditions": [
+        "已取得 {userToken}（role-login purchase）"
+      ],
+      "steps": [
+        "GET /api/categories?all=1，Header Authorization: Bearer {userToken}"
+      ],
+      "expected": [
+        "HTTP 403，code=403",
+        "message=\"无权限执行该操作\""
+      ],
+      "design_method": "AC 驱动",
+      "tags": [
+        "分类",
+        "权限矩阵"
+      ]
+    },
+    {
+      "id": "API-CAT-LIST-010-B01",
+      "title": "withCount 传非 0/1 值时请求稳定处理",
+      "priority": "P2",
+      "type": "edge_case",
+      "covers": [
+        "AC-RULE-06"
+      ],
+      "preconditions": [
+        "服务正常运行"
+      ],
+      "steps": [
+        "GET /api/categories?withCount=2"
+      ],
+      "expected": [
+        "HTTP 200（按无计数处理或视为 1，行为标记待验证）",
+        "不返回 500，树结构正常返回"
+      ],
+      "design_method": "边界值分析",
+      "tags": [
+        "分类",
+        "边界值",
+        "待验证"
+      ]
+    },
+    {
+      "id": "API-CAT-LIST-011",
+      "title": "伪造 token 访问管理参数被 401 拒绝",
+      "priority": "P1",
+      "type": "exception",
+      "covers": [
+        "AC-EG-06"
+      ],
+      "preconditions": [
+        "构造无效 token \"invalid-token-abc\""
+      ],
+      "steps": [
+        "GET /api/categories?all=1，Header Authorization: Bearer invalid-token-abc"
+      ],
+      "expected": [
+        "HTTP 401，code=401",
+        "message=\"未登录或登录已失效\""
+      ],
+      "design_method": "错误推测法",
+      "tags": [
+        "分类",
+        "鉴权",
+        "安全"
+      ]
+    },
+    {
+      "id": "API-CAT-LIST-012",
+      "title": "停用分类不出现在前台分类树",
+      "priority": "P1",
+      "type": "happy_path",
+      "covers": [
+        "AC-RULE-07",
+        "AC-EG-14",
+        "AC-OP-09"
+      ],
+      "preconditions": [
+        "分类 X 已由管理员停用（后台停用操作，接口不在本批判次），X 下存在已发布教程"
+      ],
+      "steps": [
+        "GET /api/categories（游客无参）",
+        "GET /api/categories?all=1（{adminToken}）"
+      ],
+      "expected": [
+        "无参请求：data.list 不含 X（前台宫格与筛选树隐藏）",
+        "all=1 请求：含 X 且 status=disabled（数据未丢失）"
+      ],
+      "design_method": "AC 驱动",
+      "tags": [
+        "分类",
+        "停用联动"
+      ]
+    },
+    {
+      "id": "API-CAT-LIST-013",
+      "title": "erpModule 模块映射字段值域校验",
+      "priority": "P1",
+      "type": "happy_path",
+      "covers": [
+        "AC-RULE-16",
+        "AC-OP-04"
+      ],
+      "preconditions": [
+        "种子库就绪（8 大模块分类有映射，通用分类无映射）"
+      ],
+      "steps": [
+        "GET /api/categories",
+        "遍历所有节点的 erpModule 字段"
+      ],
+      "expected": [
+        "HTTP 200",
+        "erpModule 取值 ∈ {sales, project, file, produce, purchase, inventory, hrFinance, system, null}",
+        "模块映射正确驱动角色推荐命中集（如采购角色映射采购管理+库存管理）"
+      ],
+      "design_method": "AC 驱动",
+      "tags": [
+        "分类",
+        "模块映射"
+      ]
+    },
+    {
+      "id": "API-TUT-LIST-001",
+      "title": "游客默认请求返回前台可见池教程列表与分页元数据",
+      "priority": "P0",
+      "type": "happy_path",
+      "covers": [
+        "AC-FN-01",
+        "AC-RULE-03",
+        "AC-RULE-25"
+      ],
+      "preconditions": [
+        "种子库就绪，存在多篇已发布教程"
+      ],
+      "steps": [
+        "GET /api/tutorials（无 Header、无参数）"
+      ],
+      "expected": [
+        "HTTP 200，code=0，data.list 非空",
+        "data.page=1，data.pageSize=10，data.total≥1",
+        "list 中每条含 id/title/summary/tags/categoryId/categoryName/isTop/sort/viewCount/favCount/helpfulYes/helpfulNo/shareCount/publishedAt/updatedAt 字段",
+        "结果全部属于前台可见池（无纯草稿/首次待审核/已下架教程）"
+      ],
+      "design_method": "AC 驱动",
+      "tags": [
+        "教程列表",
+        "前台口径"
+      ]
+    },
+    {
+      "id": "API-TUT-LIST-002",
+      "title": "分页翻页结果无重叠且 total 一致",
+      "priority": "P0",
+      "type": "happy_path",
+      "covers": [
+        "AC-FN-01"
+      ],
+      "preconditions": [
+        "种子库中前台可见教程 ≥6 篇"
+      ],
+      "steps": [
+        "GET /api/tutorials?page=1&pageSize=5",
+        "GET /api/tutorials?page=2&pageSize=5"
+      ],
+      "expected": [
+        "两次均 HTTP 200",
+        "两页 list 的 id 集合无交集，合计 ≤ total",
+        "两次 data.total 相等，page/pageSize 正确回显"
+      ],
+      "design_method": "等价类划分",
+      "tags": [
+        "教程列表",
+        "分页"
+      ]
+    },
+    {
+      "id": "API-TUT-LIST-003-B01",
+      "title": "pageSize=100 上边界请求正常返回",
+      "priority": "P1",
+      "type": "edge_case",
+      "covers": [
+        "AC-FN-01"
+      ],
+      "preconditions": [
+        "种子库就绪"
+      ],
+      "steps": [
+        "GET /api/tutorials?page=1&pageSize=100"
+      ],
+      "expected": [
+        "HTTP 200，code=0",
+        "data.pageSize=100，list 条数 ≤100（超出总数时为实际总数）"
+      ],
+      "design_method": "边界值分析",
+      "tags": [
+        "教程列表",
+        "分页边界"
+      ]
+    },
+    {
+      "id": "API-TUT-LIST-004-E01",
+      "title": "pageSize=101 超上限被 400 拒绝",
+      "priority": "P0",
+      "type": "negative",
+      "covers": [
+        "AC-FN-01"
+      ],
+      "preconditions": [
+        "服务正常运行"
+      ],
+      "steps": [
+        "GET /api/tutorials?page=1&pageSize=101"
+      ],
+      "expected": [
+        "HTTP 400，code=400",
+        "message=\"查询参数不合法\"（约束 1-100）"
+      ],
+      "design_method": "边界值分析",
+      "tags": [
+        "教程列表",
+        "参数校验"
+      ]
+    },
+    {
+      "id": "API-TUT-LIST-005-E02",
+      "title": "pageSize=0 下越界被 400 拒绝",
+      "priority": "P0",
+      "type": "negative",
+      "covers": [
+        "AC-FN-01"
+      ],
+      "preconditions": [
+        "服务正常运行"
+      ],
+      "steps": [
+        "GET /api/tutorials?page=1&pageSize=0"
+      ],
+      "expected": [
+        "HTTP 400，code=400",
+        "message=\"查询参数不合法\""
+      ],
+      "design_method": "边界值分析",
+      "tags": [
+        "教程列表",
+        "参数校验"
+      ]
+    },
+    {
+      "id": "API-TUT-LIST-006-E03",
+      "title": "page=0 下越界被 400 拒绝",
+      "priority": "P0",
+      "type": "negative",
+      "covers": [
+        "AC-FN-01"
+      ],
+      "preconditions": [
+        "服务正常运行"
+      ],
+      "steps": [
+        "GET /api/tutorials?page=0&pageSize=10"
+      ],
+      "expected": [
+        "HTTP 400，code=400",
+        "message=\"查询参数不合法\"（约束 page≥1）"
+      ],
+      "design_method": "边界值分析",
+      "tags": [
+        "教程列表",
+        "参数校验"
+      ]
+    },
+    {
+      "id": "API-TUT-LIST-007-E04",
+      "title": "page=-1 负数被 400 拒绝",
+      "priority": "P1",
+      "type": "negative",
+      "covers": [
+        "AC-FN-01"
+      ],
+      "preconditions": [
+        "服务正常运行"
+      ],
+      "steps": [
+        "GET /api/tutorials?page=-1&pageSize=10"
+      ],
+      "expected": [
+        "HTTP 400，code=400",
+        "message=\"查询参数不合法\""
+      ],
+      "design_method": "边界值分析",
+      "tags": [
+        "教程列表",
+        "参数校验"
+      ]
+    },
+    {
+      "id": "API-TUT-LIST-008-B02",
+      "title": "page 超最大页返回空列表且 total 不变",
+      "priority": "P2",
+      "type": "edge_case",
+      "covers": [
+        "AC-FN-01"
+      ],
+      "preconditions": [
+        "已知 data.total（先 GET /api/tutorials 采集）"
+      ],
+      "steps": [
+        "GET /api/tutorials?page=9999&pageSize=10"
+      ],
+      "expected": [
+        "HTTP 200，code=0",
+        "data.list=[]，data.total 与第一页一致"
+      ],
+      "design_method": "边界值分析",
+      "tags": [
+        "教程列表",
+        "分页边界"
+      ]
+    },
+    {
+      "id": "API-TUT-LIST-009",
+      "title": "关键词命中标题字段返回匹配教程",
+      "priority": "P0",
+      "type": "happy_path",
+      "covers": [
+        "AC-FN-02",
+        "AC-FN-24"
+      ],
+      "preconditions": [
+        "种子库存在标题含 MRP 的已发布教程"
+      ],
+      "steps": [
+        "GET /api/tutorials?keyword=MRP&page=1&pageSize=10"
+      ],
+      "expected": [
+        "HTTP 200，total≥1",
+        "list 中每条 title 含关键词 MRP（或摘要/标签命中）",
+        "响应耗时 <1000ms"
+      ],
+      "design_method": "AC 驱动",
+      "tags": [
+        "搜索",
+        "前台口径"
+      ]
+    },
+    {
+      "id": "API-TUT-LIST-010",
+      "title": "关键词命中摘要字段返回匹配教程",
+      "priority": "P1",
+      "type": "happy_path",
+      "covers": [
+        "AC-FN-02"
+      ],
+      "preconditions": [
+        "种子库存在摘要含特定词（如 运算）但标题不含的已发布教程"
+      ],
+      "steps": [
+        "GET /api/tutorials?keyword=运算"
+      ],
+      "expected": [
+        "HTTP 200，返回的教程 summary 含关键词",
+        "标题不含该关键词的教程也可因摘要命中而返回"
+      ],
+      "design_method": "等价类划分",
+      "tags": [
+        "搜索"
+      ]
+    },
+    {
+      "id": "API-TUT-LIST-011",
+      "title": "关键词命中标签字段返回匹配教程",
+      "priority": "P1",
+      "type": "happy_path",
+      "covers": [
+        "AC-FN-02"
+      ],
+      "preconditions": [
+        "种子库存在标签含 BOM 的已发布教程"
+      ],
+      "steps": [
+        "GET /api/tutorials?keyword=BOM"
+      ],
+      "expected": [
+        "HTTP 200，返回教程的 tags 数组含 BOM"
+      ],
+      "design_method": "等价类划分",
+      "tags": [
+        "搜索"
+      ]
+    },
+    {
+      "id": "API-TUT-LIST-012",
+      "title": "PRD 验收关键词\"算料\"搜索 1 秒内返回",
+      "priority": "P0",
+      "type": "happy_path",
+      "covers": [
+        "AC-FN-02",
+        "AC-FN-24"
+      ],
+      "preconditions": [
+        "种子库就绪（含标题/摘要/标签带\"算料\"的教程）"
+      ],
+      "steps": [
+        "GET /api/tutorials?keyword=算料",
+        "记录响应耗时"
+      ],
+      "expected": [
+        "HTTP 200，code=0",
+        "响应耗时 <1000ms（AC-NF-01 P95<1s 的单次抽样）",
+        "命中结果均含该关键词于标题/摘要/标签任一字段"
+      ],
+      "design_method": "AC 驱动",
+      "tags": [
+        "搜索",
+        "性能"
+      ]
+    },
+    {
+      "id": "API-TUT-LIST-013",
+      "title": "关键词无结果返回空列表与 total=0",
+      "priority": "P0",
+      "type": "edge_case",
+      "covers": [
+        "AC-FN-02",
+        "AC-EG-12"
+      ],
+      "preconditions": [
+        "种子库就绪"
+      ],
+      "steps": [
+        "GET /api/tutorials?keyword=绝不存在的关键词xyzq99"
+      ],
+      "expected": [
+        "HTTP 200，code=0",
+        "data.list=[]，data.total=0（前端据此渲染空态引导，页面不报错不白屏）"
+      ],
+      "design_method": "错误推测法",
+      "tags": [
+        "搜索",
+        "空态"
+      ]
+    },
+    {
+      "id": "API-TUT-LIST-014-B03",
+      "title": "超长关键词（1000 字）请求不引发 500",
+      "priority": "P2",
+      "type": "edge_case",
+      "covers": [
+        "AC-FN-02"
+      ],
+      "preconditions": [
+        "服务正常运行"
+      ],
+      "steps": [
+        "GET /api/tutorials?keyword={1000 个汉字拼接}"
+      ],
+      "expected": [
+        "HTTP 200 返回空结果或 HTTP 400 参数不合法（二者其一）",
+        "不返回 500，服务稳定"
+      ],
+      "design_method": "边界值分析",
+      "tags": [
+        "搜索",
+        "健壮性"
+      ]
+    },
+    {
+      "id": "API-TUT-LIST-015",
+      "title": "关键词含 SQL 通配符与特殊字符不引发异常",
+      "priority": "P1",
+      "type": "edge_case",
+      "covers": [
+        "AC-FN-02"
+      ],
+      "preconditions": [
+        "服务正常运行"
+      ],
+      "steps": [
+        "GET /api/tutorials?keyword=%'_;--（URL 编码后发送）"
+      ],
+      "expected": [
+        "HTTP 200 或 400（按普通字符处理或参数拒绝）",
+        "不返回 500、不返回数据库错误信息（防注入健壮性）"
+      ],
+      "design_method": "错误推测法",
+      "tags": [
+        "搜索",
+        "安全"
+      ]
+    },
+    {
+      "id": "API-TUT-LIST-016",
+      "title": "categoryId 筛选命中该分类及其子分类",
+      "priority": "P0",
+      "type": "happy_path",
+      "covers": [
+        "AC-FN-01",
+        "AC-FN-24",
+        "AC-RULE-06"
+      ],
+      "preconditions": [
+        "分类 A(id=1) 下有子分类 A1，A 与 A1 下均有前台可见教程"
+      ],
+      "steps": [
+        "GET /api/tutorials?categoryId=1"
+      ],
+      "expected": [
+        "HTTP 200，返回教程的 categoryId ∈ {1, A1 的 id}",
+        "不返回其他分类教程"
+      ],
+      "design_method": "AC 驱动",
+      "tags": [
+        "筛选",
+        "分类联动"
+      ]
+    },
+    {
+      "id": "API-TUT-LIST-017",
+      "title": "tag 单值精确筛选返回含该标签的教程",
+      "priority": "P1",
+      "type": "happy_path",
+      "covers": [
+        "AC-FN-02"
+      ],
+      "preconditions": [
+        "种子库存在带 MRP 标签的教程"
+      ],
+      "steps": [
+        "GET /api/tutorials?tag=MRP"
+      ],
+      "expected": [
+        "HTTP 200，返回教程的 tags 均含 MRP"
+      ],
+      "design_method": "等价类划分",
+      "tags": [
+        "筛选",
+        "标签"
+      ]
+    },
+    {
+      "id": "API-TUT-LIST-018",
+      "title": "tag 逗号分隔多值按交集过滤",
+      "priority": "P1",
+      "type": "happy_path",
+      "covers": [
+        "AC-FN-02"
+      ],
+      "preconditions": [
+        "存在同时含 MRP 与 BOM 标签的教程，也存在仅含 MRP 的教程"
+      ],
+      "steps": [
+        "GET /api/tutorials?tag=MRP,BOM"
+      ],
+      "expected": [
+        "HTTP 200",
+        "返回教程的 tags 同时包含 MRP 与 BOM（交集语义）",
+        "仅含 MRP 单标签的教程不返回"
+      ],
+      "design_method": "AC 驱动",
+      "tags": [
+        "筛选",
+        "标签多选"
+      ]
+    },
+    {
+      "id": "API-TUT-LIST-019",
+      "title": "tag 无命中返回空列表",
+      "priority": "P2",
+      "type": "edge_case",
+      "covers": [
+        "AC-FN-02"
+      ],
+      "preconditions": [
+        "种子库就绪"
+      ],
+      "steps": [
+        "GET /api/tutorials?tag=不存在的标签xyz"
+      ],
+      "expected": [
+        "HTTP 200，data.list=[]，data.total=0"
+      ],
+      "design_method": "错误推测法",
+      "tags": [
+        "筛选",
+        "空态"
+      ]
+    },
+    {
+      "id": "API-TUT-LIST-020",
+      "title": "sort=latest 按置顶优先→排序值→更新时间倒序返回",
+      "priority": "P0",
+      "type": "happy_path",
+      "covers": [
+        "AC-RULE-17",
+        "AC-FN-22"
+      ],
+      "preconditions": [
+        "种子库含置顶与非置顶教程"
+      ],
+      "steps": [
+        "GET /api/tutorials?sort=latest&pageSize=6"
+      ],
+      "expected": [
+        "HTTP 200",
+        "排序为 isTop DESC → sort ASC → updatedAt DESC（最近更新区块口径）",
+        "结果均属前台可见池"
+      ],
+      "design_method": "AC 驱动",
+      "tags": [
+        "首页区块",
+        "排序"
+      ]
+    },
+    {
+      "id": "API-TUT-LIST-021",
+      "title": "sort=hot 按置顶优先→浏览量倒序返回",
+      "priority": "P0",
+      "type": "happy_path",
+      "covers": [
+        "AC-RULE-17",
+        "AC-FN-22"
+      ],
+      "preconditions": [
+        "种子库含不同浏览量的已发布教程"
+      ],
+      "steps": [
+        "GET /api/tutorials?sort=hot&pageSize=6"
+      ],
+      "expected": [
+        "HTTP 200",
+        "排序为 isTop DESC → viewCount DESC（热门教程区块口径）",
+        "非置顶部分 viewCount 单调不增"
+      ],
+      "design_method": "AC 驱动",
+      "tags": [
+        "首页区块",
+        "排序"
+      ]
+    },
+    {
+      "id": "API-TUT-LIST-022-E05",
+      "title": "sort 传非法值时请求稳定处理",
+      "priority": "P2",
+      "type": "negative",
+      "covers": [
+        "AC-RULE-17"
+      ],
+      "preconditions": [
+        "服务正常运行"
+      ],
+      "steps": [
+        "GET /api/tutorials?sort=unknown"
+      ],
+      "expected": [
+        "HTTP 400 \"查询参数不合法\" 或 200 回退默认 latest（标记待验证）",
+        "不返回 500"
+      ],
+      "design_method": "错误推测法",
+      "tags": [
+        "排序",
+        "待验证"
+      ]
+    },
+    {
+      "id": "API-TUT-LIST-023",
+      "title": "top=1 仅返回置顶教程",
+      "priority": "P1",
+      "type": "happy_path",
+      "covers": [
+        "AC-RULE-17"
+      ],
+      "preconditions": [
+        "种子库存在 isTop=1 的教程"
+      ],
+      "steps": [
+        "GET /api/tutorials?top=1"
+      ],
+      "expected": [
+        "HTTP 200，list 中每条 isTop=1",
+        "非置顶教程不返回"
+      ],
+      "design_method": "等价类划分",
+      "tags": [
+        "筛选",
+        "置顶"
+      ]
+    },
+    {
+      "id": "API-TUT-LIST-024",
+      "title": "默认排序综合断言：置顶最前→sort 升序→更新时间倒序",
+      "priority": "P0",
+      "type": "happy_path",
+      "covers": [
+        "AC-RULE-17",
+        "AC-FN-22"
+      ],
+      "preconditions": [
+        "种子库含置顶+非置顶、sort 值不同、更新时间不同的教程"
+      ],
+      "steps": [
+        "GET /api/tutorials?pageSize=20（不传 sort）",
+        "遍历 list 校验排序序列"
+      ],
+      "expected": [
+        "HTTP 200",
+        "所有 isTop=1 的条目排在 isTop=0 之前",
+        "同置顶级别内按 sort 升序，sort 相同时按 updatedAt 倒序"
+      ],
+      "design_method": "AC 驱动",
+      "tags": [
+        "排序",
+        "前台口径"
+      ]
+    },
+    {
+      "id": "API-TUT-LIST-025",
+      "title": "admin all=1 返回全状态列表与扩展管理字段",
+      "priority": "P0",
+      "type": "happy_path",
+      "covers": [
+        "AC-RULE-22",
+        "AC-RULE-23"
+      ],
+      "preconditions": [
+        "已取得 {adminToken}",
+        "系统内存在草稿/待审核/已发布/已下架四态教程（种子或流程预置）"
+      ],
+      "steps": [
+        "GET /api/tutorials?all=1，Header Authorization: Bearer {adminToken}"
+      ],
+      "expected": [
+        "HTTP 200，返回教程覆盖四态（status ∈ draft/pending/published/offline）",
+        "每条含扩展字段：status、rejectReason、submitCount、authorId、authorName、hasOnlineVersion、lastOfflineAt、createdAt",
+        "草稿且被驳回过的教程 rejectReason 非空"
+      ],
+      "design_method": "AC 驱动",
+      "tags": [
+        "管理口径",
+        "后台列表"
+      ]
+    },
+    {
+      "id": "API-TUT-LIST-026",
+      "title": "operator status=draft 筛选返回草稿列表（运营可用管理参数）",
+      "priority": "P0",
+      "type": "happy_path",
+      "covers": [
+        "AC-RULE-23",
+        "AC-OP-05"
+      ],
+      "preconditions": [
+        "已取得 {operatorToken}",
+        "存在草稿教程"
+      ],
+      "steps": [
+        "GET /api/tutorials?status=draft，Header Authorization: Bearer {operatorToken}"
+      ],
+      "expected": [
+        "HTTP 200，list 每条 status=draft",
+        "operator 可访问管理口径（看板只读+内容管理范围）"
+      ],
+      "design_method": "AC 驱动",
+      "tags": [
+        "管理口径",
+        "权限矩阵"
+      ]
+    },
+    {
+      "id": "API-TUT-LIST-027-E06",
+      "title": "status 管理参数未登录被 401 拒绝",
+      "priority": "P0",
+      "type": "exception",
+      "covers": [
+        "AC-EG-06",
+        "AC-RULE-22"
+      ],
+      "preconditions": [
+        "不携带 Authorization 头"
+      ],
+      "steps": [
+        "GET /api/tutorials?status=pending"
+      ],
+      "expected": [
+        "HTTP 401，code=401",
+        "message=\"未登录或登录已失效\"，不返回任何管理数据"
+      ],
+      "design_method": "AC 驱动",
+      "tags": [
+        "管理口径",
+        "鉴权"
+      ]
+    },
+    {
+      "id": "API-TUT-LIST-028-E07",
+      "title": "status 管理参数普通用户被 403 拒绝",
+      "priority": "P0",
+      "type": "negative",
+      "covers": [
+        "AC-RULE-24"
+      ],
+      "preconditions": [
+        "已取得 {userToken}"
+      ],
+      "steps": [
+        "GET /api/tutorials?all=1，Header Authorization: Bearer {userToken}"
+      ],
+      "expected": [
+        "HTTP 403，code=403",
+        "message=\"无权限执行该操作\""
+      ],
+      "design_method": "AC 驱动",
+      "tags": [
+        "管理口径",
+        "权限矩阵"
+      ]
+    },
+    {
+      "id": "API-TUT-LIST-029-E08",
+      "title": "status 传非枚举值被 400 拒绝",
+      "priority": "P0",
+      "type": "negative",
+      "covers": [
+        "AC-RULE-22"
+      ],
+      "preconditions": [
+        "已取得 {adminToken}"
+      ],
+      "steps": [
+        "GET /api/tutorials?status=xyz，Header Authorization: Bearer {adminToken}"
+      ],
+      "expected": [
+        "HTTP 400，code=400",
+        "message=\"查询参数不合法\"（枚举 draft/pending/published/offline）"
+      ],
+      "design_method": "等价类划分",
+      "tags": [
+        "管理口径",
+        "参数校验"
+      ]
+    },
+    {
+      "id": "API-TUT-LIST-030",
+      "title": "all=1 与 status 同时传时以 status 为准",
+      "priority": "P1",
+      "type": "edge_case",
+      "covers": [
+        "AC-RULE-22"
+      ],
+      "preconditions": [
+        "已取得 {adminToken}",
+        "系统存在非 pending 状态教程"
+      ],
+      "steps": [
+        "GET /api/tutorials?all=1&status=pending，Header Authorization: Bearer {adminToken}"
+      ],
+      "expected": [
+        "HTTP 200，list 每条 status=pending（等价于仅按 status 过滤）",
+        "不返回 draft/published/offline 状态教程（互斥以 status 为准）"
+      ],
+      "design_method": "错误推测法",
+      "tags": [
+        "管理口径",
+        "参数互斥"
+      ]
+    },
+    {
+      "id": "API-TUT-LIST-031",
+      "title": "首次提审的教程在前台列表与搜索均不可见",
+      "priority": "P0",
+      "type": "happy_path",
+      "covers": [
+        "AC-RULE-02",
+        "AC-FN-07"
+      ],
+      "preconditions": [
+        "教程 T 从未通过审核（无线上过审版本），已由运营提审，当前 status=pending（提审接口不在本批判次，后台预置）",
+        "T 的标题含独有关键词 K1"
+      ],
+      "steps": [
+        "GET /api/tutorials（无参）",
+        "GET /api/tutorials?keyword=K1"
+      ],
+      "expected": [
+        "两次均 HTTP 200",
+        "无参列表不含 T 的 id",
+        "keyword=K1 结果 total=0（首次待审核在前台/搜索均不可见）"
+      ],
+      "design_method": "AC 驱动",
+      "tags": [
+        "可见性",
+        "状态联动"
+      ]
+    },
+    {
+      "id": "API-TUT-LIST-032",
+      "title": "已发布教程编辑回审期间列表仍返回且摘要为旧版快照",
+      "priority": "P0",
+      "type": "happy_path",
+      "covers": [
+        "AC-RULE-02",
+        "AC-FN-10",
+        "AC-RULE-03"
+      ],
+      "preconditions": [
+        "教程 T 已发布（线上版 v1，summary=S1），运营编辑保存后 status=pending（回审，接口不在本批判次）",
+        "编辑态摘要已改为 S2"
+      ],
+      "steps": [
+        "GET /api/tutorials?keyword={T 标题关键词}"
+      ],
+      "expected": [
+        "HTTP 200，结果含 T（回审期间旧版在线计入前台可见池）",
+        "T 的 summary=S1（公开口径读 published_summary 快照，非编辑值 S2）"
+      ],
+      "design_method": "AC 驱动",
+      "tags": [
+        "可见性",
+        "回审不断供"
+      ]
+    },
+    {
+      "id": "API-TUT-LIST-033",
+      "title": "回审版被驳回后列表与搜索持续命中旧版",
+      "priority": "P0",
+      "type": "happy_path",
+      "covers": [
+        "AC-FN-19",
+        "AC-EG-15"
+      ],
+      "preconditions": [
+        "承接 API-TUT-LIST-032 场景：T 处于回审 pending",
+        "已取得 {adminToken}"
+      ],
+      "steps": [
+        "POST /api/tutorials/{T}/review，Authorization: Bearer {adminToken}，请求体 {\"action\":\"reject\",\"reason\":\"内容需要补充截图说明\"}",
+        "GET /api/tutorials?keyword={T 标题关键词}"
+      ],
+      "expected": [
+        "第一步返回 HTTP 200，status=draft（编辑版回草稿）",
+        "第二步 HTTP 200 仍返回 T，summary=S1（旧版不断供，列表与搜索持续可命中）"
+      ],
+      "design_method": "AC 驱动",
+      "tags": [
+        "可见性",
+        "驳回不断供",
+        "接口联动"
+      ]
+    },
+    {
+      "id": "API-TUT-LIST-034",
+      "title": "下架后前台列表与关键词搜索均不返回该教程",
+      "priority": "P0",
+      "type": "happy_path",
+      "covers": [
+        "AC-RULE-04",
+        "AC-OP-03",
+        "AC-FN-20"
+      ],
+      "preconditions": [
+        "教程 T 状态=published 且前台可见",
+        "已取得 {adminToken}"
+      ],
+      "steps": [
+        "POST /api/tutorials/{T}/offline，Authorization: Bearer {adminToken}，请求体 {}",
+        "GET /api/tutorials（无参）",
+        "GET /api/tutorials?keyword={T 标题关键词}"
+      ],
+      "expected": [
+        "下架返回 HTTP 200，status=offline",
+        "两次 GET 均不含 T（三端下一请求即不返回，已下架不进前台可见池）"
+      ],
+      "design_method": "AC 驱动",
+      "tags": [
+        "可见性",
+        "下架联动",
+        "接口联动"
+      ]
+    },
+    {
+      "id": "API-TUT-LIST-035",
+      "title": "停用分类下教程不被关键词搜索命中",
+      "priority": "P1",
+      "type": "happy_path",
+      "covers": [
+        "AC-RULE-07",
+        "AC-EG-14"
+      ],
+      "preconditions": [
+        "分类 X 已停用，X 下存在已发布教程 T（标题含独有关键词 K2）"
+      ],
+      "steps": [
+        "GET /api/tutorials?keyword=K2",
+        "GET /api/tutorials?categoryId={X}"
+      ],
+      "expected": [
+        "keyword=K2 返回 total=0（检索范围排除停用分类内容）",
+        "categoryId 筛选不返回 T（前台列表池与搜索同口径）"
+      ],
+      "design_method": "AC 驱动",
+      "tags": [
+        "可见性",
+        "停用联动"
+      ]
+    },
+    {
+      "id": "API-TUT-LIST-036",
+      "title": "审核通过后前台列表下一次请求即返回该教程",
+      "priority": "P0",
+      "type": "happy_path",
+      "covers": [
+        "AC-FN-08"
+      ],
+      "preconditions": [
+        "教程 T 为首次待审核状态",
+        "已取得 {adminToken}"
+      ],
+      "steps": [
+        "POST /api/tutorials/{T}/review，Authorization: Bearer {adminToken}，请求体 {\"action\":\"approve\"}",
+        "立即 GET /api/tutorials?keyword={T 标题关键词}（不重启服务、不重新登录）"
+      ],
+      "expected": [
+        "审核返回 HTTP 200，status=published",
+        "列表请求立即返回 T（total≥1，无需重启服务、无需重新登录）"
+      ],
+      "design_method": "AC 驱动",
+      "tags": [
+        "发布可见",
+        "接口联动"
+      ]
+    },
+    {
+      "id": "API-TUT-LIST-037",
+      "title": "重新发布后前台列表下一次请求即恢复可见",
+      "priority": "P0",
+      "type": "happy_path",
+      "covers": [
+        "AC-FN-11"
+      ],
+      "preconditions": [
+        "教程 T 状态=offline",
+        "已取得 {adminToken}"
+      ],
+      "steps": [
+        "POST /api/tutorials/{T}/republish，Authorization: Bearer {adminToken}，请求体 {}",
+        "立即 GET /api/tutorials?keyword={T 标题关键词}"
+      ],
+      "expected": [
+        "重发布返回 HTTP 200，status=published",
+        "列表请求立即返回 T（即时恢复可见）"
+      ],
+      "design_method": "AC 驱动",
+      "tags": [
+        "重发布",
+        "接口联动"
+      ]
+    },
+    {
+      "id": "API-TUT-LIST-038",
+      "title": "收藏动作后列表收藏计数联动一致",
+      "priority": "P1",
+      "type": "happy_path",
+      "covers": [
+        "AC-RULE-09",
+        "AC-FN-15"
+      ],
+      "preconditions": [
+        "教程 T 已发布，收藏前 GET /api/tutorials 采集 favCount=F0",
+        "已取得 {userToken}"
+      ],
+      "steps": [
+        "POST /api/favorites/{T}，Authorization: Bearer {userToken}，请求体 {}",
+        "GET /api/tutorials?keyword={T 标题关键词} 读取 T 的 favCount"
+      ],
+      "expected": [
+        "收藏返回 HTTP 200，data.favCount=F0+1",
+        "列表中 T 的 favCount 与收藏接口回传值一致（当前有效收藏数口径）"
+      ],
+      "design_method": "AC 驱动",
+      "tags": [
+        "计数联动",
+        "接口联动"
+      ]
+    },
+    {
+      "id": "API-TUT-LIST-039",
+      "title": "游客与登录普通用户前台列表口径一致",
+      "priority": "P0",
+      "type": "happy_path",
+      "covers": [
+        "AC-RULE-25",
+        "AC-FN-22"
+      ],
+      "preconditions": [
+        "已取得 {userToken}"
+      ],
+      "steps": [
+        "GET /api/tutorials?pageSize=50（无 Header）",
+        "GET /api/tutorials?pageSize=50，Authorization: Bearer {userToken}"
+      ],
+      "expected": [
+        "两次均 HTTP 200",
+        "两次 data.total 相等且 list 的 id 集合一致（游客与普通用户共用前台口径，个性化数据不进列表）"
+      ],
+      "design_method": "等价类划分",
+      "tags": [
+        "前台口径",
+        "游客"
+      ]
+    },
+    {
+      "id": "API-TUT-LIST-040-B04",
+      "title": "关键词前后带空格时的命中行为稳定",
+      "priority": "P2",
+      "type": "edge_case",
+      "covers": [
+        "AC-FN-02"
+      ],
+      "preconditions": [
+        "种子库存在标题含 MRP 的教程"
+      ],
+      "steps": [
+        "GET /api/tutorials?keyword=%20MRP%20（前后各一空格）"
+      ],
+      "expected": [
+        "HTTP 200：trim 后命中（total≥1）或按原样不命中（total=0），行为标记待验证",
+        "不返回 500"
+      ],
+      "design_method": "边界值分析",
+      "tags": [
+        "搜索",
+        "边界值",
+        "待验证"
+      ]
+    },
+    {
+      "id": "API-TUT-DETAIL-001",
+      "title": "已发布教程详情返回完整字段与线上过审版快照",
+      "priority": "P0",
+      "type": "happy_path",
+      "covers": [
+        "AC-FN-01",
+        "AC-RULE-03"
+      ],
+      "preconditions": [
+        "教程 T 状态=published，存在线上过审版本"
+      ],
+      "steps": [
+        "GET /api/tutorials/{T}（无登录 Header，模拟游客）"
+      ],
+      "expected": [
+        "HTTP 200，code=0",
+        "data 含 title/summary/content/videoUrl/tags/categoryId/categoryName/isTop/sort/viewCount/favCount/helpfulYes/helpfulNo/shareCount/publishedAt/updatedAt/prev/next/related 字段",
+        "content 非空（读 published_content 快照列）"
+      ],
+      "design_method": "AC 驱动",
+      "tags": [
+        "详情",
+        "前台口径"
+      ]
+    },
+    {
+      "id": "API-TUT-DETAIL-002",
+      "title": "每次成功打开详情浏览量 +1 且不去重",
+      "priority": "P0",
+      "type": "happy_path",
+      "covers": [
+        "AC-RULE-08"
+      ],
+      "preconditions": [
+        "教程 T 已发布"
+      ],
+      "steps": [
+        "GET /api/tutorials/{T} 记录返回的 viewCount=V1",
+        "再次 GET /api/tutorials/{T} 记录 viewCount=V2"
+      ],
+      "expected": [
+        "两次均 HTTP 200",
+        "V2=V1+1（返回值已含本次浏览，同一用户重复打开也计数）"
+      ],
+      "design_method": "AC 驱动",
+      "tags": [
+        "详情",
+        "浏览量口径"
+      ]
+    },
+    {
+      "id": "API-TUT-DETAIL-003",
+      "title": "游客打开详情同样计入浏览量",
+      "priority": "P1",
+      "type": "happy_path",
+      "covers": [
+        "AC-RULE-08",
+        "AC-RULE-25"
+      ],
+      "preconditions": [
+        "教程 T 已发布"
+      ],
+      "steps": [
+        "GET /api/tutorials/{T}（无 Authorization）记录 viewCount=V1",
+        "GET /api/tutorials/{T}（无 Authorization）记录 viewCount=V2"
+      ],
+      "expected": [
+        "两次均 HTTP 200",
+        "V2=V1+1（含游客打开，不去重）"
+      ],
+      "design_method": "AC 驱动",
+      "tags": [
+        "详情",
+        "浏览量口径",
+        "游客"
+      ]
+    },
+    {
+      "id": "API-TUT-DETAIL-004",
+      "title": "未登录请求 my 个性化字段均为 null",
+      "priority": "P0",
+      "type": "happy_path",
+      "covers": [
+        "AC-RULE-25"
+      ],
+      "preconditions": [
+        "教程 T 已发布"
+      ],
+      "steps": [
+        "GET /api/tutorials/{T}（无 Authorization）"
+      ],
+      "expected": [
+        "HTTP 200",
+        "data.myFavorite=null，data.myFeedback=null，data.myProgress=null"
+      ],
+      "design_method": "AC 驱动",
+      "tags": [
+        "详情",
+        "个性化字段",
+        "游客"
+      ]
+    },
+    {
+      "id": "API-TUT-DETAIL-005",
+      "title": "登录用户详情返回收藏/评价/进度个性化字段",
+      "priority": "P0",
+      "type": "happy_path",
+      "covers": [
+        "AC-FN-04",
+        "AC-FN-25",
+        "AC-RULE-11",
+        "AC-RULE-15"
+      ],
+      "preconditions": [
+        "用户 U 已登录（{userToken}）",
+        "U 已收藏教程 T、已评价\"有帮助\"（myFeedback 应为 1）、阅读进度 60%（收藏/评价/进度写入接口不在本批判次，经前端行为或种子预置）"
+      ],
+      "steps": [
+        "GET /api/tutorials/{T}，Authorization: Bearer {userToken}"
+      ],
+      "expected": [
+        "HTTP 200",
+        "data.myFavorite=true",
+        "data.myFeedback=1（1=有帮助，与小程序共用同一条评价记录）",
+        "data.myProgress=60（0-100 整数，跨端取最新值）"
+      ],
+      "design_method": "AC 驱动",
+      "tags": [
+        "详情",
+        "个性化字段",
+        "跨端"
+      ]
+    },
+    {
+      "id": "API-TUT-DETAIL-006",
+      "title": "prev/next 为同分类相邻可见教程且边界为 null",
+      "priority": "P1",
+      "type": "happy_path",
+      "covers": [
+        "AC-RULE-03"
+      ],
+      "preconditions": [
+        "分类 C 下有多篇前台可见教程，已知按 isTop DESC→sort ASC→updatedAt DESC 的排列顺序"
+      ],
+      "steps": [
+        "GET /api/tutorials/{首篇id} 读取 prev",
+        "GET /api/tutorials/{中间篇id} 读取 prev 与 next",
+        "GET /api/tutorials/{末篇id} 读取 next"
+      ],
+      "expected": [
+        "三次均 HTTP 200",
+        "中间篇 prev/next 指向排列中的相邻教程（同分类）",
+        "首篇 prev=null 或末篇 next=null（无相邻时为 null，前端按钮置灰）"
+      ],
+      "design_method": "AC 驱动",
+      "tags": [
+        "详情",
+        "上下篇"
+      ]
+    },
+    {
+      "id": "API-TUT-DETAIL-007",
+      "title": "related 为同分类可见教程 4 篇排除本篇按浏览量倒序",
+      "priority": "P1",
+      "type": "happy_path",
+      "covers": [
+        "AC-FN-20",
+        "AC-RULE-03"
+      ],
+      "preconditions": [
+        "分类 C 下除 T 外存在 ≥4 篇前台可见教程"
+      ],
+      "steps": [
+        "GET /api/tutorials/{T}"
+      ],
+      "expected": [
+        "HTTP 200",
+        "data.related 长度=4（不足 4 篇时为实际数量）",
+        "related 不含 T 的 id，全部属于 T 的同分类且前台可见，按 viewCount 倒序"
+      ],
+      "design_method": "AC 驱动",
+      "tags": [
+        "详情",
+        "关联推荐"
+      ]
+    },
+    {
+      "id": "API-TUT-DETAIL-008-E01",
+      "title": "不存在的教程 id 返回 404 通用文案",
+      "priority": "P0",
+      "type": "exception",
+      "covers": [
+        "AC-RULE-02"
+      ],
+      "preconditions": [
+        "id=999999 的教程不存在"
+      ],
+      "steps": [
+        "GET /api/tutorials/999999"
+      ],
+      "expected": [
+        "HTTP 404，code=404",
+        "message=\"该教程不存在或暂不可见\""
+      ],
+      "design_method": "错误推测法",
+      "tags": [
+        "详情",
+        "404"
+      ]
+    },
+    {
+      "id": "API-TUT-DETAIL-009-E02",
+      "title": "纯草稿教程直达详情返回 404 不可见",
+      "priority": "P0",
+      "type": "exception",
+      "covers": [
+        "AC-RULE-01",
+        "AC-RULE-02"
+      ],
+      "preconditions": [
+        "教程 T 为纯草稿（从未提审或被驳回且无线上过审版本），仅作者后台可见"
+      ],
+      "steps": [
+        "GET /api/tutorials/{T}（分别以无 Header、{adminToken}、{userToken} 三种身份请求）"
+      ],
+      "expected": [
+        "三次均 HTTP 404，code=404",
+        "message=\"该教程不存在或暂不可见\"（公开口径对任何身份都不放开草稿）"
+      ],
+      "design_method": "AC 驱动",
+      "tags": [
+        "详情",
+        "可见性",
+        "草稿"
+      ]
+    },
+    {
+      "id": "API-TUT-DETAIL-010-E03",
+      "title": "首次待审核教程直达详情返回 404 不可见",
+      "priority": "P0",
+      "type": "exception",
+      "covers": [
+        "AC-RULE-02",
+        "AC-FN-07"
+      ],
+      "preconditions": [
+        "教程 T 无线上过审版本且 status=pending"
+      ],
+      "steps": [
+        "GET /api/tutorials/{T}"
+      ],
+      "expected": [
+        "HTTP 404，code=404",
+        "message=\"该教程不存在或暂不可见\"（AC-RULE-02 兜底定义的直达表现）"
+      ],
+      "design_method": "AC 驱动",
+      "tags": [
+        "详情",
+        "可见性",
+        "待审核"
+      ]
+    },
+    {
+      "id": "API-TUT-DETAIL-011-E04",
+      "title": "已下架教程直达详情返回 404 并附同类推荐数据",
+      "priority": "P0",
+      "type": "exception",
+      "covers": [
+        "AC-FN-20",
+        "AC-EG-10",
+        "AC-RULE-04"
+      ],
+      "preconditions": [
+        "教程 T 存在线上过审版本但已被下架（status=offline）",
+        "T 的同分类下存在其他已发布教程"
+      ],
+      "steps": [
+        "GET /api/tutorials/{T}"
+      ],
+      "expected": [
+        "HTTP 404，code=404，message=\"该教程已下架\"",
+        "data.reason=offline",
+        "data.related 为同分类可见教程推荐（正文 content 不可见）"
+      ],
+      "design_method": "AC 驱动",
+      "tags": [
+        "详情",
+        "已下架善后"
+      ]
+    },
+    {
+      "id": "API-TUT-DETAIL-012-B01",
+      "title": "id 为非数字字符串时请求稳定处理",
+      "priority": "P2",
+      "type": "edge_case",
+      "covers": [
+        "AC-RULE-02"
+      ],
+      "preconditions": [
+        "服务正常运行"
+      ],
+      "steps": [
+        "GET /api/tutorials/abc"
+      ],
+      "expected": [
+        "HTTP 404 或 400（按路由/参数解析规则）",
+        "不返回 500"
+      ],
+      "design_method": "错误推测法",
+      "tags": [
+        "详情",
+        "健壮性"
+      ]
+    },
+    {
+      "id": "API-TUT-DETAIL-013-B02",
+      "title": "id 为 0 或负数时返回 404",
+      "priority": "P2",
+      "type": "edge_case",
+      "covers": [
+        "AC-RULE-02"
+      ],
+      "preconditions": [
+        "服务正常运行"
+      ],
+      "steps": [
+        "GET /api/tutorials/0 与 GET /api/tutorials/-1 各执行一次"
+      ],
+      "expected": [
+        "两次均 HTTP 404",
+        "message=\"该教程不存在或暂不可见\"或等价 404 文案"
+      ],
+      "design_method": "边界值分析",
+      "tags": [
+        "详情",
+        "边界值"
+      ]
+    },
+    {
+      "id": "API-TUT-DETAIL-014",
+      "title": "回审等待期间详情展示旧版 v1 快照",
+      "priority": "P0",
+      "type": "happy_path",
+      "covers": [
+        "AC-FN-10",
+        "AC-RULE-02"
+      ],
+      "preconditions": [
+        "教程 T 已发布（线上 v1，content=C1），运营编辑保存 v2 后 status=pending（编辑保存接口不在本批判次）"
+      ],
+      "steps": [
+        "GET /api/tutorials/{T}"
+      ],
+      "expected": [
+        "HTTP 200（回审期间旧版在线不断供）",
+        "data.content=C1（published_content 快照，非编辑值 C2）"
+      ],
+      "design_method": "AC 驱动",
+      "tags": [
+        "详情",
+        "回审不断供"
+      ]
+    },
+    {
+      "id": "API-TUT-DETAIL-015",
+      "title": "回审版被驳回后详情仍 200 展示旧版 v1",
+      "priority": "P0",
+      "type": "happy_path",
+      "covers": [
+        "AC-FN-19",
+        "AC-EG-15"
+      ],
+      "preconditions": [
+        "承接 API-TUT-DETAIL-014 场景（T 回审 pending）",
+        "已取得 {adminToken}"
+      ],
+      "steps": [
+        "POST /api/tutorials/{T}/review，Authorization: Bearer {adminToken}，请求体 {\"action\":\"reject\",\"reason\":\"正文步骤缺少截图说明\"}",
+        "GET /api/tutorials/{T}"
+      ],
+      "expected": [
+        "驳回返回 HTTP 200，status=draft（仅编辑版回草稿）",
+        "详情仍 HTTP 200 且 content=C1（前台持续展示线上过审版本，正文内容不变）"
+      ],
+      "design_method": "AC 驱动",
+      "tags": [
+        "详情",
+        "驳回不断供",
+        "接口联动"
+      ]
+    },
+    {
+      "id": "API-TUT-DETAIL-016-E05",
+      "title": "已下架来源的回审教程详情维持 404 不可见",
+      "priority": "P1",
+      "type": "exception",
+      "covers": [
+        "AC-EG-18",
+        "AC-RULE-05"
+      ],
+      "preconditions": [
+        "教程 T 曾发布后下架（status=offline），运营编辑保存后 status=pending（已下架→待审核迁移，编辑接口不在本批判次）"
+      ],
+      "steps": [
+        "GET /api/tutorials/{T}"
+      ],
+      "expected": [
+        "HTTP 404",
+        "message=\"该教程已下架\"或\"该教程不存在或暂不可见\"（回审来源为已下架态，维持不可见，防止下架被编辑动作意外解除）"
+      ],
+      "design_method": "AC 驱动",
+      "tags": [
+        "详情",
+        "可见性",
+        "已下架回审"
+      ]
+    },
+    {
+      "id": "API-TUT-DETAIL-017-E06",
+      "title": "已下架来源回审版被驳回后详情仍 404",
+      "priority": "P1",
+      "type": "exception",
+      "covers": [
+        "AC-EG-18",
+        "AC-RULE-02"
+      ],
+      "preconditions": [
+        "承接 API-TUT-DETAIL-016 场景（T 已下架来源回审 pending）",
+        "已取得 {adminToken}"
+      ],
+      "steps": [
+        "POST /api/tutorials/{T}/review，Authorization: Bearer {adminToken}，请求体 {\"action\":\"reject\",\"reason\":\"内容仍需补充完善\"}",
+        "GET /api/tutorials/{T}"
+      ],
+      "expected": [
+        "驳回返回 HTTP 200，status=draft",
+        "详情仍 HTTP 404（回审版驳回回落草稿但来源为已下架态，需重新提审并再次通过才恢复可见）"
+      ],
+      "design_method": "AC 驱动",
+      "tags": [
+        "详情",
+        "可见性",
+        "接口联动"
+      ]
+    },
+    {
+      "id": "API-TUT-DETAIL-018",
+      "title": "停用分类下已发布教程经直达链接仍可访问",
+      "priority": "P1",
+      "type": "happy_path",
+      "covers": [
+        "AC-RULE-07",
+        "AC-EG-14"
+      ],
+      "preconditions": [
+        "分类 X 已停用，X 下教程 T 为已发布状态"
+      ],
+      "steps": [
+        "GET /api/tutorials/{T}"
+      ],
+      "expected": [
+        "HTTP 200（停用分类仅隐藏导航与搜索入口，其下已发布教程仍可经收藏/历史/直达链接访问正文）",
+        "content 正常返回"
+      ],
+      "design_method": "AC 驱动",
+      "tags": [
+        "详情",
+        "停用联动"
+      ]
+    },
+    {
+      "id": "API-TUT-DETAIL-019",
+      "title": "all=1 管理口径返回当前编辑值且不计浏览量",
+      "priority": "P0",
+      "type": "happy_path",
+      "covers": [
+        "AC-RULE-22",
+        "AC-FN-10"
+      ],
+      "preconditions": [
+        "教程 T 处于回审 pending（编辑值 v2=C2，线上快照 v1=C1）",
+        "已取得 {adminToken}"
+      ],
+      "steps": [
+        "GET /api/tutorials/{T}?all=1，Authorization: Bearer {adminToken}，连续两次请求记录 viewCount"
+      ],
+      "expected": [
+        "HTTP 200",
+        "data.content=C2（读 content/summary 工作列当前编辑值，非快照 C1）",
+        "两次 viewCount 相同（管理口径不计浏览量）",
+        "data.prev=null 且 data.next=null"
+      ],
+      "design_method": "AC 驱动",
+      "tags": [
+        "详情",
+        "管理口径"
+      ]
+    },
+    {
+      "id": "API-TUT-DETAIL-020",
+      "title": "operator 使用 all=1 管理口径查看编辑值",
+      "priority": "P1",
+      "type": "happy_path",
+      "covers": [
+        "AC-RULE-23"
+      ],
+      "preconditions": [
+        "教程 T 为草稿（含编辑内容）",
+        "已取得 {operatorToken}"
+      ],
+      "steps": [
+        "GET /api/tutorials/{T}?all=1，Authorization: Bearer {operatorToken}"
+      ],
+      "expected": [
+        "HTTP 200，返回草稿当前编辑值 content",
+        "运营编辑可用管理口径取数（后台编辑器/审核卡片数据源）"
+      ],
+      "design_method": "AC 驱动",
+      "tags": [
+        "详情",
+        "管理口径",
+        "权限矩阵"
+      ]
+    },
+    {
+      "id": "API-TUT-DETAIL-021-E07",
+      "title": "all=1 未登录请求被 401 拒绝",
+      "priority": "P0",
+      "type": "exception",
+      "covers": [
+        "AC-EG-06"
+      ],
+      "preconditions": [
+        "不携带 Authorization 头"
+      ],
+      "steps": [
+        "GET /api/tutorials/{已发布教程id}?all=1"
+      ],
+      "expected": [
+        "HTTP 401，code=401",
+        "message=\"未登录或登录已失效\"（all=1 为管理口径参数，需登录）"
+      ],
+      "design_method": "AC 驱动",
+      "tags": [
+        "详情",
+        "鉴权"
+      ]
+    },
+    {
+      "id": "API-TUT-DETAIL-022-E08",
+      "title": "all=1 普通用户请求被 403 拒绝",
+      "priority": "P0",
+      "type": "negative",
+      "covers": [
+        "AC-RULE-24"
+      ],
+      "preconditions": [
+        "已取得 {userToken}"
+      ],
+      "steps": [
+        "GET /api/tutorials/{已发布教程id}?all=1，Authorization: Bearer {userToken}"
+      ],
+      "expected": [
+        "HTTP 403，code=403",
+        "message=\"无权限执行该操作\""
+      ],
+      "design_method": "AC 驱动",
+      "tags": [
+        "详情",
+        "权限矩阵"
+      ]
+    },
+    {
+      "id": "API-TUT-DETAIL-023",
+      "title": "重新发布后详情恢复 200 且不再返回已下架提示",
+      "priority": "P0",
+      "type": "happy_path",
+      "covers": [
+        "AC-FN-11",
+        "AC-RULE-04"
+      ],
+      "preconditions": [
+        "教程 T 状态=offline",
+        "已取得 {adminToken}"
+      ],
+      "steps": [
+        "POST /api/tutorials/{T}/republish，Authorization: Bearer {adminToken}，请求体 {}",
+        "GET /api/tutorials/{T}"
+      ],
+      "expected": [
+        "重发布返回 HTTP 200，status=published",
+        "详情返回 HTTP 200，content 为线上过审版本（不再 404）"
+      ],
+      "design_method": "AC 驱动",
+      "tags": [
+        "详情",
+        "重发布联动",
+        "接口联动"
+      ]
+    },
+    {
+      "id": "API-TUT-DETAIL-024",
+      "title": "审核通过后详情展示新版快照（首次发布=编辑值）",
+      "priority": "P0",
+      "type": "happy_path",
+      "covers": [
+        "AC-FN-08",
+        "AC-RULE-02"
+      ],
+      "preconditions": [
+        "教程 T 首次待审核，编辑 content=C2",
+        "已取得 {adminToken}"
+      ],
+      "steps": [
+        "POST /api/tutorials/{T}/review，Authorization: Bearer {adminToken}，请求体 {\"action\":\"approve\"}",
+        "GET /api/tutorials/{T}"
+      ],
+      "expected": [
+        "审核返回 HTTP 200（content/summary 拷贝至 published_* 快照列）",
+        "详情 HTTP 200，data.content=C2（公开口径与快照一致）"
+      ],
+      "design_method": "AC 驱动",
+      "tags": [
+        "详情",
+        "发布联动",
+        "接口联动"
+      ]
+    },
+    {
+      "id": "API-TUT-DETAIL-025",
+      "title": "复制生成的副本直达详情返回 404",
+      "priority": "P1",
+      "type": "exception",
+      "covers": [
+        "AC-RULE-01",
+        "AC-RULE-14",
+        "AC-FN-12"
+      ],
+      "preconditions": [
+        "已取得 {operatorToken}",
+        "源教程 T 存在"
+      ],
+      "steps": [
+        "POST /api/tutorials/{T}/copy，Authorization: Bearer {operatorToken}，请求体 {}，记录新 id N",
+        "GET /api/tutorials/{N}"
+      ],
+      "expected": [
+        "复制返回 HTTP 200，data.status=draft（无 published_content 快照）",
+        "详情返回 HTTP 404，message=\"该教程不存在或暂不可见\"（纯草稿不可见）"
+      ],
+      "design_method": "AC 驱动",
+      "tags": [
+        "详情",
+        "复制联动",
+        "接口联动"
+      ]
+    },
+    {
+      "id": "API-TUT-DETAIL-026",
+      "title": "视频外链字段按契约返回 mp4 直链或 null",
+      "priority": "P2",
+      "type": "happy_path",
+      "covers": [
+        "AC-EG-02"
+      ],
+      "preconditions": [
+        "种子库存在带 videoUrl 与不带 videoUrl 的已发布教程各一篇"
+      ],
+      "steps": [
+        "GET /api/tutorials/{带视频教程id} 与 GET /api/tutorials/{无视频教程id} 各一次"
+      ],
+      "expected": [
+        "两次均 HTTP 200",
+        "前者 data.videoUrl 为 mp4 直链字符串（失效时前端渲染占位图与\"视频暂不可用，可先阅读图文步骤\"提示）",
+        "后者 data.videoUrl=null"
+      ],
+      "design_method": "等价类划分",
+      "tags": [
+        "详情",
+        "字段契约"
+      ]
+    },
+    {
+      "id": "API-TUT-DETAIL-027",
+      "title": "有帮助/没帮助计数字段返回（有帮助率数据源）",
+      "priority": "P2",
+      "type": "happy_path",
+      "covers": [
+        "AC-RULE-10"
+      ],
+      "preconditions": [
+        "教程 T 已产生评价数据（helpfulYes=Y，helpfulNo=N）"
+      ],
+      "steps": [
+        "GET /api/tutorials/{T}"
+      ],
+      "expected": [
+        "HTTP 200",
+        "data.helpfulYes=Y，data.helpfulNo=N（有帮助率=Y÷(Y+N)、没帮助占比=N÷(Y+N) 的原始数据源，两项互补）"
+      ],
+      "design_method": "AC 驱动",
+      "tags": [
+        "详情",
+        "统计口径"
+      ]
+    },
+    {
+      "id": "API-REVIEW-001",
+      "title": "管理员通过待审核教程：状态变已发布并留痕审核人与时间",
+      "priority": "P0",
+      "type": "happy_path",
+      "covers": [
+        "AC-FN-08",
+        "AC-RULE-05",
+        "AC-RULE-22"
+      ],
+      "preconditions": [
+        "教程 T status=pending（首次或回审）",
+        "已取得 {adminToken}"
+      ],
+      "steps": [
+        "POST /api/tutorials/{T}/review，Authorization: Bearer {adminToken}，请求体 {\"action\":\"approve\"}"
+      ],
+      "expected": [
+        "HTTP 200，code=0",
+        "data.status=published",
+        "data.publishedAt 与 data.reviewedAt 为合法时间字符串，data.reviewerId=admin 用户 id（审核留痕）"
+      ],
+      "design_method": "AC 驱动",
+      "tags": [
+        "审核",
+        "状态机",
+        "留痕"
+      ]
+    },
+    {
+      "id": "API-REVIEW-002",
+      "title": "通过后前台列表与详情下一次请求即返回该教程",
+      "priority": "P0",
+      "type": "happy_path",
+      "covers": [
+        "AC-FN-08"
+      ],
+      "preconditions": [
+        "教程 T 为首次待审核（此前前台不可见）",
+        "已取得 {adminToken}"
+      ],
+      "steps": [
+        "POST /api/tutorials/{T}/review，Authorization: Bearer {adminToken}，请求体 {\"action\":\"approve\"}",
+        "GET /api/tutorials?keyword={T 标题关键词}",
+        "GET /api/tutorials/{T}"
+      ],
+      "expected": [
+        "审核 HTTP 200 status=published",
+        "列表请求返回 T（无需重启服务、无需重新登录）",
+        "详情请求 HTTP 200"
+      ],
+      "design_method": "AC 驱动",
+      "tags": [
+        "审核",
+        "发布可见",
+        "接口联动"
+      ]
+    },
+    {
+      "id": "API-REVIEW-003",
+      "title": "驳回待审核教程（原因 ≥5 字）：回草稿并返回原因原文",
+      "priority": "P0",
+      "type": "happy_path",
+      "covers": [
+        "AC-FN-09",
+        "AC-RULE-19",
+        "AC-RULE-05"
+      ],
+      "preconditions": [
+        "教程 T status=pending",
+        "已取得 {adminToken}"
+      ],
+      "steps": [
+        "POST /api/tutorials/{T}/review，Authorization: Bearer {adminToken}，请求体 {\"action\":\"reject\",\"reason\":\"正文步骤缺少截图说明，请补充后重提\"}"
+      ],
+      "expected": [
+        "HTTP 200，code=0",
+        "data.status=draft（待审核→草稿）",
+        "data.rejectReason 与请求 reason 完全一致（展示在编辑页顶部）"
+      ],
+      "design_method": "AC 驱动",
+      "tags": [
+        "审核",
+        "驳回"
+      ]
+    },
+    {
+      "id": "API-REVIEW-004",
+      "title": "驳回后管理列表回显驳回原因与草稿状态",
+      "priority": "P0",
+      "type": "happy_path",
+      "covers": [
+        "AC-FN-09",
+        "AC-RULE-19"
+      ],
+      "preconditions": [
+        "承接 API-REVIEW-003（T 已被驳回）",
+        "已取得 {adminToken}"
+      ],
+      "steps": [
+        "GET /api/tutorials?status=draft，Authorization: Bearer {adminToken}",
+        "定位 T 条目"
+      ],
+      "expected": [
+        "HTTP 200，T 的 status=draft",
+        "T 的 rejectReason=驳回原因原文（草稿且被驳回过时非空，驱动运营修改重提）"
+      ],
+      "design_method": "AC 驱动",
+      "tags": [
+        "审核",
+        "驳回回显",
+        "接口联动"
+      ]
+    },
+    {
+      "id": "API-REVIEW-005-E01",
+      "title": "未登录调用审核接口被 401 拒绝",
+      "priority": "P0",
+      "type": "exception",
+      "covers": [
+        "AC-EG-06"
+      ],
+      "preconditions": [
+        "不携带 Authorization 头",
+        "存在待审核教程"
+      ],
+      "steps": [
+        "POST /api/tutorials/{T}/review，请求体 {\"action\":\"approve\"}"
+      ],
+      "expected": [
+        "HTTP 401，code=401",
+        "message=\"未登录或登录已失效\"，教程状态不变化"
+      ],
+      "design_method": "AC 驱动",
+      "tags": [
+        "审核",
+        "鉴权"
+      ]
+    },
+    {
+      "id": "API-REVIEW-006-E02",
+      "title": "运营编辑调用审核通过被 403 拒绝且状态不变",
+      "priority": "P0",
+      "type": "negative",
+      "covers": [
+        "AC-FN-18",
+        "AC-RULE-23"
+      ],
+      "preconditions": [
+        "教程 T status=pending",
+        "已取得 {operatorToken}"
+      ],
+      "steps": [
+        "POST /api/tutorials/{T}/review，Authorization: Bearer {operatorToken}，请求体 {\"action\":\"approve\"}",
+        "GET /api/tutorials?status=pending，Authorization: Bearer {adminToken} 校验 T 状态"
+      ],
+      "expected": [
+        "第一步 HTTP 403，code=403，message=\"无权限执行该操作\"（审核为管理员专属）",
+        "第二步 T 仍在 pending 列表（教程状态不发生变化）"
+      ],
+      "design_method": "AC 驱动",
+      "tags": [
+        "审核",
+        "权限矩阵",
+        "接口联动"
+      ]
+    },
+    {
+      "id": "API-REVIEW-007-E03",
+      "title": "运营编辑调用审核驳回同样被 403 拒绝",
+      "priority": "P0",
+      "type": "negative",
+      "covers": [
+        "AC-FN-18",
+        "AC-RULE-23"
+      ],
+      "preconditions": [
+        "教程 T status=pending",
+        "已取得 {operatorToken}"
+      ],
+      "steps": [
+        "POST /api/tutorials/{T}/review，Authorization: Bearer {operatorToken}，请求体 {\"action\":\"reject\",\"reason\":\"正文步骤缺少截图说明\"}"
+      ],
+      "expected": [
+        "HTTP 403，code=403",
+        "message=\"无权限执行该操作\"（驳回同属审核动作，运营无权限）"
+      ],
+      "design_method": "AC 驱动",
+      "tags": [
+        "审核",
+        "权限矩阵"
+      ]
+    },
+    {
+      "id": "API-REVIEW-008-E04",
+      "title": "普通用户调用审核接口被 403 拒绝",
+      "priority": "P0",
+      "type": "negative",
+      "covers": [
+        "AC-RULE-24"
+      ],
+      "preconditions": [
+        "教程 T status=pending",
+        "已取得 {userToken}"
+      ],
+      "steps": [
+        "POST /api/tutorials/{T}/review，Authorization: Bearer {userToken}，请求体 {\"action\":\"approve\"}"
+      ],
+      "expected": [
+        "HTTP 403，code=403",
+        "message=\"无权限执行该操作\""
+      ],
+      "design_method": "AC 驱动",
+      "tags": [
+        "审核",
+        "权限矩阵"
+      ]
+    },
+    {
+      "id": "API-REVIEW-009-E05",
+      "title": "审核不存在的教程 id 返回 404",
+      "priority": "P0",
+      "type": "exception",
+      "covers": [
+        "AC-RULE-22"
+      ],
+      "preconditions": [
+        "已取得 {adminToken}"
+      ],
+      "steps": [
+        "POST /api/tutorials/999999/review，Authorization: Bearer {adminToken}，请求体 {\"action\":\"approve\"}"
+      ],
+      "expected": [
+        "HTTP 404，code=404",
+        "message=\"教程不存在\""
+      ],
+      "design_method": "错误推测法",
+      "tags": [
+        "审核",
+        "404"
+      ]
+    },
+    {
+      "id": "API-REVIEW-010-E06",
+      "title": "action 缺失被 400 拒绝",
+      "priority": "P0",
+      "type": "negative",
+      "covers": [
+        "AC-RULE-22"
+      ],
+      "preconditions": [
+        "教程 T status=pending",
+        "已取得 {adminToken}"
+      ],
+      "steps": [
+        "POST /api/tutorials/{T}/review，Authorization: Bearer {adminToken}，请求体 {}（缺失 action）"
+      ],
+      "expected": [
+        "HTTP 400，code=400",
+        "message=\"action 参数不合法\""
+      ],
+      "design_method": "等价类划分",
+      "tags": [
+        "审核",
+        "参数校验"
+      ]
+    },
+    {
+      "id": "API-REVIEW-011-E07",
+      "title": "action 传非枚举值 publish 被 400 拒绝",
+      "priority": "P0",
+      "type": "negative",
+      "covers": [
+        "AC-RULE-22",
+        "AC-RULE-05"
+      ],
+      "preconditions": [
+        "教程 T status=pending",
+        "已取得 {adminToken}"
+      ],
+      "steps": [
+        "POST /api/tutorials/{T}/review，Authorization: Bearer {adminToken}，请求体 {\"action\":\"publish\"}"
+      ],
+      "expected": [
+        "HTTP 400，code=400",
+        "message=\"action 参数不合法\"（枚举仅 approve/reject）"
+      ],
+      "design_method": "等价类划分",
+      "tags": [
+        "审核",
+        "参数校验"
+      ]
+    },
+    {
+      "id": "API-REVIEW-012-E08",
+      "title": "驳回原因缺失被 400 双重校验拦截",
+      "priority": "P0",
+      "type": "negative",
+      "covers": [
+        "AC-FN-09",
+        "AC-RULE-19"
+      ],
+      "preconditions": [
+        "教程 T status=pending",
+        "已取得 {adminToken}"
+      ],
+      "steps": [
+        "POST /api/tutorials/{T}/review，Authorization: Bearer {adminToken}，请求体 {\"action\":\"reject\"}（不带 reason）"
+      ],
+      "expected": [
+        "HTTP 400，code=400",
+        "message=\"请填写至少 5 个字的驳回原因\"（后端校验兜底，前端阻断为第一重）",
+        "教程状态仍为 pending（不回草稿）"
+      ],
+      "design_method": "AC 驱动",
+      "tags": [
+        "审核",
+        "驳回原因校验"
+      ]
+    },
+    {
+      "id": "API-REVIEW-013-E09",
+      "title": "驳回原因仅 4 字被 400 拒绝",
+      "priority": "P0",
+      "type": "negative",
+      "covers": [
+        "AC-FN-09",
+        "AC-RULE-19"
+      ],
+      "preconditions": [
+        "教程 T status=pending",
+        "已取得 {adminToken}"
+      ],
+      "steps": [
+        "POST /api/tutorials/{T}/review，Authorization: Bearer {adminToken}，请求体 {\"action\":\"reject\",\"reason\":\"补截图\"}（4 字）"
+      ],
+      "expected": [
+        "HTTP 400，code=400",
+        "message=\"请填写至少 5 个字的驳回原因\"（≥5 字约束的下边界外）"
+      ],
+      "design_method": "边界值分析",
+      "tags": [
+        "审核",
+        "驳回原因校验",
+        "边界值"
+      ]
+    },
+    {
+      "id": "API-REVIEW-014-B01",
+      "title": "驳回原因恰 5 字通过校验驳回成功",
+      "priority": "P0",
+      "type": "edge_case",
+      "covers": [
+        "AC-RULE-19",
+        "AC-FN-09"
+      ],
+      "preconditions": [
+        "教程 T status=pending",
+        "已取得 {adminToken}"
+      ],
+      "steps": [
+        "POST /api/tutorials/{T}/review，Authorization: Bearer {adminToken}，请求体 {\"action\":\"reject\",\"reason\":\"请补充截图\"}（恰 5 字）"
+      ],
+      "expected": [
+        "HTTP 200，code=0",
+        "data.status=draft，data.rejectReason=请补充截图（边界值含等于 5 字）"
+      ],
+      "design_method": "边界值分析",
+      "tags": [
+        "审核",
+        "边界值"
+      ]
+    },
+    {
+      "id": "API-REVIEW-015-B02",
+      "title": "驳回原因超长文本（500 字）行为稳定",
+      "priority": "P2",
+      "type": "edge_case",
+      "covers": [
+        "AC-RULE-19"
+      ],
+      "preconditions": [
+        "教程 T status=pending",
+        "已取得 {adminToken}"
+      ],
+      "steps": [
+        "POST /api/tutorials/{T}/review，Authorization: Bearer {adminToken}，请求体 {\"action\":\"reject\",\"reason\":\"{500 字文本}\"}"
+      ],
+      "expected": [
+        "HTTP 200 全文保存或 400 拒绝（PRD 未设上限，标记待验证）",
+        "不返回 500"
+      ],
+      "design_method": "边界值分析",
+      "tags": [
+        "审核",
+        "边界值",
+        "待验证"
+      ]
+    },
+    {
+      "id": "API-REVIEW-016",
+      "title": "对已发布教程执行通过被 409 拒绝且状态不变",
+      "priority": "P0",
+      "type": "negative",
+      "covers": [
+        "AC-RULE-05",
+        "AC-EG-04"
+      ],
+      "preconditions": [
+        "教程 T status=published",
+        "已取得 {adminToken}"
+      ],
+      "steps": [
+        "POST /api/tutorials/{T}/review，Authorization: Bearer {adminToken}，请求体 {\"action\":\"approve\"}",
+        "GET /api/tutorials?all=1 校验 T 状态"
+      ],
+      "expected": [
+        "第一步 HTTP 409，code=409，message=\"该教程状态已变化，请刷新\"（仅 pending 可审核）",
+        "第二步 T 仍为 published（非法迁移被拒绝）"
+      ],
+      "design_method": "AC 驱动",
+      "tags": [
+        "审核",
+        "状态机",
+        "非法迁移"
+      ]
+    },
+    {
+      "id": "API-REVIEW-017",
+      "title": "对草稿教程执行驳回被 409 拒绝",
+      "priority": "P0",
+      "type": "negative",
+      "covers": [
+        "AC-RULE-05"
+      ],
+      "preconditions": [
+        "教程 T status=draft",
+        "已取得 {adminToken}"
+      ],
+      "steps": [
+        "POST /api/tutorials/{T}/review，Authorization: Bearer {adminToken}，请求体 {\"action\":\"reject\",\"reason\":\"正文步骤缺少截图说明\"}"
+      ],
+      "expected": [
+        "HTTP 409，code=409",
+        "message=\"该教程状态已变化，请刷新\"，教程仍为草稿"
+      ],
+      "design_method": "AC 驱动",
+      "tags": [
+        "审核",
+        "状态机"
+      ]
+    },
+    {
+      "id": "API-REVIEW-018",
+      "title": "草稿直接通过（草稿→已发布非法迁移）被 409 拒绝",
+      "priority": "P0",
+      "type": "negative",
+      "covers": [
+        "AC-EG-09",
+        "AC-RULE-05"
+      ],
+      "preconditions": [
+        "教程 T status=draft（未经过提审）",
+        "已取得 {adminToken}"
+      ],
+      "steps": [
+        "POST /api/tutorials/{T}/review，Authorization: Bearer {adminToken}，请求体 {\"action\":\"approve\"}",
+        "GET /api/tutorials?status=draft 校验 T 仍在草稿列表"
+      ],
+      "expected": [
+        "第一步 HTTP 409 \"该教程状态已变化，请刷新\"（绕过前端直接调用也被后端拒绝）",
+        "第二步 T 状态保持 draft 不变"
+      ],
+      "design_method": "AC 驱动",
+      "tags": [
+        "审核",
+        "非法迁移",
+        "安全兜底"
+      ]
+    },
+    {
+      "id": "API-REVIEW-019",
+      "title": "已下架教程直接通过被 409 拒绝（恢复须走重新发布或编辑回审）",
+      "priority": "P0",
+      "type": "negative",
+      "covers": [
+        "AC-RULE-05",
+        "AC-EG-09"
+      ],
+      "preconditions": [
+        "教程 T status=offline",
+        "已取得 {adminToken}"
+      ],
+      "steps": [
+        "POST /api/tutorials/{T}/review，Authorization: Bearer {adminToken}，请求体 {\"action\":\"approve\"}"
+      ],
+      "expected": [
+        "HTTP 409，code=409",
+        "message=\"该教程状态已变化，请刷新\"（offline→published 不在合法迁移集，内容未变应走 POST /republish）"
+      ],
+      "design_method": "AC 驱动",
+      "tags": [
+        "审核",
+        "非法迁移"
+      ]
+    },
+    {
+      "id": "API-REVIEW-020",
+      "title": "连续快速两次通过：仅首次生效第二次 409（审核防抖）",
+      "priority": "P0",
+      "type": "edge_case",
+      "covers": [
+        "AC-EG-19",
+        "AC-EG-04"
+      ],
+      "preconditions": [
+        "教程 T status=pending",
+        "已取得 {adminToken}"
+      ],
+      "steps": [
+        "立即连续两次 POST /api/tutorials/{T}/review，Authorization: Bearer {adminToken}，请求体 {\"action\":\"approve\"}（模拟按钮防抖失效/连点）"
+      ],
+      "expected": [
+        "第一次 HTTP 200 status=published",
+        "第二次 HTTP 409 \"该教程状态已变化，请刷新\"（仅一次状态迁移与一条审核留痕）"
+      ],
+      "design_method": "错误推测法",
+      "tags": [
+        "审核",
+        "防抖",
+        "并发"
+      ]
+    },
+    {
+      "id": "API-REVIEW-021",
+      "title": "通过后紧接驳回：后到动作 409 失效（审核互斥）",
+      "priority": "P0",
+      "type": "edge_case",
+      "covers": [
+        "AC-EG-04",
+        "AC-EG-19"
+      ],
+      "preconditions": [
+        "教程 T status=pending",
+        "已取得 {adminToken}"
+      ],
+      "steps": [
+        "POST /api/tutorials/{T}/review 请求体 {\"action\":\"approve\"}",
+        "紧接 POST /api/tutorials/{T}/review 请求体 {\"action\":\"reject\",\"reason\":\"正文步骤缺少截图说明\"}"
+      ],
+      "expected": [
+        "第一次 HTTP 200 status=published",
+        "第二次 HTTP 409 \"该教程状态已变化，请刷新\"（后到动作失效，状态仅按先到动作流转）"
+      ],
+      "design_method": "错误推测法",
+      "tags": [
+        "审核",
+        "互斥",
+        "并发"
+      ]
+    },
+    {
+      "id": "API-REVIEW-022",
+      "title": "回审版通过后前台替换为新版快照",
+      "priority": "P0",
+      "type": "happy_path",
+      "covers": [
+        "AC-FN-10",
+        "AC-RULE-02"
+      ],
+      "preconditions": [
+        "教程 T 线上版 v1（content=C1），编辑 v2（content=C2）保存后 status=pending",
+        "已取得 {adminToken}"
+      ],
+      "steps": [
+        "POST /api/tutorials/{T}/review，Authorization: Bearer {adminToken}，请求体 {\"action\":\"approve\"}",
+        "GET /api/tutorials/{T}"
+      ],
+      "expected": [
+        "审核 HTTP 200 status=published（快照刷新为 v2）",
+        "详情 data.content=C2（过审后前台替换为新版本）"
+      ],
+      "design_method": "AC 驱动",
+      "tags": [
+        "审核",
+        "版本替换",
+        "接口联动"
+      ]
+    },
+    {
+      "id": "API-REVIEW-023",
+      "title": "已发布来源回审版驳回：编辑版回草稿且前台三口径旧版不断供",
+      "priority": "P0",
+      "type": "happy_path",
+      "covers": [
+        "AC-FN-19",
+        "AC-EG-15"
+      ],
+      "preconditions": [
+        "教程 T 线上版 v1（title 关键词 K），编辑 v2 保存后 status=pending（回审来源为已发布态）",
+        "已取得 {adminToken}"
+      ],
+      "steps": [
+        "POST /api/tutorials/{T}/review，Authorization: Bearer {adminToken}，请求体 {\"action\":\"reject\",\"reason\":\"新版内容需要补充截图说明\"}",
+        "GET /api/tutorials/{T}（详情）",
+        "GET /api/tutorials?keyword=K（列表与搜索）"
+      ],
+      "expected": [
+        "驳回 HTTP 200，data.status=draft（仅编辑版回草稿）",
+        "详情仍 HTTP 200 且 content=C1（正文内容不变）",
+        "keyword=K 仍命中 T（列表与搜索持续可命中旧版）"
+      ],
+      "design_method": "AC 驱动",
+      "tags": [
+        "审核",
+        "驳回不断供",
+        "接口联动"
+      ]
+    },
+    {
+      "id": "API-REVIEW-024",
+      "title": "已下架来源回审版驳回后维持不可见",
+      "priority": "P1",
+      "type": "negative",
+      "covers": [
+        "AC-EG-18",
+        "AC-RULE-02"
+      ],
+      "preconditions": [
+        "教程 T 曾下架（last_offline_at 非空），编辑保存后 status=pending",
+        "已取得 {adminToken}"
+      ],
+      "steps": [
+        "POST /api/tutorials/{T}/review，Authorization: Bearer {adminToken}，请求体 {\"action\":\"reject\",\"reason\":\"内容仍需补充完善细节\"}",
+        "GET /api/tutorials/{T}"
+      ],
+      "expected": [
+        "驳回 HTTP 200，data.status=draft",
+        "详情 HTTP 404（回审来源为已下架态，驳回回落草稿后维持不可见，须重新提审并再次通过）"
+      ],
+      "design_method": "AC 驱动",
+      "tags": [
+        "审核",
+        "可见性",
+        "接口联动"
+      ]
+    },
+    {
+      "id": "API-REVIEW-025",
+      "title": "approve 携带 reason 字段时被忽略正常发布",
+      "priority": "P2",
+      "type": "edge_case",
+      "covers": [
+        "AC-RULE-22"
+      ],
+      "preconditions": [
+        "教程 T status=pending",
+        "已取得 {adminToken}"
+      ],
+      "steps": [
+        "POST /api/tutorials/{T}/review，Authorization: Bearer {adminToken}，请求体 {\"action\":\"approve\",\"reason\":\"多余字段\"}"
+      ],
+      "expected": [
+        "HTTP 200，data.status=published",
+        "reason 被忽略，响应不含 rejectReason 或其为 null（approve 时 reason 字段无副作用）"
+      ],
+      "design_method": "错误推测法",
+      "tags": [
+        "审核",
+        "字段容错"
+      ]
+    },
+    {
+      "id": "API-REVIEW-026-E10",
+      "title": "教程 id 为非数字时请求稳定处理",
+      "priority": "P2",
+      "type": "edge_case",
+      "covers": [
+        "AC-RULE-22"
+      ],
+      "preconditions": [
+        "已取得 {adminToken}"
+      ],
+      "steps": [
+        "POST /api/tutorials/abc/review，Authorization: Bearer {adminToken}，请求体 {\"action\":\"approve\"}"
+      ],
+      "expected": [
+        "HTTP 404 或 400（按路由/参数解析规则）",
+        "不返回 500"
+      ],
+      "design_method": "错误推测法",
+      "tags": [
+        "审核",
+        "健壮性"
+      ]
+    },
+    {
+      "id": "API-OFFLINE-001",
+      "title": "管理员下架已发布教程成功并返回下架时间戳",
+      "priority": "P0",
+      "type": "happy_path",
+      "covers": [
+        "AC-OP-03",
+        "AC-RULE-05",
+        "AC-RULE-22"
+      ],
+      "preconditions": [
+        "教程 T status=published",
+        "已取得 {adminToken}"
+      ],
+      "steps": [
+        "POST /api/tutorials/{T}/offline，Authorization: Bearer {adminToken}，请求体 {}"
+      ],
+      "expected": [
+        "HTTP 200，code=0",
+        "data.status=offline",
+        "data.lastOfflineAt 为合法时间字符串（操作留痕，last_offline_at=now）"
+      ],
+      "design_method": "AC 驱动",
+      "tags": [
+        "下架",
+        "状态机",
+        "留痕"
+      ]
+    },
+    {
+      "id": "API-OFFLINE-002",
+      "title": "下架后前台列表下一请求即不返回该教程",
+      "priority": "P0",
+      "type": "happy_path",
+      "covers": [
+        "AC-OP-03",
+        "AC-FN-20"
+      ],
+      "preconditions": [
+        "教程 T status=published 且在前台列表中",
+        "已取得 {adminToken}"
+      ],
+      "steps": [
+        "POST /api/tutorials/{T}/offline，Authorization: Bearer {adminToken}，请求体 {}",
+        "立即 GET /api/tutorials?keyword={T 标题关键词}"
+      ],
+      "expected": [
+        "下架 HTTP 200 status=offline",
+        "列表请求 total=0 不含 T（前台下一请求即不返回，推荐同口径由列表池派生）"
+      ],
+      "design_method": "AC 驱动",
+      "tags": [
+        "下架",
+        "可见性",
+        "接口联动"
+      ]
+    },
+    {
+      "id": "API-OFFLINE-003",
+      "title": "下架后关键词搜索不命中该教程",
+      "priority": "P0",
+      "type": "happy_path",
+      "covers": [
+        "AC-OP-03",
+        "AC-RULE-04"
+      ],
+      "preconditions": [
+        "教程 T status=published，标题含独有关键词 K",
+        "已取得 {adminToken}"
+      ],
+      "steps": [
+        "POST /api/tutorials/{T}/offline，Authorization: Bearer {adminToken}，请求体 {}",
+        "GET /api/tutorials?keyword=K"
+      ],
+      "expected": [
+        "下架 HTTP 200",
+        "搜索 total=0（已下架教程不进检索范围）"
+      ],
+      "design_method": "AC 驱动",
+      "tags": [
+        "下架",
+        "搜索",
+        "接口联动"
+      ]
+    },
+    {
+      "id": "API-OFFLINE-004",
+      "title": "下架后直达详情返回 404 已下架提示与同类推荐",
+      "priority": "P0",
+      "type": "happy_path",
+      "covers": [
+        "AC-FN-20",
+        "AC-EG-10"
+      ],
+      "preconditions": [
+        "教程 T status=published，同分类下有其他已发布教程",
+        "已取得 {adminToken}"
+      ],
+      "steps": [
+        "POST /api/tutorials/{T}/offline，Authorization: Bearer {adminToken}，请求体 {}",
+        "GET /api/tutorials/{T}"
+      ],
+      "expected": [
+        "下架 HTTP 200",
+        "详情 HTTP 404，message=\"该教程已下架\"，data.reason=offline，data.related 非空（同分类已发布教程推荐），正文不可见"
+      ],
+      "design_method": "AC 驱动",
+      "tags": [
+        "下架",
+        "善后",
+        "接口联动"
+      ]
+    },
+    {
+      "id": "API-OFFLINE-005",
+      "title": "下架后教程不可新增收藏（404）",
+      "priority": "P0",
+      "type": "negative",
+      "covers": [
+        "AC-FN-20",
+        "AC-RULE-04"
+      ],
+      "preconditions": [
+        "教程 T status=published",
+        "已取得 {adminToken} 与 {userToken}"
+      ],
+      "steps": [
+        "POST /api/tutorials/{T}/offline，Authorization: Bearer {adminToken}，请求体 {}",
+        "POST /api/favorites/{T}，Authorization: Bearer {userToken}，请求体 {}"
+      ],
+      "expected": [
+        "下架 HTTP 200",
+        "收藏 HTTP 404，message=\"该教程不存在或暂不可见\"（仅可收藏前台可见教程；历史收藏保留下架标注）"
+      ],
+      "design_method": "AC 驱动",
+      "tags": [
+        "下架",
+        "收藏善后",
+        "接口联动"
+      ]
+    },
+    {
+      "id": "API-OFFLINE-006",
+      "title": "下架后浏览与收藏计数保留不清零",
+      "priority": "P1",
+      "type": "happy_path",
+      "covers": [
+        "AC-RULE-04",
+        "AC-FN-11"
+      ],
+      "preconditions": [
+        "教程 T status=published，采集 all=1 口径 viewCount=V、favCount=F",
+        "已取得 {adminToken}"
+      ],
+      "steps": [
+        "POST /api/tutorials/{T}/offline，Authorization: Bearer {adminToken}，请求体 {}",
+        "GET /api/tutorials?all=1，Authorization: Bearer {adminToken} 读取 T 的计数"
+      ],
+      "expected": [
+        "下架 HTTP 200",
+        "下架后 viewCount=V、favCount=F（计数保留延续至重新发布，仅复制清零）"
+      ],
+      "design_method": "AC 驱动",
+      "tags": [
+        "下架",
+        "计数口径",
+        "接口联动"
+      ]
+    },
+    {
+      "id": "API-OFFLINE-007-E01",
+      "title": "未登录调用下架接口被 401 拒绝",
+      "priority": "P0",
+      "type": "exception",
+      "covers": [
+        "AC-EG-06"
+      ],
+      "preconditions": [
+        "不携带 Authorization 头",
+        "存在已发布教程"
+      ],
+      "steps": [
+        "POST /api/tutorials/{T}/offline，请求体 {}"
+      ],
+      "expected": [
+        "HTTP 401，code=401",
+        "message=\"未登录或登录已失效\"，教程状态不变化"
+      ],
+      "design_method": "AC 驱动",
+      "tags": [
+        "下架",
+        "鉴权"
+      ]
+    },
+    {
+      "id": "API-OFFLINE-008-E02",
+      "title": "运营编辑调用下架接口被 403 拒绝且状态不变",
+      "priority": "P0",
+      "type": "negative",
+      "covers": [
+        "AC-RULE-23"
+      ],
+      "preconditions": [
+        "教程 T status=published",
+        "已取得 {operatorToken}"
+      ],
+      "steps": [
+        "POST /api/tutorials/{T}/offline，Authorization: Bearer {operatorToken}，请求体 {}",
+        "GET /api/tutorials?all=1（{adminToken}）校验 T 状态"
+      ],
+      "expected": [
+        "第一步 HTTP 403，code=403，message=\"无权限执行该操作\"（下架为管理员专属）",
+        "第二步 T 仍为 published"
+      ],
+      "design_method": "AC 驱动",
+      "tags": [
+        "下架",
+        "权限矩阵",
+        "接口联动"
+      ]
+    },
+    {
+      "id": "API-OFFLINE-009-E03",
+      "title": "普通用户调用下架接口被 403 拒绝",
+      "priority": "P0",
+      "type": "negative",
+      "covers": [
+        "AC-RULE-24"
+      ],
+      "preconditions": [
+        "教程 T status=published",
+        "已取得 {userToken}"
+      ],
+      "steps": [
+        "POST /api/tutorials/{T}/offline，Authorization: Bearer {userToken}，请求体 {}"
+      ],
+      "expected": [
+        "HTTP 403，code=403",
+        "message=\"无权限执行该操作\""
+      ],
+      "design_method": "AC 驱动",
+      "tags": [
+        "下架",
+        "权限矩阵"
+      ]
+    },
+    {
+      "id": "API-OFFLINE-010-E04",
+      "title": "下架不存在的教程 id 返回 404",
+      "priority": "P0",
+      "type": "exception",
+      "covers": [
+        "AC-RULE-22"
+      ],
+      "preconditions": [
+        "已取得 {adminToken}"
+      ],
+      "steps": [
+        "POST /api/tutorials/999999/offline，Authorization: Bearer {adminToken}，请求体 {}"
+      ],
+      "expected": [
+        "HTTP 404，code=404",
+        "message=\"教程不存在\""
+      ],
+      "design_method": "错误推测法",
+      "tags": [
+        "下架",
+        "404"
+      ]
+    },
+    {
+      "id": "API-OFFLINE-011-E05",
+      "title": "对草稿教程下架被 409 拒绝",
+      "priority": "P0",
+      "type": "negative",
+      "covers": [
+        "AC-RULE-05"
+      ],
+      "preconditions": [
+        "教程 T status=draft",
+        "已取得 {adminToken}"
+      ],
+      "steps": [
+        "POST /api/tutorials/{T}/offline，Authorization: Bearer {adminToken}，请求体 {}"
+      ],
+      "expected": [
+        "HTTP 409，code=409",
+        "message=\"该教程状态已变化，请刷新\"（仅 published 可下架），教程仍为草稿"
+      ],
+      "design_method": "AC 驱动",
+      "tags": [
+        "下架",
+        "状态机",
+        "非法迁移"
+      ]
+    },
+    {
+      "id": "API-OFFLINE-012-E06",
+      "title": "对待审核教程下架被 409 拒绝",
+      "priority": "P0",
+      "type": "negative",
+      "covers": [
+        "AC-RULE-05"
+      ],
+      "preconditions": [
+        "教程 T status=pending",
+        "已取得 {adminToken}"
+      ],
+      "steps": [
+        "POST /api/tutorials/{T}/offline，Authorization: Bearer {adminToken}，请求体 {}"
+      ],
+      "expected": [
+        "HTTP 409，code=409",
+        "message=\"该教程状态已变化，请刷新\"，教程仍为待审核"
+      ],
+      "design_method": "AC 驱动",
+      "tags": [
+        "下架",
+        "状态机"
+      ]
+    },
+    {
+      "id": "API-OFFLINE-013-E07",
+      "title": "重复下架（已下架再下架）被 409 拒绝",
+      "priority": "P0",
+      "type": "negative",
+      "covers": [
+        "AC-RULE-05"
+      ],
+      "preconditions": [
+        "教程 T status=offline",
+        "已取得 {adminToken}"
+      ],
+      "steps": [
+        "POST /api/tutorials/{T}/offline，Authorization: Bearer {adminToken}，请求体 {}"
+      ],
+      "expected": [
+        "HTTP 409，code=409",
+        "message=\"该教程状态已变化，请刷新\"，lastOfflineAt 不被重复刷新"
+      ],
+      "design_method": "错误推测法",
+      "tags": [
+        "下架",
+        "状态机",
+        "幂等拒绝"
+      ]
+    },
+    {
+      "id": "API-OFFLINE-014-B01",
+      "title": "请求体为空对象或不发送均下架成功",
+      "priority": "P2",
+      "type": "edge_case",
+      "covers": [
+        "AC-OP-03"
+      ],
+      "preconditions": [
+        "两篇已发布教程 T1、T2",
+        "已取得 {adminToken}"
+      ],
+      "steps": [
+        "POST /api/tutorials/{T1}/offline，请求体 {}",
+        "POST /api/tutorials/{T2}/offline，不发送请求体"
+      ],
+      "expected": [
+        "两次均 HTTP 200，status=offline（二次确认由前端承载，接口不依赖请求体）"
+      ],
+      "design_method": "等价类划分",
+      "tags": [
+        "下架",
+        "请求体边界"
+      ]
+    },
+    {
+      "id": "API-OFFLINE-015-E08",
+      "title": "教程 id 为非数字时请求稳定处理",
+      "priority": "P2",
+      "type": "edge_case",
+      "covers": [
+        "AC-RULE-22"
+      ],
+      "preconditions": [
+        "已取得 {adminToken}"
+      ],
+      "steps": [
+        "POST /api/tutorials/abc/offline，Authorization: Bearer {adminToken}，请求体 {}"
+      ],
+      "expected": [
+        "HTTP 404 或 400",
+        "不返回 500"
+      ],
+      "design_method": "错误推测法",
+      "tags": [
+        "下架",
+        "健壮性"
+      ]
+    },
+    {
+      "id": "API-OFFLINE-016",
+      "title": "下架与重新发布状态机循环往复均成功",
+      "priority": "P1",
+      "type": "edge_case",
+      "covers": [
+        "AC-RULE-05",
+        "AC-FN-11"
+      ],
+      "preconditions": [
+        "教程 T status=published",
+        "已取得 {adminToken}"
+      ],
+      "steps": [
+        "POST /api/tutorials/{T}/offline → POST /api/tutorials/{T}/republish → POST /api/tutorials/{T}/offline，依次执行（均携带 {adminToken}，请求体 {}）"
+      ],
+      "expected": [
+        "三次均 HTTP 200",
+        "状态序列 offline → published → offline，lastOfflineAt 每次下架刷新",
+        "循环操作不产生脏状态（合法迁移集内往返）"
+      ],
+      "design_method": "状态迁移",
+      "tags": [
+        "下架",
+        "状态机",
+        "循环"
+      ]
+    },
+    {
+      "id": "API-REPUBLISH-001",
+      "title": "重新发布已下架教程成功且计数沿用下架前数值",
+      "priority": "P0",
+      "type": "happy_path",
+      "covers": [
+        "AC-FN-11",
+        "AC-RULE-05"
+      ],
+      "preconditions": [
+        "教程 T status=published，采集 viewCount=V、favCount=F（GET /api/tutorials/{T} 或 all=1）",
+        "已取得 {adminToken}"
+      ],
+      "steps": [
+        "POST /api/tutorials/{T}/offline，Authorization: Bearer {adminToken}，请求体 {}",
+        "POST /api/tutorials/{T}/republish，Authorization: Bearer {adminToken}，请求体 {}"
+      ],
+      "expected": [
+        "第一步 HTTP 200 status=offline",
+        "第二步 HTTP 200 status=published，data.viewCount=V，data.favCount=F（计数延续，仅复制清零）"
+      ],
+      "design_method": "AC 驱动",
+      "tags": [
+        "重新发布",
+        "计数延续",
+        "接口联动"
+      ]
+    },
+    {
+      "id": "API-REPUBLISH-002",
+      "title": "重新发布一键恢复不进入审核队列无待审核中间态",
+      "priority": "P0",
+      "type": "happy_path",
+      "covers": [
+        "AC-FN-11"
+      ],
+      "preconditions": [
+        "教程 T status=offline",
+        "已取得 {adminToken}"
+      ],
+      "steps": [
+        "POST /api/tutorials/{T}/republish，Authorization: Bearer {adminToken}，请求体 {}",
+        "立即 GET /api/tutorials?status=pending（{adminToken}）确认队列无 T"
+      ],
+      "expected": [
+        "第一步响应直接 data.status=published（同步返回终态，无 pending 中间态、不重审）",
+        "第二步 pending 队列不含 T"
+      ],
+      "design_method": "AC 驱动",
+      "tags": [
+        "重新发布",
+        "状态机",
+        "接口联动"
+      ]
+    },
+    {
+      "id": "API-REPUBLISH-003",
+      "title": "重新发布后前台列表下一请求即恢复可见",
+      "priority": "P0",
+      "type": "happy_path",
+      "covers": [
+        "AC-FN-11"
+      ],
+      "preconditions": [
+        "教程 T status=offline，标题含独有关键词 K",
+        "已取得 {adminToken}"
+      ],
+      "steps": [
+        "POST /api/tutorials/{T}/republish，Authorization: Bearer {adminToken}，请求体 {}",
+        "立即 GET /api/tutorials?keyword=K"
+      ],
+      "expected": [
+        "重发布 HTTP 200 status=published",
+        "列表请求返回 T（前台即时恢复可见）"
+      ],
+      "design_method": "AC 驱动",
+      "tags": [
+        "重新发布",
+        "可见性",
+        "接口联动"
+      ]
+    },
+    {
+      "id": "API-REPUBLISH-004",
+      "title": "重新发布后详情恢复 200 且不再返回已下架提示",
+      "priority": "P0",
+      "type": "happy_path",
+      "covers": [
+        "AC-FN-11",
+        "AC-RULE-04"
+      ],
+      "preconditions": [
+        "教程 T status=offline（此前详情为 404 已下架）",
+        "已取得 {adminToken}"
+      ],
+      "steps": [
+        "POST /api/tutorials/{T}/republish，Authorization: Bearer {adminToken}，请求体 {}",
+        "GET /api/tutorials/{T}"
+      ],
+      "expected": [
+        "重发布 HTTP 200（last_offline_at 置 NULL，可见性判定恢复）",
+        "详情 HTTP 200，返回线上过审版本正文（非 404）"
+      ],
+      "design_method": "AC 驱动",
+      "tags": [
+        "重新发布",
+        "详情",
+        "接口联动"
+      ]
+    },
+    {
+      "id": "API-REPUBLISH-005",
+      "title": "重新发布后教程可再次被收藏",
+      "priority": "P1",
+      "type": "happy_path",
+      "covers": [
+        "AC-FN-11"
+      ],
+      "preconditions": [
+        "教程 T status=offline",
+        "已取得 {adminToken} 与 {userToken}"
+      ],
+      "steps": [
+        "POST /api/tutorials/{T}/republish，Authorization: Bearer {adminToken}，请求体 {}",
+        "POST /api/favorites/{T}，Authorization: Bearer {userToken}，请求体 {}"
+      ],
+      "expected": [
+        "重发布 HTTP 200",
+        "收藏 HTTP 200，favorited=true，favCount 较重发布前值 +1（恢复可见即可交互）"
+      ],
+      "design_method": "AC 驱动",
+      "tags": [
+        "重新发布",
+        "收藏联动",
+        "接口联动"
+      ]
+    },
+    {
+      "id": "API-REPUBLISH-006-E01",
+      "title": "未登录调用重新发布被 401 拒绝",
+      "priority": "P0",
+      "type": "exception",
+      "covers": [
+        "AC-EG-06"
+      ],
+      "preconditions": [
+        "不携带 Authorization 头",
+        "存在已下架教程"
+      ],
+      "steps": [
+        "POST /api/tutorials/{T}/republish，请求体 {}"
+      ],
+      "expected": [
+        "HTTP 401，code=401",
+        "message=\"未登录或登录已失效\"，教程状态不变化"
+      ],
+      "design_method": "AC 驱动",
+      "tags": [
+        "重新发布",
+        "鉴权"
+      ]
+    },
+    {
+      "id": "API-REPUBLISH-007-E02",
+      "title": "运营编辑调用重新发布被 403 拒绝且状态不变",
+      "priority": "P0",
+      "type": "negative",
+      "covers": [
+        "AC-RULE-23"
+      ],
+      "preconditions": [
+        "教程 T status=offline",
+        "已取得 {operatorToken}"
+      ],
+      "steps": [
+        "POST /api/tutorials/{T}/republish，Authorization: Bearer {operatorToken}，请求体 {}",
+        "GET /api/tutorials?all=1（{adminToken}）校验 T 状态"
+      ],
+      "expected": [
+        "第一步 HTTP 403，code=403，message=\"无权限执行该操作\"（重新发布为管理员专属）",
+        "第二步 T 仍为 offline"
+      ],
+      "design_method": "AC 驱动",
+      "tags": [
+        "重新发布",
+        "权限矩阵",
+        "接口联动"
+      ]
+    },
+    {
+      "id": "API-REPUBLISH-008-E03",
+      "title": "普通用户调用重新发布被 403 拒绝",
+      "priority": "P0",
+      "type": "negative",
+      "covers": [
+        "AC-RULE-24"
+      ],
+      "preconditions": [
+        "教程 T status=offline",
+        "已取得 {userToken}"
+      ],
+      "steps": [
+        "POST /api/tutorials/{T}/republish，Authorization: Bearer {userToken}，请求体 {}"
+      ],
+      "expected": [
+        "HTTP 403，code=403",
+        "message=\"无权限执行该操作\""
+      ],
+      "design_method": "AC 驱动",
+      "tags": [
+        "重新发布",
+        "权限矩阵"
+      ]
+    },
+    {
+      "id": "API-REPUBLISH-009-E04",
+      "title": "重新发布不存在的教程 id 返回 404",
+      "priority": "P0",
+      "type": "exception",
+      "covers": [
+        "AC-RULE-22"
+      ],
+      "preconditions": [
+        "已取得 {adminToken}"
+      ],
+      "steps": [
+        "POST /api/tutorials/999999/republish，Authorization: Bearer {adminToken}，请求体 {}"
+      ],
+      "expected": [
+        "HTTP 404，code=404",
+        "message=\"教程不存在\""
+      ],
+      "design_method": "错误推测法",
+      "tags": [
+        "重新发布",
+        "404"
+      ]
+    },
+    {
+      "id": "API-REPUBLISH-010-E05",
+      "title": "对已发布教程直接重新发布被 409 拒绝",
+      "priority": "P0",
+      "type": "negative",
+      "covers": [
+        "AC-RULE-05"
+      ],
+      "preconditions": [
+        "教程 T status=published",
+        "已取得 {adminToken}"
+      ],
+      "steps": [
+        "POST /api/tutorials/{T}/republish，Authorization: Bearer {adminToken}，请求体 {}"
+      ],
+      "expected": [
+        "HTTP 409，code=409",
+        "message=\"该教程状态已变化，请刷新\"（仅 offline 可重新发布），教程仍为 published"
+      ],
+      "design_method": "AC 驱动",
+      "tags": [
+        "重新发布",
+        "状态机",
+        "非法迁移"
+      ]
+    },
+    {
+      "id": "API-REPUBLISH-011-E06",
+      "title": "对草稿教程重新发布被 409 拒绝（草稿→已发布非法）",
+      "priority": "P0",
+      "type": "negative",
+      "covers": [
+        "AC-RULE-05",
+        "AC-EG-09"
+      ],
+      "preconditions": [
+        "教程 T status=draft（从未通过审核）",
+        "已取得 {adminToken}"
+      ],
+      "steps": [
+        "POST /api/tutorials/{T}/republish，Authorization: Bearer {adminToken}，请求体 {}",
+        "GET /api/tutorials?status=draft（{adminToken}）确认 T 仍在"
+      ],
+      "expected": [
+        "第一步 HTTP 409 \"该教程状态已变化，请刷新\"（草稿无线上过审版本，不存在\"未变内容一键恢复\"语义）",
+        "第二步 T 仍为 draft，前台保持不可见"
+      ],
+      "design_method": "AC 驱动",
+      "tags": [
+        "重新发布",
+        "非法迁移",
+        "状态机"
+      ]
+    },
+    {
+      "id": "API-REPUBLISH-012-E07",
+      "title": "对待审核教程重新发布被 409 拒绝",
+      "priority": "P0",
+      "type": "negative",
+      "covers": [
+        "AC-RULE-05"
+      ],
+      "preconditions": [
+        "教程 T status=pending",
+        "已取得 {adminToken}"
+      ],
+      "steps": [
+        "POST /api/tutorials/{T}/republish，Authorization: Bearer {adminToken}，请求体 {}"
+      ],
+      "expected": [
+        "HTTP 409，code=409",
+        "message=\"该教程状态已变化，请刷新\"，教程仍为 pending"
+      ],
+      "design_method": "AC 驱动",
+      "tags": [
+        "重新发布",
+        "状态机"
+      ]
+    },
+    {
+      "id": "API-REPUBLISH-013",
+      "title": "教程 id 为非数字时请求稳定处理",
+      "priority": "P2",
+      "type": "edge_case",
+      "covers": [
+        "AC-RULE-22"
+      ],
+      "preconditions": [
+        "已取得 {adminToken}"
+      ],
+      "steps": [
+        "POST /api/tutorials/abc/republish，Authorization: Bearer {adminToken}，请求体 {}"
+      ],
+      "expected": [
+        "HTTP 404 或 400",
+        "不返回 500"
+      ],
+      "design_method": "错误推测法",
+      "tags": [
+        "重新发布",
+        "健壮性"
+      ]
+    },
+    {
+      "id": "API-COPY-001",
+      "title": "复制已发布教程生成新草稿且标题追加（副本）计数全清零",
+      "priority": "P0",
+      "type": "happy_path",
+      "covers": [
+        "AC-FN-12",
+        "AC-RULE-14",
+        "AC-RULE-01"
+      ],
+      "preconditions": [
+        "已发布教程 T（title=X，viewCount/favCount/helpfulYes/helpfulNo/shareCount 均 >0）",
+        "已取得 {operatorToken}"
+      ],
+      "steps": [
+        "POST /api/tutorials/{T}/copy，Authorization: Bearer {operatorToken}，请求体 {}"
+      ],
+      "expected": [
+        "HTTP 200，data.id 为新 ID（≠T）",
+        "data.title = X + \"（副本）\"",
+        "data.status=draft",
+        "data.viewCount=0，favCount=0，helpfulYes=0，helpfulNo=0，shareCount=0（含分享数一并清零）"
+      ],
+      "design_method": "AC 驱动",
+      "tags": [
+        "复制",
+        "计数清零"
+      ]
+    },
+    {
+      "id": "API-COPY-002",
+      "title": "复制草稿源教程成功生成新草稿",
+      "priority": "P1",
+      "type": "happy_path",
+      "covers": [
+        "AC-FN-12"
+      ],
+      "preconditions": [
+        "草稿教程 T 存在",
+        "已取得 {operatorToken}"
+      ],
+      "steps": [
+        "POST /api/tutorials/{T}/copy，Authorization: Bearer {operatorToken}，请求体 {}"
+      ],
+      "expected": [
+        "HTTP 200，data.status=draft，data.title=源标题+（副本）",
+        "源教程不受影响仍为草稿"
+      ],
+      "design_method": "等价类划分",
+      "tags": [
+        "复制",
+        "任意状态源"
+      ]
+    },
+    {
+      "id": "API-COPY-003",
+      "title": "复制待审核源教程成功且源教程不受影响",
+      "priority": "P1",
+      "type": "happy_path",
+      "covers": [
+        "AC-FN-12"
+      ],
+      "preconditions": [
+        "教程 T status=pending",
+        "已取得 {operatorToken}"
+      ],
+      "steps": [
+        "POST /api/tutorials/{T}/copy，Authorization: Bearer {operatorToken}，请求体 {}",
+        "GET /api/tutorials?status=pending（{adminToken}）确认源仍待审"
+      ],
+      "expected": [
+        "复制 HTTP 200，新副本 status=draft",
+        "源教程仍为 pending（复制不改变源状态）"
+      ],
+      "design_method": "等价类划分",
+      "tags": [
+        "复制",
+        "任意状态源"
+      ]
+    },
+    {
+      "id": "API-COPY-004",
+      "title": "复制已下架源教程成功生成新草稿",
+      "priority": "P1",
+      "type": "happy_path",
+      "covers": [
+        "AC-FN-12"
+      ],
+      "preconditions": [
+        "教程 T status=offline",
+        "已取得 {operatorToken}"
+      ],
+      "steps": [
+        "POST /api/tutorials/{T}/copy，Authorization: Bearer {operatorToken}，请求体 {}"
+      ],
+      "expected": [
+        "HTTP 200，data.status=draft（源为任意状态均可复制）",
+        "源教程仍为 offline"
+      ],
+      "design_method": "等价类划分",
+      "tags": [
+        "复制",
+        "任意状态源"
+      ]
+    },
+    {
+      "id": "API-COPY-005",
+      "title": "复制后源教程状态与计数保持不变",
+      "priority": "P0",
+      "type": "happy_path",
+      "covers": [
+        "AC-FN-12"
+      ],
+      "preconditions": [
+        "已发布教程 T，先经 GET /api/tutorials?all=1（{adminToken}）采集源状态与计数快照 S0",
+        "已取得 {operatorToken}"
+      ],
+      "steps": [
+        "POST /api/tutorials/{T}/copy，Authorization: Bearer {operatorToken}，请求体 {}",
+        "再次 GET /api/tutorials?all=1（{adminToken}）采集 T 的状态与计数"
+      ],
+      "expected": [
+        "复制 HTTP 200",
+        "复制前后 T 的 status 与 viewCount/favCount/helpfulYes/helpfulNo/shareCount 与 S0 完全一致（源不变）"
+      ],
+      "design_method": "AC 驱动",
+      "tags": [
+        "复制",
+        "源不变",
+        "接口联动"
+      ]
+    },
+    {
+      "id": "API-COPY-006",
+      "title": "副本为纯草稿：前台列表不出现且直达详情 404",
+      "priority": "P0",
+      "type": "negative",
+      "covers": [
+        "AC-RULE-01",
+        "AC-RULE-02",
+        "AC-FN-12"
+      ],
+      "preconditions": [
+        "承接 API-COPY-001 已生成副本 N（标题含独有关键词 K）"
+      ],
+      "steps": [
+        "GET /api/tutorials?keyword=K",
+        "GET /api/tutorials/{N}"
+      ],
+      "expected": [
+        "列表 total=0（纯草稿不进前台与搜索）",
+        "详情 HTTP 404，message=\"该教程不存在或暂不可见\""
+      ],
+      "design_method": "AC 驱动",
+      "tags": [
+        "复制",
+        "可见性",
+        "接口联动"
+      ]
+    },
+    {
+      "id": "API-COPY-007",
+      "title": "副本管理字段：无线上版本、提审次数 0、驳回原因清空、作者为操作人",
+      "priority": "P1",
+      "type": "happy_path",
+      "covers": [
+        "AC-RULE-14",
+        "AC-OP-06"
+      ],
+      "preconditions": [
+        "源教程 T 曾被驳回过（rejectReason 非空、submitCount ≥1）",
+        "已取得 {operatorToken}（操作人=运营编辑）"
+      ],
+      "steps": [
+        "POST /api/tutorials/{T}/copy，Authorization: Bearer {operatorToken}，请求体 {}",
+        "GET /api/tutorials?status=draft（{adminToken}）定位副本条目"
+      ],
+      "expected": [
+        "复制 HTTP 200",
+        "副本 hasOnlineVersion=false（删除保护判定依据：纯草稿才可删）",
+        "副本 submitCount=0、rejectReason=null、authorName=运营编辑（作者为当前操作人）"
+      ],
+      "design_method": "AC 驱动",
+      "tags": [
+        "复制",
+        "管理字段",
+        "接口联动"
+      ]
+    },
+    {
+      "id": "API-COPY-008-B01",
+      "title": "源标题 96 字时副本标题为 96+4=100 字不截断",
+      "priority": "P1",
+      "type": "edge_case",
+      "covers": [
+        "AC-RULE-14",
+        "AC-RULE-18"
+      ],
+      "preconditions": [
+        "存在标题恰 96 字的已发布教程 T96（后台预置，创建接口不在本批判次）",
+        "已取得 {operatorToken}"
+      ],
+      "steps": [
+        "POST /api/tutorials/{T96}/copy，Authorization: Bearer {operatorToken}，请求体 {}"
+      ],
+      "expected": [
+        "HTTP 200",
+        "data.title 长度=100（96 字源标题 + 4 字后缀\"（副本）\"，≤100 上限内不截断）"
+      ],
+      "design_method": "边界值分析",
+      "tags": [
+        "复制",
+        "标题边界"
+      ]
+    },
+    {
+      "id": "API-COPY-009-B02",
+      "title": "源标题 97 字时截断源标题至 96 字再拼接后缀",
+      "priority": "P1",
+      "type": "edge_case",
+      "covers": [
+        "AC-RULE-14",
+        "AC-RULE-18"
+      ],
+      "preconditions": [
+        "存在标题恰 97 字的已发布教程 T97（后台预置）",
+        "已取得 {operatorToken}"
+      ],
+      "steps": [
+        "POST /api/tutorials/{T97}/copy，Authorization: Bearer {operatorToken}，请求体 {}"
+      ],
+      "expected": [
+        "HTTP 200",
+        "data.title = 源标题前 96 字 + \"（副本）\"，总长 100（超 100 字时截断规则兜底）"
+      ],
+      "design_method": "边界值分析",
+      "tags": [
+        "复制",
+        "标题边界"
+      ]
+    },
+    {
+      "id": "API-COPY-010-B03",
+      "title": "源标题 100 字上限时副本仍截断至 96 字拼接",
+      "priority": "P1",
+      "type": "edge_case",
+      "covers": [
+        "AC-RULE-14",
+        "AC-RULE-18"
+      ],
+      "preconditions": [
+        "存在标题恰 100 字（字段上限）的已发布教程 T100（后台预置）",
+        "已取得 {operatorToken}"
+      ],
+      "steps": [
+        "POST /api/tutorials/{T100}/copy，Authorization: Bearer {operatorToken}，请求体 {}"
+      ],
+      "expected": [
+        "HTTP 200",
+        "data.title 长度=100（源标题截断至 96 字 + 4 字后缀，不超 AC-RULE-18 上限）"
+      ],
+      "design_method": "边界值分析",
+      "tags": [
+        "复制",
+        "标题边界"
+      ]
+    },
+    {
+      "id": "API-COPY-011",
+      "title": "副本再复制时后缀叠加并按上限截断",
+      "priority": "P2",
+      "type": "edge_case",
+      "covers": [
+        "AC-RULE-14"
+      ],
+      "preconditions": [
+        "已生成副本 N（标题=源+（副本））",
+        "已取得 {operatorToken}"
+      ],
+      "steps": [
+        "POST /api/tutorials/{N}/copy，Authorization: Bearer {operatorToken}，请求体 {}"
+      ],
+      "expected": [
+        "HTTP 200，新副本标题 = N 标题 + \"（副本）\"；若超 100 字则按 96 字截断规则处理",
+        "data.status=draft，计数为 0"
+      ],
+      "design_method": "错误推测法",
+      "tags": [
+        "复制",
+        "级联边界"
+      ]
+    },
+    {
+      "id": "API-COPY-012-E01",
+      "title": "未登录调用复制接口被 401 拒绝",
+      "priority": "P0",
+      "type": "exception",
+      "covers": [
+        "AC-RULE-23"
+      ],
+      "preconditions": [
+        "不携带 Authorization 头",
+        "存在任意状态教程"
+      ],
+      "steps": [
+        "POST /api/tutorials/{T}/copy，请求体 {}"
+      ],
+      "expected": [
+        "HTTP 401，code=401",
+        "message=\"未登录或登录已失效\"，不生成副本"
+      ],
+      "design_method": "AC 驱动",
+      "tags": [
+        "复制",
+        "鉴权"
+      ]
+    },
+    {
+      "id": "API-COPY-013-E02",
+      "title": "普通用户调用复制接口被 403 拒绝",
+      "priority": "P0",
+      "type": "negative",
+      "covers": [
+        "AC-RULE-24"
+      ],
+      "preconditions": [
+        "已取得 {userToken}",
+        "存在已发布教程"
+      ],
+      "steps": [
+        "POST /api/tutorials/{T}/copy，Authorization: Bearer {userToken}，请求体 {}"
+      ],
+      "expected": [
+        "HTTP 403，code=403",
+        "message=\"无权限执行该操作\"（复制为运营/管理员能力，普通用户无权限）"
+      ],
+      "design_method": "AC 驱动",
+      "tags": [
+        "复制",
+        "权限矩阵"
+      ]
+    },
+    {
+      "id": "API-COPY-014-E03",
+      "title": "复制不存在的教程 id 返回 404",
+      "priority": "P0",
+      "type": "exception",
+      "covers": [
+        "AC-FN-12"
+      ],
+      "preconditions": [
+        "已取得 {operatorToken}"
+      ],
+      "steps": [
+        "POST /api/tutorials/999999/copy，Authorization: Bearer {operatorToken}，请求体 {}"
+      ],
+      "expected": [
+        "HTTP 404，code=404",
+        "message=\"教程不存在\""
+      ],
+      "design_method": "错误推测法",
+      "tags": [
+        "复制",
+        "404"
+      ]
+    },
+    {
+      "id": "API-COPY-015",
+      "title": "管理员复制教程同样被允许",
+      "priority": "P1",
+      "type": "happy_path",
+      "covers": [
+        "AC-RULE-22"
+      ],
+      "preconditions": [
+        "已取得 {adminToken}",
+        "存在已发布教程"
+      ],
+      "steps": [
+        "POST /api/tutorials/{T}/copy，Authorization: Bearer {adminToken}，请求体 {}"
+      ],
+      "expected": [
+        "HTTP 200，data.status=draft（admin/operator 均可复制）",
+        "副本 authorName=平台管理员"
+      ],
+      "design_method": "等价类划分",
+      "tags": [
+        "复制",
+        "权限矩阵"
+      ]
+    },
+    {
+      "id": "API-COPY-016-E04",
+      "title": "教程 id 为非数字时请求稳定处理",
+      "priority": "P2",
+      "type": "edge_case",
+      "covers": [
+        "AC-FN-12"
+      ],
+      "preconditions": [
+        "已取得 {operatorToken}"
+      ],
+      "steps": [
+        "POST /api/tutorials/abc/copy，Authorization: Bearer {operatorToken}，请求体 {}"
+      ],
+      "expected": [
+        "HTTP 404 或 400",
+        "不返回 500"
+      ],
+      "design_method": "错误推测法",
+      "tags": [
+        "复制",
+        "健壮性"
+      ]
+    },
+    {
+      "id": "API-FAV-001",
+      "title": "登录用户收藏已发布教程成功且计数 +1",
+      "priority": "P0",
+      "type": "happy_path",
+      "covers": [
+        "AC-FN-03",
+        "AC-RULE-09"
+      ],
+      "preconditions": [
+        "教程 T 已发布，先经 GET /api/tutorials 采集 favCount=F0",
+        "已取得 {userToken}"
+      ],
+      "steps": [
+        "POST /api/favorites/{T}，Authorization: Bearer {userToken}，请求体 {}"
+      ],
+      "expected": [
+        "HTTP 200，code=0",
+        "data.tutorialId=T，data.favorited=true",
+        "data.favCount=F0+1（当前有效收藏数联动 +1）"
+      ],
+      "design_method": "AC 驱动",
+      "tags": [
+        "收藏",
+        "计数联动"
+      ]
+    },
+    {
+      "id": "API-FAV-002",
+      "title": "同一用户重复收藏幂等返回且计数不再增加",
+      "priority": "P0",
+      "type": "edge_case",
+      "covers": [
+        "AC-RULE-09",
+        "AC-FN-03"
+      ],
+      "preconditions": [
+        "用户 U（{userToken}）已收藏教程 T，当前 favCount=F1"
+      ],
+      "steps": [
+        "再次 POST /api/favorites/{T}，Authorization: Bearer {userToken}，请求体 {}"
+      ],
+      "expected": [
+        "HTTP 200，code=0（幂等成功）",
+        "data.favorited=true",
+        "data.favCount=F1（不重复计数，favorites 联合主键 user_id+tutorial_id）"
+      ],
+      "design_method": "错误推测法",
+      "tags": [
+        "收藏",
+        "幂等"
+      ]
+    },
+    {
+      "id": "API-FAV-003",
+      "title": "不同用户先后收藏同一教程计数逐次累加",
+      "priority": "P1",
+      "type": "happy_path",
+      "covers": [
+        "AC-RULE-09",
+        "AC-FN-15"
+      ],
+      "preconditions": [
+        "教程 T 已发布且 favCount=F0",
+        "已取得 {userToken}（采购）与 {salesToken}（销售）"
+      ],
+      "steps": [
+        "POST /api/favorites/{T}，Authorization: Bearer {userToken}",
+        "POST /api/favorites/{T}，Authorization: Bearer {salesToken}"
+      ],
+      "expected": [
+        "第一次 HTTP 200，favCount=F0+1",
+        "第二次 HTTP 200，favCount=F0+2（不同用户各自计一条有效收藏）"
+      ],
+      "design_method": "等价类划分",
+      "tags": [
+        "收藏",
+        "多用户"
+      ]
+    },
+    {
+      "id": "API-FAV-004",
+      "title": "收藏接口回传统计与教程列表 favCount 一致",
+      "priority": "P1",
+      "type": "happy_path",
+      "covers": [
+        "AC-RULE-09",
+        "AC-FN-15"
+      ],
+      "preconditions": [
+        "教程 T 已发布",
+        "已取得 {userToken}"
+      ],
+      "steps": [
+        "POST /api/favorites/{T}，Authorization: Bearer {userToken}，记录返回 favCount",
+        "GET /api/tutorials?keyword={T 标题关键词} 读取 T 的 favCount"
+      ],
+      "expected": [
+        "两次 HTTP 200",
+        "列表字段 favCount 与收藏接口回传值完全一致（同一数据源，任一端操作另一端刷新可见）"
+      ],
+      "design_method": "AC 驱动",
+      "tags": [
+        "收藏",
+        "跨端一致",
+        "接口联动"
+      ]
+    },
+    {
+      "id": "API-FAV-005",
+      "title": "后台角色 token 亦可收藏（互动行为不限普通用户）",
+      "priority": "P2",
+      "type": "happy_path",
+      "covers": [
+        "AC-RULE-22",
+        "AC-RULE-23"
+      ],
+      "preconditions": [
+        "教程 T 已发布",
+        "已取得 {adminToken} 与 {operatorToken}"
+      ],
+      "steps": [
+        "POST /api/favorites/{T}，Authorization: Bearer {adminToken}",
+        "POST /api/favorites/{T}，Authorization: Bearer {operatorToken}"
+      ],
+      "expected": [
+        "两次均 HTTP 200，favorited=true（接口契约：admin/operator/user 登录均可收藏）"
+      ],
+      "design_method": "等价类划分",
+      "tags": [
+        "收藏",
+        "权限矩阵"
+      ]
+    },
+    {
+      "id": "API-FAV-006-E01",
+      "title": "游客未登录收藏被 401 拒绝（前端引导选角色登录）",
+      "priority": "P0",
+      "type": "exception",
+      "covers": [
+        "AC-FN-03",
+        "AC-EG-07",
+        "AC-RULE-25"
+      ],
+      "preconditions": [
+        "不携带 Authorization 头",
+        "教程 T 已发布"
+      ],
+      "steps": [
+        "POST /api/favorites/{T}，请求体 {}"
+      ],
+      "expected": [
+        "HTTP 401，code=401",
+        "message=\"未登录或登录已失效\"（前端据此弹出选角色登录，登录后回原页面原位置继续操作）"
+      ],
+      "design_method": "AC 驱动",
+      "tags": [
+        "收藏",
+        "登录引导"
+      ]
+    },
+    {
+      "id": "API-FAV-007-E02",
+      "title": "收藏不存在的教程返回 404 不可见文案",
+      "priority": "P0",
+      "type": "exception",
+      "covers": [
+        "AC-RULE-02"
+      ],
+      "preconditions": [
+        "已取得 {userToken}"
+      ],
+      "steps": [
+        "POST /api/favorites/999999，Authorization: Bearer {userToken}，请求体 {}"
+      ],
+      "expected": [
+        "HTTP 404，code=404",
+        "message=\"该教程不存在或暂不可见\""
+      ],
+      "design_method": "错误推测法",
+      "tags": [
+        "收藏",
+        "404"
+      ]
+    },
+    {
+      "id": "API-FAV-008-E03",
+      "title": "收藏纯草稿教程被 404 拒绝",
+      "priority": "P0",
+      "type": "negative",
+      "covers": [
+        "AC-RULE-01",
+        "AC-RULE-02"
+      ],
+      "preconditions": [
+        "教程 T 为纯草稿（无线上过审版本）",
+        "已取得 {userToken}"
+      ],
+      "steps": [
+        "POST /api/favorites/{T}，Authorization: Bearer {userToken}，请求体 {}"
+      ],
+      "expected": [
+        "HTTP 404，code=404",
+        "message=\"该教程不存在或暂不可见\"（仅可收藏前台可见教程）"
+      ],
+      "design_method": "AC 驱动",
+      "tags": [
+        "收藏",
+        "可见性"
+      ]
+    },
+    {
+      "id": "API-FAV-009-E04",
+      "title": "收藏首次待审核教程被 404 拒绝",
+      "priority": "P0",
+      "type": "negative",
+      "covers": [
+        "AC-RULE-02",
+        "AC-FN-07"
+      ],
+      "preconditions": [
+        "教程 T 无线上过审版本且 status=pending",
+        "已取得 {userToken}"
+      ],
+      "steps": [
+        "POST /api/favorites/{T}，Authorization: Bearer {userToken}，请求体 {}"
+      ],
+      "expected": [
+        "HTTP 404，code=404",
+        "message=\"该教程不存在或暂不可见\""
+      ],
+      "design_method": "AC 驱动",
+      "tags": [
+        "收藏",
+        "可见性"
+      ]
+    },
+    {
+      "id": "API-FAV-010-E05",
+      "title": "收藏已下架教程被 404 拒绝（不可新增收藏）",
+      "priority": "P0",
+      "type": "negative",
+      "covers": [
+        "AC-RULE-04",
+        "AC-FN-20"
+      ],
+      "preconditions": [
+        "教程 T status=offline（存在历史收藏用户，其收藏列表保留下架标注）",
+        "已取得 {userToken}（该用户此前未收藏 T）"
+      ],
+      "steps": [
+        "POST /api/favorites/{T}，Authorization: Bearer {userToken}，请求体 {}"
+      ],
+      "expected": [
+        "HTTP 404，code=404",
+        "message=\"该教程不存在或暂不可见\"（已下架教程不可新增收藏）"
+      ],
+      "design_method": "AC 驱动",
+      "tags": [
+        "收藏",
+        "已下架善后"
+      ]
+    },
+    {
+      "id": "API-FAV-011",
+      "title": "同账号跨端重复收藏仅一条有效（PC 与小程序同库）",
+      "priority": "P0",
+      "type": "edge_case",
+      "covers": [
+        "AC-FN-15"
+      ],
+      "preconditions": [
+        "用户 U 已收藏教程 T（favCount=F1）",
+        "再次以 U 的 token 模拟小程序端重复请求"
+      ],
+      "steps": [
+        "POST /api/favorites/{T}，Authorization: Bearer {U 的 token}，请求体 {}（模拟另一端发起）"
+      ],
+      "expected": [
+        "HTTP 200，favorited=true，favCount=F1（同库同数据，同一用户同一教程唯一，两端不产生重复记录）"
+      ],
+      "design_method": "AC 驱动",
+      "tags": [
+        "收藏",
+        "跨端一致"
+      ]
+    },
+    {
+      "id": "API-FAV-012-B01",
+      "title": "tutorialId 为非数字/0/负数时请求稳定处理",
+      "priority": "P2",
+      "type": "edge_case",
+      "covers": [
+        "AC-RULE-09"
+      ],
+      "preconditions": [
+        "已取得 {userToken}"
+      ],
+      "steps": [
+        "分别 POST /api/favorites/abc、/api/favorites/0、/api/favorites/-1，Authorization: Bearer {userToken}"
+      ],
+      "expected": [
+        "三次均 HTTP 404 或 400",
+        "不返回 500"
+      ],
+      "design_method": "边界值分析",
+      "tags": [
+        "收藏",
+        "健壮性"
+      ]
+    },
+    {
+      "id": "API-FAV-013",
+      "title": "回审期间旧版在线的教程仍可被收藏",
+      "priority": "P1",
+      "type": "happy_path",
+      "covers": [
+        "AC-RULE-02",
+        "AC-FN-10"
+      ],
+      "preconditions": [
+        "教程 T 存在线上过审版本且当前 status=pending（已发布来源编辑回审，前台旧版在线）",
+        "已取得 {userToken}"
+      ],
+      "steps": [
+        "POST /api/favorites/{T}，Authorization: Bearer {userToken}，请求体 {}"
+      ],
+      "expected": [
+        "HTTP 200，favorited=true（回审期间旧版在线计入前台可见池，可正常交互）"
+      ],
+      "design_method": "AC 驱动",
+      "tags": [
+        "收藏",
+        "回审不断供"
+      ]
+    },
+    {
+      "id": "API-CHECKIN-001",
+      "title": "当日首次打卡成功加 10 积分并返回连续天数",
+      "priority": "P0",
+      "type": "happy_path",
+      "covers": [
+        "AC-FN-16",
+        "AC-RULE-12"
+      ],
+      "preconditions": [
+        "用户 U（{userToken}）当日未打卡，此前累计积分 P0、昨日已打卡（streak=S）"
+      ],
+      "steps": [
+        "POST /api/checkins，Authorization: Bearer {userToken}，请求体 {}"
+      ],
+      "expected": [
+        "HTTP 200，message=打卡成功",
+        "data.pointsAdded=10，data.totalPoints=P0+10",
+        "data.streak=S+1（昨日有记录则连续+1）",
+        "data.duplicated=false，data.checkinDate=服务器本地当日 yyyy-MM-dd"
+      ],
+      "design_method": "AC 驱动",
+      "tags": [
+        "打卡",
+        "积分"
+      ]
+    },
+    {
+      "id": "API-CHECKIN-002",
+      "title": "当日重复打卡幂等返回且积分不再增加",
+      "priority": "P0",
+      "type": "edge_case",
+      "covers": [
+        "AC-FN-16",
+        "AC-RULE-12"
+      ],
+      "preconditions": [
+        "用户 U 当日已打卡成功（totalPoints=P1，streak=S1）"
+      ],
+      "steps": [
+        "再次 POST /api/checkins，Authorization: Bearer {userToken}，请求体 {}（模拟当日重复点击）"
+      ],
+      "expected": [
+        "HTTP 200，message=今日已打卡",
+        "data.duplicated=true，data.pointsAdded=0",
+        "data.totalPoints=P1，data.streak=S1（均与首次打卡后一致，积分不再增加）"
+      ],
+      "design_method": "错误推测法",
+      "tags": [
+        "打卡",
+        "幂等"
+      ]
+    },
+    {
+      "id": "API-CHECKIN-003",
+      "title": "连续打卡 streak 逐日递增（种子含连续打卡记录）",
+      "priority": "P1",
+      "type": "happy_path",
+      "covers": [
+        "AC-RULE-12"
+      ],
+      "preconditions": [
+        "种子库含示例连续打卡 5 天的用户 U（db.md §6：种子含打卡 5 天）"
+      ],
+      "steps": [
+        "POST /api/checkins，Authorization: Bearer {U 的 token}，请求体 {}"
+      ],
+      "expected": [
+        "HTTP 200",
+        "data.streak=昨日连续天数+1（连续规则：昨日有打卡记录则 +1）",
+        "data.pointsAdded=10（当日首次）"
+      ],
+      "design_method": "AC 驱动",
+      "tags": [
+        "打卡",
+        "连续天数"
+      ]
+    },
+    {
+      "id": "API-CHECKIN-004",
+      "title": "连续 7 天打卡达成后返回坚持者徽章 persist",
+      "priority": "P1",
+      "type": "happy_path",
+      "covers": [
+        "AC-FN-16",
+        "AC-RULE-12"
+      ],
+      "preconditions": [
+        "用户 U 已连续打卡 6 天（第 6 天为昨日）"
+      ],
+      "steps": [
+        "POST /api/checkins，Authorization: Bearer {U 的 token}，请求体 {}（第 7 天打卡）"
+      ],
+      "expected": [
+        "HTTP 200，data.streak=7",
+        "data.badges 数组含 \"persist\"（坚持者徽章=连续 7 天打卡）"
+      ],
+      "design_method": "AC 驱动",
+      "tags": [
+        "打卡",
+        "徽章"
+      ]
+    },
+    {
+      "id": "API-CHECKIN-005",
+      "title": "中断后打卡连续天数重置为 1 但积分与徽章保留",
+      "priority": "P1",
+      "type": "edge_case",
+      "covers": [
+        "AC-RULE-12",
+        "AC-FN-21"
+      ],
+      "preconditions": [
+        "用户 U 昨日及更早均无打卡（中断），此前 totalPoints=P1 且已获 badges=[\"persist\"]"
+      ],
+      "steps": [
+        "POST /api/checkins，Authorization: Bearer {U 的 token}，请求体 {}"
+      ],
+      "expected": [
+        "HTTP 200，data.streak=1（中断清连续天数）",
+        "data.totalPoints=P1+10（积分不清零，仅新增当日 10 分）",
+        "data.badges 仍含 persist（中断不回收已获徽章）"
+      ],
+      "design_method": "AC 驱动",
+      "tags": [
+        "打卡",
+        "中断规则"
+      ]
+    },
+    {
+      "id": "API-CHECKIN-006",
+      "title": "累计完成 20 篇教程的用户打卡返回百科达人徽章",
+      "priority": "P2",
+      "type": "happy_path",
+      "covers": [
+        "AC-FN-21",
+        "AC-RULE-12"
+      ],
+      "preconditions": [
+        "用户 U 在 histories 中已有 20 篇教程阅读进度达 100%（完成口径，种子或前端行为预置）"
+      ],
+      "steps": [
+        "POST /api/checkins，Authorization: Bearer {U 的 token}，请求体 {}"
+      ],
+      "expected": [
+        "HTTP 200",
+        "data.badges 数组含 \"encyclopedia\"（百科达人=累计完成 20 篇）"
+      ],
+      "design_method": "AC 驱动",
+      "tags": [
+        "打卡",
+        "徽章"
+      ]
+    },
+    {
+      "id": "API-CHECKIN-007-E01",
+      "title": "未登录打卡被 401 拒绝",
+      "priority": "P0",
+      "type": "exception",
+      "covers": [
+        "AC-RULE-25"
+      ],
+      "preconditions": [
+        "不携带 Authorization 头"
+      ],
+      "steps": [
+        "POST /api/checkins，请求体 {}"
+      ],
+      "expected": [
+        "HTTP 401，code=401",
+        "message=\"未登录或登录已失效\"，不产生打卡记录"
+      ],
+      "design_method": "AC 驱动",
+      "tags": [
+        "打卡",
+        "鉴权"
+      ]
+    },
+    {
+      "id": "API-CHECKIN-008",
+      "title": "打卡日期按服务器本地当日返回 yyyy-MM-dd",
+      "priority": "P1",
+      "type": "happy_path",
+      "covers": [
+        "AC-RULE-12"
+      ],
+      "preconditions": [
+        "已取得 {userToken}"
+      ],
+      "steps": [
+        "POST /api/checkins，Authorization: Bearer {userToken}，请求体 {}",
+        "校验 data.checkinDate 与服务器本地当前日期一致"
+      ],
+      "expected": [
+        "HTTP 200",
+        "data.checkinDate 符合 yyyy-MM-dd 格式且等于服务器本地当日（UNIQUE(user_id, checkin_date) 约束依据）"
+      ],
+      "design_method": "等价类划分",
+      "tags": [
+        "打卡",
+        "字段契约"
+      ]
+    },
+    {
+      "id": "API-CHECKIN-009",
+      "title": "同日并发两次打卡仅一次加积分（净增 10）",
+      "priority": "P1",
+      "type": "edge_case",
+      "covers": [
+        "AC-FN-16"
+      ],
+      "preconditions": [
+        "用户 U 当日尚未打卡，totalPoints=P0",
+        "可并发发起两个请求（或极短间隔连发）"
+      ],
+      "steps": [
+        "近乎同时发起两个 POST /api/checkins，Authorization: Bearer {userToken}，请求体 {}",
+        "校验两次响应的 totalPoints"
+      ],
+      "expected": [
+        "两次均 HTTP 200（其一 pointsAdded=10 duplicated=false，另一 pointsAdded=0 duplicated=true，顺序不限）",
+        "两次 totalPoints 相同且=P0+10（净增 10，无重复计分）"
+      ],
+      "design_method": "错误推测法",
+      "tags": [
+        "打卡",
+        "并发",
+        "幂等"
+      ]
+    },
+    {
+      "id": "API-CHECKIN-010-B01",
+      "title": "请求体携带无关字段被忽略打卡成功",
+      "priority": "P2",
+      "type": "edge_case",
+      "covers": [
+        "AC-RULE-12"
+      ],
+      "preconditions": [
+        "已取得 {userToken}"
+      ],
+      "steps": [
+        "POST /api/checkins，Authorization: Bearer {userToken}，请求体 {\"foo\":\"bar\"}"
+      ],
+      "expected": [
+        "HTTP 200 正常打卡（无关字段忽略）或 400 严格拒绝（标记待验证）",
+        "不返回 500"
+      ],
+      "design_method": "边界值分析",
+      "tags": [
+        "打卡",
+        "请求体边界",
+        "待验证"
+      ]
+    },
+    {
+      "id": "API-CHECKIN-011",
+      "title": "后台角色 token 打卡同样成功（契约：登录即可打卡）",
+      "priority": "P2",
+      "type": "happy_path",
+      "covers": [
+        "AC-RULE-22"
+      ],
+      "preconditions": [
+        "已取得 {operatorToken}"
+      ],
+      "steps": [
+        "POST /api/checkins，Authorization: Bearer {operatorToken}，请求体 {}"
+      ],
+      "expected": [
+        "HTTP 200，code=0（接口契约：admin/operator/user 登录均可）",
+        "pointsAdded=10（首次）或 duplicated=true（当日已打过）"
+      ],
+      "design_method": "等价类划分",
+      "tags": [
+        "打卡",
+        "权限矩阵"
+      ]
+    },
+    {
+      "id": "API-CAT-DEL-001",
+      "title": "删除空分类成功并从分类树移除",
+      "priority": "P0",
+      "type": "happy_path",
+      "covers": [
+        "AC-RULE-06",
+        "AC-RULE-22",
+        "AC-OP-08"
+      ],
+      "preconditions": [
+        "存在一个既无子分类也无任何状态教程的启用分类 X（后台新增预置，新增接口不在本批判次）",
+        "已取得 {adminToken}"
+      ],
+      "steps": [
+        "DELETE /api/categories/{X}，Authorization: Bearer {adminToken}",
+        "GET /api/categories?all=1（{adminToken}）确认 X 不在树中"
+      ],
+      "expected": [
+        "第一步 HTTP 200，code=0，message=已删除，data=null",
+        "第二步树中无 X 节点（分类从后台分类树移除）"
+      ],
+      "design_method": "AC 驱动",
+      "tags": [
+        "分类删除",
+        "接口联动"
+      ]
+    },
+    {
+      "id": "API-CAT-DEL-002-E01",
+      "title": "未登录删除分类被 401 拒绝",
+      "priority": "P0",
+      "type": "exception",
+      "covers": [
+        "AC-EG-06"
+      ],
+      "preconditions": [
+        "不携带 Authorization 头",
+        "存在可删除的空分类"
+      ],
+      "steps": [
+        "DELETE /api/categories/{X}"
+      ],
+      "expected": [
+        "HTTP 401，code=401",
+        "message=\"未登录或登录已失效\"，分类不被删除"
+      ],
+      "design_method": "AC 驱动",
+      "tags": [
+        "分类删除",
+        "鉴权"
+      ]
+    },
+    {
+      "id": "API-CAT-DEL-003-E02",
+      "title": "运营编辑删除分类被 403 拒绝",
+      "priority": "P0",
+      "type": "negative",
+      "covers": [
+        "AC-RULE-23"
+      ],
+      "preconditions": [
+        "已取得 {operatorToken}",
+        "存在任意分类"
+      ],
+      "steps": [
+        "DELETE /api/categories/{id}，Authorization: Bearer {operatorToken}"
+      ],
+      "expected": [
+        "HTTP 403，code=403",
+        "message=\"无权限执行该操作\"（分类树管理为管理员专属）"
+      ],
+      "design_method": "AC 驱动",
+      "tags": [
+        "分类删除",
+        "权限矩阵"
+      ]
+    },
+    {
+      "id": "API-CAT-DEL-004-E03",
+      "title": "普通用户删除分类被 403 拒绝",
+      "priority": "P0",
+      "type": "negative",
+      "covers": [
+        "AC-RULE-24"
+      ],
+      "preconditions": [
+        "已取得 {userToken}"
+      ],
+      "steps": [
+        "DELETE /api/categories/{id}，Authorization: Bearer {userToken}"
+      ],
+      "expected": [
+        "HTTP 403，code=403",
+        "message=\"无权限执行该操作\""
+      ],
+      "design_method": "AC 驱动",
+      "tags": [
+        "分类删除",
+        "权限矩阵"
+      ]
+    },
+    {
+      "id": "API-CAT-DEL-005-E04",
+      "title": "删除不存在的分类返回 404",
+      "priority": "P0",
+      "type": "exception",
+      "covers": [
+        "AC-RULE-22"
+      ],
+      "preconditions": [
+        "已取得 {adminToken}"
+      ],
+      "steps": [
+        "DELETE /api/categories/999999，Authorization: Bearer {adminToken}"
+      ],
+      "expected": [
+        "HTTP 404，code=404",
+        "message=\"分类不存在\""
+      ],
+      "design_method": "错误推测法",
+      "tags": [
+        "分类删除",
+        "404"
+      ]
+    },
+    {
+      "id": "API-CAT-DEL-006-E05",
+      "title": "分类下存在已发布教程时删除被 409 阻断并提示移走",
+      "priority": "P0",
+      "type": "negative",
+      "covers": [
+        "AC-FN-13",
+        "AC-RULE-06"
+      ],
+      "preconditions": [
+        "分类 X 下存在 N（≥1）篇已发布教程",
+        "已取得 {adminToken}"
+      ],
+      "steps": [
+        "DELETE /api/categories/{X}，Authorization: Bearer {adminToken}",
+        "GET /api/categories?all=1（{adminToken}）确认 X 仍存在"
+      ],
+      "expected": [
+        "第一步 HTTP 409，code=409，message=\"该分类下还有 {N} 篇教程，请先移走\"",
+        "第二步分类树中 X 仍存在（删除保护生效）"
+      ],
+      "design_method": "AC 驱动",
+      "tags": [
+        "分类删除",
+        "删除保护",
+        "接口联动"
+      ]
+    },
+    {
+      "id": "API-CAT-DEL-007-E06",
+      "title": "分类下存在草稿/待审核/已下架教程同样阻断删除",
+      "priority": "P0",
+      "type": "negative",
+      "covers": [
+        "AC-FN-13"
+      ],
+      "preconditions": [
+        "分类 X 下仅存在非已发布状态教程（草稿/待审核/已下架任意组合，后台预置）",
+        "已取得 {adminToken}"
+      ],
+      "steps": [
+        "DELETE /api/categories/{X}，Authorization: Bearer {adminToken}"
+      ],
+      "expected": [
+        "HTTP 409，code=409",
+        "message=\"该分类下还有 {N} 篇教程，请先移走\"（保护口径=任意状态教程均计数，非仅已发布）"
+      ],
+      "design_method": "等价类划分",
+      "tags": [
+        "分类删除",
+        "删除保护"
+      ]
+    },
+    {
+      "id": "API-CAT-DEL-008-E07",
+      "title": "教程挂在子分类下时删除父分类被 409 阻断（含子分类计数）",
+      "priority": "P1",
+      "type": "negative",
+      "covers": [
+        "AC-FN-13"
+      ],
+      "preconditions": [
+        "父分类 P 下无直接教程，但其子分类 C 下存在教程",
+        "已取得 {adminToken}"
+      ],
+      "steps": [
+        "DELETE /api/categories/{P}，Authorization: Bearer {adminToken}"
+      ],
+      "expected": [
+        "HTTP 409，code=409",
+        "message=\"该分类下还有 {N} 篇教程，请先移走\"（计数含其子分类下教程，防止树悬挂）"
+      ],
+      "design_method": "错误推测法",
+      "tags": [
+        "分类删除",
+        "层级保护"
+      ]
+    },
+    {
+      "id": "API-CAT-DEL-009-E08",
+      "title": "分类下存在子分类时删除被 409 阻断",
+      "priority": "P1",
+      "type": "negative",
+      "covers": [
+        "AC-FN-13"
+      ],
+      "preconditions": [
+        "父分类 P 下存在子分类 C（C 下无教程）",
+        "已取得 {adminToken}"
+      ],
+      "steps": [
+        "DELETE /api/categories/{P}，Authorization: Bearer {adminToken}"
+      ],
+      "expected": [
+        "HTTP 409，code=409",
+        "message=\"该分类下存在子分类，请先处理\"（工程兜底定义，防止孤儿节点）"
+      ],
+      "design_method": "AC 驱动",
+      "tags": [
+        "分类删除",
+        "层级保护"
+      ]
+    },
+    {
+      "id": "API-CAT-DEL-010",
+      "title": "重复删除已删除的分类返回 404",
+      "priority": "P1",
+      "type": "edge_case",
+      "covers": [
+        "AC-RULE-06"
+      ],
+      "preconditions": [
+        "分类 X 已被成功删除（承接 API-CAT-DEL-001）",
+        "已取得 {adminToken}"
+      ],
+      "steps": [
+        "再次 DELETE /api/categories/{X}，Authorization: Bearer {adminToken}"
+      ],
+      "expected": [
+        "HTTP 404，code=404",
+        "message=\"分类不存在\"（幂等删除语义为拒绝）"
+      ],
+      "design_method": "错误推测法",
+      "tags": [
+        "分类删除",
+        "幂等"
+      ]
+    },
+    {
+      "id": "API-CAT-DEL-011-B01",
+      "title": "分类 id 为非数字/0/负数时请求稳定处理",
+      "priority": "P2",
+      "type": "edge_case",
+      "covers": [
+        "AC-RULE-22"
+      ],
+      "preconditions": [
+        "已取得 {adminToken}"
+      ],
+      "steps": [
+        "分别 DELETE /api/categories/abc、/api/categories/0、/api/categories/-1，Authorization: Bearer {adminToken}"
+      ],
+      "expected": [
+        "三次均 HTTP 404 或 400",
+        "不返回 500"
+      ],
+      "design_method": "边界值分析",
+      "tags": [
+        "分类删除",
+        "健壮性"
+      ]
+    }
+  ]
+}

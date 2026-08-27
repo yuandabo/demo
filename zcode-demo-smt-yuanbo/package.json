@@ -1,0 +1,14 @@
+{
+  "name": "erp-tutorial-root",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "install:all": "npm install && cd web && npm install && cd ../server && npm install",
+    "build": "cd web && npm run build",
+    "start": "cd server && npm start",
+    "test:e2e": "playwright test"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.62.1"
+  }
+}

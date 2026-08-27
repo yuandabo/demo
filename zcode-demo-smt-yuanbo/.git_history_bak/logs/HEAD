@@ -1,0 +1,38 @@
+0000000000000000000000000000000000000000 1c5beeae4d7516eca429285eaa660b4d3de7f92a yyb <yyb@local> 1787207960 +0800	commit (initial): #RE00001 docs: PRD草稿v0.1(需求概述+功能清单35条+流程状态机)
+1c5beeae4d7516eca429285eaa660b4d3de7f92a 24ef96a3bfa1f96a77a1d5d9fd82996df8b9f191 yyb <yyb@local> 1787220314 +0800	commit: #RE00001 docs: PRD正式版v1.0+评审修复3轮(可见性规则/检索口径/删除保护)+AC 53条(评审2轮修复)
+24ef96a3bfa1f96a77a1d5d9fd82996df8b9f191 076611ebdc8802428197f0fc3532d66226a7bf81 yyb <yyb@local> 1787221436 +0800	commit: #RE00001 docs: PRD评审通过(0P0)+AC降级通过报告(5P0已修)+一致性warn修复6条
+076611ebdc8802428197f0fc3532d66226a7bf81 cf4d3677384ecd943fcb9d3486928e43a1c763f2 yyb <yyb@local> 1787221768 +0800	commit: #RE00001 docs: AC一致性校验7项修复(RULE-08/10/17口径+删除保护+EG-01文案+分享数清零)
+cf4d3677384ecd943fcb9d3486928e43a1c763f2 1ede1033899f7970be66342136472cd663a316d5 yyb <yyb@local> 1787228319 +0800	commit: #RE00001 feat(ui): 三端HTML原型17页(4轮QA 54/60通过)+选角色登录+统一数据口径+下架重发布闭环
+1ede1033899f7970be66342136472cd663a316d5 e69024435e245bbe4af2a5add9f5c762bd7cd09f yyb <yyb@local> 1787281074 +0800	commit: #RE00001 docs(design): 技术方案+34接口文档+db设计9表(SQLite幂等DDL+可见性快照)
+e69024435e245bbe4af2a5add9f5c762bd7cd09f a1c4dfe61f4671c53e51a5e7da6789fb4924295c yyb <yyb@local> 1787282047 +0800	commit: #RE00001 docs(design): 评审95分通过+修复3warn(sort/tag多选/share端点35个+Service函数清单冻结)
+a1c4dfe61f4671c53e51a5e7da6789fb4924295c 8c67091e05b9dcbe5c37716b200061ee41f1daba yyb <yyb@local> 1787284720 +0800	commit: #RE00001 docs(tasks): 5迭代39任务拆分(INFRA5/BE14/FE20)并行拆分完成
+8c67091e05b9dcbe5c37716b200061ee41f1daba 2baf8e03f34fc138e7539e8fc8c6bfde36dad79c yyb <yyb@local> 1787284852 +0800	commit: #RE00001 docs(tasks): 自检AC全覆盖缺口修复(15条ac-ref补齐)
+2baf8e03f34fc138e7539e8fc8c6bfde36dad79c 5f042f54a1668a14675ca19f6a11350cf987f96a yyb <yyb@local> 1787285054 +0800	commit: #RE00001 docs(tasks): IT-06文档对齐迭代(DOCB/DOCF探针任务)
+5f042f54a1668a14675ca19f6a11350cf987f96a e47f950170c589656579902511a9e12cafa91693 yyb <yyb@local> 1787286074 +0800	commit: #RE00001 docs(tasks): 评审修复(BE-07 recommend归属+FE-07终验AC-OP-02+share唯一交付方+username契约+归属5处+依赖补齐)
+e47f950170c589656579902511a9e12cafa91693 8ea5099a955a8177e070adf6d16657525c9bc9f3 yyb <yyb@local> 1787286109 +0800	commit: #RE00001 chore: 忽略process-docs桥接目录
+8ea5099a955a8177e070adf6d16657525c9bc9f3 69f2127623d82a38b16661c9cdc7d02a2e826254 yyb <yyb@local> 1787286891 +0800	commit: #RE00001 docs(tasks): 评审2轮修复(share根除+schema归位入phases+FE依赖纠错INFRA-02+curl可执行+终验依赖全)
+69f2127623d82a38b16661c9cdc7d02a2e826254 8c21a5edcd7feb4e0e442e91a1e77a7b71903b00 yyb <yyb@local> 1787286952 +0800	commit: #RE00001 docs(tasks): schema归一(BE-07 detailFile+IT-06字段补齐入phase)
+8c21a5edcd7feb4e0e442e91a1e77a7b71903b00 1217146ed472fd45896ea02565f4a83364151ad1 yyb <yyb@local> 1787287953 +0800	commit: #RE000001 fix: 评审90分通过后Important4项+Minor清理(字段漂移/无效端点/BASE_TS前置/35端点/依赖同步)
+1217146ed472fd45896ea02565f4a83364151ad1 5014e3b7ff6d85ec1deb1d4720d8bb828de922ab yyb <yyb@local> 1787291653 +0800	commit: #RE00001 feat(backend): 基础设施4任务+状态机+Playwright基建(批次1-2 dev-done)
+5014e3b7ff6d85ec1deb1d4720d8bb828de922ab c97bd791fbeb3de0ab5360fcad527b9a5bcaa74f yyb <yyb@local> 1787294160 +0800	commit: #RE00001 feat(backend): 批次3五任务(鉴权/推荐/收藏/历史/评价)挂载联调全通 54单测绿
+c97bd791fbeb3de0ab5360fcad527b9a5bcaa74f 913d3beaa22abfe4ade0ce39d79ecbbdde92514b yyb <yyb@local> 1787297799 +0800	commit: #RE00001 feat(backend): WaveA五任务(分类/教程查询/统计/reset/消息)挂载联调 106单测全绿
+913d3beaa22abfe4ade0ce39d79ecbbdde92514b 19709dc59b703899babfdc607141bed6b6195f25 yyb <yyb@local> 1787299651 +0800	commit: #RE00001 feat(backend): WaveB写入域3任务+打卡(dev-done) 156单测全绿 后端dev全部完成
+19709dc59b703899babfdc607141bed6b6195f25 9026106e21d0e83842eeb051d30dd656c3a49f86 yyb <yyb@local> 1787300663 +0800	commit: #RE00001 fix(backend): 代码审查92分通过后修复I-1/I-2/M-1(摘要回退/两级树拦截/JSON400) 160单测绿
+9026106e21d0e83842eeb051d30dd656c3a49f86 c47af1f6d6f29ae43b72cc272409d28e661275a7 yyb <yyb@local> 1787302413 +0800	commit: #RE00001 test(backend): 19任务selfTest全过(400+断言) 服务清理+报告目录迭代化重构
+c47af1f6d6f29ae43b72cc272409d28e661275a7 e1c0c72869a9fb8fd33526fb59d11ebb54dd39f6 yyb <yyb@local> 1787302834 +0800	commit: #RE00001 docs(reconcile): DOCB变更包CHANGE1-5人工审核通过合并基线(tech-design+db.md) 后端全流程完成
+e1c0c72869a9fb8fd33526fb59d11ebb54dd39f6 133e1e7f32901b1faee8ce97293abcc14b0dfaea yyb <yyb@local> 1787307043 +0800	commit: #RE00001 feat(frontend): 三端基座dev-done(portal组件/m骨架+RoleSheet/admin骨架+守卫登录) 28断言+浏览器全验
+133e1e7f32901b1faee8ce97293abcc14b0dfaea a2433cca79ca4aee56db3534b2664c9136189252 yyb <yyb@local> 1787309033 +0800	commit: #RE00001 feat(frontend): 批次2三端首页/看板 dev-done(含后端recommend token修复CHANGE-6)
+a2433cca79ca4aee56db3534b2664c9136189252 2e394f7d98f498e69540f95b090585a58e0d8f94 yyb <yyb@local> 1787314363 +0800	commit: #RE00001 feat(frontend): 批次3三端列表页dev-done(超时兜底/标签交集/管理全态操作闭环)
+2e394f7d98f498e69540f95b090585a58e0d8f94 81bf08ddd04183c0689dcb9465936afb0f2b02fa yyb <yyb@local> 1787319191 +0800	commit: #RE00001 feat(frontend): 批次4三端详情页dev-done(阅读主体13AC/编辑器9AC/m详情52断言)
+81bf08ddd04183c0689dcb9465936afb0f2b02fa 881ace8199eeb6c0d00cb18507c8b8d1a0149c38 yyb <yyb@local> 1787323300 +0800	commit: #RE00001 feat(frontend): 批次5互动/审核/收藏dev-done(登录重放/驳回双校验/PC-m双向同步)
+881ace8199eeb6c0d00cb18507c8b8d1a0149c38 96d3e38870f5c3e70362a064c368341986a3ec41 yyb <yyb@local> 1787375613 +0800	commit: #RE00001 feat(frontend): 批次6+ShareModal归档dev-done(My28断言/打卡/目录管理3缺陷修复) 16页面全通
+96d3e38870f5c3e70362a064c368341986a3ec41 49791c75d05e6176a5bfdaf1a91c5042deb234ab yyb <yyb@local> 1787376811 +0800	commit: #RE00001 feat(frontend): 工作台+三页联调dev-done(矩阵12/12+favicon修复) 除终验外FE全完成
+49791c75d05e6176a5bfdaf1a91c5042deb234ab de7a0ac77d7c9a0aeb97befe0d6a0f98dadd5fbe yyb <yyb@local> 1787378333 +0800	commit: #RE00001 test(e2e): FE-07全量终验14/14全绿(三端截图13张) HTML报告交付 FE开发全完成
+de7a0ac77d7c9a0aeb97befe0d6a0f98dadd5fbe ac6df04a7e1523fe437201c16b8767e092738fbe yyb <yyb@local> 1787381160 +0800	commit: #RE00001 fix(frontend): 审查修复(h2链路双保险+api35端点21用例+收藏ref锁) 全量33测试绿
+ac6df04a7e1523fe437201c16b8767e092738fbe a24878fab0c90f606753da0df600eb3582b47c38 yyb <yyb@local> 1787462396 +0800	commit: #RE00001 docs(reconcile): DOCF变更包CHANGE6-10审核通过合并基线 前端全流程完成41/41
+a24878fab0c90f606753da0df600eb3582b47c38 7e494c672af562b1226e996237deb05786f21d7d yyb <yyb@local> 1787466563 +0800	commit: #RE00001 test(gen): 测试案例545条(E2E175/API347/Flow23) 结构89分 覆盖率口径错配降级记录
+7e494c672af562b1226e996237deb05786f21d7d fe28d8cd95f335525ead4d508c25fe5e03e6237a yyb <yyb@local> 1787496931 +0800	commit: #RE00001 test(run): 验收通过33/33全绿+AC覆盖矩阵54条+零缺陷 报告评审确认完成
+fe28d8cd95f335525ead4d508c25fe5e03e6237a 896426529b51cb80245116e5890fb7fe921efd76 yyb <yyb@local> 1787497239 +0800	commit: #RE00001 docs: README(功能/选型/启动命令)+开发总结与思考(真实问题5类+AI落地思考5条) 交付物齐
+896426529b51cb80245116e5890fb7fe921efd76 a6ce4c8b97a1d828e8623a3e35d60a712f8897f3 yyb <yyb@local> 1787497610 +0800	commit: #RE00001 chore: 干净环境验证通过(install:all含根依赖+server自构建start) 33/33全绿 报告13截图重生
+a6ce4c8b97a1d828e8623a3e35d60a712f8897f3 504072e2f5b4b7a4b89debbe0e1f0f965ebf205b yyb <yyb@local> 1787554843 +0800	commit: #RE00001 chore: 清理根目录杂项(--full-page)
+504072e2f5b4b7a4b89debbe0e1f0f965ebf205b 424aa7e2721cd56400d222b6ce04776f7440561b yyb <yyb@local> 1787555763 +0800	commit: #RE00001 docs: 开发总结个人化内容回填

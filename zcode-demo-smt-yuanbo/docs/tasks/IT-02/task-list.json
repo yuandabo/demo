@@ -1,0 +1,994 @@
+{
+  "iteration": "IT-02",
+  "name": "管理后台·内容管理核心",
+  "objective": "交付管理后台 6 页（登录/看板/教程列表/编辑器/审核队列/目录管理）与 20 个后端接口（categories 4 + tutorials 13 + stats 3），打通教程四态状态机闭环（创作→提审→审核发布→下架/重发布/复制/置顶）与目录管理、统计看板，复用 IT-01 建库。",
+  "techDesignPath": "design/tech-design.md",
+  "uiDesignPath": "ui",
+  "createdAt": "2026-08-21",
+  "updatedAt": "2026-08-21",
+  "features": [
+    {
+      "name": "后台账号密码登录",
+      "techDesignRef": "tech-design.md#7-前端架构第-8-章",
+      "prdRef": "prd.md#711-公共账号-租户",
+      "acRef": "ac.md#AC-EG-06",
+      "uiRef": "ui/ui_admin_login.html",
+      "relatedTasks": [
+        "FE-01"
+      ]
+    },
+    {
+      "name": "未登录访问后台拦截（跳转登录页）",
+      "techDesignRef": "tech-design.md#6-异常处理与校验",
+      "prdRef": "prd.md#9-异常与边界m11",
+      "acRef": "ac.md#AC-EG-06",
+      "uiRef": "ui/ui_admin_login.html",
+      "relatedTasks": [
+        "FE-01"
+      ]
+    },
+    {
+      "name": "教程前台可见池口径（VISIBLE_SQL 单一定义）",
+      "techDesignRef": "tech-design.md#4-后端架构与处理流程",
+      "prdRef": "prd.md#6-数据模型m08",
+      "acRef": "ac.md#AC-RULE-02",
+      "uiRef": null,
+      "relatedTasks": [
+        "INFRA-01",
+        "BE-02"
+      ]
+    },
+    {
+      "name": "教程列表查询（前台可见池 + 管理全态筛选）",
+      "techDesignRef": "tech-design.md#3-api-接口总览",
+      "prdRef": "prd.md#76-后台教程管理-cms",
+      "acRef": "ac.md#AC-RULE-01",
+      "uiRef": "ui/ui_admin_tutorial_list.html",
+      "relatedTasks": [
+        "BE-02",
+        "FE-03"
+      ]
+    },
+    {
+      "name": "教程四态状态标签与操作列展示",
+      "techDesignRef": "tech-design.md#3-api-接口总览",
+      "prdRef": "prd.md#76-后台教程管理-cms",
+      "acRef": "ac.md#UI-ELEM-07",
+      "uiRef": "ui/ui_admin_tutorial_list.html",
+      "relatedTasks": [
+        "BE-02",
+        "FE-03"
+      ]
+    },
+    {
+      "name": "教程详情查询（快照+上下篇+关联+浏览计数）",
+      "techDesignRef": "tech-design.md#4-后端架构与处理流程",
+      "prdRef": "prd.md#73-前台教程详情页-cms租户",
+      "acRef": "ac.md#AC-RULE-08",
+      "uiRef": null,
+      "relatedTasks": [
+        "BE-02"
+      ]
+    },
+    {
+      "name": "分享打点（share_count+1）",
+      "techDesignRef": "tech-design.md#11-service-函数清单冻结命名评审修复补充",
+      "prdRef": "prd.md#6-数据模型m08",
+      "acRef": "ac.md#AC-RULE-14",
+      "uiRef": null,
+      "relatedTasks": [
+        "BE-02"
+      ]
+    },
+    {
+      "name": "新建教程（创建即草稿）",
+      "techDesignRef": "tech-design.md#3-api-接口总览",
+      "prdRef": "prd.md#76-后台教程管理-cms",
+      "acRef": "ac.md#AC-OP-05",
+      "uiRef": "ui/ui_admin_tutorial_edit.html",
+      "relatedTasks": [
+        "BE-03",
+        "FE-04"
+      ]
+    },
+    {
+      "name": "保存草稿与反复覆盖",
+      "techDesignRef": "tech-design.md#4-后端架构与处理流程",
+      "prdRef": "prd.md#76-后台教程管理-cms",
+      "acRef": "ac.md#AC-OP-05",
+      "uiRef": "ui/ui_admin_tutorial_edit.html",
+      "relatedTasks": [
+        "BE-03",
+        "FE-04"
+      ]
+    },
+    {
+      "name": "编辑保存自动回审（前台旧版不断供）",
+      "techDesignRef": "tech-design.md#4-后端架构与处理流程",
+      "prdRef": "prd.md#76-后台教程管理-cms",
+      "acRef": "ac.md#AC-FN-10",
+      "uiRef": "ui/ui_admin_tutorial_edit.html",
+      "relatedTasks": [
+        "BE-03",
+        "FE-04"
+      ]
+    },
+    {
+      "name": "删除纯草稿（删除保护）",
+      "techDesignRef": "tech-design.md#6-异常处理与校验",
+      "prdRef": "prd.md#76-后台教程管理-cms",
+      "acRef": "ac.md#AC-OP-06",
+      "uiRef": "ui/ui_admin_tutorial_list.html",
+      "relatedTasks": [
+        "BE-03",
+        "FE-03",
+        "FE-04"
+      ]
+    },
+    {
+      "name": "富文本编辑（标题/加粗/列表/图片URL/视频URL）",
+      "techDesignRef": "tech-design.md#7-前端架构第-8-章",
+      "prdRef": "prd.md#76-后台教程管理-cms",
+      "acRef": "ac.md#AC-RULE-18",
+      "uiRef": "ui/ui_admin_tutorial_edit.html",
+      "relatedTasks": [
+        "FE-04"
+      ]
+    },
+    {
+      "name": "编辑器 30s 自动保存与恢复",
+      "techDesignRef": "tech-design.md#7-前端架构第-8-章",
+      "prdRef": "prd.md#9-异常与边界m11",
+      "acRef": "ac.md#AC-OP-05",
+      "uiRef": "ui/ui_admin_tutorial_edit.html",
+      "relatedTasks": [
+        "FE-04"
+      ]
+    },
+    {
+      "name": "提交审核（必填校验+按钮防抖）",
+      "techDesignRef": "tech-design.md#4-后端架构与处理流程",
+      "prdRef": "prd.md#76-后台教程管理-cms",
+      "acRef": "ac.md#AC-FN-07",
+      "uiRef": "ui/ui_admin_tutorial_edit.html",
+      "relatedTasks": [
+        "BE-04",
+        "FE-04"
+      ]
+    },
+    {
+      "name": "撤回提审（待审核→草稿）",
+      "techDesignRef": "tech-design.md#4-后端架构与处理流程",
+      "prdRef": "prd.md#76-后台教程管理-cms",
+      "acRef": "ac.md#AC-OP-07",
+      "uiRef": "ui/ui_admin_tutorial_list.html",
+      "relatedTasks": [
+        "BE-04",
+        "FE-03"
+      ]
+    },
+    {
+      "name": "审核通过（快照拷贝发布+留痕）",
+      "techDesignRef": "tech-design.md#4-后端架构与处理流程",
+      "prdRef": "prd.md#77-后台审核队列-cms",
+      "acRef": "ac.md#AC-FN-08",
+      "uiRef": "ui/ui_admin_review.html",
+      "relatedTasks": [
+        "BE-04",
+        "FE-05"
+      ]
+    },
+    {
+      "name": "审核驳回（原因≥5字双重校验）",
+      "techDesignRef": "tech-design.md#6-异常处理与校验",
+      "prdRef": "prd.md#77-后台审核队列-cms",
+      "acRef": "ac.md#AC-FN-09",
+      "uiRef": "ui/ui_admin_review.html",
+      "relatedTasks": [
+        "BE-04",
+        "FE-05"
+      ]
+    },
+    {
+      "name": "驳回原因展示于编辑页顶部",
+      "techDesignRef": "tech-design.md#6-异常处理与校验",
+      "prdRef": "prd.md#76-后台教程管理-cms",
+      "acRef": "ac.md#AC-RULE-19",
+      "uiRef": "ui/ui_admin_tutorial_edit.html",
+      "relatedTasks": [
+        "BE-03",
+        "FE-04"
+      ]
+    },
+    {
+      "name": "审核队列修改版 v2+ 标识",
+      "techDesignRef": "tech-design.md#3-api-接口总览",
+      "prdRef": "prd.md#77-后台审核队列-cms",
+      "acRef": "ac.md#UI-ELEM-09",
+      "uiRef": "ui/ui_admin_review.html",
+      "relatedTasks": [
+        "BE-02",
+        "FE-05"
+      ]
+    },
+    {
+      "name": "待审核全文预览",
+      "techDesignRef": "tech-design.md#7-前端架构第-8-章",
+      "prdRef": "prd.md#77-后台审核队列-cms",
+      "acRef": "ac.md#AC-FN-08",
+      "uiRef": "ui/ui_admin_review.html",
+      "relatedTasks": [
+        "FE-05"
+      ]
+    },
+    {
+      "name": "AI 生成审核 Tab（mock 仅展示）",
+      "techDesignRef": "tech-design.md#3-api-接口总览",
+      "prdRef": "prd.md#77-后台审核队列-cms",
+      "acRef": "ac.md#UI-ELEM-08",
+      "uiRef": "ui/ui_admin_review.html",
+      "relatedTasks": [
+        "FE-05"
+      ]
+    },
+    {
+      "name": "下架教程（二次确认+留痕+前台隐藏）",
+      "techDesignRef": "tech-design.md#4-后端架构与处理流程",
+      "prdRef": "prd.md#76-后台教程管理-cms",
+      "acRef": "ac.md#AC-OP-03",
+      "uiRef": "ui/ui_admin_tutorial_list.html",
+      "relatedTasks": [
+        "BE-05",
+        "FE-03"
+      ]
+    },
+    {
+      "name": "重新发布（不重审+计数延续）",
+      "techDesignRef": "tech-design.md#4-后端架构与处理流程",
+      "prdRef": "prd.md#76-后台教程管理-cms",
+      "acRef": "ac.md#AC-FN-11",
+      "uiRef": "ui/ui_admin_tutorial_list.html",
+      "relatedTasks": [
+        "BE-05",
+        "FE-03"
+      ]
+    },
+    {
+      "name": "复制教程（副本标题+计数清零）",
+      "techDesignRef": "tech-design.md#11-service-函数清单冻结命名评审修复补充",
+      "prdRef": "prd.md#76-后台教程管理-cms",
+      "acRef": "ac.md#AC-FN-12",
+      "uiRef": "ui/ui_admin_tutorial_list.html",
+      "relatedTasks": [
+        "BE-05",
+        "FE-03"
+      ]
+    },
+    {
+      "name": "置顶与排序调整（仅已发布可置顶）",
+      "techDesignRef": "tech-design.md#11-service-函数清单冻结命名评审修复补充",
+      "prdRef": "prd.md#76-后台教程管理-cms",
+      "acRef": "ac.md#UI-ELEM-07",
+      "uiRef": "ui/ui_admin_tutorial_list.html",
+      "relatedTasks": [
+        "BE-05",
+        "FE-03",
+        "FE-04"
+      ]
+    },
+    {
+      "name": "非法状态迁移拒绝（409）",
+      "techDesignRef": "tech-design.md#4-后端架构与处理流程",
+      "prdRef": "prd.md#35-状态机教程",
+      "acRef": "ac.md#AC-EG-09",
+      "uiRef": null,
+      "relatedTasks": [
+        "INFRA-01",
+        "BE-04",
+        "BE-05"
+      ]
+    },
+    {
+      "name": "operator 权限隔离（审核类接口 403）",
+      "techDesignRef": "tech-design.md#6-异常处理与校验",
+      "prdRef": "prd.md#10-权限与敏感信息m12",
+      "acRef": "ac.md#AC-FN-18",
+      "uiRef": "ui/ui_admin_review.html",
+      "relatedTasks": [
+        "BE-04",
+        "FE-05"
+      ]
+    },
+    {
+      "name": "统计看板总览（4 指标卡+浏览 Top10）",
+      "techDesignRef": "tech-design.md#3-api-接口总览",
+      "prdRef": "prd.md#79-后台统计看板-cms",
+      "acRef": "ac.md#AC-FN-14",
+      "uiRef": "ui/ui_admin_dashboard.html",
+      "relatedTasks": [
+        "BE-06",
+        "FE-02"
+      ]
+    },
+    {
+      "name": "反馈分析（没帮助占比倒序+>50% 标红+留言明细）",
+      "techDesignRef": "tech-design.md#3-api-接口总览",
+      "prdRef": "prd.md#79-后台统计看板-cms",
+      "acRef": "ac.md#UI-ELEM-03",
+      "uiRef": "ui/ui_admin_dashboard.html",
+      "relatedTasks": [
+        "BE-06",
+        "FE-02"
+      ]
+    },
+    {
+      "name": "覆盖度矩阵（空白区标注+模块聚合视图）",
+      "techDesignRef": "tech-design.md#3-api-接口总览",
+      "prdRef": "prd.md#79-后台统计看板-cms",
+      "acRef": "ac.md#UI-ELEM-04",
+      "uiRef": "ui/ui_admin_dashboard.html",
+      "relatedTasks": [
+        "BE-06",
+        "FE-02"
+      ]
+    },
+    {
+      "name": "看板空库空态",
+      "techDesignRef": "tech-design.md#6-异常处理与校验",
+      "prdRef": "prd.md#9-异常与边界m11",
+      "acRef": "ac.md#AC-EG-12",
+      "uiRef": "ui/ui_admin_dashboard.html",
+      "relatedTasks": [
+        "BE-06",
+        "FE-02"
+      ]
+    },
+    {
+      "name": "分类树查询（两级+角标计数+启停状态）",
+      "techDesignRef": "tech-design.md#11-service-函数清单冻结命名评审修复补充",
+      "prdRef": "prd.md#78-后台目录管理-cms",
+      "acRef": "ac.md#AC-RULE-06",
+      "uiRef": "ui/ui_admin_category.html",
+      "relatedTasks": [
+        "BE-01",
+        "FE-06"
+      ]
+    },
+    {
+      "name": "新增分类（一级/二级）",
+      "techDesignRef": "tech-design.md#3-api-接口总览",
+      "prdRef": "prd.md#78-后台目录管理-cms",
+      "acRef": "ac.md#AC-OP-08",
+      "uiRef": "ui/ui_admin_category.html",
+      "relatedTasks": [
+        "BE-01",
+        "FE-06"
+      ]
+    },
+    {
+      "name": "编辑分类与 ERP 模块映射维护",
+      "techDesignRef": "tech-design.md#11-service-函数清单冻结命名评审修复补充",
+      "prdRef": "prd.md#78-后台目录管理-cms",
+      "acRef": "ac.md#AC-OP-04",
+      "uiRef": "ui/ui_admin_category.html",
+      "relatedTasks": [
+        "BE-01",
+        "FE-06"
+      ]
+    },
+    {
+      "name": "分类启停切换（停用隐藏/启用恢复）",
+      "techDesignRef": "tech-design.md#6-异常处理与校验",
+      "prdRef": "prd.md#78-后台目录管理-cms",
+      "acRef": "ac.md#AC-RULE-07",
+      "uiRef": "ui/ui_admin_category.html",
+      "relatedTasks": [
+        "BE-01",
+        "FE-06"
+      ]
+    },
+    {
+      "name": "删除分类（409 删除保护）",
+      "techDesignRef": "tech-design.md#6-异常处理与校验",
+      "prdRef": "prd.md#78-后台目录管理-cms",
+      "acRef": "ac.md#AC-FN-13",
+      "uiRef": "ui/ui_admin_category.html",
+      "relatedTasks": [
+        "BE-01",
+        "FE-06"
+      ]
+    }
+  ],
+  "feature-relations": [
+    {
+      "from": "新建教程（创建即草稿）",
+      "to": "保存草稿与反复覆盖",
+      "relation": "前置"
+    },
+    {
+      "from": "保存草稿与反复覆盖",
+      "to": "提交审核（必填校验+按钮防抖）",
+      "relation": "前置"
+    },
+    {
+      "from": "提交审核（必填校验+按钮防抖）",
+      "to": "审核通过（快照拷贝发布+留痕）",
+      "relation": "前置"
+    },
+    {
+      "from": "提交审核（必填校验+按钮防抖）",
+      "to": "审核驳回（原因≥5字双重校验）",
+      "relation": "前置"
+    },
+    {
+      "from": "提交审核（必填校验+按钮防抖）",
+      "to": "撤回提审（待审核→草稿）",
+      "relation": "前置"
+    },
+    {
+      "from": "撤回提审（待审核→草稿）",
+      "to": "审核通过（快照拷贝发布+留痕）",
+      "relation": "互斥"
+    },
+    {
+      "from": "审核驳回（原因≥5字双重校验）",
+      "to": "驳回原因展示于编辑页顶部",
+      "relation": "联动"
+    },
+    {
+      "from": "审核通过（快照拷贝发布+留痕）",
+      "to": "教程详情查询（快照+上下篇+关联+浏览计数）",
+      "relation": "联动"
+    },
+    {
+      "from": "审核通过（快照拷贝发布+留痕）",
+      "to": "下架教程（二次确认+留痕+前台隐藏）",
+      "relation": "前置"
+    },
+    {
+      "from": "下架教程（二次确认+留痕+前台隐藏）",
+      "to": "重新发布（不重审+计数延续）",
+      "relation": "前置"
+    },
+    {
+      "from": "编辑保存自动回审（前台旧版不断供）",
+      "to": "审核队列修改版 v2+ 标识",
+      "relation": "联动"
+    },
+    {
+      "from": "复制教程（副本标题+计数清零）",
+      "to": "保存草稿与反复覆盖",
+      "relation": "联动"
+    },
+    {
+      "from": "置顶与排序调整（仅已发布可置顶）",
+      "to": "教程列表查询（前台可见池 + 管理全态筛选）",
+      "relation": "联动"
+    },
+    {
+      "from": "分类启停切换（停用隐藏/启用恢复）",
+      "to": "教程列表查询（前台可见池 + 管理全态筛选）",
+      "relation": "联动"
+    },
+    {
+      "from": "编辑分类与 ERP 模块映射维护",
+      "to": "统计看板总览（4 指标卡+浏览 Top10）",
+      "relation": "联动"
+    },
+    {
+      "from": "删除纯草稿（删除保护）",
+      "to": "教程四态状态标签与操作列展示",
+      "relation": "互斥"
+    },
+    {
+      "from": "教程前台可见池口径（VISIBLE_SQL 单一定义）",
+      "to": "教程详情查询（快照+上下篇+关联+浏览计数）",
+      "relation": "前置"
+    }
+  ],
+  "e2e-paths": [
+    {
+      "id": "PATH-01",
+      "name": "教程创作发布全链路（首次提审）",
+      "type": "happy",
+      "steps": [
+        "后台账号密码登录",
+        "教程前台可见池口径（VISIBLE_SQL 单一定义）",
+        "新建教程（创建即草稿）",
+        "保存草稿与反复覆盖",
+        "提交审核（必填校验+按钮防抖）",
+        "待审核全文预览",
+        "审核通过（快照拷贝发布+留痕）",
+        "教程四态状态标签与操作列展示",
+        "教程详情查询（快照+上下篇+关联+浏览计数）"
+      ]
+    },
+    {
+      "id": "PATH-02",
+      "name": "已发布教程编辑回审与驳回修改重发",
+      "type": "happy",
+      "steps": [
+        "后台账号密码登录",
+        "教程四态状态标签与操作列展示",
+        "编辑保存自动回审（前台旧版不断供）",
+        "审核队列修改版 v2+ 标识",
+        "审核驳回（原因≥5字双重校验）",
+        "驳回原因展示于编辑页顶部",
+        "提交审核（必填校验+按钮防抖）",
+        "审核通过（快照拷贝发布+留痕）"
+      ]
+    },
+    {
+      "id": "PATH-03",
+      "name": "下架与重新发布",
+      "type": "happy",
+      "steps": [
+        "后台账号密码登录",
+        "教程四态状态标签与操作列展示",
+        "下架教程（二次确认+留痕+前台隐藏）",
+        "教程列表查询（前台可见池 + 管理全态筛选）",
+        "重新发布（不重审+计数延续）"
+      ]
+    },
+    {
+      "id": "PATH-04",
+      "name": "复制教程再创作",
+      "type": "happy",
+      "steps": [
+        "后台账号密码登录",
+        "教程列表查询（前台可见池 + 管理全态筛选）",
+        "复制教程（副本标题+计数清零）",
+        "保存草稿与反复覆盖",
+        "编辑器 30s 自动保存与恢复",
+        "提交审核（必填校验+按钮防抖）"
+      ]
+    },
+    {
+      "id": "PATH-05",
+      "name": "撤回后继续编辑",
+      "type": "happy",
+      "steps": [
+        "后台账号密码登录",
+        "提交审核（必填校验+按钮防抖）",
+        "撤回提审（待审核→草稿）",
+        "编辑保存自动回审（前台旧版不断供）"
+      ]
+    },
+    {
+      "id": "PATH-06",
+      "name": "纯草稿删除",
+      "type": "happy",
+      "steps": [
+        "后台账号密码登录",
+        "新建教程（创建即草稿）",
+        "删除纯草稿（删除保护）",
+        "教程四态状态标签与操作列展示"
+      ]
+    },
+    {
+      "id": "PATH-07",
+      "name": "分类管理与前台联动",
+      "type": "happy",
+      "steps": [
+        "后台账号密码登录",
+        "新增分类（一级/二级）",
+        "编辑分类与 ERP 模块映射维护",
+        "分类启停切换（停用隐藏/启用恢复）",
+        "分类树查询（两级+角标计数+启停状态）",
+        "删除分类（409 删除保护）"
+      ]
+    },
+    {
+      "id": "PATH-08",
+      "name": "统计看板数据消费",
+      "type": "happy",
+      "steps": [
+        "后台账号密码登录",
+        "统计看板总览（4 指标卡+浏览 Top10）",
+        "反馈分析（没帮助占比倒序+>50% 标红+留言明细）",
+        "覆盖度矩阵（空白区标注+模块聚合视图）"
+      ]
+    },
+    {
+      "id": "PATH-09",
+      "name": "置顶排序影响列表",
+      "type": "edge",
+      "steps": [
+        "后台账号密码登录",
+        "审核通过（快照拷贝发布+留痕）",
+        "置顶与排序调整（仅已发布可置顶）",
+        "教程列表查询（前台可见池 + 管理全态筛选）"
+      ]
+    },
+    {
+      "id": "PATH-10",
+      "name": "分享打点计数",
+      "type": "happy",
+      "steps": [
+        "审核通过（快照拷贝发布+留痕）",
+        "分享打点（share_count+1）",
+        "复制教程（副本标题+计数清零）"
+      ]
+    },
+    {
+      "id": "PATH-11",
+      "name": "驳回原因不足 5 字阻断",
+      "type": "error",
+      "steps": [
+        "提交审核（必填校验+按钮防抖）",
+        "审核驳回（原因≥5字双重校验）"
+      ]
+    },
+    {
+      "id": "PATH-12",
+      "name": "删除有教程的分类被阻断",
+      "type": "error",
+      "steps": [
+        "新增分类（一级/二级）",
+        "删除分类（409 删除保护）"
+      ]
+    },
+    {
+      "id": "PATH-13",
+      "name": "非法状态迁移被拒（草稿直接发布/已下架直接提审）",
+      "type": "error",
+      "steps": [
+        "新建教程（创建即草稿）",
+        "非法状态迁移拒绝（409）",
+        "教程四态状态标签与操作列展示"
+      ]
+    },
+    {
+      "id": "PATH-14",
+      "name": "operator 越权调用审核接口",
+      "type": "error",
+      "steps": [
+        "后台账号密码登录",
+        "operator 权限隔离（审核类接口 403）"
+      ]
+    },
+    {
+      "id": "PATH-15",
+      "name": "未登录访问后台被拦截",
+      "type": "error",
+      "steps": [
+        "未登录访问后台拦截（跳转登录页）",
+        "后台账号密码登录"
+      ]
+    },
+    {
+      "id": "PATH-16",
+      "name": "审核与撤回并发互斥",
+      "type": "edge",
+      "steps": [
+        "提交审核（必填校验+按钮防抖）",
+        "撤回提审（待审核→草稿）",
+        "非法状态迁移拒绝（409）"
+      ]
+    },
+    {
+      "id": "PATH-17",
+      "name": "提审/审核按钮快速连点防抖",
+      "type": "edge",
+      "steps": [
+        "保存草稿与反复覆盖",
+        "提交审核（必填校验+按钮防抖）",
+        "待审核全文预览",
+        "审核通过（快照拷贝发布+留痕）"
+      ]
+    },
+    {
+      "id": "PATH-18",
+      "name": "空库看板空态",
+      "type": "edge",
+      "steps": [
+        "后台账号密码登录",
+        "看板空库空态"
+      ]
+    },
+    {
+      "id": "PATH-19",
+      "name": "提审必填缺失阻断",
+      "type": "error",
+      "steps": [
+        "新建教程（创建即草稿）",
+        "富文本编辑（标题/加粗/列表/图片URL/视频URL）",
+        "提交审核（必填校验+按钮防抖）"
+      ]
+    },
+    {
+      "id": "PATH-20",
+      "name": "审核队列 AI 生成 Tab 仅展示",
+      "type": "edge",
+      "steps": [
+        "后台账号密码登录",
+        "审核队列修改版 v2+ 标识",
+        "AI 生成审核 Tab（mock 仅展示）"
+      ]
+    }
+  ],
+  "summary": {
+    "total": 14,
+    "infra": 1,
+    "backend": 7,
+    "frontend": 6
+  },
+  "tasks": [
+    {
+      "seq": 1,
+      "id": "INFRA-01",
+      "name": "共享基础：VISIBLE_SQL 可见性口径与教程状态机转移表",
+      "role": "infra",
+      "dependencies": [
+        "IT-01.INFRA-01"
+      ],
+      "assignee": "",
+      "phase": {
+        "dev": "done",
+        "selfTest": "done"
+      },
+      "artifact": "",
+      "detailFile": "INFRA-01.md"
+    },
+    {
+      "seq": 2,
+      "id": "BE-01",
+      "name": "分类管理接口（树/增/改/删，含 409 删除保护）",
+      "role": "backend",
+      "dependencies": [
+        "IT-01.INFRA-01",
+        "IT-01.BE-01",
+        "INFRA-01"
+      ],
+      "assignee": "",
+      "phase": {
+        "dev": "done",
+        "selfTest": "done"
+      },
+      "artifact": "",
+      "detailFile": "BE-01.md"
+    },
+    {
+      "seq": 3,
+      "id": "BE-02",
+      "name": "教程查询接口（列表全态/详情快照/分享打点）",
+      "role": "backend",
+      "dependencies": [
+        "IT-01.INFRA-01",
+        "IT-01.BE-01",
+        "INFRA-01"
+      ],
+      "assignee": "",
+      "phase": {
+        "dev": "done",
+        "selfTest": "done"
+      },
+      "artifact": "",
+      "detailFile": "BE-02.md"
+    },
+    {
+      "seq": 4,
+      "id": "BE-03",
+      "name": "教程创作写入（新建/保存回审/纯草稿删除保护）",
+      "role": "backend",
+      "dependencies": [
+        "IT-01.INFRA-01",
+        "IT-01.BE-01",
+        "INFRA-01"
+      ],
+      "assignee": "",
+      "phase": {
+        "dev": "done",
+        "selfTest": "done"
+      },
+      "artifact": "",
+      "detailFile": "BE-03.md"
+    },
+    {
+      "seq": 5,
+      "id": "BE-04",
+      "name": "教程审核状态机（提审/撤回/审核 approve+reject）",
+      "role": "backend",
+      "dependencies": [
+        "IT-01.INFRA-01",
+        "IT-01.BE-01",
+        "INFRA-01"
+      ],
+      "assignee": "",
+      "phase": {
+        "dev": "done",
+        "selfTest": "done"
+      },
+      "artifact": "",
+      "detailFile": "BE-04.md"
+    },
+    {
+      "seq": 6,
+      "id": "BE-05",
+      "name": "教程上下架与复制置顶（offline/republish/copy/top）",
+      "role": "backend",
+      "dependencies": [
+        "IT-01.INFRA-01",
+        "IT-01.BE-01",
+        "INFRA-01"
+      ],
+      "assignee": "",
+      "phase": {
+        "dev": "done",
+        "selfTest": "done"
+      },
+      "artifact": "",
+      "detailFile": "BE-05.md"
+    },
+    {
+      "seq": 7,
+      "id": "BE-06",
+      "name": "统计看板接口（overview/feedback/coverage）",
+      "role": "backend",
+      "dependencies": [
+        "IT-01.INFRA-01",
+        "IT-01.BE-01",
+        "INFRA-01"
+      ],
+      "assignee": "",
+      "phase": {
+        "dev": "done",
+        "selfTest": "done"
+      },
+      "artifact": "",
+      "detailFile": "BE-06.md"
+    },
+    {
+      "seq": 8,
+      "id": "FE-01",
+      "name": "admin 应用骨架与登录页（#/login + Sidebar + 路由守卫）",
+      "role": "frontend",
+      "dependencies": [
+        "IT-01.INFRA-02"
+      ],
+      "assignee": "",
+      "phase": {
+        "dev": "done",
+        "selfTest": "done"
+      },
+      "artifact": "",
+      "detailFile": "FE-01.md"
+    },
+    {
+      "seq": 9,
+      "id": "FE-02",
+      "name": "统计看板页 #/dashboard（指标卡/反馈分析/覆盖度）",
+      "role": "frontend",
+      "dependencies": [
+        "IT-01.INFRA-02",
+        "FE-01"
+      ],
+      "assignee": "",
+      "phase": {
+        "dev": "done",
+        "selfTest": "done"
+      },
+      "artifact": "",
+      "detailFile": "FE-02.md"
+    },
+    {
+      "seq": 10,
+      "id": "FE-03",
+      "name": "教程列表页 #/tutorial（全态筛选/行内操作/置顶排序）",
+      "role": "frontend",
+      "dependencies": [
+        "IT-01.INFRA-02",
+        "FE-01"
+      ],
+      "assignee": "",
+      "phase": {
+        "dev": "done",
+        "selfTest": "done"
+      },
+      "artifact": "",
+      "detailFile": "FE-03.md"
+    },
+    {
+      "seq": 11,
+      "id": "FE-04",
+      "name": "教程编辑器页 #/tutorial/edit/:id（RichEditor/自动保存/驳回告警）",
+      "role": "frontend",
+      "dependencies": [
+        "IT-01.INFRA-02",
+        "FE-01"
+      ],
+      "assignee": "",
+      "phase": {
+        "dev": "done",
+        "selfTest": "done"
+      },
+      "artifact": "",
+      "detailFile": "FE-04.md"
+    },
+    {
+      "seq": 12,
+      "id": "FE-05",
+      "name": "审核队列页 #/review（人工审核 + AI Tab mock）",
+      "role": "frontend",
+      "dependencies": [
+        "IT-01.INFRA-02",
+        "FE-01"
+      ],
+      "assignee": "",
+      "phase": {
+        "dev": "done",
+        "selfTest": "done"
+      },
+      "artifact": "",
+      "detailFile": "FE-05.md"
+    },
+    {
+      "seq": 13,
+      "id": "FE-06",
+      "name": "目录管理页 #/category（两级树/模块映射/删除保护）",
+      "role": "frontend",
+      "dependencies": [
+        "IT-01.INFRA-02",
+        "FE-01"
+      ],
+      "assignee": "",
+      "phase": {
+        "dev": "done",
+        "selfTest": "done"
+      },
+      "artifact": "",
+      "detailFile": "FE-06.md"
+    },
+    {
+      "id": "BE-07",
+      "name": "推荐位接口 GET /api/recommend（buildRecommend：游客全站 Top6/角色映射命中集 Top6，VISIBLE_SQL 口径）",
+      "role": "backend",
+      "phase": {
+        "dev": "done",
+        "selfTest": "done"
+      },
+      "seq": 14,
+      "dependencies": [
+        "IT-01.INFRA-01",
+        "INFRA-01"
+      ],
+      "assignee": "",
+      "artifact": "server/src/routes/misc.ts",
+      "detailFile": "BE-07.md"
+    }
+  ],
+  "phases": [
+    {
+      "phase": 1,
+      "name": "共享基础",
+      "tasks": [
+        "INFRA-01"
+      ]
+    },
+    {
+      "phase": 2,
+      "name": "后端接口与前端骨架（并行）",
+      "tasks": [
+        "BE-01",
+        "BE-02",
+        "BE-03",
+        "BE-04",
+        "BE-05",
+        "BE-06",
+        "FE-01",
+        "BE-07"
+      ]
+    },
+    {
+      "phase": 3,
+      "name": "后台页面（并行）",
+      "tasks": [
+        "FE-02",
+        "FE-03",
+        "FE-04",
+        "FE-05",
+        "FE-06"
+      ]
+    }
+  ]
+}

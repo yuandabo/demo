@@ -1,0 +1,460 @@
+{
+  "iteration": "IT-04",
+  "name": "PC 前台·互动与我的",
+  "objective": "交付 PC 前台教程详情页互动能力（收藏/评价留言/分享二维码/阅读进度与继续阅读）与“我的”页（收藏/历史双 Tab、已下架灰显、进度徽章），后端落地 favorites/histories/feedbacks/share 写接口与计数联动事务；未登录互动统一登录弹窗回原位（AC-FN-03）、评价唯一可改（AC-RULE-15）、进度跨端同值（AC-RULE-11）、404 不可见教程提示页（AC-FN-20）四条硬性验收贯穿前后端任务。",
+  "techDesignPath": "design/tech-design.md",
+  "uiDesignPath": "ui",
+  "createdAt": "2026-08-21",
+  "updatedAt": "2026-08-21",
+  "crossIterationDependencies": [
+    "IT-01（后端基座：erp.db 建库/种子、src/auth.ts 鉴权中间件、db.ts VISIBLE_SQL 片段）→ BE-01/BE-02/BE-03 复用",
+    "IT-03（portal 前端骨架：App.tsx HashRouter 路由壳、shared/api.ts、shared/AuthContext、RoleLoginModal、列表页跳转链；后端 GET /api/tutorials/:id 详情接口）→ FE-01/FE-02/FE-03/FE-04 挂载与取数"
+  ],
+  "features": [
+    {
+      "name": "收藏/取消收藏教程（详情页按钮，未登录登录引导回原位）",
+      "techDesignRef": "tech-design.md#11-service-函数清单冻结命名评审修复补充",
+      "prdRef": "prd/PRD.md#73-前台教程详情页",
+      "acRef": "design/ac.md#AC-FN-03",
+      "uiRef": "ui/ui_portal_detail.html",
+      "relatedTasks": [
+        "BE-01",
+        "FE-03"
+      ]
+    },
+    {
+      "name": "查看收藏列表（我的，按收藏时间倒序，跨端同数据源）",
+      "techDesignRef": "tech-design.md#4-后端架构与处理流程",
+      "prdRef": "prd/PRD.md#74-前台我的收藏与历史",
+      "acRef": "design/ac.md#AC-FN-15",
+      "uiRef": "ui/ui_portal_my.html",
+      "relatedTasks": [
+        "BE-01",
+        "FE-04"
+      ]
+    },
+    {
+      "name": "保存阅读进度（滚动位置/步骤勾选，单值覆盖跨端最新）",
+      "techDesignRef": "tech-design.md#4-后端架构与处理流程",
+      "prdRef": "prd/PRD.md#73-前台教程详情页",
+      "acRef": "design/ac.md#AC-RULE-11",
+      "uiRef": "ui/ui_portal_detail.html",
+      "relatedTasks": [
+        "BE-02",
+        "FE-02"
+      ]
+    },
+    {
+      "name": "继续阅读提示与定位（再次进入弹层）",
+      "techDesignRef": "tech-design.md#7-前端架构第-8-章",
+      "prdRef": "prd/PRD.md#73-前台教程详情页",
+      "acRef": "design/ac.md#AC-FN-04",
+      "uiRef": "ui/ui_portal_detail.html",
+      "relatedTasks": [
+        "FE-02"
+      ]
+    },
+    {
+      "name": "查看浏览历史（我的，按最近阅读倒序+进度百分比）",
+      "techDesignRef": "tech-design.md#3-api-接口总览",
+      "prdRef": "prd/PRD.md#74-前台我的收藏与历史",
+      "acRef": "design/ac.md#AC-FN-23",
+      "uiRef": "ui/ui_portal_my.html",
+      "relatedTasks": [
+        "BE-02",
+        "FE-04"
+      ]
+    },
+    {
+      "name": "教程评价（有帮助/没帮助二选一切换，唯一可改）",
+      "techDesignRef": "tech-design.md#11-service-函数清单冻结命名评审修复补充",
+      "prdRef": "prd/PRD.md#73-前台教程详情页",
+      "acRef": "design/ac.md#AC-FN-05",
+      "uiRef": "ui/ui_portal_detail.html",
+      "relatedTasks": [
+        "BE-03",
+        "FE-03"
+      ]
+    },
+    {
+      "name": "评价留言（选“没帮助”条件展开，≤200 字仅后台可见）",
+      "techDesignRef": "tech-design.md#4-后端架构与处理流程",
+      "prdRef": "prd/PRD.md#73-前台教程详情页",
+      "acRef": "design/ac.md#AC-RULE-20",
+      "uiRef": "ui/ui_portal_detail.html",
+      "relatedTasks": [
+        "BE-03",
+        "FE-03"
+      ]
+    },
+    {
+      "name": "分享教程（复制链接+小程序二维码+打点）",
+      "techDesignRef": "tech-design.md#7-前端架构第-8-章",
+      "prdRef": "prd/PRD.md#73-前台教程详情页",
+      "acRef": "design/ac.md#AC-FN-06",
+      "uiRef": "ui/ui_portal_detail.html",
+      "relatedTasks": [
+        "BE-03",
+        "FE-01",
+        "FE-03"
+      ]
+    },
+    {
+      "name": "目录锚点导航（点击平滑滚动+滚动高亮）",
+      "techDesignRef": "tech-design.md#7-前端架构第-8-章",
+      "prdRef": "prd/PRD.md#73-前台教程详情页",
+      "acRef": "design/ac.md#UI-IXD-03",
+      "uiRef": "ui/ui_portal_detail.html",
+      "relatedTasks": [
+        "FE-02"
+      ]
+    },
+    {
+      "name": "字号三档调节（仅正文，本地记忆）",
+      "techDesignRef": "tech-design.md#7-前端架构第-8-章",
+      "prdRef": "prd/PRD.md#73-前台教程详情页",
+      "acRef": "design/ac.md#AC-RULE-21",
+      "uiRef": "ui/ui_portal_detail.html",
+      "relatedTasks": [
+        "FE-02"
+      ]
+    },
+    {
+      "name": "上一篇/下一篇导航（同分类相邻，无则置灰）",
+      "techDesignRef": "tech-design.md#7-前端架构第-8-章",
+      "prdRef": "prd/PRD.md#73-前台教程详情页",
+      "acRef": "design/ac.md#UI-IXD-05",
+      "uiRef": "ui/ui_portal_detail.html",
+      "relatedTasks": [
+        "FE-02"
+      ]
+    },
+    {
+      "name": "详情底部关联推荐（同分类 4 篇排除本篇）",
+      "techDesignRef": "tech-design.md#7-前端架构第-8-章",
+      "prdRef": "prd/PRD.md#73-前台教程详情页",
+      "acRef": "design/ac.md#UI-IXD-16",
+      "uiRef": "ui/ui_portal_detail.html",
+      "relatedTasks": [
+        "FE-03"
+      ]
+    },
+    {
+      "name": "已下架详情提示页（404+正文不可见+同类推荐）",
+      "techDesignRef": "tech-design.md#6-异常处理与校验",
+      "prdRef": "prd/PRD.md#73-前台教程详情页",
+      "acRef": "design/ac.md#AC-FN-20",
+      "uiRef": "ui/ui_portal_detail.html",
+      "relatedTasks": [
+        "FE-02"
+      ]
+    },
+    {
+      "name": "已下架条目灰显（收藏/历史列表不可进入正文）",
+      "techDesignRef": "tech-design.md#6-异常处理与校验",
+      "prdRef": "prd/PRD.md#74-前台我的收藏与历史",
+      "acRef": "design/ac.md#AC-EG-10",
+      "uiRef": "ui/ui_portal_my.html",
+      "relatedTasks": [
+        "BE-01",
+        "BE-02",
+        "FE-04"
+      ]
+    },
+    {
+      "name": "视频失效占位（占位图+图文步骤完整）",
+      "techDesignRef": "tech-design.md#6-异常处理与校验",
+      "prdRef": "prd/PRD.md#73-前台教程详情页",
+      "acRef": "design/ac.md#AC-EG-02",
+      "uiRef": "ui/ui_portal_detail.html",
+      "relatedTasks": [
+        "FE-02"
+      ]
+    },
+    {
+      "name": "弱网图文加载（文字先行渲染+图片懒加载）",
+      "techDesignRef": "tech-design.md#8-非功能实现",
+      "prdRef": "prd/PRD.md#9-异常与边界",
+      "acRef": "design/ac.md#AC-EG-13",
+      "uiRef": "ui/ui_portal_detail.html",
+      "relatedTasks": [
+        "FE-02"
+      ]
+    }
+  ],
+  "feature-relations": [
+    {
+      "from": "收藏/取消收藏教程（详情页按钮，未登录登录引导回原位）",
+      "to": "查看收藏列表（我的，按收藏时间倒序，跨端同数据源）",
+      "relation": "联动"
+    },
+    {
+      "from": "保存阅读进度（滚动位置/步骤勾选，单值覆盖跨端最新）",
+      "to": "查看浏览历史（我的，按最近阅读倒序+进度百分比）",
+      "relation": "联动"
+    },
+    {
+      "from": "保存阅读进度（滚动位置/步骤勾选，单值覆盖跨端最新）",
+      "to": "继续阅读提示与定位（再次进入弹层）",
+      "relation": "前置"
+    },
+    {
+      "from": "查看浏览历史（我的，按最近阅读倒序+进度百分比）",
+      "to": "继续阅读提示与定位（再次进入弹层）",
+      "relation": "联动"
+    },
+    {
+      "from": "教程评价（有帮助/没帮助二选一切换，唯一可改）",
+      "to": "评价留言（选“没帮助”条件展开，≤200 字仅后台可见）",
+      "relation": "联动"
+    },
+    {
+      "from": "已下架条目灰显（收藏/历史列表不可进入正文）",
+      "to": "已下架详情提示页（404+正文不可见+同类推荐）",
+      "relation": "联动"
+    },
+    {
+      "from": "已下架详情提示页（404+正文不可见+同类推荐）",
+      "to": "详情底部关联推荐（同分类 4 篇排除本篇）",
+      "relation": "联动"
+    }
+  ],
+  "e2e-paths": [
+    {
+      "id": "PATH-01",
+      "name": "未登录收藏→登录回原位→收藏列表闭环",
+      "type": "happy",
+      "steps": [
+        "收藏/取消收藏教程（详情页按钮，未登录登录引导回原位）",
+        "查看收藏列表（我的，按收藏时间倒序，跨端同数据源）",
+        "收藏/取消收藏教程（详情页按钮，未登录登录引导回原位）（取消收藏后列表移除）"
+      ]
+    },
+    {
+      "id": "PATH-02",
+      "name": "阅读进度保存→继续阅读→历史列表闭环",
+      "type": "happy",
+      "steps": [
+        "保存阅读进度（滚动位置/步骤勾选，单值覆盖跨端最新）",
+        "继续阅读提示与定位（再次进入弹层）",
+        "查看浏览历史（我的，按最近阅读倒序+进度百分比）"
+      ]
+    },
+    {
+      "id": "PATH-03",
+      "name": "评价切换与留言提交闭环",
+      "type": "happy",
+      "steps": [
+        "教程评价（有帮助/没帮助二选一切换，唯一可改）",
+        "评价留言（选“没帮助”条件展开，≤200 字仅后台可见）",
+        "教程评价（有帮助/没帮助二选一切换，唯一可改）（切回有帮助计数联动）"
+      ]
+    },
+    {
+      "id": "PATH-04",
+      "name": "分享复制链接与扫码直达",
+      "type": "happy",
+      "steps": [
+        "分享教程（复制链接+小程序二维码+打点）"
+      ]
+    },
+    {
+      "id": "PATH-05",
+      "name": "详情页阅读辅助全链",
+      "type": "happy",
+      "steps": [
+        "目录锚点导航（点击平滑滚动+滚动高亮）",
+        "字号三档调节（仅正文，本地记忆）",
+        "上一篇/下一篇导航（同分类相邻，无则置灰）",
+        "详情底部关联推荐（同分类 4 篇排除本篇）"
+      ]
+    },
+    {
+      "id": "PATH-06",
+      "name": "教程下架后的收藏/历史/直达善后",
+      "type": "error",
+      "steps": [
+        "已下架条目灰显（收藏/历史列表不可进入正文）",
+        "已下架详情提示页（404+正文不可见+同类推荐）",
+        "详情底部关联推荐（同分类 4 篇排除本篇）（从同类推荐继续学习）"
+      ]
+    },
+    {
+      "id": "PATH-07",
+      "name": "游客评价登录引导",
+      "type": "error",
+      "steps": [
+        "教程评价（有帮助/没帮助二选一切换，唯一可改）（未登录触发登录弹窗“登录后即可收藏/评价”）",
+        "评价留言（选“没帮助”条件展开，≤200 字仅后台可见）（登录后该次评价被记录）"
+      ]
+    },
+    {
+      "id": "PATH-08",
+      "name": "视频外链失效降级",
+      "type": "error",
+      "steps": [
+        "视频失效占位（占位图+图文步骤完整）"
+      ]
+    },
+    {
+      "id": "PATH-09",
+      "name": "弱网加载与恢复",
+      "type": "edge",
+      "steps": [
+        "弱网图文加载（文字先行渲染+图片懒加载）"
+      ]
+    },
+    {
+      "id": "PATH-10",
+      "name": "互动幂等与进度边界",
+      "type": "edge",
+      "steps": [
+        "收藏/取消收藏教程（详情页按钮，未登录登录引导回原位）（重复收藏/重复取消幂等）",
+        "保存阅读进度（滚动位置/步骤勾选，单值覆盖跨端最新）（progress=0/100 边界与保存失败回退最近成功值）"
+      ]
+    }
+  ],
+  "summary": {
+    "infra": 0,
+    "backend": 3,
+    "frontend": 4,
+    "total": 7
+  },
+  "tasks": [
+    {
+      "seq": 1,
+      "id": "BE-01",
+      "name": "收藏管理（POST/DELETE /api/favorites/:tutorialId、GET /api/favorites）",
+      "role": "backend",
+      "dependencies": [
+        "IT-01.INFRA-01"
+      ],
+      "assignee": "",
+      "phase": {
+        "dev": "done",
+        "selfTest": "done"
+      },
+      "artifact": "",
+      "detailFile": "BE-01.md"
+    },
+    {
+      "seq": 2,
+      "id": "BE-02",
+      "name": "浏览历史与阅读进度（POST /api/histories/:tutorialId 进度 upsert、GET /api/histories）",
+      "role": "backend",
+      "dependencies": [
+        "IT-01.INFRA-01"
+      ],
+      "assignee": "",
+      "phase": {
+        "dev": "done",
+        "selfTest": "done"
+      },
+      "artifact": "",
+      "detailFile": "BE-02.md"
+    },
+    {
+      "seq": 3,
+      "id": "BE-03",
+      "name": "教程评价（POST /api/feedbacks/:tutorialId upsert + 计数联动事务；share 端点联调验证，交付方 IT-02/BE-02）",
+      "role": "backend",
+      "dependencies": [
+        "IT-01.INFRA-01"
+      ],
+      "assignee": "",
+      "phase": {
+        "dev": "done",
+        "selfTest": "done"
+      },
+      "artifact": "",
+      "detailFile": "BE-03.md"
+    },
+    {
+      "seq": 4,
+      "id": "FE-01",
+      "name": "分享弹窗组件 ShareModal（复制链接+小程序二维码+分享打点）",
+      "role": "frontend",
+      "dependencies": [
+        "IT-01.INFRA-02"
+      ],
+      "assignee": "",
+      "phase": {
+        "dev": "done",
+        "selfTest": "done"
+      },
+      "artifact": "",
+      "detailFile": "FE-01.md"
+    },
+    {
+      "seq": 5,
+      "id": "FE-02",
+      "name": "教程详情页·阅读主体与导航（#/detail/:id：正文渲染/目录锚点/字号三档/上下篇/进度保存与继续阅读/已下架提示页）",
+      "role": "frontend",
+      "dependencies": [
+        "IT-03.FE-01"
+      ],
+      "assignee": "",
+      "phase": {
+        "dev": "done",
+        "selfTest": "done"
+      },
+      "artifact": "",
+      "detailFile": "FE-02.md"
+    },
+    {
+      "seq": 6,
+      "id": "FE-03",
+      "name": "教程详情页·互动区（收藏/评价+留言条件展开/分享弹窗集成/关联推荐 4 卡，含未登录登录回原位）",
+      "role": "frontend",
+      "dependencies": [
+        "FE-01",
+        "FE-02"
+      ],
+      "assignee": "",
+      "phase": {
+        "dev": "done",
+        "selfTest": "done"
+      },
+      "artifact": "",
+      "detailFile": "FE-03.md"
+    },
+    {
+      "seq": 7,
+      "id": "FE-04",
+      "name": "我的页面（#/my：收藏/浏览历史双 Tab，已下架灰显，进度徽章与取消收藏）",
+      "role": "frontend",
+      "dependencies": [
+        "BE-01",
+        "BE-02"
+      ],
+      "assignee": "",
+      "phase": {
+        "dev": "done",
+        "selfTest": "done"
+      },
+      "artifact": "",
+      "detailFile": "FE-04.md"
+    }
+  ],
+  "phases": [
+    {
+      "phase": 1,
+      "name": "后端互动接口 + 前端基础组件与独立页面（并行）",
+      "tasks": [
+        "BE-01",
+        "BE-02",
+        "BE-03",
+        "FE-01",
+        "FE-02",
+        "FE-04"
+      ]
+    },
+    {
+      "phase": 2,
+      "name": "详情页互动区集成（依赖 FE-01 ShareModal 与 FE-02 页面骨架）",
+      "tasks": [
+        "FE-03"
+      ]
+    }
+  ]
+}
